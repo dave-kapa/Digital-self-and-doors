@@ -1,0 +1,6 @@
+﻿# Backups y temporales
+backups/
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
