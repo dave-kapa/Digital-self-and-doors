@@ -5,7 +5,15 @@
 
 // ESTADO GLOBAL DE LA SESIÓN V2
 let gameStateV2 = {
-    activeScreen: 'screen-cover',
+    activeScreen: 'screen-role-select',
+    userRole: 'operator', // 'operator' | 'facilitator'
+    playerId: 'op_' + Math.random().toString(36).substring(2, 9),
+    sessionGates: {
+        gate1_intro: false,     // Desbloquea botón "INICIAR PROTOCOLO DE CALIBRACIÓN"
+        gate2_calib: false,     // Desbloquea botón "SÍ, INICIAR CALIBRACIÓN"
+        gate3_kernel: false,    // Desbloquea botón "VERIFICAR ESTADO DEL KERNEL"
+        gate4_case1: false      // Desbloquea botón "INICIAR PRIMERA OPERACIÓN // CASO 01"
+    },
     playerProfile: null, // { name, email, pin, loginTimestamp }
     faroStatus: 'CALIBRACIÓN',
     casePauseTokens: 3, // 3 pausas por cada caso
@@ -685,6 +693,331 @@ const casesDataV2 = [
 ];
 
 // ==========================================================================
+// BUS DE SINCRONIZACIÓN MULTI-PESTAÑA (BROADCASTCHANNEL + LOCALSTORAGE FALLBACK)
+// ==========================================================================
+let faroSyncChannel = null;
+try {
+    if (typeof BroadcastChannel !== 'undefined') {
+        faroSyncChannel = new BroadcastChannel('faro_session_sync_bus');
+        faroSyncChannel.onmessage = function(e) {
+            handleIncomingSyncEvent(e.data);
+        };
+    }
+} catch (err) {
+    console.warn("BroadcastChannel no soportado en este entorno", err);
+}
+
+// Fallback multi-pestaña usando evento Storage de localStorage
+window.addEventListener('storage', function(e) {
+    if (e.key === 'faro_sync_event' && e.newValue) {
+        try {
+            const data = JSON.parse(e.newValue);
+            handleIncomingSyncEvent(data);
+        } catch (err) {}
+    }
+});
+
+function broadcastSyncEvent(type, payload) {
+    const eventObj = { type: type, payload: payload, senderId: gameStateV2.playerId, timestamp: Date.now() };
+    if (faroSyncChannel) {
+        faroSyncChannel.postMessage(eventObj);
+    }
+    try {
+        localStorage.setItem('faro_sync_event', JSON.stringify(eventObj));
+    } catch (e) {}
+}
+
+// Estado de monitoreo grupal para el Facilitador
+const facState = {
+    connectedPlayers: {} // { [playerId]: { name, round: 1..4, finished: bool, surrendered: bool, lastSeen } }
+};
+
+function handleIncomingSyncEvent(event) {
+    if (!event || !event.type) return;
+
+    // Actualización de Candados de Sesión (Emitido por el Facilitador)
+    if (event.type === 'GATES_UPDATE') {
+        if (event.payload && event.payload.gates) {
+            gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...event.payload.gates };
+            updateGateUI();
+        }
+    }
+
+    // Fuerza inicio de caso 01 para toda la sala (Emitido por el Facilitador)
+    if (event.type === 'FAC_FORCE_START_CASE_1') {
+        if (gameStateV2.userRole === 'operator') {
+            const objOverlay = document.getElementById('game-objective-overlay');
+            if (objOverlay && objOverlay.style.display !== 'none') {
+                closeGameObjectiveModalAndStartGame();
+            }
+        }
+    }
+
+    // Registro de jugador conectado (Para telemetría de Facilitador)
+    if (event.type === 'PLAYER_CONNECTED') {
+        const p = event.payload;
+        if (p && p.playerId) {
+            facState.connectedPlayers[p.playerId] = {
+                name: p.name || 'Operador',
+                round: 1,
+                finished: false,
+                surrendered: false,
+                lastSeen: Date.now()
+            };
+            updateFacilitatorRealtimeUI();
+        }
+    }
+
+    // Progreso de calibración de un operador
+    if (event.type === 'PLAYER_CALIB_ROUND_UPDATE') {
+        const p = event.payload;
+        if (p && p.playerId) {
+            if (!facState.connectedPlayers[p.playerId]) {
+                facState.connectedPlayers[p.playerId] = { name: 'Operador', finished: false, surrendered: false };
+            }
+            facState.connectedPlayers[p.playerId].round = p.round || 1;
+            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
+            updateFacilitatorRealtimeUI();
+        }
+    }
+
+    // Finalización de calibración de un operador
+    if (event.type === 'PLAYER_CALIB_FINISHED') {
+        const p = event.payload;
+        if (p && p.playerId) {
+            if (!facState.connectedPlayers[p.playerId]) {
+                facState.connectedPlayers[p.playerId] = { name: 'Operador' };
+            }
+            facState.connectedPlayers[p.playerId].finished = true;
+            facState.connectedPlayers[p.playerId].surrendered = !!p.surrendered;
+            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
+            updateFacilitatorRealtimeUI();
+        }
+    }
+}
+
+function updateFacilitatorRealtimeUI() {
+    const players = Object.values(facState.connectedPlayers);
+    const totalCount = Math.max(1, players.length); // Mínimo 1 para cálculo porcentual
+    
+    // Conteo por rondas
+    const r1Count = players.filter(p => p.round === 1 && !p.finished).length;
+    const r2Count = players.filter(p => p.round === 2 && !p.finished).length;
+    const r3Count = players.filter(p => p.round === 3 && !p.finished).length;
+    const r4Count = players.filter(p => p.round === 4 && !p.finished).length;
+    const finishedCount = players.filter(p => p.finished).length;
+
+    const r1Pct = Math.round((r1Count / totalCount) * 100);
+    const r2Pct = Math.round((r2Count / totalCount) * 100);
+    const r3Pct = Math.round((r3Count / totalCount) * 100);
+    const r4Pct = Math.round((r4Count / totalCount) * 100);
+    const finPct = Math.round((finishedCount / totalCount) * 100);
+
+    const elTotal = document.getElementById('fac-calib-total-players');
+    if (elTotal) elTotal.innerText = players.length;
+
+    const elFinPct = document.getElementById('fac-calib-completed-pct');
+    if (elFinPct) elFinPct.innerText = `${finPct}%`;
+    const elFinCount = document.getElementById('fac-calib-completed-count');
+    if (elFinCount) elFinCount.innerText = `${finishedCount} operador${finishedCount !== 1 ? 'es' : ''} listo${finishedCount !== 1 ? 's' : ''}`;
+
+    // Rondas UI
+    ['r1', 'r2', 'r3', 'r4'].forEach((rKey, idx) => {
+        const pcts = [r1Pct, r2Pct, r3Pct, r4Pct];
+        const pct = pcts[idx];
+        const pEl = document.getElementById(`fac-${rKey}-pct`);
+        const fEl = document.getElementById(`fac-${rKey}-fill`);
+        if (pEl) pEl.innerText = `${pct}%`;
+        if (fEl) fEl.style.width = `${pct}%`;
+    });
+
+    // Resultados Globales de Calibración
+    const totalFinished = Math.max(1, finishedCount);
+    const surrenderedCount = players.filter(p => p.finished && p.surrendered).length;
+    
+    // NOTA: El % de jugadores que han cedido la agencia comienza con una base de +2% sumada al resultado real
+    const baseOffset = 2;
+    const realCededPct = Math.round((surrenderedCount / totalFinished) * 100);
+    const cededPct = Math.min(100, realCededPct + baseOffset);
+    const controlledPct = Math.max(0, 100 - cededPct);
+
+    const elCededPct = document.getElementById('fac-res-ceded-pct');
+    const elCededFill = document.getElementById('fac-res-ceded-fill');
+    if (elCededPct) elCededPct.innerText = `${cededPct}%`;
+    if (elCededFill) elCededFill.style.width = `${cededPct}%`;
+
+    const elCtrlPct = document.getElementById('fac-res-controlled-pct');
+    const elCtrlFill = document.getElementById('fac-res-controlled-fill');
+    if (elCtrlPct) elCtrlPct.innerText = `${controlledPct}%`;
+    if (elCtrlFill) elCtrlFill.style.width = `${controlledPct}%`;
+}
+
+function updateGateUI() {
+    const isFac = gameStateV2.userRole === 'facilitator';
+    const gates = gameStateV2.sessionGates;
+
+    // CANDADO 1 (screen-waiting)
+    const facGate1 = document.getElementById('fac-gate-1-container');
+    const startBtn = document.getElementById('btn-start-calibration');
+    const startBtnTxt = document.getElementById('btn-start-calibration-text');
+
+    if (facGate1) facGate1.style.display = isFac ? 'flex' : 'none';
+    if (startBtn) {
+        if (isFac) {
+            startBtn.style.display = 'none';
+        } else {
+            startBtn.style.display = 'inline-flex';
+            if (gates.gate1_intro) {
+                startBtn.disabled = false;
+                startBtn.classList.remove('btn-disabled-mission');
+                startBtn.style.opacity = '1';
+                startBtn.style.cursor = 'pointer';
+                if (startBtnTxt) startBtnTxt.innerText = "INICIAR PROTOCOLO DE CALIBRACIÓN";
+            } else {
+                startBtn.disabled = true;
+                startBtn.classList.add('btn-disabled-mission');
+                startBtn.style.opacity = '0.45';
+                startBtn.style.cursor = 'not-allowed';
+                if (startBtnTxt) startBtnTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+            }
+        }
+    }
+
+    // CANDADO 2 (screen-calibration diálogo FARO)
+    const facGate2 = document.getElementById('fac-gate-2-container');
+    const faroStartBtn = document.getElementById('faro-start-calibration-btn');
+    const faroStartBtnTxt = document.getElementById('faro-start-calib-btn-text');
+
+    if (facGate2) facGate2.style.display = isFac ? 'flex' : 'none';
+    if (faroStartBtn) {
+        if (isFac) {
+            faroStartBtn.style.display = 'none';
+        } else {
+            faroStartBtn.style.display = 'inline-flex';
+            if (gates.gate2_calib && faroPromptAccepted) {
+                faroStartBtn.disabled = false;
+                faroStartBtn.classList.remove('btn-disabled-mission');
+                faroStartBtn.style.opacity = '1';
+                faroStartBtn.style.cursor = 'pointer';
+                if (faroStartBtnTxt) faroStartBtnTxt.innerText = "SÍ, INICIAR CALIBRACIÓN";
+            } else if (!gates.gate2_calib) {
+                faroStartBtn.disabled = true;
+                faroStartBtn.classList.add('btn-disabled-mission');
+                faroStartBtn.style.opacity = '0.45';
+                faroStartBtn.style.cursor = 'not-allowed';
+                if (faroStartBtnTxt) faroStartBtnTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+            }
+        }
+    }
+
+    // CANDADO 3 (screen-calibration-processing -> screen-faro-reveal)
+    const procVerifyBtn = document.getElementById('btn-processing-verify-kernel');
+    const procVerifyTxt = document.getElementById('btn-processing-verify-text');
+    const facGate3 = document.getElementById('fac-gate-3-container');
+
+    if (facGate3) facGate3.style.display = isFac ? 'flex' : 'none';
+    if (procVerifyBtn) {
+        if (isFac) {
+            procVerifyBtn.style.display = 'none';
+        } else {
+            procVerifyBtn.style.display = 'inline-flex';
+            if (gates.gate3_kernel) {
+                procVerifyBtn.disabled = false;
+                procVerifyBtn.classList.remove('btn-disabled-mission');
+                procVerifyBtn.style.opacity = '1';
+                procVerifyBtn.style.cursor = 'pointer';
+                if (procVerifyTxt) procVerifyTxt.innerText = "VERIFICAR ESTADO DEL KERNEL DE FARO ▶";
+            } else {
+                procVerifyBtn.disabled = true;
+                procVerifyBtn.classList.add('btn-disabled-mission');
+                procVerifyBtn.style.opacity = '0.45';
+                procVerifyBtn.style.cursor = 'not-allowed';
+                if (procVerifyTxt) procVerifyTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+            }
+        }
+    }
+
+    // CANDADO 4 (game-objective-overlay)
+    const facGate4 = document.getElementById('fac-gate-4-container');
+    const playerObjRow = document.getElementById('player-objective-action-row');
+    const playerStartCaseBtn = document.getElementById('btn-player-start-case-1');
+    const playerStartCaseTxt = document.getElementById('btn-player-start-case-1-text');
+
+    if (facGate4) facGate4.style.display = isFac ? 'flex' : 'none';
+    if (playerObjRow) playerObjRow.style.display = isFac ? 'none' : 'flex';
+    if (playerStartCaseBtn) {
+        if (gates.gate4_case1) {
+            playerStartCaseBtn.disabled = false;
+            playerStartCaseBtn.classList.remove('btn-disabled-mission');
+            playerStartCaseBtn.style.opacity = '1';
+            playerStartCaseBtn.style.cursor = 'pointer';
+            if (playerStartCaseTxt) playerStartCaseTxt.innerText = "🚀 INICIAR PRIMERA OPERACIÓN // CASO 01";
+        } else {
+            playerStartCaseBtn.disabled = true;
+            playerStartCaseBtn.classList.add('btn-disabled-mission');
+            playerStartCaseBtn.style.opacity = '0.45';
+            playerStartCaseBtn.style.cursor = 'not-allowed';
+            if (playerStartCaseTxt) playerStartCaseTxt.innerText = "🔒 ESPERANDO QUE EL FACILITADOR INICIE LA OPERACIÓN...";
+        }
+    }
+}
+
+function checkUrlRoleParam() {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get('role');
+    if (roleParam === 'facilitator') {
+        selectUserRole('facilitator');
+    } else if (roleParam === 'operator') {
+        selectUserRole('operator');
+    }
+}
+
+// Funciones de control de candados disparadas por el Facilitador
+function facUnlockGate1() {
+    gameStateV2.sessionGates.gate1_intro = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    const statusTxt = document.getElementById('fac-gate-1-status-text');
+    if (statusTxt) statusTxt.innerText = "ESTADO: CANDADO 1 DESBLOQUEADO ✔";
+    switchScreenV2('screen-calibration');
+}
+
+function facUnlockGate2AndGoRealtime() {
+    gameStateV2.sessionGates.gate2_calib = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    switchScreenV2('screen-fac-calib-realtime');
+    updateFacilitatorRealtimeUI();
+}
+
+function facGoToCalibResults() {
+    switchScreenV2('screen-fac-calib-results');
+    updateFacilitatorRealtimeUI();
+}
+
+function facGoToRevealScript() {
+    switchScreenV2('screen-faro-reveal');
+    updateGateUI();
+}
+
+function facUnlockGate3() {
+    gameStateV2.sessionGates.gate3_kernel = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    const statusTxt = document.getElementById('fac-gate-3-status-text');
+    if (statusTxt) statusTxt.innerText = "ESTADO: CANDADO 3 DESBLOQUEADO ✔";
+    switchScreenV2('screen-claudia-debrief');
+}
+
+function facUnlockGate4AndStartCase1() {
+    gameStateV2.sessionGates.gate4_case1 = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    broadcastSyncEvent('FAC_FORCE_START_CASE_1', {});
+    updateGateUI();
+    closeGameObjectiveModalAndStartGame();
+}
+
+// ==========================================================================
 // PORTADA, PRELOADER DE RECURSOS, LOGIN Y SINCRONIZACIÓN NEURONAL
 // ==========================================================================
 
@@ -761,7 +1094,7 @@ function initAppPreload() {
 }
 
 function showIntroSubScreen(screenId) {
-    const screens = ['screen-cover', 'screen-login'];
+    const screens = ['screen-role-select', 'screen-cover', 'screen-login', 'screen-login-facilitator'];
     screens.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -776,27 +1109,101 @@ function showIntroSubScreen(screenId) {
     });
 }
 
+function selectUserRole(role) {
+    gameStateV2.userRole = role;
+    if (role === 'facilitator') {
+        document.body.classList.add('facilitator-theme');
+        showIntroSubScreen('screen-login-facilitator');
+    } else {
+        document.body.classList.remove('facilitator-theme');
+        showIntroSubScreen('screen-cover');
+        initAppPreload();
+    }
+    updateGateUI();
+}
+
 function goToLoginScreen() {
-    showIntroSubScreen('screen-login');
-    setTimeout(() => {
-        const nameInput = document.getElementById('login-name');
-        if (nameInput) nameInput.focus();
-    }, 100);
+    if (gameStateV2.userRole === 'facilitator') {
+        showIntroSubScreen('screen-login-facilitator');
+        setTimeout(() => {
+            const passInput = document.getElementById('fac-pass');
+            if (passInput) passInput.focus();
+        }, 100);
+    } else {
+        showIntroSubScreen('screen-login');
+        setTimeout(() => {
+            const nameInput = document.getElementById('login-name');
+            if (nameInput) nameInput.focus();
+        }, 100);
+    }
 }
 
 function devSkipIntroDirectToGame() {
     if (!gameStateV2.playerProfile) {
         gameStateV2.playerProfile = {
-            name: "Operador Pruebas",
+            name: gameStateV2.userRole === 'facilitator' ? "Facilitador Pruebas" : "Operador Pruebas",
             email: "dev@faro.internal",
             pin: DEFAULT_SESSION_PIN,
+            role: gameStateV2.userRole,
             loginTimestamp: new Date().toISOString()
         };
         if (gameStateV2.sessionLog) {
             gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
         }
     }
+    broadcastSyncEvent('PLAYER_CONNECTED', {
+        playerId: gameStateV2.playerId,
+        name: gameStateV2.playerProfile.name,
+        pin: gameStateV2.playerProfile.pin
+    });
     switchScreenV2('screen-waiting');
+    updateGateUI();
+}
+
+function handleFacilitatorLogin(event) {
+    if (event) event.preventDefault();
+    const passInput = document.getElementById('fac-pass');
+    const pinInput = document.getElementById('fac-pin');
+    const errorAlert = document.getElementById('fac-login-error');
+    const errorText = document.getElementById('fac-login-error-text');
+
+    const pass = passInput ? passInput.value.trim() : "";
+    const pin = pinInput ? pinInput.value.trim() : "";
+
+    // Contraseña de facilitador
+    if (pass !== "F4R0_ADMIN" && pass !== "admin") {
+        if (errorAlert) {
+            errorAlert.style.display = 'flex';
+            if (errorText) errorText.innerText = "Contraseña de controlador incorrecta (Default: F4R0_ADMIN).";
+        }
+        if (passInput) { passInput.focus(); passInput.select(); }
+        return;
+    }
+
+    if (pin !== DEFAULT_SESSION_PIN) {
+        if (errorAlert) {
+            errorAlert.style.display = 'flex';
+            if (errorText) errorText.innerText = "PIN de sesión inválido (PIN de prueba: F4R0).";
+        }
+        if (pinInput) { pinInput.focus(); pinInput.select(); }
+        return;
+    }
+
+    if (errorAlert) errorAlert.style.display = 'none';
+
+    gameStateV2.playerProfile = {
+        name: "Controlador / Facilitador",
+        email: "facilitador@faro-system.internal",
+        pin: pin,
+        role: "facilitator",
+        loginTimestamp: new Date().toISOString()
+    };
+
+    const badgeTag = document.getElementById('cover-badge-role-tag');
+    if (badgeTag) badgeTag.innerText = "SISTEMA CIBERNÉTICO V2.0 // SALA DE CONTROLADOR";
+
+    switchScreenV2('screen-loading-sync');
+    startSyncLoadingScreen();
 }
 
 function handlePlayerLogin(event) {
@@ -843,12 +1250,19 @@ function handlePlayerLogin(event) {
         name: name,
         email: email,
         pin: pin,
+        role: 'operator',
         loginTimestamp: new Date().toISOString()
     };
 
     if (gameStateV2.sessionLog) {
         gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
     }
+
+    broadcastSyncEvent('PLAYER_CONNECTED', {
+        playerId: gameStateV2.playerId,
+        name: name,
+        pin: pin
+    });
 
     // Pasar de inmediato al espacio de juego con la pantalla de sincronización
     switchScreenV2('screen-loading-sync');
@@ -924,7 +1338,7 @@ function startSyncLoadingScreen() {
 // ==========================================================================
 
 function switchScreenV2(screenId) {
-    const isIntro = ['screen-cover', 'screen-login'].includes(screenId);
+    const isIntro = ['screen-role-select', 'screen-cover', 'screen-login', 'screen-login-facilitator'].includes(screenId);
     const introFlow = document.getElementById('intro-flow-container');
     const appContainer = document.getElementById('cyber-app-container');
     const syncOverlay = document.getElementById('screen-loading-sync');
@@ -946,14 +1360,17 @@ function switchScreenV2(screenId) {
 
     document.querySelectorAll('.view-screen').forEach(screen => {
         screen.classList.remove('active');
+        screen.style.display = 'none';
     });
     const target = document.getElementById(screenId);
     if (target) {
         target.classList.add('active');
+        target.style.display = 'block';
         gameStateV2.activeScreen = screenId;
     }
 
     updateHeaderUI();
+    updateGateUI();
 
     // Trigger de máquina de escribir al entrar en pantallas con diálogo
     if (screenId === 'screen-waiting') {
@@ -1127,12 +1544,7 @@ function startHeroTypewriter() {
             charIdx++;
         } else {
             clearInterval(heroTypewriterInterval);
-            if (startBtn) {
-                startBtn.disabled = false;
-                startBtn.classList.remove('btn-disabled-mission');
-                startBtn.style.opacity = '1';
-                startBtn.style.cursor = 'pointer';
-            }
+            updateGateUI();
         }
     }, 24);
 }
@@ -1165,6 +1577,11 @@ function finishCalibration(wasClicked) {
     clearTimeout(calibrationState.r2WaitTimeout);
     
     lastCalibrationWasClicked = wasClicked;
+
+    broadcastSyncEvent('PLAYER_CALIB_FINISHED', {
+        playerId: gameStateV2.playerId,
+        surrendered: wasClicked
+    });
 
     if (!wasClicked) {
         // Éxito final en Ronda 4 (Esperó a cero y confirmó) -> Todos los bombillos se encienden en VERDE
@@ -1481,7 +1898,6 @@ function prevFaroPromptPage() {
 
 function acceptFaroPrompt() {
     faroPromptAccepted = true;
-    const startBtn = document.getElementById('faro-start-calibration-btn');
     const understandBtn = document.getElementById('faro-understand-btn');
 
     if (understandBtn) {
@@ -1490,12 +1906,7 @@ function acceptFaroPrompt() {
         understandBtn.style.color = "#000";
     }
 
-    if (startBtn) {
-        startBtn.disabled = false;
-        startBtn.classList.remove('btn-disabled-mission');
-        const textSpan = startBtn.querySelector('.btn-text');
-        if (textSpan) textSpan.innerText = "▶ SÍ, INICIAR CALIBRACIÓN";
-    }
+    updateGateUI();
 }
 
 function updateRoundLEDs(roundNum, statusOverride) {
@@ -1555,6 +1966,11 @@ function confirmStartCalibrationRounds() {
     // Texto simplificado de FARO durante la calibración activa
     const faroSpeech = document.getElementById('faro-speech-typewriter');
     if (faroSpeech) faroSpeech.innerText = "“Sigue la instrucción de cada ronda. El tiempo se agota.”";
+
+    broadcastSyncEvent('PLAYER_CALIB_ROUND_UPDATE', {
+        playerId: gameStateV2.playerId,
+        round: 1
+    });
 
     // Iniciar temporizador global de calibración (45 segundos)
     startCalibrationTimer();
@@ -1617,6 +2033,11 @@ function renderCalibrationRound(roundNum) {
 
     if (faroSpeech) faroSpeech.innerText = "“Sigue las instrucciones de cada ronda. El tiempo se agota.”";
     if (faroNav) faroNav.style.display = 'none';
+
+    broadcastSyncEvent('PLAYER_CALIB_ROUND_UPDATE', {
+        playerId: gameStateV2.playerId,
+        round: roundNum
+    });
 
     // Encender bombillos azules según la ronda
     updateRoundLEDs(roundNum);
@@ -3846,7 +4267,15 @@ function toggleFacilitatorBar() {
 // Inicialización de ventana
 function initAppV2() {
     updateHeaderUI();
-    initAppPreload();
+    checkUrlRoleParam();
+    updateGateUI();
+    updateFacilitatorRealtimeUI();
+    
+    // Si no hay parámetro de rol en la URL, mostrar la pantalla de selección de rol
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('role')) {
+        showIntroSubScreen('screen-role-select');
+    }
 }
 
 if (document.readyState === 'loading') {
