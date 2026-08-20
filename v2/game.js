@@ -3484,29 +3484,49 @@ function showNarrativeFeedbackScreen() {
     document.getElementById('fb-outcome-badge').innerText = outcomeObj.outcomeBadge;
     document.getElementById('fb-title').innerText = outcomeObj.title;
 
-    // Llenar Caja de Integridad y Balance Económico
+    // Llenar Píldora de Integridad
     const pillEl = document.getElementById('fb-integrity-pill');
     const textEl = document.getElementById('fb-integrity-text');
-    const noteEl = document.getElementById('fb-integrity-note');
-    const costTotalEl = document.getElementById('fb-cost-total-display');
-    const timeBreakdownEl = document.getElementById('fb-breakdown-time');
-    const integBreakdownEl = document.getElementById('fb-breakdown-integrity');
-
-    if (pillEl && textEl && noteEl) {
+    if (pillEl && textEl) {
         pillEl.className = `integrity-status-pill tag-${outcomeObj.integrityResult || 'safe'}`;
         textEl.innerText = outcomeObj.integrityResult === 'safe' ? 'SEGURO' : (outcomeObj.integrityResult === 'alert' ? 'ALERTA' : 'EXPUESTO');
-        const calibSign = outcomeObj.actionsCalibSum >= 0 ? '+' : '';
-        noteEl.innerText = `Sumatoria Calibración Acciones: ${calibSign}${outcomeObj.actionsCalibSum}`;
     }
 
-    if (costTotalEl && timeBreakdownEl && integBreakdownEl) {
+    // Llenar Balance Económico Total
+    const costTotalEl = document.getElementById('fb-cost-total-display');
+    if (costTotalEl) {
         const sign = outcomeObj.caseTotalAddedCost >= 0 ? '+' : '-';
         costTotalEl.innerText = `${sign}$${Math.abs(outcomeObj.caseTotalAddedCost).toLocaleString('en-US')}`;
-        timeBreakdownEl.innerText = `⏱ Tiempo (${outcomeObj.totalTimeUsedSeconds}s): +$${outcomeObj.baseTimeCost.toLocaleString('en-US')}`;
+    }
+
+    // Llenar Caja 1: Tiempo
+    const cardValTime = document.getElementById('fb-card-val-time');
+    const cardSubTime = document.getElementById('fb-card-sub-time');
+    if (cardValTime) cardValTime.innerText = `+$${outcomeObj.baseTimeCost.toLocaleString('en-US')}`;
+    if (cardSubTime) cardSubTime.innerText = `${outcomeObj.totalTimeUsedSeconds}s usados`;
+
+    // Llenar Caja 2: Integridad
+    const cardValIntegrity = document.getElementById('fb-card-val-integrity');
+    const cardSubIntegrity = document.getElementById('fb-card-sub-integrity');
+    if (cardValIntegrity) {
         const adjSign = outcomeObj.outcomeCostAdjustment >= 0 ? '+' : '-';
+        cardValIntegrity.innerText = `${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')}`;
+    }
+    if (cardSubIntegrity) {
+        const statusLabel = outcomeObj.integrityResult === 'safe' ? 'SEGURO (-$10K)' : (outcomeObj.integrityResult === 'alert' ? 'ALERTA (+$5K)' : 'EXPUESTO (+$15K)');
+        cardSubIntegrity.innerText = `Estado: ${statusLabel}`;
+    }
+
+    // Llenar Caja 3: Reactividad
+    const cardValReactivity = document.getElementById('fb-card-val-reactivity');
+    const cardSubReactivity = document.getElementById('fb-card-sub-reactivity');
+    if (cardValReactivity) {
         const reactSign = outcomeObj.reactivityCostAdjustment >= 0 ? '+' : '-';
+        cardValReactivity.innerText = `${reactSign}$${Math.abs(outcomeObj.reactivityCostAdjustment).toLocaleString('en-US')}`;
+    }
+    if (cardSubReactivity) {
         const reactLevelSign = outcomeObj.finalReactivityLevel >= 0 ? '+' : '';
-        integBreakdownEl.innerHTML = `🛡 Ajuste Integridad: ${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')} <span class="breakdown-sep">|</span> ⚡ Reactividad (${reactLevelSign}${outcomeObj.finalReactivityLevel}): ${reactSign}$${Math.abs(outcomeObj.reactivityCostAdjustment).toLocaleString('en-US')}`;
+        cardSubReactivity.innerText = `${reactLevelSign}${outcomeObj.finalReactivityLevel} unidades ($5K c/u)`;
     }
 
     document.getElementById('fb-narrative-box').innerText = outcomeObj.narrative;

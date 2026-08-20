@@ -945,24 +945,52 @@
                             <h2 id="fb-title">RESULTADO NARRATIVO DEL CASO</h2>
                         </div>
 
-                        <!-- CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO DEL CASO -->
+                        <!-- CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO DEL CASO (3 CAJAS SEPARADAS) -->
                         <div class="case-integrity-cost-summary-box" id="fb-integrity-cost-box">
-                            <div class="summary-integrity-column">
-                                <span class="box-sublabel">ESTADO DE INTEGRIDAD DEL SISTEMA</span>
-                                <div class="integrity-status-pill tag-safe" id="fb-integrity-pill">
-                                    <span class="integrity-indicator-dot" id="fb-integrity-dot"></span>
-                                    <span class="integrity-indicator-text" id="fb-integrity-text">SEGURO</span>
+                            <div class="summary-top-bar">
+                                <div class="summary-integrity-block">
+                                    <span class="box-sublabel">ESTADO DE INTEGRIDAD DEL SISTEMA</span>
+                                    <div class="integrity-status-pill tag-safe" id="fb-integrity-pill">
+                                        <span class="integrity-indicator-dot" id="fb-integrity-dot"></span>
+                                        <span class="integrity-indicator-text" id="fb-integrity-text">SEGURO</span>
+                                    </div>
                                 </div>
-                                <p class="integrity-verdict-note" id="fb-integrity-note">Sumatoria Calibración: +2 (Acierto)</p>
+                                <div class="summary-total-cost-block">
+                                    <span class="box-sublabel">BALANCE ECONÓMICO TOTAL DEL CASO</span>
+                                    <div class="cost-total-display" id="fb-cost-total-display">+$12,450</div>
+                                </div>
                             </div>
 
-                            <div class="summary-cost-column">
-                                <span class="box-sublabel">BALANCE ECONÓMICO DEL CASO</span>
-                                <div class="cost-total-display" id="fb-cost-total-display">+$12,450</div>
-                                <div class="cost-breakdown-row" id="fb-cost-breakdown">
-                                    <span class="breakdown-item" id="fb-breakdown-time">⏱ Tiempo: +$9,420</span>
-                                    <span class="breakdown-sep">|</span>
-                                    <span class="breakdown-item" id="fb-breakdown-integrity">🛡 Ajuste: -$10,000</span>
+                            <!-- 3 Contenedores Separados de Costo -->
+                            <div class="fb-cost-cards-grid">
+                                <!-- Caja 1: Tiempo -->
+                                <div class="fb-cost-card fb-card-time">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">⏱</span>
+                                        <span class="cost-card-title">COSTO POR TIEMPO</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-time">+$9,420</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-time">130s usados</span>
+                                </div>
+
+                                <!-- Caja 2: Integridad -->
+                                <div class="fb-cost-card fb-card-integrity">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">🛡</span>
+                                        <span class="cost-card-title">AJUSTE POR INTEGRIDAD</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-integrity">-$10,000</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-integrity">Estado: SEGURO</span>
+                                </div>
+
+                                <!-- Caja 3: Reactividad -->
+                                <div class="fb-cost-card fb-card-reactivity">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">⚡</span>
+                                        <span class="cost-card-title">IMPACTO REACTIVIDAD</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-reactivity">+$10,000</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-reactivity">+2 unidades ($5K c/u)</span>
                                 </div>
                             </div>
                         </div>
