@@ -2284,9 +2284,9 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
     const modal = document.getElementById('para-modal-card');
     
     modal.innerHTML = `
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
-            <h3 style="color:#a29bfe; font-family:var(--font-heading); font-size:14px;">ANALIZAR // OBSERVACIÓN DE SUPUESTOS</h3>
-            <button class="fac-btn" onclick="finishAnalysisFeedbackEarly()">✖</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
+            <h3 style="color:#a29bfe; font-family:var(--font-heading); font-size:14px; margin:0;">ANALIZAR // OBSERVACIÓN DE SUPUESTOS</h3>
+            <span style="font-size:10.5px; color:#49f5c1; font-family:var(--font-mono); font-weight:700; letter-spacing:0.5px;">PROCESANDO REFLEXIÓN</span>
         </div>
 
         <div style="background:#03080f; border:1.5px solid #a29bfe; border-radius:6px; padding:12px; margin-bottom:10px;">
