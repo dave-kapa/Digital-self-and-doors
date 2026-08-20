@@ -8,6 +8,7 @@ let gameStateV2 = {
     activeScreen: 'screen-role-select',
     userRole: 'operator', // 'operator' | 'facilitator'
     playerId: 'op_' + Math.random().toString(36).substring(2, 9),
+    facilitatorDependency: (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_dependency') === 'false') ? false : true, // Por defecto true (producción). Conmutable en desarrollo.
     sessionGates: {
         gate1_intro: false,     // Desbloquea botón "INICIAR PROTOCOLO DE CALIBRACIÓN"
         gate2_calib: false,     // Desbloquea botón "SÍ, INICIAR CALIBRACIÓN"
@@ -893,9 +894,57 @@ function updateFacilitatorRealtimeUI() {
     updateGatePlayerCounts();
 }
 
+function handleToggleFacilitatorDependency(checked) {
+    gameStateV2.facilitatorDependency = !!checked;
+    try {
+        localStorage.setItem('faro_facilitator_dependency', checked ? 'true' : 'false');
+    } catch(e) {}
+    updateDependencyToggleUI();
+    updateGateUI();
+}
+
+function updateDependencyToggleUI() {
+    const isEnabled = gameStateV2.facilitatorDependency !== false;
+    
+    // Toggle en Portada
+    const coverCheckbox = document.getElementById('toggle-facilitator-dependency-cover');
+    const coverCard = document.getElementById('dev-dependency-box-cover');
+    const coverText = document.getElementById('toggle-dependency-status-text-cover');
+    
+    if (coverCheckbox) coverCheckbox.checked = isEnabled;
+    if (coverCard) {
+        if (isEnabled) coverCard.classList.remove('mode-autonomous');
+        else coverCard.classList.add('mode-autonomous');
+    }
+    if (coverText) {
+        coverText.innerText = isEnabled
+            ? "DEPENDENCIA DEL CONTROLADOR: ACTIVA (PRODUCCIÓN)"
+            : "DEPENDENCIA DEL CONTROLADOR: APAGADA (MODO AUTÓNOMO / PRUEBAS)";
+    }
+
+    // Toggle en Barra de Utilidades / Facilitador
+    const barCheckbox = document.getElementById('toggle-facilitator-dependency-bar');
+    const barText = document.getElementById('toggle-dependency-status-text-bar');
+    if (barCheckbox) barCheckbox.checked = isEnabled;
+    if (barText) {
+        barText.innerText = isEnabled
+            ? "Dependencia: ACTIVA (Esperar Controlador)"
+            : "Dependencia: APAGADA (Sin Candados)";
+    }
+}
+
 function updateGateUI() {
     const isFac = gameStateV2.userRole === 'facilitator';
+    const depEnabled = gameStateV2.facilitatorDependency !== false;
     const gates = gameStateV2.sessionGates;
+
+    // Si la dependencia está apagada (modo desarrollo/pruebas), todos los candados se consideran abiertos para el operador
+    const effectiveGates = depEnabled ? gates : {
+        gate1_intro: true,
+        gate2_calib: true,
+        gate3_kernel: true,
+        gate4_case1: true
+    };
 
     // CANDADO 1 (screen-waiting)
     const facGate1 = document.getElementById('fac-gate-1-container');
@@ -908,7 +957,7 @@ function updateGateUI() {
             startBtn.style.display = 'none';
         } else {
             startBtn.style.display = 'inline-flex';
-            if (gates.gate1_intro) {
+            if (effectiveGates.gate1_intro) {
                 startBtn.disabled = false;
                 startBtn.classList.remove('btn-disabled-mission');
                 startBtn.style.opacity = '1';
@@ -935,13 +984,13 @@ function updateGateUI() {
             faroStartBtn.style.display = 'none';
         } else {
             faroStartBtn.style.display = 'inline-flex';
-            if (gates.gate2_calib && faroPromptAccepted) {
+            if (effectiveGates.gate2_calib && (faroPromptAccepted || !depEnabled)) {
                 faroStartBtn.disabled = false;
                 faroStartBtn.classList.remove('btn-disabled-mission');
                 faroStartBtn.style.opacity = '1';
                 faroStartBtn.style.cursor = 'pointer';
                 if (faroStartBtnTxt) faroStartBtnTxt.innerText = "SÍ, INICIAR CALIBRACIÓN";
-            } else if (!gates.gate2_calib) {
+            } else if (!effectiveGates.gate2_calib) {
                 faroStartBtn.disabled = true;
                 faroStartBtn.classList.add('btn-disabled-mission');
                 faroStartBtn.style.opacity = '0.45';
@@ -962,7 +1011,7 @@ function updateGateUI() {
             procVerifyBtn.style.display = 'none';
         } else {
             procVerifyBtn.style.display = 'inline-flex';
-            if (gates.gate3_kernel) {
+            if (effectiveGates.gate3_kernel) {
                 procVerifyBtn.disabled = false;
                 procVerifyBtn.classList.remove('btn-disabled-mission');
                 procVerifyBtn.style.opacity = '1';
@@ -987,7 +1036,7 @@ function updateGateUI() {
     if (facGate4) facGate4.style.display = isFac ? 'flex' : 'none';
     if (playerObjRow) playerObjRow.style.display = isFac ? 'none' : 'flex';
     if (playerStartCaseBtn) {
-        if (gates.gate4_case1) {
+        if (effectiveGates.gate4_case1) {
             playerStartCaseBtn.disabled = false;
             playerStartCaseBtn.classList.remove('btn-disabled-mission');
             playerStartCaseBtn.style.opacity = '1';
@@ -1003,6 +1052,7 @@ function updateGateUI() {
     }
 
     updateGatePlayerCounts();
+    updateDependencyToggleUI();
 }
 
 function checkUrlRoleParam() {

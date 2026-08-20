@@ -95,6 +95,22 @@
                     <button type="button" class="btn-dev-quick-skip" id="btn-dev-skip-intro" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Saltar login y cargas directamente al inicio">
                         ⚡ [MODO PRUEBAS] SALTAR DIRECTO AL JUEGO (SIN CARGAS NI LOGIN) ➔
                     </button>
+
+                    <!-- SWITCH DE MODO DE DESARROLLO: DEPENDENCIA DEL CONTROLADOR -->
+                    <div class="dev-dependency-toggle-card" id="dev-dependency-box-cover">
+                        <div class="dev-dep-header">
+                            <span class="dev-dep-icon">🛠️</span>
+                            <span class="dev-dep-title">MODO DESARROLLO // CONTROL DE CANDADOS</span>
+                        </div>
+                        <label class="cyber-switch-label" title="Activa o desactiva la necesidad de candados y facilitador para pruebas">
+                            <input type="checkbox" id="toggle-facilitator-dependency-cover" class="cyber-switch-input" onchange="handleToggleFacilitatorDependency(this.checked)" checked>
+                            <span class="cyber-switch-track">
+                                <span class="cyber-switch-thumb"></span>
+                            </span>
+                            <span class="cyber-switch-text" id="toggle-dependency-status-text-cover">DEPENDENCIA DEL CONTROLADOR: ACTIVA</span>
+                        </label>
+                        <span class="dev-dep-hint">* En PRODUCCIÓN siempre está ACTIVA. Apágalo para jugar libremente sin esperar al Controlador.</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -389,6 +405,17 @@
                     <button class="fac-btn fac-btn-hud" onclick="demoAdjustCost(15000)" title="Sumar Costo Operativo">💰 + Costo ($15k)</button>
                     <button class="fac-btn fac-btn-hud" onclick="demoAdjustCost(-15000)" title="Restar Costo Operativo">💸 - Costo ($15k)</button>
                     <button class="fac-btn fac-btn-hud" onclick="demoResetHUD()" title="Reiniciar Valores de HUD">🔄 Reset HUD</button>
+                </div>
+            </div>
+            <!-- Fila 3: Dependencia del Controlador / Candados -->
+            <div class="fac-row fac-hud-row" style="border-top: 1px dashed rgba(255,122,0,0.25); padding-top: 4px; margin-top: 2px;">
+                <span class="fac-label" style="color:#ffb74d;">🔒 CANDADOS SESIÓN:</span>
+                <div class="fac-actions" style="align-items: center;">
+                    <label class="cyber-switch-label-mini" title="Conmutar dependencia de candados">
+                        <input type="checkbox" id="toggle-facilitator-dependency-bar" onchange="handleToggleFacilitatorDependency(this.checked)" checked>
+                        <span class="cyber-switch-track-mini"><span class="cyber-switch-thumb-mini"></span></span>
+                        <span class="cyber-switch-text-mini" id="toggle-dependency-status-text-bar">Dependencia: ACTIVA (Esperar Controlador)</span>
+                    </label>
                 </div>
             </div>
         </div>

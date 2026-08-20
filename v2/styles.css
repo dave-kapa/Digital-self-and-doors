@@ -4601,6 +4601,167 @@ body.facilitator-theme .badge-webinar {
     }
 }
 
+/* ==========================================================================
+   SWITCH DE MODO DE DESARROLLO (DEPENDENCIA DEL CONTROLADOR)
+   ========================================================================== */
+.dev-dependency-toggle-card {
+    background: rgba(10, 24, 38, 0.92);
+    border: 1.5px solid rgba(0, 216, 255, 0.4);
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    box-shadow: 0 0 18px rgba(0, 216, 255, 0.2);
+    backdrop-filter: blur(10px);
+    max-width: 480px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.dev-dependency-toggle-card.mode-autonomous {
+    background: rgba(35, 12, 28, 0.92);
+    border-color: #ff2a6d;
+    box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+}
+
+.dev-dep-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dev-dep-icon {
+    font-size: 13px;
+}
+
+.dev-dep-title {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-cyan);
+    letter-spacing: 0.8px;
+}
+
+.dev-dependency-toggle-card.mode-autonomous .dev-dep-title {
+    color: #ff7597;
+}
+
+.cyber-switch-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cyber-switch-input {
+    display: none;
+}
+
+.cyber-switch-track {
+    width: 44px;
+    height: 22px;
+    background: rgba(255, 42, 109, 0.3);
+    border: 1.5px solid #ff2a6d;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
+}
+
+.cyber-switch-thumb {
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2.5px;
+    left: 3px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 8px #ff2a6d;
+}
+
+.cyber-switch-input:checked + .cyber-switch-track {
+    background: rgba(0, 230, 118, 0.25);
+    border-color: #00e676;
+}
+
+.cyber-switch-input:checked + .cyber-switch-track .cyber-switch-thumb {
+    left: 23px;
+    background: #00e676;
+    box-shadow: 0 0 10px #00e676;
+}
+
+.cyber-switch-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #e2f1ff;
+    letter-spacing: 0.5px;
+}
+
+.dev-dep-hint {
+    font-size: 9.5px;
+    color: #9cb8d9;
+    text-align: center;
+    font-style: italic;
+    line-height: 1.25;
+}
+
+/* Versión Mini para Barra de Utilidades */
+.cyber-switch-label-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cyber-switch-track-mini {
+    width: 32px;
+    height: 16px;
+    background: rgba(255, 42, 109, 0.3);
+    border: 1px solid #ff2a6d;
+    border-radius: 9px;
+    position: relative;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.cyber-switch-thumb-mini {
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: all 0.25s ease;
+}
+
+input:checked + .cyber-switch-track-mini {
+    background: rgba(0, 230, 118, 0.25);
+    border-color: #00e676;
+}
+
+input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
+    left: 18px;
+    background: #00e676;
+    box-shadow: 0 0 6px #00e676;
+}
+
+.cyber-switch-text-mini {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: #ffd580;
+}
+
+
 
 
 
