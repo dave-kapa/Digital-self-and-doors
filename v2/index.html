@@ -14,38 +14,38 @@
     <!-- CONTENEDOR 100% FULLSCREEN DE ENTRADA Y PRE-CARGA -->
     <div id="intro-flow-container" class="intro-flow-fullscreen">
         
-        <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN / PRELOADER 10s) -->
+        <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN 100% FULLSCREEN / PRELOADER 10s) -->
         <section class="intro-view-sub active" id="screen-cover">
-            <div class="cyber-card glass-panel cover-card">
-                <div class="cover-image-wrap">
-                    <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-hero-img">
-                    <div class="cover-overlay-gradient"></div>
-                    <div class="cover-badge-top">SISTEMA CIBERNÉTICO V2.0 // PUERTA DE ACCESO</div>
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-bg-image">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cover-fullscreen-content">
+                <div class="cover-badge-top">SISTEMA CIBERNÉTICO V2.0 // PUERTA DE ACCESO DE OPERADOR</div>
+                
+                <div class="cover-title-group">
+                    <h1 class="cover-glitch-title">FARO</h1>
+                    <h2 class="cover-subtitle">DIGITAL SELF & ATTENTION DOORS</h2>
+                    <p class="cover-tagline">EXPERIMENTO DE AGENCIA HUMANO–IA // PROTOCOLO DE DECISIÓN Y GOBERNANZA</p>
                 </div>
 
-                <div class="cover-content-wrap">
-                    <div class="cover-title-group">
-                        <h1 class="cover-glitch-title">FARO</h1>
-                        <h2 class="cover-subtitle">DIGITAL SELF & ATTENTION DOORS</h2>
-                        <p class="cover-tagline">EXPERIMENTO DE AGENCIA HUMANO–IA // PROTOCOLO DE DECISIÓN Y GOBERNANZA</p>
+                <div class="cover-preloader-box" id="cover-preloader-box">
+                    <div class="preloader-label-row">
+                        <span class="preloader-status-text" id="preloader-status-text">⚡ PRE-CARGANDO ASSETS Y PROTOCOLOS LOCALES...</span>
+                        <span class="preloader-pct-text" id="preloader-pct-text">0%</span>
                     </div>
+                    <div class="preloader-track">
+                        <div class="preloader-fill" id="preloader-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
 
-                    <div class="cover-preloader-box" id="cover-preloader-box">
-                        <div class="preloader-label-row">
-                            <span class="preloader-status-text" id="preloader-status-text">⚡ PRE-CARGANDO ASSETS Y PROTOCOLOS LOCALES...</span>
-                            <span class="preloader-pct-text" id="preloader-pct-text">0%</span>
-                        </div>
-                        <div class="preloader-track">
-                            <div class="preloader-fill" id="preloader-fill" style="width: 0%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="cover-action-row" style="margin-top: 16px;">
-                        <button class="btn-detroit-primary cover-enter-btn" id="btn-cover-enter" onclick="goToLoginScreen()" disabled>
-                            <span class="detroit-btn-glow"></span>
-                            <span class="btn-text">🔒 PREPARANDO SISTEMA (10s)...</span>
-                        </button>
-                    </div>
+                <div class="cover-action-row" style="margin-top: 18px;">
+                    <button class="btn-detroit-primary cover-enter-btn" id="btn-cover-enter" onclick="goToLoginScreen()" disabled>
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text">🔒 PREPARANDO SISTEMA (10s)...</span>
+                    </button>
                 </div>
             </div>
         </section>

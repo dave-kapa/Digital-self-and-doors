@@ -938,34 +938,6 @@ function switchScreenV2(screenId) {
     }
 }
 
-let flippedParaCards = new Set();
-
-function flipParaCard(cardEl, cardId) {
-    if (!cardEl) return;
-    cardEl.classList.toggle('flipped');
-    flippedParaCards.add(cardId);
-
-    const faroSpeech = document.getElementById('faro-para-speech-text');
-    const startBtn = document.getElementById('para-start-case-btn');
-
-    if (flippedParaCards.size >= 4) {
-        if (faroSpeech) {
-            faroSpeech.innerText = "“Has revisado los cuatro componentes de P.A.R.A. El protocolo está activo. Ahora podemos comenzar con el primer caso de estudio.”";
-        }
-        if (startBtn) {
-            startBtn.disabled = false;
-            startBtn.classList.remove('btn-disabled-mission');
-            const txt = startBtn.querySelector('.btn-text');
-            if (txt) txt.innerText = "▶ COMENZAR CASO 01 // AUTONOMÍA";
-        }
-    } else {
-        if (startBtn) {
-            const txt = startBtn.querySelector('.btn-text');
-            if (txt) txt.innerText = `🔒 VOLTEA TODAS LAS TARJETAS (${flippedParaCards.size}/4)`;
-        }
-    }
-}
-
 function updateHeaderUI() {
     const statusEl = document.getElementById('faro-status-text');
     if (statusEl) statusEl.innerText = gameStateV2.faroStatus;
