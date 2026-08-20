@@ -3795,25 +3795,32 @@ body {
 }
 
 /* ==========================================================================
-   MODO PANTALLA COMPLETA PARA ENTRADA (COVER, LOGIN, SYNC)
+   MODO 100% PANTALLA COMPLETA PARA ENTRADA (COVER, LOGIN, SYNC)
    ========================================================================== */
-.view-screen.fullscreen-intro {
+.intro-flow-fullscreen {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 99999 !important;
+    z-index: 999999 !important;
     background: radial-gradient(circle at center, #051424 0%, #010408 95%) !important;
-    display: none;
-    align-items: center;
-    justify-content: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     padding: 24px !important;
     box-sizing: border-box !important;
     overflow-y: auto !important;
 }
 
-.view-screen.fullscreen-intro.active {
+.intro-view-sub {
+    display: none;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-view-sub.active {
     display: flex !important;
 }
 
@@ -3839,6 +3846,7 @@ body {
 .pin-error-alert .error-icon {
     font-size: 22px;
 }
+
 
 
 

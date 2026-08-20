@@ -703,10 +703,14 @@ const ASSETS_TO_PRELOAD = [
 
 let preloadedAssetsCount = 0;
 const COVER_PRELOAD_MIN_SECONDS = 10;
-const DEFAULT_SESSION_PIN = "F4R0"; // PIN oficial por defecto para pruebas
+const DEFAULT_SESSION_PIN = "F4R0";
 const SYNC_LOADING_TOTAL_SECONDS = 10;
+let isPreloadingActive = false;
 
 function initAppPreload() {
+    if (isPreloadingActive) return;
+    isPreloadingActive = true;
+
     const fillEl = document.getElementById('preloader-fill');
     const pctEl = document.getElementById('preloader-pct-text');
     const statusEl = document.getElementById('preloader-status-text');
@@ -716,7 +720,7 @@ function initAppPreload() {
     const totalMs = COVER_PRELOAD_MIN_SECONDS * 1000;
     const stepMs = 50;
 
-    // Pre-cargar cada imagen en la caché del navegador en paralelo
+    // Precargar en paralelo
     ASSETS_TO_PRELOAD.forEach(src => {
         const img = new Image();
         img.src = src;
@@ -745,6 +749,7 @@ function initAppPreload() {
             if (enterBtn) {
                 enterBtn.disabled = false;
                 enterBtn.classList.remove('btn-disabled-mission');
+                enterBtn.style.cursor = 'pointer';
                 enterBtn.innerHTML = `
                     <span class="detroit-btn-glow"></span>
                     <span class="btn-text">⚡ INGRESAR AL SISTEMA // ENTER SYSTEM ▶</span>
@@ -754,12 +759,22 @@ function initAppPreload() {
     }, stepMs);
 }
 
+function showIntroSubScreen(screenId) {
+    const coverEl = document.getElementById('screen-cover');
+    const loginEl = document.getElementById('screen-login');
+    const syncEl = document.getElementById('screen-loading-sync');
+
+    if (coverEl) coverEl.style.display = (screenId === 'screen-cover') ? 'flex' : 'none';
+    if (loginEl) loginEl.style.display = (screenId === 'screen-login') ? 'flex' : 'none';
+    if (syncEl) syncEl.style.display = (screenId === 'screen-loading-sync') ? 'flex' : 'none';
+}
+
 function goToLoginScreen() {
-    switchScreenV2('screen-login');
+    showIntroSubScreen('screen-login');
     setTimeout(() => {
         const nameInput = document.getElementById('login-name');
         if (nameInput) nameInput.focus();
-    }, 150);
+    }, 100);
 }
 
 function handlePlayerLogin(event) {
@@ -785,12 +800,12 @@ function handlePlayerLogin(event) {
         return;
     }
     
-    // Verificación de PIN (Comparación estricta discriminando mayúsculas/minúsculas y formato)
+    // Verificación de PIN (Comparación estricta alfanumérica mayúsculas)
     if (!pin || pin !== DEFAULT_SESSION_PIN) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             errorAlert.classList.remove('pin-error-alert');
-            void errorAlert.offsetWidth; // Reflow para reiniciar animación shake
+            void errorAlert.offsetWidth;
             errorAlert.classList.add('pin-error-alert');
         }
         if (pinInput) {
@@ -802,7 +817,6 @@ function handlePlayerLogin(event) {
 
     if (errorAlert) errorAlert.style.display = 'none';
 
-    // Guardar perfil del jugador en el estado global
     gameStateV2.playerProfile = {
         name: name,
         email: email,
@@ -820,7 +834,7 @@ function handlePlayerLogin(event) {
 let syncSlideshowInterval = null;
 
 function startSyncLoadingScreen() {
-    switchScreenV2('screen-loading-sync');
+    showIntroSubScreen('screen-loading-sync');
 
     const tagEl = document.getElementById('sync-player-tag');
     if (tagEl && gameStateV2.playerProfile) {
@@ -830,7 +844,6 @@ function startSyncLoadingScreen() {
     const fillEl = document.getElementById('sync-progress-fill');
     const termEl = document.getElementById('sync-terminal-line');
     
-    // Rotar imágenes del slideshow cada 2.5s (4 imágenes en 10s)
     const slides = [
         document.getElementById('sync-slide-1'),
         document.getElementById('sync-slide-2'),
@@ -873,6 +886,12 @@ function startSyncLoadingScreen() {
             if (termEl) termEl.innerText = "✔ Enlace establecido exitosamente. Iniciando sesión...";
             
             setTimeout(() => {
+                // Ocultar intro-flow y mostrar el juego
+                const introFlow = document.getElementById('intro-flow-container');
+                const appContainer = document.getElementById('cyber-app-container');
+                if (introFlow) introFlow.style.display = 'none';
+                if (appContainer) appContainer.style.display = 'flex';
+
                 switchScreenV2('screen-waiting');
             }, 600);
         }
@@ -884,6 +903,20 @@ function startSyncLoadingScreen() {
 // ==========================================================================
 
 function switchScreenV2(screenId) {
+    const isIntro = ['screen-cover', 'screen-login', 'screen-loading-sync'].includes(screenId);
+    const introFlow = document.getElementById('intro-flow-container');
+    const appContainer = document.getElementById('cyber-app-container');
+
+    if (isIntro) {
+        if (introFlow) introFlow.style.display = 'flex';
+        if (appContainer) appContainer.style.display = 'none';
+        showIntroSubScreen(screenId);
+        return;
+    } else {
+        if (introFlow) introFlow.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'flex';
+    }
+
     document.querySelectorAll('.view-screen').forEach(screen => {
         screen.classList.remove('active');
     });
@@ -891,14 +924,6 @@ function switchScreenV2(screenId) {
     if (target) {
         target.classList.add('active');
         gameStateV2.activeScreen = screenId;
-    }
-
-    // Gestionar opacidad/visibilidad del HUD Header durante pantallas de inicio
-    const hudCluster = document.querySelector('.hud-telemetry-cluster');
-    const isIntroScreen = ['screen-cover', 'screen-login', 'screen-loading-sync'].includes(screenId);
-    if (hudCluster) {
-        hudCluster.style.opacity = isIntroScreen ? '0.2' : '1';
-        hudCluster.style.pointerEvents = isIntroScreen ? 'none' : 'auto';
     }
 
     updateHeaderUI();
