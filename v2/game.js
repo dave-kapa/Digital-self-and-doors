@@ -3265,24 +3265,28 @@ function processCaseOutcome(actionIds) {
     const totalTimeUsedSeconds = deliberationSeconds + pausesTimeSeconds + actionsExecutionSeconds;
     const percentageUsed = Math.min(100, Math.max(0, (totalTimeUsedSeconds / totalCaseSeconds) * 100));
 
-    // Clasificación de Velocidad (Rápido 0-40%, Medio 41-70%, Lento 71-100%)
+    // Clasificación de Velocidad (Rápido 0-40%: +4, Medio 41-70%: +2, Lento 71-100%: 0)
     let speedCategory = 'medium';
     let speedLabel = 'MEDIO';
-    let reactivityDelta = 2;
+    let speedReactivityDelta = 2;
 
     if (percentageUsed <= 40) {
         speedCategory = 'fast';
         speedLabel = 'RÁPIDO';
-        reactivityDelta = 3;
+        speedReactivityDelta = 4;
     } else if (percentageUsed <= 70) {
         speedCategory = 'medium';
         speedLabel = 'MEDIO';
-        reactivityDelta = 2;
+        speedReactivityDelta = 2;
     } else {
         speedCategory = 'slow';
         speedLabel = 'LENTO';
-        reactivityDelta = 0;
+        speedReactivityDelta = 0;
     }
+
+    // Bonificador de Reactividad por Resultado: Seguro -1, Alerta +1, Expuesto +2
+    const outcomeReactivityDelta = outcomeIndicator === 1 ? -1 : (outcomeIndicator === 2 ? 1 : 2);
+    const reactivityDelta = speedReactivityDelta + outcomeReactivityDelta;
 
     // Bonus por acierto/error en Calibración: siempre +1 si Seguro, -1 si Expuesto, 0 si Alerta/Neutro
     const calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
@@ -3372,6 +3376,8 @@ function processCaseOutcome(actionIds) {
             percentageUsed: parseFloat(percentageUsed.toFixed(1)),
             speedCategory: speedCategory,
             speedLabel: speedLabel,
+            speedReactivityDelta: speedReactivityDelta,
+            outcomeReactivityDelta: outcomeReactivityDelta,
             reactivityDelta: reactivityDelta,
             calibrationBonusDelta: calibrationBonusDelta
         },
@@ -3423,7 +3429,7 @@ function processCaseOutcome(actionIds) {
     document.getElementById('m-time-desc').innerText = `Tiempo usado: ${deliberationSeconds.toFixed(0)}s (reloj) + ${actionsExecutionSeconds + pausesTimeSeconds}s (acciones y pausas). Total: ${totalTimeUsedSeconds}s.`;
     
     document.getElementById('m-time-impact-cost').innerText = `💰 Costo por Tiempo: +$${baseTimeCost.toLocaleString('en-US')}`;
-    document.getElementById('m-time-impact-react').innerText = `⚡ Reactividad: ${reactivityDelta >= 0 ? '+' : ''}${reactivityDelta} (${speedLabel})`;
+    document.getElementById('m-time-impact-react').innerText = `⚡ Reactividad: ${reactivityDelta >= 0 ? '+' : ''}${reactivityDelta} (${speedLabel}: ${speedReactivityDelta >= 0 ? '+' : ''}${speedReactivityDelta} | ${outcomeIndicator === 1 ? 'Seguro' : (outcomeIndicator === 2 ? 'Alerta' : 'Expuesto')}: ${outcomeReactivityDelta >= 0 ? '+' : ''}${outcomeReactivityDelta})`;
     document.getElementById('m-time-impact-calib').innerText = `🎯 Calibración: ${actionsCalibSum >= 0 ? '+' : ''}${actionsCalibSum} (Acciones) ${calibrationBonusDelta >= 0 ? '+' : ''}${calibrationBonusDelta} (${outcomeIndicator === 1 ? 'Acierto' : (outcomeIndicator === 3 ? 'Error' : 'Neutro')})`;
 
     document.getElementById('m-pauses-badge').innerText = `${pausesUsed}/3 USADAS (+${pausesTimeSeconds}s)`;
