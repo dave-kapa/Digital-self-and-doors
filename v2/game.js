@@ -912,15 +912,21 @@ function switchScreenV2(screenId) {
     const isIntro = ['screen-cover', 'screen-login'].includes(screenId);
     const introFlow = document.getElementById('intro-flow-container');
     const appContainer = document.getElementById('cyber-app-container');
+    const syncOverlay = document.getElementById('screen-loading-sync');
 
     if (isIntro) {
         if (introFlow) introFlow.style.display = 'flex';
         if (appContainer) appContainer.style.display = 'none';
+        if (syncOverlay) syncOverlay.style.display = 'none';
         showIntroSubScreen(screenId);
         return;
     } else {
         if (introFlow) introFlow.style.display = 'none';
         if (appContainer) appContainer.style.display = 'flex';
+    }
+
+    if (syncOverlay) {
+        syncOverlay.style.display = (screenId === 'screen-loading-sync') ? 'flex' : 'none';
     }
 
     document.querySelectorAll('.view-screen').forEach(screen => {
