@@ -339,7 +339,7 @@
                     </div>
 
                     <div class="action-row" style="margin-top: 10px;">
-                        <button class="btn-detroit-primary" onclick="startCalibrationExperience()">
+                        <button class="btn-detroit-primary btn-disabled-mission" id="btn-start-calibration" onclick="startCalibrationExperience()" disabled style="opacity: 0.45; cursor: not-allowed;">
                             <span class="detroit-btn-glow"></span>
                             <span class="btn-text">INICIAR PROTOCOLO DE CALIBRACIÓN</span>
                         </button>
@@ -891,7 +891,7 @@
                                         <p class="cat-desc" id="m-review-desc"><span id="m-review-considered-count">2 consideradas ✔</span>, <span id="m-review-rejected-count">1 descartada ✖</span>.</p>
                                     </div>
                                     <div class="cat-impact-row">
-                                        <span class="impact-chip impact-cost" id="m-review-impact-cost">💰 Costo Verificación: +$6,000</span>
+                                        <span class="impact-chip impact-calib" id="m-review-impact-necessary">🎯 Acciones necesarias activadas: 1/1</span>
                                         <span class="impact-chip impact-neutral">🔍 Evidencias auditadas</span>
                                     </div>
                                 </div>
@@ -923,7 +923,7 @@
 
                             <button class="btn-detroit-primary" id="btn-metrics-continue-b" onclick="showNarrativeFeedbackScreen()" style="display:none;">
                                 <span class="detroit-btn-glow"></span>
-                                <span class="btn-text">CONTINUAR A LA EVALUACIÓN NARRATIVA (PANTALLA B) ➔</span>
+                                <span class="btn-text">CONTINUAR A LA EVALUACIÓN NARRATIVA ➔</span>
                             </button>
                         </div>
 
@@ -945,6 +945,28 @@
                             <h2 id="fb-title">RESULTADO NARRATIVO DEL CASO</h2>
                         </div>
 
+                        <!-- CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO DEL CASO -->
+                        <div class="case-integrity-cost-summary-box" id="fb-integrity-cost-box">
+                            <div class="summary-integrity-column">
+                                <span class="box-sublabel">ESTADO DE INTEGRIDAD DEL SISTEMA</span>
+                                <div class="integrity-status-pill tag-safe" id="fb-integrity-pill">
+                                    <span class="integrity-indicator-dot" id="fb-integrity-dot"></span>
+                                    <span class="integrity-indicator-text" id="fb-integrity-text">SEGURO</span>
+                                </div>
+                                <p class="integrity-verdict-note" id="fb-integrity-note">Sumatoria Calibración: +2 (Acierto)</p>
+                            </div>
+
+                            <div class="summary-cost-column">
+                                <span class="box-sublabel">BALANCE ECONÓMICO DEL CASO</span>
+                                <div class="cost-total-display" id="fb-cost-total-display">+$12,450</div>
+                                <div class="cost-breakdown-row" id="fb-cost-breakdown">
+                                    <span class="breakdown-item" id="fb-breakdown-time">⏱ Tiempo: +$9,420</span>
+                                    <span class="breakdown-sep">|</span>
+                                    <span class="breakdown-item" id="fb-breakdown-integrity">🛡 Ajuste: -$10,000</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="fb-narrative-consequence" id="fb-narrative-box">
                             <!-- Consecuencia narrativa -->
                         </div>
@@ -962,7 +984,7 @@
                         <div class="action-row">
                             <button class="btn-detroit-primary" onclick="showFourthWallScreen()">
                                 <span class="detroit-btn-glow"></span>
-                                <span class="btn-text">PAUSA DE DELIBERACIÓN (PANTALLA C) ➔</span>
+                                <span class="btn-text">PAUSA DE DELIBERACIÓN // ANÁLISIS ➔</span>
                             </button>
                         </div>
                     </div>
@@ -1112,7 +1134,7 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     <div class="card-badge" style="background:rgba(0,216,255,0.12); border-color:var(--color-cyan); color:var(--color-cyan);">MISIÓN DEL FACTOR HUMANO // PROTOCOLO DE AGENCIA</div>
                     <h2 class="objective-modal-title">OBJETIVO GENERAL DEL SISTEMA</h2>
                     <p class="objective-modal-lead">
-                        La integración entre inteligencia artificial y supervisión humana define la seguridad de la red. Tu desempeño como operador determinará si preservamos la agencia o cedemos el control a la automatización no supervisada.
+                        La integración entre IA y supervisión humana define la seguridad de la red. Tu rol como operador determinará si preservamos la agencia o cedemos el control a la automatización.
                     </p>
                 </div>
 
@@ -1121,17 +1143,17 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     <div class="objective-pillar-card pillar-integrity">
                         <div class="pillar-icon">🛡</div>
                         <h4 class="pillar-title">1. PRESERVAR LA INTEGRIDAD</h4>
-                        <p class="pillar-desc">Mantener la infraestructura en estado <strong>SEGURO</strong> resolviendo cada amenaza con deliberación y sin provocar brechas ni colapsos operativos.</p>
+                        <p class="pillar-desc">Mantener el sistema en estado <strong>SEGURO</strong> resolviendo amenazas con criterio y evitando brechas operativas.</p>
                     </div>
                     <div class="objective-pillar-card pillar-agency">
                         <div class="pillar-icon">🧠</div>
                         <h4 class="pillar-title">2. CALIBRAR LA AGENCIA</h4>
-                        <p class="pillar-desc">Recuperar el control equilibrado: supervisar con criterio crítico sin caer en la confianza ciega ni en el bloqueo reactivo.</p>
+                        <p class="pillar-desc">Supervisar la IA con sentido crítico, evitando tanto la confianza ciega como el bloqueo reactivo.</p>
                     </div>
                     <div class="objective-pillar-card pillar-cost">
                         <div class="pillar-icon">💰</div>
                         <h4 class="pillar-title">3. MINIMIZAR EL COSTO</h4>
-                        <p class="pillar-desc">Optimizar el tiempo de análisis y verificación. Los errores y sobre-contenciones multiplican las pérdidas de la operación.</p>
+                        <p class="pillar-desc">Optimizar tiempos de respuesta. Errores y sobre-contenciones multiplican las pérdidas operativas.</p>
                     </div>
                 </div>
 
@@ -1139,8 +1161,8 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                 <div class="objective-collective-box">
                     <div class="collective-icon">🌐</div>
                     <div class="collective-text">
-                        <strong style="color:var(--color-cyan); display:block; font-family:var(--font-heading); font-size:12px; margin-bottom:3px;">RESPONSABILIDAD COLECTIVA DEL SISTEMA:</strong>
-                        <p style="margin:0; font-size:12.5px; color:#d8eaff; line-height:1.4;">No operas en aislamiento. Formas parte de una red de operadores donde la estabilidad global del sistema dependerá del balance acumulado de todos los participantes.</p>
+                        <strong style="color:var(--color-cyan); display:block; font-family:var(--font-heading); font-size:12px; margin-bottom:3px;">RESPONSABILIDAD COLECTIVA:</strong>
+                        <p style="margin:0; font-size:12px; color:#d8eaff; line-height:1.4;">Formas parte de un equipo. La estabilidad global de FARO dependerá de las decisiones combinadas de todos los operadores.</p>
                     </div>
                 </div>
 

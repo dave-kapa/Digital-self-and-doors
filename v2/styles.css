@@ -3002,6 +3002,103 @@ body {
 .fb-label { font-size: 10px; color: var(--color-text-muted); }
 .fb-item strong { font-size: 12px; color: var(--color-text-main); }
 
+/* CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO EN PANTALLA B */
+.case-integrity-cost-summary-box {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 16px;
+    background: rgba(4, 12, 22, 0.92);
+    border: 1.5px solid var(--color-border-cyan);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 10px 0 14px 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 216, 255, 0.05);
+}
+
+.summary-integrity-column, .summary-cost-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.box-sublabel {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--color-text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.integrity-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 12px;
+    border-radius: 16px;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+.integrity-status-pill.tag-safe {
+    background: rgba(0, 230, 118, 0.15);
+    border: 1px solid #00e676;
+    color: #00e676;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+}
+
+.integrity-status-pill.tag-alert {
+    background: rgba(255, 181, 71, 0.15);
+    border: 1px solid #ffb547;
+    color: #ffb547;
+    box-shadow: 0 0 10px rgba(255, 181, 71, 0.3);
+}
+
+.integrity-status-pill.tag-exposed {
+    background: rgba(255, 42, 109, 0.15);
+    border: 1px solid #ff2a6d;
+    color: #ff2a6d;
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+}
+
+.integrity-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+}
+
+.integrity-verdict-note {
+    font-size: 11px;
+    color: #a4c9eb;
+    margin: 2px 0 0 0;
+}
+
+.cost-total-display {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.cost-breakdown-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #a4c9eb;
+    margin-top: 2px;
+}
+
+.breakdown-sep {
+    color: rgba(255, 255, 255, 0.2);
+}
+
 .fb-narrative-consequence {
     font-size: 14px;
     line-height: 1.5;
