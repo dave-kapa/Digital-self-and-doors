@@ -42,9 +42,9 @@
                 </div>
 
                 <div class="cover-action-row" style="margin-top: 18px;">
-                    <button class="btn-detroit-primary cover-enter-btn" id="btn-cover-enter" onclick="goToLoginScreen()" disabled>
+                    <button class="btn-detroit-primary cover-enter-btn btn-disabled-mission" id="btn-cover-enter" onclick="goToLoginScreen()" disabled style="opacity: 0.45; cursor: not-allowed;">
                         <span class="detroit-btn-glow"></span>
-                        <span class="btn-text">🔒 PREPARANDO SISTEMA (10s)...</span>
+                        <span class="btn-text">🔒 PREPARANDO SISTEMA...</span>
                     </button>
                 </div>
             </div>
@@ -99,37 +99,6 @@
                         </button>
                     </div>
                 </form>
-            </div>
-        </section>
-
-        <!-- PANTALLA C: SEGUNDA PANTALLA DE CARGA / ENLACE NEURONAL (100% FULLSCREEN 10s) -->
-        <section class="intro-view-sub" id="screen-loading-sync" style="display:none;">
-            <div class="sync-fullscreen-bg">
-                <img src="assets/images/case1_autonomy.jpg" alt="Slide 1" class="sync-fullscreen-slide active" id="sync-slide-1">
-                <img src="assets/images/case2_channel.jpg" alt="Slide 2" class="sync-fullscreen-slide" id="sync-slide-2">
-                <img src="assets/images/case3_model.jpg" alt="Slide 3" class="sync-slide-img" id="sync-slide-3">
-                <img src="assets/images/case4_decision.jpg" alt="Slide 4" class="sync-slide-img" id="sync-slide-4">
-                <div class="sync-fullscreen-vignette"></div>
-                <div class="cover-scanlines"></div>
-            </div>
-
-            <div class="sync-fullscreen-content">
-                <div class="sync-spinner-radar">
-                    <div class="radar-sweep"></div>
-                    <span class="radar-dot"></span>
-                </div>
-
-                <div class="sync-badge-top">SINCRONIZACIÓN NEURONAL // ENLACE OPERACIONAL</div>
-                <h3 class="sync-title-glitch">ESTABLECIENDO ENLACE CON FARO-0</h3>
-                <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
-
-                <div class="sync-status-terminal">
-                    <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
-                </div>
-
-                <div class="sync-progress-track">
-                    <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
-                </div>
             </div>
         </section>
     </div>
@@ -296,8 +265,42 @@
         <!-- CONTENEDOR PRINCIPAL DE PANTALLAS DE JUEGO -->
         <main class="cyber-viewport" id="cyber-viewport">
 
+            <!-- PANTALLA DE SINCRONIZACIÓN Y ENLACE NEURONAL (10s DENTRO DEL ESPACIO DE JUEGO) -->
+            <section class="view-screen" id="screen-loading-sync">
+                <div class="cyber-card glass-panel loading-sync-card">
+                    <!-- Banner Carrusel en Proporción Fija -->
+                    <div class="sync-banner-slideshow">
+                        <img src="assets/images/case1_autonomy.jpg" alt="Caso 1" class="sync-slide-img active" id="sync-slide-1">
+                        <img src="assets/images/case2_channel.jpg" alt="Caso 2" class="sync-slide-img" id="sync-slide-2">
+                        <img src="assets/images/case3_model.jpg" alt="Caso 3" class="sync-slide-img" id="sync-slide-3">
+                        <img src="assets/images/case4_decision.jpg" alt="Caso 4" class="sync-slide-img" id="sync-slide-4">
+                        <div class="sync-gradient-overlay"></div>
+                        <div class="cover-scanlines"></div>
+                    </div>
+
+                    <div class="sync-content-box">
+                        <div class="sync-spinner-radar">
+                            <div class="radar-sweep"></div>
+                            <span class="radar-dot"></span>
+                        </div>
+
+                        <div class="card-badge" style="background: rgba(73, 245, 193, 0.12); border-color: var(--color-agency-green); color: var(--color-agency-green);">ENLACE NEURONAL // SINCRONIZACIÓN</div>
+                        <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
+                        <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
+
+                        <div class="sync-status-terminal">
+                            <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
+                        </div>
+
+                        <div class="sync-progress-track">
+                            <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- PANTALLA 0: CAPÍTULO 1 — INTRODUCCIÓN Y APERTURA CON TIPO ESCRITURA Y BANNER -->
-            <section class="view-screen active" id="screen-waiting">
+            <section class="view-screen" id="screen-waiting">
                 <div class="cyber-card glass-panel intro-card">
                     <!-- Banner Superior con Imagen Principal -->
                     <div class="image-container-16-4" style="margin-bottom: 8px;">

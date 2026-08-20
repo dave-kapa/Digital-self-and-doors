@@ -748,6 +748,7 @@ function initAppPreload() {
             if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL (100%)";
             if (enterBtn) {
                 enterBtn.disabled = false;
+                enterBtn.style.opacity = '1';
                 enterBtn.classList.remove('btn-disabled-mission');
                 enterBtn.style.cursor = 'pointer';
                 enterBtn.innerHTML = `
@@ -760,7 +761,7 @@ function initAppPreload() {
 }
 
 function showIntroSubScreen(screenId) {
-    const screens = ['screen-cover', 'screen-login', 'screen-loading-sync'];
+    const screens = ['screen-cover', 'screen-login'];
     screens.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -834,14 +835,14 @@ function handlePlayerLogin(event) {
         gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
     }
 
+    // Pasar de inmediato al espacio de juego con la pantalla de sincronización
+    switchScreenV2('screen-loading-sync');
     startSyncLoadingScreen();
 }
 
 let syncSlideshowInterval = null;
 
 function startSyncLoadingScreen() {
-    showIntroSubScreen('screen-loading-sync');
-
     const tagEl = document.getElementById('sync-player-tag');
     if (tagEl && gameStateV2.playerProfile) {
         tagEl.innerText = `OPERADOR: ${gameStateV2.playerProfile.name.toUpperCase()} // PIN: ${gameStateV2.playerProfile.pin}`;
@@ -858,6 +859,11 @@ function startSyncLoadingScreen() {
     ].filter(Boolean);
 
     let currentSlide = 0;
+    slides.forEach((s, idx) => {
+        if (idx === 0) s.classList.add('active');
+        else s.classList.remove('active');
+    });
+
     clearInterval(syncSlideshowInterval);
     syncSlideshowInterval = setInterval(() => {
         slides.forEach(s => s.classList.remove('active'));
@@ -892,14 +898,8 @@ function startSyncLoadingScreen() {
             if (termEl) termEl.innerText = "✔ Enlace establecido exitosamente. Iniciando sesión...";
             
             setTimeout(() => {
-                // Ocultar intro-flow y mostrar el juego
-                const introFlow = document.getElementById('intro-flow-container');
-                const appContainer = document.getElementById('cyber-app-container');
-                if (introFlow) introFlow.style.display = 'none';
-                if (appContainer) appContainer.style.display = 'flex';
-
                 switchScreenV2('screen-waiting');
-            }, 600);
+            }, 500);
         }
     }, stepMs);
 }
@@ -909,7 +909,7 @@ function startSyncLoadingScreen() {
 // ==========================================================================
 
 function switchScreenV2(screenId) {
-    const isIntro = ['screen-cover', 'screen-login', 'screen-loading-sync'].includes(screenId);
+    const isIntro = ['screen-cover', 'screen-login'].includes(screenId);
     const introFlow = document.getElementById('intro-flow-container');
     const appContainer = document.getElementById('cyber-app-container');
 
