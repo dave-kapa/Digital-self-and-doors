@@ -1976,7 +1976,7 @@ function executeParaP() {
         <div style="background:rgba(0,216,255,0.08); border:1.5px solid var(--color-cyan); padding:16px; border-radius:8px; text-align:center;">
             <h3 style="color:var(--color-cyan); margin-bottom:6px;">⏸ TIEMPO CONGELADO POR 15 SEGUNDOS</h3>
             <p style="font-size:13.5px; color:#d8eaff; margin-bottom:6px;">“Pausar no resuelve el problema, pero te da espacio para mirar mejor.”</p>
-            <div style="font-size:12px; color:var(--color-agency-green); font-weight:700; margin-bottom:8px;">⚡ Reactividad: -1 Unidad aplicada al HUD</div>
+            <div style="font-size:12px; color:var(--color-agency-green); font-weight:700; margin-bottom:8px;">⚡ Reactividad: -1 Unidad</div>
             <div style="margin-top:4px; font-weight:bold; font-family:var(--font-mono); color:var(--color-cyan); font-size:22px;" id="pause-countdown-text">15s</div>
         </div>
     `;
@@ -2322,7 +2322,7 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
             <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
                 <span style="font-size:11px; background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:var(--color-cyan); padding:2px 8px; border-radius:4px; font-weight:700;">🎯 Calibración: +1</span>
                 <span style="font-size:11px; background:${affectsReactivity ? 'rgba(73,245,193,0.15)' : 'rgba(255,255,255,0.06)'}; border:1px solid ${affectsReactivity ? 'var(--color-agency-green)' : 'rgba(255,255,255,0.2)'}; color:${affectsReactivity ? 'var(--color-agency-green)' : 'var(--color-text-muted)'}; padding:2px 8px; border-radius:4px; font-weight:700;">
-                    ⚡ Reactividad: ${affectsReactivity ? '-1 Unidad (50/50)' : '0 (Sin impacto)'}
+                    ⚡ Reactividad: ${affectsReactivity ? '-1 Unidad' : '0 Unidades'}
                 </span>
             </div>
         </div>
@@ -3041,13 +3041,13 @@ function processCaseOutcome(actionIds) {
     document.getElementById('m-time-impact-calib').innerText = `🎯 Calibración: ${calibrationBonusDelta >= 0 ? '+' : ''}${calibrationBonusDelta} Bonus (${outcomeObj.indicator === 1 ? 'Acierto' : (outcomeObj.indicator === 3 ? 'Error' : 'Neutro')})`;
 
     document.getElementById('m-pauses-badge').innerText = `${pausesUsed}/3 USADAS (+${pausesTimeSeconds}s)`;
-    document.getElementById('m-pauses-impact-react').innerText = `⚡ Reactividad: -${pausesUsed} Unidades (Impacto directo)`;
+    document.getElementById('m-pauses-impact-react').innerText = `⚡ Reactividad: -${pausesUsed} Unidades`;
 
     document.getElementById('m-analysis-badge').innerText = `${analysesCount}/3 PUERTAS`;
     const elAnalysisCalib = document.getElementById('m-analysis-impact-calib');
     if (elAnalysisCalib) elAnalysisCalib.innerText = `🎯 Calibración: +${analysesCount}`;
     const elAnalysisReact = document.getElementById('m-analysis-impact-react');
-    if (elAnalysisReact) elAnalysisReact.innerText = `⚡ Reactividad: -${totalReactLossFromAnalyses} (50/50)`;
+    if (elAnalysisReact) elAnalysisReact.innerText = `⚡ Reactividad: -${totalReactLossFromAnalyses} Unidades`;
 
     document.getElementById('m-review-badge').innerText = `${reviewsDone} EVALUADAS`;
     document.getElementById('m-review-considered-count').innerText = `${unlockedCount} consideradas ✔`;
