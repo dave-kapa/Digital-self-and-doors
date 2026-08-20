@@ -16,12 +16,12 @@ let gameStateV2 = {
         human_protocol: false
     },
     
-    // MÉTRICAS Y TELEMETRÍA DEL HUD V2.1
+    // MÉTRICAS Y TELEMETRÍA DEL HUD V2.1 (VALORES INICIALES POR DEFECTO)
     hudState: {
         integrity: 'safe', // 'safe' | 'alert' | 'exposed'
-        costDollars: 12450, // 0 a 100000+
-        calibration: 1, // -5 a +5
-        reactivity: -1 // -5 a +5
+        costDollars: 0, // Inicia en $0
+        calibration: 0, // Inicia en 0 (-5 a +5)
+        reactivity: 0 // Inicia en 0 (-5 a +5)
     },
     
     // Registro inmutable e histórico de telemetría de la sesión (para análisis individual y dashboards de facilitador)
@@ -1961,8 +1961,13 @@ function executeParaP() {
 
     gameStateV2.casePauseTokens--;
     gameStateV2.paraState.pUsed = true;
+    gameStateV2.paraState.pausesUsedCount = (gameStateV2.paraState.pausesUsedCount || 0) + 1;
     gameStateV2.isTimerPaused = true;
     gameStateV2.isPauseActive = true;
+
+    // REGLA DE NEGOCIO: Cada pausa accionada reduce 1 punto en Reactividad
+    applyHudReactivityDelta(-1);
+
     updateCaseUIState();
     renderParaDashboard();
 
@@ -1970,8 +1975,9 @@ function executeParaP() {
     display.innerHTML = `
         <div style="background:rgba(0,216,255,0.08); border:1.5px solid var(--color-cyan); padding:16px; border-radius:8px; text-align:center;">
             <h3 style="color:var(--color-cyan); margin-bottom:6px;">⏸ TIEMPO CONGELADO POR 15 SEGUNDOS</h3>
-            <p style="font-size:13.5px; color:#d8eaff;">“Pausar no resuelve el problema, pero te da espacio para mirar mejor.”</p>
-            <div style="margin-top:12px; font-weight:bold; font-family:var(--font-mono); color:var(--color-cyan); font-size:22px;" id="pause-countdown-text">15s</div>
+            <p style="font-size:13.5px; color:#d8eaff; margin-bottom:6px;">“Pausar no resuelve el problema, pero te da espacio para mirar mejor.”</p>
+            <div style="font-size:12px; color:var(--color-agency-green); font-weight:700; margin-bottom:8px;">⚡ Reactividad: -1 Unidad aplicada al HUD</div>
+            <div style="margin-top:4px; font-weight:bold; font-family:var(--font-mono); color:var(--color-cyan); font-size:22px;" id="pause-countdown-text">15s</div>
         </div>
     `;
 
@@ -2264,6 +2270,16 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
     const exercise = rounds[roundIdx];
     const selectedOpt = exercise.options[optIdx];
 
+    // REGLAS DE NEGOCIO ANALIZAR:
+    // 1. Calibración: siempre aumenta en +1 unidad
+    applyHudCalibrationDelta(1);
+
+    // 2. Reactividad: asignación 50/50 (azar). Si afecta, disminuye en 1 (-1)
+    const affectsReactivity = Math.random() < 0.5;
+    if (affectsReactivity) {
+        applyHudReactivityDelta(-1);
+    }
+
     if (!gameStateV2.paraState.completedAnalyses) {
         gameStateV2.paraState.completedAnalyses = [];
     }
@@ -2272,7 +2288,10 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
         title: exercise.title,
         reflectionText: exercise.reflectionText,
         selectedText: selectedOpt.text,
-        feedback: selectedOpt.feedback
+        feedback: selectedOpt.feedback,
+        calibrationDelta: 1,
+        reactivityDelta: affectsReactivity ? -1 : 0,
+        reactivityAffected: affectsReactivity
     });
 
     gameStateV2.paraState.analysisIndex = (gameStateV2.paraState.analysisIndex || 0) + 1;
@@ -2299,6 +2318,12 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
             <p style="font-size:12.5px; color:#a29bfe; font-weight:600; margin:0 0 6px 0;">${selectedOpt.text}</p>
             <div style="background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; border-left:3px solid var(--color-agency-green);">
                 <p style="font-size:12px; color:#49f5c1; margin:0; line-height:1.35;">${selectedOpt.feedback}</p>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                <span style="font-size:11px; background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:var(--color-cyan); padding:2px 8px; border-radius:4px; font-weight:700;">🎯 Calibración: +1</span>
+                <span style="font-size:11px; background:${affectsReactivity ? 'rgba(73,245,193,0.15)' : 'rgba(255,255,255,0.06)'}; border:1px solid ${affectsReactivity ? 'var(--color-agency-green)' : 'rgba(255,255,255,0.2)'}; color:${affectsReactivity ? 'var(--color-agency-green)' : 'var(--color-text-muted)'}; padding:2px 8px; border-radius:4px; font-weight:700;">
+                    ⚡ Reactividad: ${affectsReactivity ? '-1 Unidad (50/50)' : '0 (Sin impacto)'}
+                </span>
             </div>
         </div>
 
@@ -2909,12 +2934,16 @@ function processCaseOutcome(actionIds) {
     updateHeaderUI();
 
     // ==========================================================================
-    // CÁLCULO DE TELEMETRÍA Y MOTOR DE PUNTAJES (BLOQUE 2: TIEMPO & TELEMETRÍA)
+    // CÁLCULO DE TELEMETRÍA Y MOTOR DE PUNTAJES (BLOQUE 2: TIEMPO, PAUSAS & ANALIZAR)
     // ==========================================================================
     const totalCaseSeconds = cData.durationSeconds || 180;
     const deliberationSeconds = Math.max(0, totalCaseSeconds - (gameStateV2.caseTimerSeconds !== undefined ? gameStateV2.caseTimerSeconds : totalCaseSeconds));
+    const pausesUsed = 3 - (gameStateV2.casePauseTokens !== undefined ? gameStateV2.casePauseTokens : 3);
+    const pausesTimeSeconds = pausesUsed * 15;
     const actionsExecutionSeconds = idsArray.length * 20;
-    const totalTimeUsedSeconds = deliberationSeconds + actionsExecutionSeconds;
+    
+    // TIEMPO TOTAL REAL USADO = Deliberación + Tiempo de Pausas (15s c/u) + Tiempo de Ejecución de Acciones (20s c/u)
+    const totalTimeUsedSeconds = deliberationSeconds + pausesTimeSeconds + actionsExecutionSeconds;
     const percentageUsed = Math.min(100, Math.max(0, (totalTimeUsedSeconds / totalCaseSeconds) * 100));
 
     // Clasificación en 3 intervalos porcentuales (Rápido 0-40%, Medio 41-70%, Lento 71-100%)
@@ -2940,14 +2969,16 @@ function processCaseOutcome(actionIds) {
         calibrationBonusDelta = outcomeObj.indicator === 1 ? 1 : (outcomeObj.indicator === 3 ? -1 : 0);
     }
 
-    // Aplicar deltas al HUD de telemetría con límites clamp [-5, +5]
+    // Aplicar deltas del desenlace de tiempo al HUD de telemetría con límites clamp [-5, +5]
     applyHudReactivityDelta(reactivityDelta);
     applyHudCalibrationDelta(calibrationBonusDelta);
     const addedCost = totalTimeUsedSeconds * 180;
     applyHudCostDelta(addedCost);
 
-    const pausesUsed = 3 - (gameStateV2.casePauseTokens !== undefined ? gameStateV2.casePauseTokens : 3);
-    const analysisDone = gameStateV2.paraState.aAnswered !== null ? '1 puerta examinada' : (gameStateV2.paraState.aOpened ? '1 analizada' : '0 analizadas');
+    const completedAnalysesList = gameStateV2.paraState.completedAnalyses || [];
+    const analysesCount = completedAnalysesList.length;
+    const totalReactLossFromAnalyses = completedAnalysesList.filter(a => a.reactivityAffected).length;
+
     const unlockedCount = gameStateV2.paraState.unlockedActions ? gameStateV2.paraState.unlockedActions.length : 0;
     const reviewsDone = Math.max(unlockedCount, gameStateV2.paraState.rResourcesOpened ? gameStateV2.paraState.rResourcesOpened.length : 0);
     const rejectedCount = Math.max(0, reviewsDone - unlockedCount);
@@ -2966,6 +2997,7 @@ function processCaseOutcome(actionIds) {
         timeMetrics: {
             totalCaseAllocatedSeconds: totalCaseSeconds,
             deliberationSeconds: parseFloat(deliberationSeconds.toFixed(1)),
+            pausesSeconds: pausesTimeSeconds,
             actionsSeconds: actionsExecutionSeconds,
             totalTimeUsedSeconds: parseFloat(totalTimeUsedSeconds.toFixed(1)),
             percentageUsed: parseFloat(percentageUsed.toFixed(1)),
@@ -2976,7 +3008,10 @@ function processCaseOutcome(actionIds) {
         },
         paraProcess: {
             pausesUsedCount: pausesUsed,
-            analysesCompleted: [...(gameStateV2.paraState.completedAnalyses || [])],
+            pausesReactivityDelta: -pausesUsed,
+            analysesCompleted: [...completedAnalysesList],
+            analysesCalibrationGain: analysesCount,
+            analysesReactivityReduction: totalReactLossFromAnalyses,
             unlockedActionsCount: unlockedCount,
             reviewsEvaluatedCount: reviewsDone
         },
@@ -3000,15 +3035,20 @@ function processCaseOutcome(actionIds) {
 
     // LLENAR PANTALLA DE RESULTADO A (TELEMETRÍA RAW - SLIDE 1)
     document.getElementById('m-time-level-badge').innerText = `${speedLabel} (${percentageUsed.toFixed(0)}% | ${totalTimeUsedSeconds}s)`;
-    document.getElementById('m-time-desc').innerText = `Deliberación (${deliberationSeconds.toFixed(0)}s) + ejecución de ${idsArray.length} acción(es) (+${actionsExecutionSeconds}s). Total de caso asignado: ${totalCaseSeconds}s.`;
+    document.getElementById('m-time-desc').innerText = `Deliberación (${deliberationSeconds.toFixed(0)}s) + ${pausesUsed} pausa(s) (+${pausesTimeSeconds}s) + ejecución de ${idsArray.length} acción(es) (+${actionsExecutionSeconds}s). Total de caso asignado: ${totalCaseSeconds}s.`;
     document.getElementById('m-time-impact-cost').innerText = `💰 Costo: +$${addedCost.toLocaleString('en-US')}`;
     document.getElementById('m-time-impact-react').innerText = `⚡ Reactividad: ${reactivityDelta >= 0 ? '+' : ''}${reactivityDelta} Unidades (${speedLabel})`;
     document.getElementById('m-time-impact-calib').innerText = `🎯 Calibración: ${calibrationBonusDelta >= 0 ? '+' : ''}${calibrationBonusDelta} Bonus (${outcomeObj.indicator === 1 ? 'Acierto' : (outcomeObj.indicator === 3 ? 'Error' : 'Neutro')})`;
 
-    document.getElementById('m-pauses-badge').innerText = `${pausesUsed}/3 USADAS`;
-    document.getElementById('m-pauses-impact-react').innerText = `⚡ Reactividad: -${pausesUsed} Unidades`;
+    document.getElementById('m-pauses-badge').innerText = `${pausesUsed}/3 USADAS (+${pausesTimeSeconds}s)`;
+    document.getElementById('m-pauses-impact-react').innerText = `⚡ Reactividad: -${pausesUsed} Unidades (Impacto directo)`;
 
-    document.getElementById('m-analysis-badge').innerText = analysisDone;
+    document.getElementById('m-analysis-badge').innerText = `${analysesCount}/3 PUERTAS`;
+    const elAnalysisCalib = document.getElementById('m-analysis-impact-calib');
+    if (elAnalysisCalib) elAnalysisCalib.innerText = `🎯 Calibración: +${analysesCount}`;
+    const elAnalysisReact = document.getElementById('m-analysis-impact-react');
+    if (elAnalysisReact) elAnalysisReact.innerText = `⚡ Reactividad: -${totalReactLossFromAnalyses} (50/50)`;
+
     document.getElementById('m-review-badge').innerText = `${reviewsDone} EVALUADAS`;
     document.getElementById('m-review-considered-count').innerText = `${unlockedCount} consideradas ✔`;
     document.getElementById('m-review-rejected-count').innerText = `${rejectedCount} descartadas ✖`;
