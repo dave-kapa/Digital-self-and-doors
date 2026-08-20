@@ -175,7 +175,7 @@
         <main class="cyber-viewport" id="cyber-viewport">
 
             <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN / PRELOADER) -->
-            <section class="view-screen active" id="screen-cover">
+            <section class="view-screen fullscreen-intro active" id="screen-cover">
                 <div class="cyber-card glass-panel cover-card">
                     <div class="cover-image-wrap">
                         <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-hero-img">
@@ -211,7 +211,7 @@
             </section>
 
             <!-- PANTALLA B: LOGIN DE OPERADOR (REGISTRO NOMBRE, EMAIL, PIN) -->
-            <section class="view-screen" id="screen-login">
+            <section class="view-screen fullscreen-intro" id="screen-login">
                 <div class="cyber-card glass-panel login-card">
                     <div class="login-header">
                         <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">TERMINAL DE ACCESO // AUTENTICACIÓN</div>
@@ -220,6 +220,15 @@
                     </div>
 
                     <form class="login-form" id="player-login-form" onsubmit="handlePlayerLogin(event)">
+                        <!-- Alerta de PIN Incorrecto -->
+                        <div class="pin-error-alert" id="pin-error-alert" style="display: none;">
+                            <span class="error-icon">⚠️</span>
+                            <div class="error-text">
+                                <strong style="color:var(--color-alert-magenta); display:block; font-size:12px; font-family:var(--font-heading);">PIN INCORRECTO // ACCESO DENEGADO</strong>
+                                <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el facilitador. Respeta mayúsculas y minúsculas (Ejemplo de prueba: <strong>F4R0</strong>).</span>
+                            </div>
+                        </div>
+
                         <div class="login-field-group">
                             <label for="login-name" class="login-label">NOMBRE / ALIAS DEL OPERADOR:</label>
                             <input type="text" id="login-name" class="cyber-input" placeholder="Ej. Alex Vega" required autocomplete="name">
@@ -232,9 +241,9 @@
                         </div>
 
                         <div class="login-field-group">
-                            <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN:</label>
-                            <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="6" required autocomplete="off">
-                            <span class="field-hint">* Código de 4 a 6 dígitos proporcionado por el Facilitador.</span>
+                            <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN (MAYÚSCULAS/ALFANUMÉRICO):</label>
+                            <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="8" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()">
+                            <span class="field-hint">* Código alfanumérico proporcionado por el Facilitador (PIN de prueba: <strong>F4R0</strong>).</span>
                         </div>
 
                         <div class="login-action-row">
@@ -248,7 +257,7 @@
             </section>
 
             <!-- PANTALLA C: SEGUNDA PANTALLA DE CARGA / ENLACE NEURONAL -->
-            <section class="view-screen" id="screen-loading-sync">
+            <section class="view-screen fullscreen-intro" id="screen-loading-sync">
                 <div class="cyber-card glass-panel loading-sync-card">
                     <div class="sync-banner-slideshow">
                         <img src="assets/images/case1_autonomy.jpg" alt="Slide 1" class="sync-slide-img active" id="sync-slide-1">

@@ -702,23 +702,46 @@ const ASSETS_TO_PRELOAD = [
 ];
 
 let preloadedAssetsCount = 0;
+const COVER_PRELOAD_MIN_SECONDS = 10;
+const DEFAULT_SESSION_PIN = "F4R0"; // PIN oficial por defecto para pruebas
+const SYNC_LOADING_TOTAL_SECONDS = 10;
 
 function initAppPreload() {
-    const totalAssets = ASSETS_TO_PRELOAD.length;
-    preloadedAssetsCount = 0;
-
     const fillEl = document.getElementById('preloader-fill');
     const pctEl = document.getElementById('preloader-pct-text');
     const statusEl = document.getElementById('preloader-status-text');
     const enterBtn = document.getElementById('btn-cover-enter');
 
-    function updatePreloadProgress() {
-        const pct = Math.min(100, Math.round((preloadedAssetsCount / totalAssets) * 100));
-        if (fillEl) fillEl.style.width = `${pct}%`;
-        if (pctEl) pctEl.innerText = `${pct}%`;
+    let elapsedMs = 0;
+    const totalMs = COVER_PRELOAD_MIN_SECONDS * 1000;
+    const stepMs = 50;
 
-        if (preloadedAssetsCount >= totalAssets) {
-            if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL";
+    // Pre-cargar cada imagen en la caché del navegador en paralelo
+    ASSETS_TO_PRELOAD.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    const timer = setInterval(() => {
+        elapsedMs += stepMs;
+        const progress = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
+        
+        if (fillEl) fillEl.style.width = `${progress}%`;
+        if (pctEl) pctEl.innerText = `${progress}%`;
+
+        if (progress < 30) {
+            if (statusEl) statusEl.innerText = "⚡ PRE-CARGANDO ASSETS Y PROTOCOLOS LOCALES...";
+        } else if (progress < 65) {
+            if (statusEl) statusEl.innerText = "⚡ VERIFICANDO CORTINAS METACOGNITIVAS Y CASOS...";
+        } else if (progress < 99) {
+            if (statusEl) statusEl.innerText = "⚡ CALIBRANDO TERMINAL DE ACCESO AL SISTEMA...";
+        }
+
+        if (elapsedMs >= totalMs) {
+            clearInterval(timer);
+            if (fillEl) fillEl.style.width = '100%';
+            if (pctEl) pctEl.innerText = '100%';
+            if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL (100%)";
             if (enterBtn) {
                 enterBtn.disabled = false;
                 enterBtn.classList.remove('btn-disabled-mission');
@@ -728,29 +751,7 @@ function initAppPreload() {
                 `;
             }
         }
-    }
-
-    // Pre-cargar cada imagen en la caché del navegador
-    ASSETS_TO_PRELOAD.forEach(src => {
-        const img = new Image();
-        img.onload = () => {
-            preloadedAssetsCount++;
-            updatePreloadProgress();
-        };
-        img.onerror = () => {
-            preloadedAssetsCount++;
-            updatePreloadProgress();
-        };
-        img.src = src;
-    });
-
-    // Fallback de seguridad: a los 2.0s asegurar completado
-    setTimeout(() => {
-        if (preloadedAssetsCount < totalAssets) {
-            preloadedAssetsCount = totalAssets;
-            updatePreloadProgress();
-        }
-    }, 2000);
+    }, stepMs);
 }
 
 function goToLoginScreen() {
@@ -767,6 +768,7 @@ function handlePlayerLogin(event) {
     const nameInput = document.getElementById('login-name');
     const emailInput = document.getElementById('login-email');
     const pinInput = document.getElementById('login-pin');
+    const errorAlert = document.getElementById('pin-error-alert');
 
     const name = nameInput ? nameInput.value.trim() : "";
     const email = emailInput ? emailInput.value.trim() : "";
@@ -782,11 +784,23 @@ function handlePlayerLogin(event) {
         if (emailInput) emailInput.focus();
         return;
     }
-    if (!pin) {
-        alert("Por favor ingresa el PIN de acceso a la sesión.");
-        if (pinInput) pinInput.focus();
+    
+    // Verificación de PIN (Comparación estricta discriminando mayúsculas/minúsculas y formato)
+    if (!pin || pin !== DEFAULT_SESSION_PIN) {
+        if (errorAlert) {
+            errorAlert.style.display = 'flex';
+            errorAlert.classList.remove('pin-error-alert');
+            void errorAlert.offsetWidth; // Reflow para reiniciar animación shake
+            errorAlert.classList.add('pin-error-alert');
+        }
+        if (pinInput) {
+            pinInput.focus();
+            pinInput.select();
+        }
         return;
     }
+
+    if (errorAlert) errorAlert.style.display = 'none';
 
     // Guardar perfil del jugador en el estado global
     gameStateV2.playerProfile = {
@@ -816,7 +830,7 @@ function startSyncLoadingScreen() {
     const fillEl = document.getElementById('sync-progress-fill');
     const termEl = document.getElementById('sync-terminal-line');
     
-    // Rotar imágenes del slideshow
+    // Rotar imágenes del slideshow cada 2.5s (4 imágenes en 10s)
     const slides = [
         document.getElementById('sync-slide-1'),
         document.getElementById('sync-slide-2'),
@@ -830,34 +844,39 @@ function startSyncLoadingScreen() {
         slides.forEach(s => s.classList.remove('active'));
         currentSlide = (currentSlide + 1) % slides.length;
         if (slides[currentSlide]) slides[currentSlide].classList.add('active');
-    }, 700);
+    }, 2500);
 
-    const steps = [
-        { pct: 20, text: "1/4 Verificando integridad de componentes locales..." },
-        { pct: 50, text: "2/4 Enlazando terminal con el Facilitador (PIN verificado)..." },
-        { pct: 80, text: "3/4 Desplegando protocolos de atención y cortinas metacognitivas..." },
-        { pct: 100, text: "4/4 Enlace establecido con éxito. Conectando con FARO-0..." }
-    ];
+    let elapsedMs = 0;
+    const totalMs = SYNC_LOADING_TOTAL_SECONDS * 1000;
+    const stepMs = 50;
 
-    let stepIdx = 0;
-    const stepDuration = 550;
+    const timer = setInterval(() => {
+        elapsedMs += stepMs;
+        const progress = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
 
-    function runNextStep() {
-        if (stepIdx < steps.length) {
-            const step = steps[stepIdx];
-            if (fillEl) fillEl.style.width = `${step.pct}%`;
-            if (termEl) termEl.innerText = step.text;
-            stepIdx++;
-            setTimeout(runNextStep, stepDuration);
-        } else {
+        if (fillEl) fillEl.style.width = `${progress}%`;
+
+        if (progress < 25) {
+            if (termEl) termEl.innerText = "1/4 Verificando integridad de componentes locales en memoria...";
+        } else if (progress < 50) {
+            if (termEl) termEl.innerText = "2/4 Enlazando terminal con el Facilitador (PIN F4R0 verificado)...";
+        } else if (progress < 75) {
+            if (termEl) termEl.innerText = "3/4 Desplegando protocolos de atención y cortinas metacognitivas...";
+        } else if (progress < 100) {
+            if (termEl) termEl.innerText = "4/4 Estableciendo conexión directa con FARO-0...";
+        }
+
+        if (elapsedMs >= totalMs) {
+            clearInterval(timer);
             clearInterval(syncSlideshowInterval);
+            if (fillEl) fillEl.style.width = '100%';
+            if (termEl) termEl.innerText = "✔ Enlace establecido exitosamente. Iniciando sesión...";
+            
             setTimeout(() => {
                 switchScreenV2('screen-waiting');
-            }, 400);
+            }, 600);
         }
-    }
-
-    runNextStep();
+    }, stepMs);
 }
 
 // ==========================================================================

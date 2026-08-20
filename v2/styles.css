@@ -3794,4 +3794,51 @@ body {
     transition: width 0.1s linear;
 }
 
+/* ==========================================================================
+   MODO PANTALLA COMPLETA PARA ENTRADA (COVER, LOGIN, SYNC)
+   ========================================================================== */
+.view-screen.fullscreen-intro {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important;
+    background: radial-gradient(circle at center, #051424 0%, #010408 95%) !important;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+}
+
+.view-screen.fullscreen-intro.active {
+    display: flex !important;
+}
+
+/* Alerta de PIN Incorrecto con animación Cyber */
+.pin-error-alert {
+    background: rgba(255, 42, 109, 0.12);
+    border: 1.5px solid var(--color-alert-magenta);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+    animation: alertShake 0.4s ease-in-out;
+}
+
+@keyframes alertShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.pin-error-alert .error-icon {
+    font-size: 22px;
+}
+
+
 
