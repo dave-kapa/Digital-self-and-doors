@@ -3767,18 +3767,67 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 10px;
+/* ==========================================================================
+   PANTALLA 3: SINCRONIZACIÓN Y CARGA 100% FULLSCREEN (10s)
+   ========================================================================== */
+.sync-fullscreen-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.sync-fullscreen-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 1.2s ease-in-out, transform 4s ease-out;
+}
+
+.sync-fullscreen-slide.active {
+    opacity: 0.65;
+    transform: scale(1.0);
+}
+
+.sync-fullscreen-vignette {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at center, rgba(2, 6, 13, 0.6) 0%, rgba(2, 6, 13, 0.95) 85%);
+}
+
+.sync-fullscreen-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    max-width: 680px;
+    width: 90%;
+    gap: 12px;
 }
 
 .sync-spinner-radar {
-    width: 54px;
-    height: 54px;
-    border: 2px solid rgba(0, 216, 255, 0.3);
-    border-top: 2px solid var(--color-cyan);
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(0, 216, 255, 0.25);
+    border-top: 3px solid var(--color-cyan);
     border-radius: 50%;
     animation: radarSpin 1s linear infinite;
     position: relative;
-    margin-bottom: 4px;
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.4);
+    margin-bottom: 6px;
 }
 
 @keyframes radarSpin {
@@ -3786,13 +3835,27 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-.sync-title {
+.sync-badge-top {
+    background: rgba(4, 10, 18, 0.85);
+    border: 1px solid var(--color-agency-green);
+    color: var(--color-agency-green);
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+}
+
+.sync-title-glitch {
+    font-family: var(--font-heading);
+    font-size: 26px;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     margin: 0;
+    text-shadow: 0 0 20px rgba(0, 216, 255, 0.6);
 }
 
 .sync-player-tag {
@@ -3800,74 +3863,82 @@ body {
     font-size: 12px;
     font-weight: 700;
     color: var(--color-agency-green);
-    background: rgba(73, 245, 193, 0.1);
-    border: 1px solid rgba(73, 245, 193, 0.3);
-    padding: 3px 12px;
+    background: rgba(73, 245, 193, 0.12);
+    border: 1px solid rgba(73, 245, 193, 0.4);
+    padding: 4px 14px;
     border-radius: 4px;
     margin: 0;
+    box-shadow: 0 0 10px rgba(73, 245, 193, 0.2);
 }
 
 .sync-status-terminal {
     background: rgba(3, 8, 15, 0.85);
-    border: 1px solid rgba(0, 216, 255, 0.2);
+    border: 1.5px solid rgba(0, 216, 255, 0.3);
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 10px 18px;
     width: 100%;
-    max-width: 480px;
-    min-height: 38px;
+    max-width: 520px;
+    min-height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
 }
 
 .sync-terminal-line {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--color-cyan);
     margin: 0;
+    letter-spacing: 0.5px;
 }
 
 .sync-progress-track {
     width: 100%;
-    max-width: 480px;
-    height: 8px;
+    max-width: 520px;
+    height: 10px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 .sync-progress-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--color-cyan), var(--color-agency-green));
-    box-shadow: 0 0 10px var(--color-cyan);
-    transition: width 0.1s linear;
+    box-shadow: 0 0 12px var(--color-agency-green);
+    transition: width 0.05s linear;
 }
 
 /* ==========================================================================
    MODO 100% PANTALLA COMPLETA PARA ENTRADA (COVER, LOGIN, SYNC)
    ========================================================================== */
 .intro-flow-fullscreen {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 999999 !important;
-    background: radial-gradient(circle at center, #051424 0%, #010408 95%) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 24px !important;
-    box-sizing: border-box !important;
-    overflow-y: auto !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    background: radial-gradient(circle at center, #051424 0%, #010408 95%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .intro-view-sub {
     display: none;
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .intro-view-sub.active {

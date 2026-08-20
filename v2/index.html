@@ -52,7 +52,13 @@
 
         <!-- PANTALLA B: LOGIN DE OPERADOR (REGISTRO NOMBRE, EMAIL, PIN F4R0) -->
         <section class="intro-view-sub" id="screen-login" style="display:none;">
-            <div class="cyber-card glass-panel login-card">
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image" style="filter: blur(4px) brightness(0.5);">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cyber-card glass-panel login-card" style="position: relative; z-index: 10;">
                 <div class="login-header">
                     <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">TERMINAL DE ACCESO // AUTENTICACIÓN</div>
                     <h2 class="login-title">REGISTRO DE OPERADOR</h2>
@@ -96,33 +102,33 @@
             </div>
         </section>
 
-        <!-- PANTALLA C: SEGUNDA PANTALLA DE CARGA / ENLACE NEURONAL (10s) -->
+        <!-- PANTALLA C: SEGUNDA PANTALLA DE CARGA / ENLACE NEURONAL (100% FULLSCREEN 10s) -->
         <section class="intro-view-sub" id="screen-loading-sync" style="display:none;">
-            <div class="cyber-card glass-panel loading-sync-card">
-                <div class="sync-banner-slideshow">
-                    <img src="assets/images/case1_autonomy.jpg" alt="Slide 1" class="sync-slide-img active" id="sync-slide-1">
-                    <img src="assets/images/case2_channel.jpg" alt="Slide 2" class="sync-slide-img" id="sync-slide-2">
-                    <img src="assets/images/case3_model.jpg" alt="Slide 3" class="sync-slide-img" id="sync-slide-3">
-                    <img src="assets/images/case4_decision.jpg" alt="Slide 4" class="sync-slide-img" id="sync-slide-4">
-                    <div class="sync-gradient-overlay"></div>
+            <div class="sync-fullscreen-bg">
+                <img src="assets/images/case1_autonomy.jpg" alt="Slide 1" class="sync-fullscreen-slide active" id="sync-slide-1">
+                <img src="assets/images/case2_channel.jpg" alt="Slide 2" class="sync-fullscreen-slide" id="sync-slide-2">
+                <img src="assets/images/case3_model.jpg" alt="Slide 3" class="sync-slide-img" id="sync-slide-3">
+                <img src="assets/images/case4_decision.jpg" alt="Slide 4" class="sync-slide-img" id="sync-slide-4">
+                <div class="sync-fullscreen-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="sync-fullscreen-content">
+                <div class="sync-spinner-radar">
+                    <div class="radar-sweep"></div>
+                    <span class="radar-dot"></span>
                 </div>
 
-                <div class="sync-content-box">
-                    <div class="sync-spinner-radar">
-                        <div class="radar-sweep"></div>
-                        <span class="radar-dot"></span>
-                    </div>
+                <div class="sync-badge-top">SINCRONIZACIÓN NEURONAL // ENLACE OPERACIONAL</div>
+                <h3 class="sync-title-glitch">ESTABLECIENDO ENLACE CON FARO-0</h3>
+                <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
 
-                    <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
-                    <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
+                <div class="sync-status-terminal">
+                    <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
+                </div>
 
-                    <div class="sync-status-terminal">
-                        <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
-                    </div>
-
-                    <div class="sync-progress-track">
-                        <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
-                    </div>
+                <div class="sync-progress-track">
+                    <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
                 </div>
             </div>
         </section>
