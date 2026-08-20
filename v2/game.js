@@ -784,6 +784,21 @@ function goToLoginScreen() {
     }, 100);
 }
 
+function devSkipIntroDirectToGame() {
+    if (!gameStateV2.playerProfile) {
+        gameStateV2.playerProfile = {
+            name: "Operador Pruebas",
+            email: "dev@faro.internal",
+            pin: DEFAULT_SESSION_PIN,
+            loginTimestamp: new Date().toISOString()
+        };
+        if (gameStateV2.sessionLog) {
+            gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
+        }
+    }
+    switchScreenV2('screen-waiting');
+}
+
 function handlePlayerLogin(event) {
     if (event) event.preventDefault();
 

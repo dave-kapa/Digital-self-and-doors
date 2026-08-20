@@ -41,10 +41,14 @@
                     </div>
                 </div>
 
-                <div class="cover-action-row" style="margin-top: 18px;">
+                <div class="cover-action-row" style="margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
                     <button class="btn-detroit-primary cover-enter-btn btn-disabled-mission" id="btn-cover-enter" onclick="goToLoginScreen()" disabled style="opacity: 0.45; cursor: not-allowed;">
                         <span class="detroit-btn-glow"></span>
                         <span class="btn-text">🔒 PREPARANDO SISTEMA...</span>
+                    </button>
+                    <!-- BOTÓN DE PRUEBAS / DESARROLLO: SALTAR DIRECTAMENTE AL JUEGO -->
+                    <button type="button" class="btn-dev-quick-skip" id="btn-dev-skip-intro" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Saltar login y cargas directamente al inicio">
+                        ⚡ [MODO PRUEBAS] SALTAR DIRECTO AL JUEGO (SIN CARGAS NI LOGIN) ➔
                     </button>
                 </div>
             </div>
@@ -92,10 +96,13 @@
                         <span class="field-hint">* Código alfanumérico proporcionado por el Facilitador (PIN de prueba: <strong>F4R0</strong>).</span>
                     </div>
 
-                    <div class="login-action-row">
+                    <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
                         <button type="submit" class="btn-detroit-primary login-submit-btn">
                             <span class="detroit-btn-glow"></span>
                             <span class="btn-text">AUTENTICAR Y CONECTAR TERMINAL ➔</span>
+                        </button>
+                        <button type="button" class="btn-dev-quick-skip" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Saltar login y cargas directamente al inicio">
+                            ⚡ [MODO PRUEBAS] SALTAR DIRECTO AL JUEGO ➔
                         </button>
                     </div>
                 </form>
