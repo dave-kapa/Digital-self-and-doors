@@ -208,32 +208,30 @@
             <div class="loading-sync-frame-card">
                 <!-- Banner Carrusel en Proporción Panorámica Fija -->
                 <div class="sync-banner-slideshow">
-                    <div class="sync-slide-img active" id="sync-slide-1" style="background-image: url('assets/images/detroit_cyber_bg.jpg');"></div>
-                    <div class="sync-slide-img" id="sync-slide-2" style="background-image: url('assets/images/faro_cover_gate.jpg');"></div>
-                    <div class="sync-slide-img" id="sync-slide-3" style="background-image: url('assets/images/circuit_pattern.jpg');"></div>
-                    <div class="sync-slide-img" id="sync-slide-4" style="background-image: url('assets/images/closing_governance.jpg');"></div>
-                    <div class="sync-slide-gradient"></div>
+                    <img src="assets/images/case1_autonomy.jpg" alt="Caso 1" class="sync-slide-img active" id="sync-slide-1">
+                    <img src="assets/images/case2_channel.jpg" alt="Caso 2" class="sync-slide-img" id="sync-slide-2">
+                    <img src="assets/images/case3_model.jpg" alt="Caso 3" class="sync-slide-img" id="sync-slide-3">
+                    <img src="assets/images/case4_decision.jpg" alt="Caso 4" class="sync-slide-img" id="sync-slide-4">
+                    <div class="sync-gradient-overlay"></div>
+                    <div class="cover-scanlines"></div>
                 </div>
 
-                <div class="loading-sync-body">
-                    <div class="sync-status-header">
-                        <div class="sync-beacon-glow"></div>
-                        <span class="sync-title-tag">SISTEMA CIBERNÉTICO V2.0 // ESTABLECIENDO ENLACE OPERATIVO</span>
+                <div class="sync-content-box">
+                    <div class="sync-spinner-radar">
+                        <div class="radar-sweep"></div>
+                        <span class="radar-dot"></span>
                     </div>
 
-                    <div class="sync-center-info">
-                        <h2 class="sync-main-label">SINCRONIZANDO TERMINAL CON FARO-0</h2>
-                        <p class="sync-sub-label" id="sync-player-tag">OPERADOR: CONECTANDO... // PIN: F4R0</p>
+                    <div class="card-badge" style="background: rgba(73, 245, 193, 0.12); border-color: var(--color-agency-green); color: var(--color-agency-green);">ENLACE NEURONAL // SINCRONIZACIÓN</div>
+                    <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
+                    <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
+
+                    <div class="sync-status-terminal">
+                        <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
                     </div>
 
-                    <div class="sync-progress-container">
-                        <div class="sync-progress-track">
-                            <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
-                        </div>
-                        <div class="sync-meta-row">
-                            <span class="sync-terminal-line" id="sync-terminal-line">1/4 Verificando integridad de componentes locales en memoria...</span>
-                            <span class="sync-encryption-tag">🔒 ENLACE CIFRADO LOCAL</span>
-                        </div>
+                    <div class="sync-progress-track">
+                        <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
                     </div>
                 </div>
             </div>
@@ -241,7 +239,7 @@
 
         <!-- 1. BANNER SUPERIOR PERMANENTE / HEADER (TÍTULO Y ESTADO) -->
         <header class="cyber-header" id="cyber-header">
-            <div class="brand-block">
+            <div class="header-brand">
                 <div class="faro-pulse-node"></div>
                 <div class="brand-text">
                     <span class="faro-title">FARO</span>
@@ -249,16 +247,16 @@
                 </div>
             </div>
 
-            <div class="session-badge-container">
+            <!-- Badge Central de Webinar Interactivo -->
+            <div class="header-center-badge">
                 <span class="badge-webinar">WEBINAR INTERACTIVO // DEMO DE AGENCIA</span>
             </div>
 
             <!-- Controles a la Derecha: Estado de FARO y Toggle Controlador -->
             <div class="header-right-controls">
-                <div class="faro-live-status-pill">
-                    <span class="status-dot"></span>
-                    <span class="status-text-label">ESTADO DE FARO:</span>
-                    <strong class="status-value-bold" id="faro-status-text">CALIBRACIÓN</strong>
+                <div class="header-status-badge">
+                    <span class="status-label">ESTADO:</span>
+                    <span class="status-value" id="faro-status-text">CALIBRACIÓN</span>
                 </div>
                 <button class="btn-toggle-fac" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
             </div>
