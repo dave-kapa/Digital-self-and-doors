@@ -3429,3 +3429,369 @@ body {
     }
 }
 
+/* ==========================================================================
+   PANTALLA 1: PORTADA (COVER / PRELOADER)
+   ========================================================================== */
+.cover-card {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 !important;
+    overflow: hidden;
+    border: 1.5px solid var(--color-cyan) !important;
+    box-shadow: 0 0 50px rgba(0, 216, 255, 0.3) !important;
+    background: #02060d !important;
+}
+
+.cover-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+}
+
+.cover-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    transform: scale(1.03);
+    transition: transform 10s ease;
+}
+
+.cover-card:hover .cover-hero-img {
+    transform: scale(1.08);
+}
+
+.cover-overlay-gradient {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(2, 6, 13, 0.2) 0%, rgba(2, 6, 13, 0.95) 100%);
+}
+
+.cover-badge-top {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    background: rgba(4, 10, 18, 0.85);
+    border: 1px solid var(--color-cyan);
+    color: var(--color-cyan);
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+}
+
+.cover-content-wrap {
+    padding: 24px 32px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.cover-glitch-title {
+    font-family: var(--font-heading);
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(0, 216, 255, 0.6), 0 0 40px rgba(0, 216, 255, 0.3);
+}
+
+.cover-subtitle {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--color-cyan);
+    margin: 0;
+}
+
+.cover-tagline {
+    font-size: 13px;
+    color: #a4c9eb;
+    margin: 4px 0 12px 0;
+    letter-spacing: 0.5px;
+}
+
+.cover-preloader-box {
+    width: 100%;
+    max-width: 540px;
+    background: rgba(3, 8, 15, 0.9);
+    border: 1px solid rgba(0, 216, 255, 0.3);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 6px;
+}
+
+.preloader-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    margin-bottom: 6px;
+}
+
+.preloader-status-text {
+    font-family: var(--font-heading);
+    color: var(--color-cyan);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.preloader-pct-text {
+    font-family: var(--font-mono);
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.preloader-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.preloader-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-agency-green));
+    box-shadow: 0 0 12px var(--color-agency-green);
+    transition: width 0.15s ease-out;
+}
+
+.cover-enter-btn {
+    min-width: 320px;
+    padding: 14px 28px;
+    justify-content: center;
+    font-size: 15px;
+}
+
+/* ==========================================================================
+   PANTALLA 2: LOGIN DE OPERADOR
+   ========================================================================== */
+.login-card {
+    max-width: 580px;
+    margin: auto;
+    padding: 30px 36px !important;
+    border: 1.5px solid var(--color-border-cyan) !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7) !important;
+}
+
+.login-header {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-title {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin: 10px 0 6px 0;
+}
+
+.login-desc {
+    font-size: 13.5px;
+    color: #b8d9f5;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.login-label {
+    font-family: var(--font-heading);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--color-cyan);
+    letter-spacing: 0.5px;
+}
+
+.cyber-input {
+    background: rgba(3, 8, 15, 0.9);
+    border: 1.5px solid rgba(0, 216, 255, 0.35);
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 12px 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.cyber-input:focus {
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 14px rgba(0, 216, 255, 0.4);
+    background: #040e1a;
+}
+
+.pin-input {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    text-align: center;
+    color: var(--color-warning-amber);
+    border-color: rgba(255, 181, 71, 0.4);
+}
+
+.pin-input:focus {
+    border-color: var(--color-warning-amber);
+    box-shadow: 0 0 16px rgba(255, 181, 71, 0.4);
+}
+
+.field-hint {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.login-submit-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    margin-top: 8px;
+}
+
+/* ==========================================================================
+   PANTALLA 3: SEGUNDA PANTALLA DE CARGA (SINCRONIZACIÓN NEURONAL)
+   ========================================================================== */
+.loading-sync-card {
+    max-width: 760px;
+    margin: auto;
+    padding: 0 !important;
+    overflow: hidden;
+    border: 1.5px solid var(--color-cyan) !important;
+    box-shadow: 0 0 45px rgba(0, 216, 255, 0.3) !important;
+    background: #02060d !important;
+}
+
+.sync-banner-slideshow {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #000;
+}
+
+.sync-slide-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.sync-slide-img.active {
+    opacity: 1;
+}
+
+.sync-gradient-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(2,6,13,0.3) 0%, #02060d 100%);
+}
+
+.sync-content-box {
+    padding: 24px 32px 30px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.sync-spinner-radar {
+    width: 54px;
+    height: 54px;
+    border: 2px solid rgba(0, 216, 255, 0.3);
+    border-top: 2px solid var(--color-cyan);
+    border-radius: 50%;
+    animation: radarSpin 1s linear infinite;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+@keyframes radarSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.sync-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    margin: 0;
+}
+
+.sync-player-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-agency-green);
+    background: rgba(73, 245, 193, 0.1);
+    border: 1px solid rgba(73, 245, 193, 0.3);
+    padding: 3px 12px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+.sync-status-terminal {
+    background: rgba(3, 8, 15, 0.85);
+    border: 1px solid rgba(0, 216, 255, 0.2);
+    border-radius: 6px;
+    padding: 8px 16px;
+    width: 100%;
+    max-width: 480px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sync-terminal-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-cyan);
+    margin: 0;
+}
+
+.sync-progress-track {
+    width: 100%;
+    max-width: 480px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.sync-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-agency-green));
+    box-shadow: 0 0 10px var(--color-cyan);
+    transition: width 0.1s linear;
+}
+
+

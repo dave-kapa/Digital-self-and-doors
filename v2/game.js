@@ -5,7 +5,8 @@
 
 // ESTADO GLOBAL DE LA SESIÓN V2
 let gameStateV2 = {
-    activeScreen: 'screen-waiting',
+    activeScreen: 'screen-cover',
+    playerProfile: null, // { name, email, pin, loginTimestamp }
     faroStatus: 'CALIBRACIÓN',
     casePauseTokens: 3, // 3 pausas por cada caso
     modulesRecovered: 0,
@@ -684,6 +685,182 @@ const casesDataV2 = [
 ];
 
 // ==========================================================================
+// PORTADA, PRELOADER DE RECURSOS, LOGIN Y SINCRONIZACIÓN NEURONAL
+// ==========================================================================
+
+const ASSETS_TO_PRELOAD = [
+    'assets/images/faro_cover_gate.jpg',
+    'assets/images/detroit_cyber_bg.jpg',
+    'assets/images/case1_autonomy.jpg',
+    'assets/images/case2_channel.jpg',
+    'assets/images/case3_model.jpg',
+    'assets/images/case4_decision.jpg',
+    'assets/images/claudia_avatar.jpg',
+    'assets/images/faro_avatar.jpg',
+    'assets/images/circuit_pattern.jpg',
+    'assets/images/closing_governance.jpg'
+];
+
+let preloadedAssetsCount = 0;
+
+function initAppPreload() {
+    const totalAssets = ASSETS_TO_PRELOAD.length;
+    preloadedAssetsCount = 0;
+
+    const fillEl = document.getElementById('preloader-fill');
+    const pctEl = document.getElementById('preloader-pct-text');
+    const statusEl = document.getElementById('preloader-status-text');
+    const enterBtn = document.getElementById('btn-cover-enter');
+
+    function updatePreloadProgress() {
+        const pct = Math.min(100, Math.round((preloadedAssetsCount / totalAssets) * 100));
+        if (fillEl) fillEl.style.width = `${pct}%`;
+        if (pctEl) pctEl.innerText = `${pct}%`;
+
+        if (preloadedAssetsCount >= totalAssets) {
+            if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL";
+            if (enterBtn) {
+                enterBtn.disabled = false;
+                enterBtn.classList.remove('btn-disabled-mission');
+                enterBtn.innerHTML = `
+                    <span class="detroit-btn-glow"></span>
+                    <span class="btn-text">⚡ INGRESAR AL SISTEMA // ENTER SYSTEM ▶</span>
+                `;
+            }
+        }
+    }
+
+    // Pre-cargar cada imagen en la caché del navegador
+    ASSETS_TO_PRELOAD.forEach(src => {
+        const img = new Image();
+        img.onload = () => {
+            preloadedAssetsCount++;
+            updatePreloadProgress();
+        };
+        img.onerror = () => {
+            preloadedAssetsCount++;
+            updatePreloadProgress();
+        };
+        img.src = src;
+    });
+
+    // Fallback de seguridad: a los 2.0s asegurar completado
+    setTimeout(() => {
+        if (preloadedAssetsCount < totalAssets) {
+            preloadedAssetsCount = totalAssets;
+            updatePreloadProgress();
+        }
+    }, 2000);
+}
+
+function goToLoginScreen() {
+    switchScreenV2('screen-login');
+    setTimeout(() => {
+        const nameInput = document.getElementById('login-name');
+        if (nameInput) nameInput.focus();
+    }, 150);
+}
+
+function handlePlayerLogin(event) {
+    if (event) event.preventDefault();
+
+    const nameInput = document.getElementById('login-name');
+    const emailInput = document.getElementById('login-email');
+    const pinInput = document.getElementById('login-pin');
+
+    const name = nameInput ? nameInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const pin = pinInput ? pinInput.value.trim() : "";
+
+    if (!name) {
+        alert("Por favor ingresa tu nombre o alias de operador.");
+        if (nameInput) nameInput.focus();
+        return;
+    }
+    if (!email || !email.includes('@')) {
+        alert("Por favor ingresa un correo electrónico válido.");
+        if (emailInput) emailInput.focus();
+        return;
+    }
+    if (!pin) {
+        alert("Por favor ingresa el PIN de acceso a la sesión.");
+        if (pinInput) pinInput.focus();
+        return;
+    }
+
+    // Guardar perfil del jugador en el estado global
+    gameStateV2.playerProfile = {
+        name: name,
+        email: email,
+        pin: pin,
+        loginTimestamp: new Date().toISOString()
+    };
+
+    if (gameStateV2.sessionLog) {
+        gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
+    }
+
+    startSyncLoadingScreen();
+}
+
+let syncSlideshowInterval = null;
+
+function startSyncLoadingScreen() {
+    switchScreenV2('screen-loading-sync');
+
+    const tagEl = document.getElementById('sync-player-tag');
+    if (tagEl && gameStateV2.playerProfile) {
+        tagEl.innerText = `OPERADOR: ${gameStateV2.playerProfile.name.toUpperCase()} // PIN: ${gameStateV2.playerProfile.pin}`;
+    }
+
+    const fillEl = document.getElementById('sync-progress-fill');
+    const termEl = document.getElementById('sync-terminal-line');
+    
+    // Rotar imágenes del slideshow
+    const slides = [
+        document.getElementById('sync-slide-1'),
+        document.getElementById('sync-slide-2'),
+        document.getElementById('sync-slide-3'),
+        document.getElementById('sync-slide-4')
+    ].filter(Boolean);
+
+    let currentSlide = 0;
+    clearInterval(syncSlideshowInterval);
+    syncSlideshowInterval = setInterval(() => {
+        slides.forEach(s => s.classList.remove('active'));
+        currentSlide = (currentSlide + 1) % slides.length;
+        if (slides[currentSlide]) slides[currentSlide].classList.add('active');
+    }, 700);
+
+    const steps = [
+        { pct: 20, text: "1/4 Verificando integridad de componentes locales..." },
+        { pct: 50, text: "2/4 Enlazando terminal con el Facilitador (PIN verificado)..." },
+        { pct: 80, text: "3/4 Desplegando protocolos de atención y cortinas metacognitivas..." },
+        { pct: 100, text: "4/4 Enlace establecido con éxito. Conectando con FARO-0..." }
+    ];
+
+    let stepIdx = 0;
+    const stepDuration = 550;
+
+    function runNextStep() {
+        if (stepIdx < steps.length) {
+            const step = steps[stepIdx];
+            if (fillEl) fillEl.style.width = `${step.pct}%`;
+            if (termEl) termEl.innerText = step.text;
+            stepIdx++;
+            setTimeout(runNextStep, stepDuration);
+        } else {
+            clearInterval(syncSlideshowInterval);
+            setTimeout(() => {
+                switchScreenV2('screen-waiting');
+            }, 400);
+        }
+    }
+
+    runNextStep();
+}
+
+// ==========================================================================
 // CONTROLADOR DE PANTALLAS Y MOTOR DE ESTADOS
 // ==========================================================================
 
@@ -696,6 +873,15 @@ function switchScreenV2(screenId) {
         target.classList.add('active');
         gameStateV2.activeScreen = screenId;
     }
+
+    // Gestionar opacidad/visibilidad del HUD Header durante pantallas de inicio
+    const hudCluster = document.querySelector('.hud-telemetry-cluster');
+    const isIntroScreen = ['screen-cover', 'screen-login', 'screen-loading-sync'].includes(screenId);
+    if (hudCluster) {
+        hudCluster.style.opacity = isIntroScreen ? '0.2' : '1';
+        hudCluster.style.pointerEvents = isIntroScreen ? 'none' : 'auto';
+    }
+
     updateHeaderUI();
 
     // Trigger de máquina de escribir al entrar en pantallas con diálogo
@@ -3512,7 +3698,7 @@ function toggleFacilitatorBar() {
 // Inicialización de ventana
 function initAppV2() {
     updateHeaderUI();
-    startHeroTypewriter();
+    initAppPreload();
 }
 
 if (document.readyState === 'loading') {

@@ -144,6 +144,8 @@
             <div class="fac-row fac-nav-row">
                 <span class="fac-label">🎛 SECCIONES:</span>
                 <div class="fac-actions">
+                    <button class="fac-btn" onclick="facJumpTo('screen-cover')">Portada</button>
+                    <button class="fac-btn" onclick="facJumpTo('screen-login')">Login</button>
                     <button class="fac-btn" onclick="facJumpTo('screen-waiting')">Inicio</button>
                     <button class="fac-btn" onclick="facJumpTo('screen-calibration')">Calibración</button>
                     <button class="fac-btn" onclick="facJumpTo('screen-faro-reveal')">Resultado Calib.</button>
@@ -172,8 +174,112 @@
         <!-- CONTENEDOR PRINCIPAL DE PANTALLAS DE JUEGO -->
         <main class="cyber-viewport" id="cyber-viewport">
 
+            <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN / PRELOADER) -->
+            <section class="view-screen active" id="screen-cover">
+                <div class="cyber-card glass-panel cover-card">
+                    <div class="cover-image-wrap">
+                        <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-hero-img">
+                        <div class="cover-overlay-gradient"></div>
+                        <div class="cover-badge-top">SISTEMA CIBERNÉTICO V2.0 // PUERTA DE ACCESO</div>
+                    </div>
+
+                    <div class="cover-content-wrap">
+                        <div class="cover-title-group">
+                            <h1 class="cover-glitch-title">FARO</h1>
+                            <h2 class="cover-subtitle">DIGITAL SELF & ATTENTION DOORS</h2>
+                            <p class="cover-tagline">EXPERIMENTO DE AGENCIA HUMANO–IA // PROTOCOLO DE DECISIÓN Y GOBERNANZA</p>
+                        </div>
+
+                        <div class="cover-preloader-box" id="cover-preloader-box">
+                            <div class="preloader-label-row">
+                                <span class="preloader-status-text" id="preloader-status-text">⚡ PRE-CARGANDO RECURSOS Y PROTOCOLOS LOCALES...</span>
+                                <span class="preloader-pct-text" id="preloader-pct-text">0%</span>
+                            </div>
+                            <div class="preloader-track">
+                                <div class="preloader-fill" id="preloader-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="cover-action-row" style="margin-top: 16px;">
+                            <button class="btn-detroit-primary cover-enter-btn" id="btn-cover-enter" onclick="goToLoginScreen()" disabled>
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🔒 PREPARANDO SISTEMA...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA B: LOGIN DE OPERADOR (REGISTRO NOMBRE, EMAIL, PIN) -->
+            <section class="view-screen" id="screen-login">
+                <div class="cyber-card glass-panel login-card">
+                    <div class="login-header">
+                        <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">TERMINAL DE ACCESO // AUTENTICACIÓN</div>
+                        <h2 class="login-title">REGISTRO DE OPERADOR</h2>
+                        <p class="login-desc">Ingresa tus datos para registrar tu perfil de operador y sincronizarte con la sesión activa.</p>
+                    </div>
+
+                    <form class="login-form" id="player-login-form" onsubmit="handlePlayerLogin(event)">
+                        <div class="login-field-group">
+                            <label for="login-name" class="login-label">NOMBRE / ALIAS DEL OPERADOR:</label>
+                            <input type="text" id="login-name" class="cyber-input" placeholder="Ej. Alex Vega" required autocomplete="name">
+                        </div>
+
+                        <div class="login-field-group">
+                            <label for="login-email" class="login-label">CORREO ELECTRÓNICO (CORPORATIVO O PERSONAL):</label>
+                            <input type="email" id="login-email" class="cyber-input" placeholder="alex.vega@empresa.com" required autocomplete="email">
+                            <span class="field-hint">* Utilizado para el reporte individual y retroalimentación de la sesión.</span>
+                        </div>
+
+                        <div class="login-field-group">
+                            <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN:</label>
+                            <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="6" required autocomplete="off">
+                            <span class="field-hint">* Código de 4 a 6 dígitos proporcionado por el Facilitador.</span>
+                        </div>
+
+                        <div class="login-action-row">
+                            <button type="submit" class="btn-detroit-primary login-submit-btn">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">AUTENTICAR Y CONECTAR TERMINAL ➔</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- PANTALLA C: SEGUNDA PANTALLA DE CARGA / ENLACE NEURONAL -->
+            <section class="view-screen" id="screen-loading-sync">
+                <div class="cyber-card glass-panel loading-sync-card">
+                    <div class="sync-banner-slideshow">
+                        <img src="assets/images/case1_autonomy.jpg" alt="Slide 1" class="sync-slide-img active" id="sync-slide-1">
+                        <img src="assets/images/case2_channel.jpg" alt="Slide 2" class="sync-slide-img" id="sync-slide-2">
+                        <img src="assets/images/case3_model.jpg" alt="Slide 3" class="sync-slide-img" id="sync-slide-3">
+                        <img src="assets/images/case4_decision.jpg" alt="Slide 4" class="sync-slide-img" id="sync-slide-4">
+                        <div class="sync-gradient-overlay"></div>
+                    </div>
+
+                    <div class="sync-content-box">
+                        <div class="sync-spinner-radar">
+                            <div class="radar-sweep"></div>
+                            <span class="radar-dot"></span>
+                        </div>
+
+                        <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
+                        <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: 8492</p>
+
+                        <div class="sync-status-terminal">
+                            <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes...</p>
+                        </div>
+
+                        <div class="sync-progress-track">
+                            <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- PANTALLA 0: CAPÍTULO 1 — INTRODUCCIÓN Y APERTURA CON TIPO ESCRITURA Y BANNER -->
-            <section class="view-screen active" id="screen-waiting">
+            <section class="view-screen" id="screen-waiting">
                 <div class="cyber-card glass-panel intro-card">
                     <!-- Banner Superior con Imagen Principal -->
                     <div class="image-container-16-4" style="margin-bottom: 8px;">
