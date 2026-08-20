@@ -3871,7 +3871,7 @@ body {
 }
 
 .intro-view-sub.active {
-    display: flex !important;
+    display: flex;
 }
 
 /* Alerta de PIN Incorrecto con animación Cyber */

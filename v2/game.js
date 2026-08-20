@@ -760,13 +760,19 @@ function initAppPreload() {
 }
 
 function showIntroSubScreen(screenId) {
-    const coverEl = document.getElementById('screen-cover');
-    const loginEl = document.getElementById('screen-login');
-    const syncEl = document.getElementById('screen-loading-sync');
-
-    if (coverEl) coverEl.style.display = (screenId === 'screen-cover') ? 'flex' : 'none';
-    if (loginEl) loginEl.style.display = (screenId === 'screen-login') ? 'flex' : 'none';
-    if (syncEl) syncEl.style.display = (screenId === 'screen-loading-sync') ? 'flex' : 'none';
+    const screens = ['screen-cover', 'screen-login', 'screen-loading-sync'];
+    screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (id === screenId) {
+                el.classList.add('active');
+                el.style.display = 'flex';
+            } else {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            }
+        }
+    });
 }
 
 function goToLoginScreen() {
