@@ -3253,25 +3253,24 @@ function processCaseOutcome(actionIds) {
     // Clasificación de Velocidad (Rápido 0-40%, Medio 41-70%, Lento 71-100%)
     let speedCategory = 'medium';
     let speedLabel = 'MEDIO';
-    let reactivityDelta = 1;
-    let calibrationBonusDelta = 0;
+    let reactivityDelta = 2;
 
     if (percentageUsed <= 40) {
         speedCategory = 'fast';
         speedLabel = 'RÁPIDO';
-        reactivityDelta = 2;
-        calibrationBonusDelta = outcomeIndicator === 1 ? 3 : (outcomeIndicator === 3 ? -3 : 0);
+        reactivityDelta = 3;
     } else if (percentageUsed <= 70) {
         speedCategory = 'medium';
         speedLabel = 'MEDIO';
-        reactivityDelta = 1;
-        calibrationBonusDelta = outcomeIndicator === 1 ? 2 : (outcomeIndicator === 3 ? -2 : 0);
+        reactivityDelta = 2;
     } else {
         speedCategory = 'slow';
         speedLabel = 'LENTO';
         reactivityDelta = 0;
-        calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
     }
+
+    // Bonus por acierto/error en Calibración: siempre +1 si Seguro, -1 si Expuesto, 0 si Alerta/Neutro
+    const calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
 
     // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso -> $5,000
     const finalReactivityLevel = Math.max(-5, Math.min(5, gameStateV2.hudState.reactivity + reactivityDelta));
