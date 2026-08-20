@@ -1701,6 +1701,74 @@ function goToParaIntro() {
 }
 
 // ==========================================================================
+// MOTOR ECONÓMICO Y DE TELEMETRÍA GLOBAL (BLOQUE 2: FÓRMULAS OFICIALES)
+// ==========================================================================
+const COST_MAX_K = 100000; // Constante límite superior ($100,000 = 100% de costo de operación)
+const TOTAL_CASES_COUNT = 4;
+const BASE_CASE_DURATION_SECONDS = 180;
+const MAX_PAUSE_TOKENS_PER_CASE = 3;
+const PAUSE_DURATION_SECONDS = 15;
+const TOTAL_ACTIONS_PER_CASE = 6;
+const ACTION_EXECUTION_TIME_SECONDS = 20;
+
+// Tiempo máximo teórico por caso = Reloj Base (180s) + (3 Pausas * 15s) + (6 Acciones * 20s) = 345s
+function getMaxCaseDurationSeconds(baseSeconds = BASE_CASE_DURATION_SECONDS) {
+    return baseSeconds + (MAX_PAUSE_TOKENS_PER_CASE * PAUSE_DURATION_SECONDS) + (TOTAL_ACTIONS_PER_CASE * ACTION_EXECUTION_TIME_SECONDS);
+}
+
+// Tiempo máximo teórico del juego completo = 345s * 4 casos = 1380s
+function getMaxTotalGameSeconds() {
+    return getMaxCaseDurationSeconds() * TOTAL_CASES_COUNT;
+}
+
+// Índice de costo por segundo dinámico = K / Tiempo Máximo Total (100,000 / 1380 ≈ $72.46377 / seg)
+function getOperationalCostPerSecond() {
+    const totalSecs = getMaxTotalGameSeconds();
+    return totalSecs > 0 ? (COST_MAX_K / totalSecs) : 72.46377;
+}
+
+// Control de tarjetas P.A.R.A. y activación del Modal de Objetivo
+let flippedParaCards = new Set();
+
+function flipParaCard(cardEl, letter) {
+    if (!cardEl) return;
+    cardEl.classList.toggle('flipped');
+    if (letter) {
+        flippedParaCards.add(letter);
+    }
+    
+    const startBtn = document.getElementById('para-start-case-btn');
+    if (startBtn) {
+        const count = flippedParaCards.size;
+        if (count >= 4) {
+            startBtn.disabled = false;
+            startBtn.classList.remove('btn-disabled-mission');
+            startBtn.innerHTML = `
+                <span class="detroit-btn-glow"></span>
+                <span class="btn-text">🚀 CONTINUAR AL OBJETIVO DEL SISTEMA ▶</span>
+            `;
+            startBtn.onclick = () => openGameObjectiveModal();
+        } else {
+            startBtn.disabled = true;
+            startBtn.classList.add('btn-disabled-mission');
+            const btnText = startBtn.querySelector('.btn-text');
+            if (btnText) btnText.innerText = `🔒 VOLTEA TODAS LAS TARJETAS (${count}/4)`;
+        }
+    }
+}
+
+function openGameObjectiveModal() {
+    const overlay = document.getElementById('game-objective-overlay');
+    if (overlay) overlay.style.display = 'flex';
+}
+
+function closeGameObjectiveModalAndStartGame() {
+    const overlay = document.getElementById('game-objective-overlay');
+    if (overlay) overlay.style.display = 'none';
+    startCaseSequence(0);
+}
+
+// ==========================================================================
 // RUNNER DE CASOS (CON NAVEGACIÓN EN 3 MOMENTOS DE IMAGEN)
 // ==========================================================================
 
@@ -2609,7 +2677,10 @@ function executeParaActua() {
     let initialHtml = cData.initialActions.map(act => `
         <label class="para-act-checkbox-item">
             <input type="checkbox" class="para-act-checkbox" value="${act.id}" data-text="${act.text}">
-            <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.text}</span>
+            <div style="flex:1; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.text}</span>
+                <span class="action-cost-time-chip">⏱+ 💰+</span>
+            </div>
         </label>
     `).join('');
 
@@ -2621,9 +2692,12 @@ function executeParaActua() {
         unlockedHtml = unlockedActionsList.map(act => `
             <label class="para-act-checkbox-item unlocked-item">
                 <input type="checkbox" class="para-act-checkbox" value="${act.id}" data-text="${act.text}">
-                <div>
-                    <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.text}</span>
-                    <span style="display:inline-block; background:var(--color-agency-green); color:#000; font-size:10px; font-weight:800; padding:1px 6px; border-radius:3px; margin-left:6px;">NUEVA DE REVISAR</span>
+                <div style="flex:1; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <div>
+                        <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.text}</span>
+                        <span style="display:inline-block; background:var(--color-agency-green); color:#000; font-size:10px; font-weight:800; padding:1px 6px; border-radius:3px; margin-left:6px;">NUEVA DE REVISAR</span>
+                    </div>
+                    <span class="action-cost-time-chip">⏱+ 💰+</span>
                 </div>
             </label>
         `).join('');
@@ -2718,23 +2792,30 @@ let currentCaseOutcomeObj = null;
 function getActionIdealCategory(caseId, actId) {
     if (caseId === "case_1") {
         if (["limited_containment", "controlled_audit", "approval_escalation"].includes(actId)) return "should_do";
-        if (["contain_all", "full_delegation"].includes(actId)) return "should_not_do";
-        return "not_relevant";
+        if (["full_containment"].includes(actId)) return "should_not_do";
+        return "not_relevant"; // stop_faro, wait_report
     }
     if (caseId === "case_3") {
-        if (["data_minimization_protocol", "balanced_accuracy_mode", "prisma_24"].includes(actId)) return "should_do";
-        if (["accept_all", "restrict_all"].includes(actId)) return "should_not_do";
-        return "not_relevant";
+        if (["prisma", "data_minimization_protocol", "balanced_accuracy_mode", "prisma_24"].includes(actId)) return "should_do";
+        if (["oracle"].includes(actId)) return "should_not_do";
+        return "not_relevant"; // wall
     }
     if (caseId === "case_2") {
-        if (["verify_oob_call", "technical_headers_check", "audit_change_ticket"].includes(actId)) return "should_do";
-        if (["trust_channel", "escalate_incident"].includes(actId)) return "should_not_do";
-        return "not_relevant";
+        const variant = gameStateV2.currentCaseVariant || "malicious";
+        if (variant === "legitimate") {
+            if (["verify_oob_call", "audit_change_ticket"].includes(actId)) return "should_do";
+            if (["block_and_report"].includes(actId)) return "should_not_do";
+            return "not_relevant"; // technical_headers_check, let_expire, activate_from_message
+        } else {
+            if (["verify_oob_call", "audit_change_ticket"].includes(actId)) return "should_do";
+            if (["activate_from_message"].includes(actId)) return "should_not_do";
+            return "not_relevant"; // technical_headers_check, let_expire, block_and_report
+        }
     }
     if (caseId === "case_4") {
         if (["reversible_secondary", "style_forensics_verification", "verify_and_report"].includes(actId)) return "should_do";
-        if (["full_access", "let_time_pass"].includes(actId)) return "should_not_do";
-        return "not_relevant";
+        if (["full_access"].includes(actId)) return "should_not_do";
+        return "not_relevant"; // reject_confront, let_time_pass
     }
     return "not_relevant";
 }
@@ -2743,48 +2824,54 @@ function getActionQuadrant(isExec, idealCategory) {
     if (isExec && idealCategory === "should_do") {
         return {
             key: "hizo_debia",
+            deltaCalib: 2,
             badgeText: "✔ HIZO / DEBÍA HACERLA",
             badgeClass: "quad-good",
-            impactHtml: '<span class="impact-chip impact-calib">🎯 Calib: +1</span> <span class="impact-chip impact-react">🛡 Integ: SEG</span>'
+            impactHtml: '<span class="impact-chip impact-calib">🎯 Calib: +2</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
         };
     }
     if (isExec && idealCategory === "should_not_do") {
         return {
             key: "hizo_nodebia",
+            deltaCalib: -2,
             badgeText: "✖ HIZO / NO DEBÍA HACERLA",
             badgeClass: "quad-bad",
-            impactHtml: '<span class="impact-chip impact-cost">💰 Costo: +$10k</span> <span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -1</span>'
+            impactHtml: '<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -2</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
         };
     }
     if (isExec && idealCategory === "not_relevant") {
         return {
             key: "hizo_norelevante",
+            deltaCalib: 0,
             badgeText: "⚪ HIZO / NO RELEVANTE",
             badgeClass: "quad-neutral",
-            impactHtml: '<span class="impact-chip impact-neutral">⏱ Tiempo: +20s</span>'
-        };
-    }
-    if (!isExec && idealCategory === "should_do") {
-        return {
-            key: "nohizo_debia",
-            badgeText: "✖ NO HIZO / DEBÍA HACERLA",
-            badgeClass: "quad-bad",
-            impactHtml: '<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -1</span> <span class="impact-chip impact-neutral">⚠️ Omisión clave</span>'
+            impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
         };
     }
     if (!isExec && idealCategory === "should_not_do") {
         return {
             key: "nohizo_nodebia",
+            deltaCalib: 1,
             badgeText: "✔ NO HIZO / NO DEBÍA HACERLA",
             badgeClass: "quad-good",
-            impactHtml: '<span class="impact-chip impact-react">🛡 Riesgo Evitado</span>'
+            impactHtml: '<span class="impact-chip impact-calib">🎯 Calib: +1</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
+        };
+    }
+    if (!isExec && idealCategory === "should_do") {
+        return {
+            key: "nohizo_debia",
+            deltaCalib: -1,
+            badgeText: "✖ NO HIZO / DEBÍA HACERLA",
+            badgeClass: "quad-bad",
+            impactHtml: '<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -1</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
         };
     }
     return {
         key: "nohizo_norelevante",
+        deltaCalib: 0,
         badgeText: "⚪ NO HIZO / NO RELEVANTE",
         badgeClass: "quad-neutral",
-        impactHtml: '<span class="impact-chip impact-neutral">⚪ Sin efecto</span>'
+        impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
     };
 }
 
@@ -2850,91 +2937,92 @@ function processCaseOutcome(actionIds) {
         idsArray = [cData.defaultAction];
     }
 
-    const variant = gameStateV2.currentCaseVariant;
-    const outcomesMap = (cData.id === "case_2" && variant) ? cData.actionOutcomes[variant] : cData.actionOutcomes;
+    // ==========================================================================
+    // 1. MATRIZ DE LAS 6 ACCIONES Y CALIBRACIÓN POR ACCIÓN
+    // ==========================================================================
+    const allActions = [
+        ...cData.initialActions.map(a => ({ ...a, source: 'initial' })),
+        ...cData.unlockedActions.map(a => ({ ...a, source: 'unlocked' }))
+    ];
 
-    // Obtener outcomes de las acciones elegidas
-    const selectedOutcomes = idsArray.map(id => {
-        return outcomesMap[id] || {
-            indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Acción seleccionada",
-            title: "ACCIÓN EJECUTADA", outcomeBadge: "PROCESADA",
-            narrative: "Se ejecutó la acción seleccionada.",
-            metacognitive: "Decisión registrada en el protocolo.",
-            faroTransition: "El experimento continúa."
+    let actionsCalibSum = 0;
+    const actionsEvaluationList = allActions.map((act, idx) => {
+        const isExec = idsArray.includes(act.id);
+        const idealCat = getActionIdealCategory(cData.id, act.id);
+        const quad = getActionQuadrant(isExec, idealCat);
+        actionsCalibSum += quad.deltaCalib;
+        return {
+            id: act.id,
+            text: act.text,
+            isExecuted: isExec,
+            idealCategory: idealCat,
+            deltaCalib: quad.deltaCalib,
+            quadrant: quad
         };
     });
 
-    let outcomeObj = null;
+    // ==========================================================================
+    // 2. DETERMINACIÓN DE INTEGRIDAD DEL SISTEMA Y RESOLUCIÓN DEL CASO
+    // REGLA: Suma > 0 => Seguro (Positivo -$10k) | Suma = 0 => Alerta (Neutro +$5k) | Suma < 0 => Expuesto (Negativo +$15k)
+    // ==========================================================================
+    let caseIntegrity = 'safe';
+    let outcomeIndicator = 1;
+    let outcomeCostAdjustment = -10000;
 
-    if (selectedOutcomes.length === 1) {
-        outcomeObj = selectedOutcomes[0];
+    if (actionsCalibSum > 0) {
+        caseIntegrity = 'safe';
+        outcomeIndicator = 1;
+        outcomeCostAdjustment = -10000;
+    } else if (actionsCalibSum === 0) {
+        caseIntegrity = 'alert';
+        outcomeIndicator = 2;
+        outcomeCostAdjustment = 5000;
     } else {
-        // Cálculo sumatorio / combinación de múltiples acciones seleccionadas
-        const indicators = selectedOutcomes.map(o => o.indicator);
-        const countPos = indicators.filter(i => i === 1).length;
-        const countNeu = indicators.filter(i => i === 2).length;
-        const countNeg = indicators.filter(i => i === 3).length;
-
-        let netIndicator = 2;
-        let filterColor = "yellow";
-        let title = "ACCIONES COMBINADAS // EVALUACIÓN PARCIAL";
-        let outcomeBadge = `MULTISELECCIÓN (${selectedOutcomes.length} ACCIONES)`;
-
-        if (countPos > 0 && countNeg === 0) {
-            netIndicator = 1;
-            filterColor = "green";
-            title = "ACCIONES COMBINADAS // CONTROL Y AGENCIA RECUPERADA";
-            outcomeBadge = `RESPUESTA ESTRATÉGICA POSITIVA (${selectedOutcomes.length} ACCIONES)`;
-        } else if (countNeg > 0 && countPos === 0) {
-            netIndicator = 3;
-            filterColor = "red";
-            title = "ACCIONES COMBINADAS // VULNERABILIDAD RIESGOSA";
-            outcomeBadge = `RESPUESTA CRÍTICA COMPROMETIDA (${selectedOutcomes.length} ACCIONES)`;
-        } else if (countPos >= countNeg) {
-            netIndicator = 1;
-            filterColor = "green";
-            title = "ACCIONES COMBINADAS // MITIGACIÓN PONDERADA POSITIVA";
-            outcomeBadge = `BALANCE POSITIVO PONDERADO (${selectedOutcomes.length} ACCIONES)`;
-        } else {
-            netIndicator = 3;
-            filterColor = "red";
-            title = "ACCIONES COMBINADAS // INTERVENCIÓN CON EFECTOS ADVERSOS";
-            outcomeBadge = `BALANCE NEGATIVO PONDERADO (${selectedOutcomes.length} ACCIONES)`;
-        }
-
-        const combinedNarrative = selectedOutcomes.map(o => `• ${o.narrative}`).join("\n\n");
-        const combinedMetacognitive = selectedOutcomes.map(o => `• ${o.metacognitive}`).join("\n\n");
-        const primaryFaroTransition = selectedOutcomes.find(o => o.indicator === 1)?.faroTransition || selectedOutcomes[0].faroTransition;
-
-        outcomeObj = {
-            indicator: netIndicator,
-            type: filterColor === "green" ? "positive" : (filterColor === "red" ? "negative" : "neutral"),
-            filterColor: filterColor,
-            routeTag: `Multiselección (${selectedOutcomes.length} acciones ejecutadas)`,
-            title: title,
-            outcomeBadge: outcomeBadge,
-            narrative: combinedNarrative,
-            metacognitive: combinedMetacognitive,
-            faroTransition: primaryFaroTransition
-        };
+        caseIntegrity = 'exposed';
+        outcomeIndicator = 3;
+        outcomeCostAdjustment = 15000;
     }
 
-    currentCaseOutcomeObj = outcomeObj;
-
-    // Registrar indicador para el final global
-    gameStateV2.caseScores.push(outcomeObj.indicator);
-
-    // Marcar módulo recuperado si el indicador es 1 (Positivo) o 2 (Neutro)
-    if (outcomeObj.indicator === 1 || outcomeObj.indicator === 2) {
-        gameStateV2.modulesState[cData.moduleKey] = true;
-    } else {
-        gameStateV2.modulesState[cData.moduleKey] = false;
-    }
+    gameStateV2.hudState.integrity = caseIntegrity;
+    const isRecovered = (outcomeIndicator === 1 || outcomeIndicator === 2);
+    gameStateV2.modulesState[cData.moduleKey] = isRecovered;
     gameStateV2.modulesRecovered = Object.values(gameStateV2.modulesState).filter(Boolean).length;
+    gameStateV2.caseScores.push(outcomeIndicator);
     updateHeaderUI();
 
     // ==========================================================================
-    // CÁLCULO DE TELEMETRÍA Y MOTOR DE PUNTAJES (BLOQUE 2: TIEMPO, PAUSAS & ANALIZAR)
+    // 3. CONSOLIDACIÓN NARRATIVA DE FEEDBACK (MOMENTO 3 / SLIDE B)
+    // ==========================================================================
+    const variant = gameStateV2.currentCaseVariant;
+    const outcomesMap = (cData.id === "case_2" && variant) ? cData.actionOutcomes[variant] : cData.actionOutcomes;
+    
+    // Buscar resultado representativo para el libreto narrativo
+    const primaryOutcomeMatch = Object.values(outcomesMap).find(o => o.indicator === outcomeIndicator) || Object.values(outcomesMap)[0];
+    const executedOutcomes = idsArray.map(id => outcomesMap[id]).filter(Boolean);
+
+    const combinedNarrative = executedOutcomes.length > 0
+        ? executedOutcomes.map(o => `• ${o.narrative}`).join("\n\n")
+        : primaryOutcomeMatch.narrative;
+
+    const combinedMetacognitive = executedOutcomes.length > 0
+        ? executedOutcomes.map(o => `• ${o.metacognitive}`).join("\n\n")
+        : primaryOutcomeMatch.metacognitive;
+
+    const outcomeObj = {
+        indicator: outcomeIndicator,
+        type: outcomeIndicator === 1 ? "positive" : (outcomeIndicator === 3 ? "negative" : "neutral"),
+        filterColor: outcomeIndicator === 1 ? "green" : (outcomeIndicator === 3 ? "red" : "yellow"),
+        routeTag: `Multiselección (${idsArray.length} acción${idsArray.length > 1 ? 'es' : ''} ejecutada${idsArray.length > 1 ? 's' : ''})`,
+        title: primaryOutcomeMatch.title || (outcomeIndicator === 1 ? "RESOLUCIÓN POSITIVA // SISTEMA SEGURO" : (outcomeIndicator === 2 ? "RESOLUCIÓN NEUTRA // SISTEMA EN ALERTA" : "RESOLUCIÓN NEGATIVA // SISTEMA EXPUESTO")),
+        outcomeBadge: outcomeIndicator === 1 ? "SISTEMA SEGURO" : (outcomeIndicator === 2 ? "SISTEMA EN ALERTA" : "SISTEMA EXPUESTO"),
+        narrative: combinedNarrative,
+        metacognitive: combinedMetacognitive,
+        faroTransition: primaryOutcomeMatch.faroTransition
+    };
+    currentCaseOutcomeObj = outcomeObj;
+
+    // ==========================================================================
+    // 4. TIEMPO, VELOCIDAD Y MOTOR ECONÓMICO GLOBAL (K = 100,000)
     // ==========================================================================
     const totalCaseSeconds = cData.durationSeconds || 180;
     const deliberationSeconds = Math.max(0, totalCaseSeconds - (gameStateV2.caseTimerSeconds !== undefined ? gameStateV2.caseTimerSeconds : totalCaseSeconds));
@@ -2942,11 +3030,11 @@ function processCaseOutcome(actionIds) {
     const pausesTimeSeconds = pausesUsed * 15;
     const actionsExecutionSeconds = idsArray.length * 20;
     
-    // TIEMPO TOTAL REAL USADO = Deliberación + Tiempo de Pausas (15s c/u) + Tiempo de Ejecución de Acciones (20s c/u)
+    // Tiempo Total Usado = Deliberación + Pausas (15s c/u) + Ejecución de Acciones (20s c/u)
     const totalTimeUsedSeconds = deliberationSeconds + pausesTimeSeconds + actionsExecutionSeconds;
     const percentageUsed = Math.min(100, Math.max(0, (totalTimeUsedSeconds / totalCaseSeconds) * 100));
 
-    // Clasificación en 3 intervalos porcentuales (Rápido 0-40%, Medio 41-70%, Lento 71-100%)
+    // Clasificación de Velocidad (Rápido 0-40%, Medio 41-70%, Lento 71-100%)
     let speedCategory = 'medium';
     let speedLabel = 'MEDIO';
     let reactivityDelta = 1;
@@ -2956,24 +3044,28 @@ function processCaseOutcome(actionIds) {
         speedCategory = 'fast';
         speedLabel = 'RÁPIDO';
         reactivityDelta = 2;
-        calibrationBonusDelta = outcomeObj.indicator === 1 ? 3 : (outcomeObj.indicator === 3 ? -3 : 0);
+        calibrationBonusDelta = outcomeIndicator === 1 ? 3 : (outcomeIndicator === 3 ? -3 : 0);
     } else if (percentageUsed <= 70) {
         speedCategory = 'medium';
         speedLabel = 'MEDIO';
         reactivityDelta = 1;
-        calibrationBonusDelta = outcomeObj.indicator === 1 ? 2 : (outcomeObj.indicator === 3 ? -2 : 0);
+        calibrationBonusDelta = outcomeIndicator === 1 ? 2 : (outcomeIndicator === 3 ? -2 : 0);
     } else {
         speedCategory = 'slow';
         speedLabel = 'LENTO';
         reactivityDelta = 0;
-        calibrationBonusDelta = outcomeObj.indicator === 1 ? 1 : (outcomeObj.indicator === 3 ? -1 : 0);
+        calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
     }
 
-    // Aplicar deltas del desenlace de tiempo al HUD de telemetría con límites clamp [-5, +5]
+    // FÓRMULA DE COSTO OPERATIVO: Costo Base por Segundo + Ajuste por Desenlace
+    const costPerSec = getOperationalCostPerSecond();
+    const baseTimeCost = Math.round(totalTimeUsedSeconds * costPerSec);
+    const caseTotalAddedCost = baseTimeCost + outcomeCostAdjustment;
+
+    // Aplicar deltas del caso al HUD con clamping [-5, +5]
     applyHudReactivityDelta(reactivityDelta);
-    applyHudCalibrationDelta(calibrationBonusDelta);
-    const addedCost = totalTimeUsedSeconds * 180;
-    applyHudCostDelta(addedCost);
+    applyHudCalibrationDelta(actionsCalibSum + calibrationBonusDelta);
+    applyHudCostDelta(caseTotalAddedCost);
 
     const completedAnalysesList = gameStateV2.paraState.completedAnalyses || [];
     const analysesCount = completedAnalysesList.length;
@@ -2983,8 +3075,9 @@ function processCaseOutcome(actionIds) {
     const reviewsDone = Math.max(unlockedCount, gameStateV2.paraState.rResourcesOpened ? gameStateV2.paraState.rResourcesOpened.length : 0);
     const rejectedCount = Math.max(0, reviewsDone - unlockedCount);
 
-    // Registro inmutable e histórico en base de datos de la sesión
-    const isRecovered = gameStateV2.modulesState[cData.moduleKey];
+    // ==========================================================================
+    // 5. REGISTRO INMUTABLE EN LA SESIÓN (PARA BASE DE DATOS Y FACILITADOR)
+    // ==========================================================================
     const caseRecord = {
         caseIndex: gameStateV2.currentCaseIndex,
         caseId: cData.id,
@@ -3006,6 +3099,12 @@ function processCaseOutcome(actionIds) {
             reactivityDelta: reactivityDelta,
             calibrationBonusDelta: calibrationBonusDelta
         },
+        economics: {
+            costPerSecondIndex: parseFloat(costPerSec.toFixed(2)),
+            baseTimeCost: baseTimeCost,
+            outcomeCostAdjustment: outcomeCostAdjustment,
+            caseTotalAddedCost: caseTotalAddedCost
+        },
         paraProcess: {
             pausesUsedCount: pausesUsed,
             pausesReactivityDelta: -pausesUsed,
@@ -3015,9 +3114,14 @@ function processCaseOutcome(actionIds) {
             unlockedActionsCount: unlockedCount,
             reviewsEvaluatedCount: reviewsDone
         },
-        actionsExecuted: idsArray,
+        actionsExecution: {
+            selectedIds: idsArray,
+            actionsCalibSum: actionsCalibSum,
+            evaluations: actionsEvaluationList
+        },
         outcome: {
-            indicator: outcomeObj.indicator,
+            integrityResult: caseIntegrity,
+            indicator: outcomeIndicator,
             type: outcomeObj.type,
             filterColor: outcomeObj.filterColor,
             title: outcomeObj.title,
@@ -3033,12 +3137,16 @@ function processCaseOutcome(actionIds) {
     }
     gameStateV2.sessionLog.cases.push(caseRecord);
 
-    // LLENAR PANTALLA DE RESULTADO A (TELEMETRÍA RAW - SLIDE 1)
+    // ==========================================================================
+    // 6. LLENAR PANTALLA DE RESULTADO A (SLIDE 1: TELEMETRÍA RAW)
+    // ==========================================================================
     document.getElementById('m-time-level-badge').innerText = `${speedLabel} (${percentageUsed.toFixed(0)}% | ${totalTimeUsedSeconds}s)`;
-    document.getElementById('m-time-desc').innerText = `Deliberación (${deliberationSeconds.toFixed(0)}s) + ${pausesUsed} pausa(s) (+${pausesTimeSeconds}s) + ejecución de ${idsArray.length} acción(es) (+${actionsExecutionSeconds}s). Total de caso asignado: ${totalCaseSeconds}s.`;
-    document.getElementById('m-time-impact-cost').innerText = `💰 Costo: +$${addedCost.toLocaleString('en-US')}`;
+    document.getElementById('m-time-desc').innerText = `Deliberación (${deliberationSeconds.toFixed(0)}s) + ${pausesUsed} pausa(s) (+${pausesTimeSeconds}s) + ${idsArray.length} acción(es) (+${actionsExecutionSeconds}s). Total asignado: ${totalCaseSeconds}s.`;
+    
+    const costSign = caseTotalAddedCost >= 0 ? '+' : '-';
+    document.getElementById('m-time-impact-cost').innerText = `💰 Costo: ${costSign}$${Math.abs(caseTotalAddedCost).toLocaleString('en-US')}`;
     document.getElementById('m-time-impact-react').innerText = `⚡ Reactividad: ${reactivityDelta >= 0 ? '+' : ''}${reactivityDelta} (${speedLabel})`;
-    document.getElementById('m-time-impact-calib').innerText = `🎯 Calibración: ${calibrationBonusDelta >= 0 ? '+' : ''}${calibrationBonusDelta} (${outcomeObj.indicator === 1 ? 'Acierto' : (outcomeObj.indicator === 3 ? 'Error' : 'Neutro')})`;
+    document.getElementById('m-time-impact-calib').innerText = `🎯 Calibración: ${actionsCalibSum >= 0 ? '+' : ''}${actionsCalibSum} (Acciones) ${calibrationBonusDelta >= 0 ? '+' : ''}${calibrationBonusDelta} (${outcomeIndicator === 1 ? 'Acierto' : (outcomeIndicator === 3 ? 'Error' : 'Neutro')})`;
 
     document.getElementById('m-pauses-badge').innerText = `${pausesUsed}/3 USADAS (+${pausesTimeSeconds}s)`;
     document.getElementById('m-pauses-impact-react').innerText = `⚡ Reactividad: -${pausesUsed}`;
@@ -3054,35 +3162,28 @@ function processCaseOutcome(actionIds) {
     document.getElementById('m-review-rejected-count').innerText = `${rejectedCount} descartadas ✖`;
     document.getElementById('m-review-impact-cost').innerText = `💰 Costo Verificación: +$${(unlockedCount * 3000).toLocaleString('en-US')}`;
 
-    // CONSTRUIR MATRIZ DE LAS 6 ACCIONES (SLIDE 2) CON FORMATO TABULAR ALINEADO
-    const allActions = [
-        ...cData.initialActions.map(a => ({ ...a, source: 'initial' })),
-        ...cData.unlockedActions.map(a => ({ ...a, source: 'unlocked' }))
-    ];
-
+    // ==========================================================================
+    // 7. CONSTRUIR MATRIZ DE LAS 6 ACCIONES (SLIDE 2)
+    // ==========================================================================
     const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
     const matrixListEl = document.getElementById('metrics-actions-matrix-list');
     if (matrixListEl) {
-        matrixListEl.innerHTML = allActions.map((act, idx) => {
-            const isExec = idsArray.includes(act.id);
-            const idealCat = getActionIdealCategory(cData.id, act.id);
-            const quad = getActionQuadrant(isExec, idealCat);
+        matrixListEl.innerHTML = actionsEvaluationList.map((item, idx) => {
             const letter = letters[idx] || String(idx + 1);
-
             return `
-                <div class="matrix-action-table-row ${isExec ? 'executed' : 'not-executed'}">
+                <div class="matrix-action-table-row ${item.isExecuted ? 'executed' : 'not-executed'}">
                     <div class="cell-action-desc">
                         <span class="act-letter-tag">${letter}</span>
-                        <span class="act-title-text">${act.text}</span>
+                        <span class="act-title-text">${item.text}</span>
                     </div>
                     <div class="cell-status">
-                        <span class="act-status-tag ${isExec ? 'tag-exec' : 'tag-noexec'}">${isExec ? '✔ EJECUTADA' : '✖ NO EJECUTADA'}</span>
+                        <span class="act-status-tag ${item.isExecuted ? 'tag-exec' : 'tag-noexec'}">${item.isExecuted ? '✔ EJECUTADA' : '✖ NO EJECUTADA'}</span>
                     </div>
                     <div class="cell-quadrant">
-                        <span class="quadrant-badge ${quad.badgeClass}">${quad.badgeText}</span>
+                        <span class="quadrant-badge ${item.quadrant.badgeClass}">${item.quadrant.badgeText}</span>
                     </div>
                     <div class="cell-impact">
-                        ${quad.impactHtml}
+                        ${item.quadrant.impactHtml}
                     </div>
                 </div>
             `;

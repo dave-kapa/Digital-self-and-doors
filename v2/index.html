@@ -978,6 +978,74 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
 
         </main>
 
+        <!-- MODAL DE OBJETIVO GENERAL DEL JUEGO (ENTRE P.A.R.A. Y CASO 01) -->
+        <div class="cyber-modal-overlay" id="game-objective-overlay" style="display:none; z-index: 10000;">
+            <div class="cyber-modal-card glass-panel objective-modal-card" id="game-objective-card">
+                <div class="objective-modal-header">
+                    <div class="card-badge" style="background:rgba(0,216,255,0.12); border-color:var(--color-cyan); color:var(--color-cyan);">MISIÓN DEL FACTOR HUMANO // PROTOCOLO DE AGENCIA</div>
+                    <h2 class="objective-modal-title">OBJETIVO GENERAL DEL SISTEMA</h2>
+                    <p class="objective-modal-lead">
+                        La integración entre inteligencia artificial y supervisión humana define la seguridad de la red. Tu desempeño como operador determinará si preservamos la agencia o cedemos el control a la automatización no supervisada.
+                    </p>
+                </div>
+
+                <!-- 3 Pilares Fundamentales -->
+                <div class="objective-pillars-grid">
+                    <div class="objective-pillar-card pillar-integrity">
+                        <div class="pillar-icon">🛡</div>
+                        <h4 class="pillar-title">1. PRESERVAR LA INTEGRIDAD</h4>
+                        <p class="pillar-desc">Mantener la infraestructura en estado <strong>SEGURO</strong> resolviendo cada amenaza con deliberación y sin provocar brechas ni colapsos operativos.</p>
+                    </div>
+                    <div class="objective-pillar-card pillar-agency">
+                        <div class="pillar-icon">🧠</div>
+                        <h4 class="pillar-title">2. CALIBRAR LA AGENCIA</h4>
+                        <p class="pillar-desc">Recuperar el control equilibrado: supervisar con criterio crítico sin caer en la confianza ciega ni en el bloqueo reactivo.</p>
+                    </div>
+                    <div class="objective-pillar-card pillar-cost">
+                        <div class="pillar-icon">💰</div>
+                        <h4 class="pillar-title">3. MINIMIZAR EL COSTO</h4>
+                        <p class="pillar-desc">Optimizar el tiempo de análisis y verificación. Los errores y sobre-contenciones multiplican las pérdidas de la operación.</p>
+                    </div>
+                </div>
+
+                <!-- Capa Colectiva -->
+                <div class="objective-collective-box">
+                    <div class="collective-icon">🌐</div>
+                    <div class="collective-text">
+                        <strong style="color:var(--color-cyan); display:block; font-family:var(--font-heading); font-size:12px; margin-bottom:3px;">RESPONSABILIDAD COLECTIVA DEL SISTEMA:</strong>
+                        <p style="margin:0; font-size:12.5px; color:#d8eaff; line-height:1.4;">No operas en aislamiento. Formas parte de una red de operadores donde la estabilidad global del sistema dependerá del balance acumulado de todos los participantes.</p>
+                    </div>
+                </div>
+
+                <!-- Tira de Indicadores de Inicio -->
+                <div class="objective-stats-strip">
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-lbl">INTEGRIDAD:</span>
+                        <span class="stat-mini-val" style="color:var(--color-agency-green);">SEGURO</span>
+                    </div>
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-lbl">CALIBRACIÓN:</span>
+                        <span class="stat-mini-val" style="color:var(--color-cyan);">0</span>
+                    </div>
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-lbl">REACTIVIDAD:</span>
+                        <span class="stat-mini-val" style="color:var(--color-cyan);">0</span>
+                    </div>
+                    <div class="stat-mini-pill">
+                        <span class="stat-mini-lbl">COSTO BASE:</span>
+                        <span class="stat-mini-val" style="color:var(--color-warning-amber);">$0 / $100K MÁX</span>
+                    </div>
+                </div>
+
+                <div class="objective-action-row" style="margin-top:18px;">
+                    <button class="btn-detroit-primary" style="width:100%; justify-content:center; padding:14px;" onclick="closeGameObjectiveModalAndStartGame()">
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text">🚀 INICIAR PRIMERA OPERACIÓN // CASO 01</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- MODALES DINÁMICOS DE P.A.R.A. (ANALIZAR, REVISAR, ACTUAR) -->
         <div class="cyber-modal-overlay" id="para-modal-overlay" style="display:none;">
             <div class="cyber-modal-card glass-panel" id="para-modal-card">
