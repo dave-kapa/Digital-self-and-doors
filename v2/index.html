@@ -26,7 +26,7 @@
                 <div class="role-select-header">
                     <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">SISTEMA FARO V2.0 // PUERTA DE ACCESO</div>
                     <h2 class="role-select-title">¿CÓMO DESEAS INGRESAR?</h2>
-                    <p class="role-select-desc">Selecciona tu rol para inicializar el entorno de operación o el panel de facilitación en vivo.</p>
+                    <p class="role-select-desc">Selecciona tu rol para inicializar el entorno de operación o el panel de control en vivo.</p>
                 </div>
 
                 <div class="role-cards-grid">
@@ -34,7 +34,7 @@
                     <div class="role-option-card role-card-facilitator" onclick="selectUserRole('facilitator')">
                         <div class="role-icon-box">🎛</div>
                         <div class="role-text-box">
-                            <span class="role-type-tag tag-fac">CONTROLADOR // FACILITADOR</span>
+                            <span class="role-type-tag tag-fac">CONTROLADOR // SALA DE MANDO</span>
                             <h3 class="role-name">PANEL DE CONTROL</h3>
                             <p class="role-explain">Dirige el ritmo de la sesión, desbloquea candados de avance y monitorea telemetría grupal y resultados en tiempo real.</p>
                         </div>
@@ -120,7 +120,7 @@
                         <span class="error-icon">⚠️</span>
                         <div class="error-text">
                             <strong style="color:var(--color-alert-magenta); display:block; font-size:12px; font-family:var(--font-heading);">PIN INCORRECTO // ACCESO DENEGADO</strong>
-                            <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el facilitador. Respeta mayúsculas y minúsculas (Ejemplo de prueba: <strong>F4R0</strong>).</span>
+                            <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el Controlador. Respeta mayúsculas y minúsculas (Ejemplo de prueba: <strong>F4R0</strong>).</span>
                         </div>
                     </div>
 
@@ -138,7 +138,7 @@
                     <div class="login-field-group">
                         <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN (MAYÚSCULAS/ALFANUMÉRICO):</label>
                         <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="8" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()">
-                        <span class="field-hint">* Código alfanumérico proporcionado por el Facilitador (PIN de prueba: <strong>F4R0</strong>).</span>
+                        <span class="field-hint">* Código alfanumérico proporcionado por el Controlador (PIN de prueba: <strong>F4R0</strong>).</span>
                     </div>
 
                     <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
@@ -154,7 +154,7 @@
             </div>
         </section>
 
-        <!-- PANTALLA C: LOGIN DE FACILITADOR (CONTRASEÑA + PIN DE SESIÓN) -->
+        <!-- PANTALLA C: LOGIN DE CONTROLADOR (CONTRASEÑA + PIN DE SESIÓN) -->
         <section class="intro-view-sub" id="screen-login-facilitator" style="display:none;">
             <div class="cover-fullscreen-bg">
                 <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image" style="filter: blur(4px) brightness(0.4) sepia(0.3) hue-rotate(-20deg);">
@@ -164,9 +164,9 @@
 
             <div class="cyber-card glass-panel login-card fac-login-card" style="position: relative; z-index: 10;">
                 <div class="login-header">
-                    <div class="card-badge" style="background:rgba(255, 107, 53, 0.15); border-color:#ff6b35; color:#ff6b35;">ACCESO DE CONTROLADOR // SALA DE FACILITACIÓN</div>
+                    <div class="card-badge" style="background:rgba(255, 107, 53, 0.15); border-color:#ff6b35; color:#ff6b35;">ACCESO DE CONTROLADOR // SALA DE MANDO</div>
                     <h2 class="login-title" style="color:#ffb74d;">AUTENTICACIÓN DE CONTROLADOR</h2>
-                    <p class="login-desc">Ingresa la contraseña de facilitador y el PIN de la sesión a sincronizar.</p>
+                    <p class="login-desc">Ingresa la contraseña de Controlador y el PIN de la sesión a sincronizar.</p>
                 </div>
 
                 <form class="login-form" id="fac-login-form" onsubmit="handleFacilitatorLogin(event)">
@@ -180,7 +180,7 @@
 
                     <div class="login-field-group">
                         <label for="fac-pass" class="login-label">CONTRASEÑA DE CONTROLADOR:</label>
-                        <input type="password" id="fac-pass" class="cyber-input" placeholder="Contraseña de Facilitador (Default: F4R0_ADMIN)" required autocomplete="current-password">
+                        <input type="password" id="fac-pass" class="cyber-input" placeholder="Contraseña de Controlador (Default: F4R0_ADMIN)" required autocomplete="current-password">
                     </div>
 
                     <div class="login-field-group">
@@ -208,57 +208,59 @@
             <div class="loading-sync-frame-card">
                 <!-- Banner Carrusel en Proporción Panorámica Fija -->
                 <div class="sync-banner-slideshow">
-                    <img src="assets/images/case1_autonomy.jpg" alt="Caso 1" class="sync-slide-img active" id="sync-slide-1">
-                    <img src="assets/images/case2_channel.jpg" alt="Caso 2" class="sync-slide-img" id="sync-slide-2">
-                    <img src="assets/images/case3_model.jpg" alt="Caso 3" class="sync-slide-img" id="sync-slide-3">
-                    <img src="assets/images/case4_decision.jpg" alt="Caso 4" class="sync-slide-img" id="sync-slide-4">
-                    <div class="sync-gradient-overlay"></div>
-                    <div class="cover-scanlines"></div>
+                    <div class="sync-slide-img active" id="sync-slide-1" style="background-image: url('assets/images/detroit_cyber_bg.jpg');"></div>
+                    <div class="sync-slide-img" id="sync-slide-2" style="background-image: url('assets/images/faro_cover_gate.jpg');"></div>
+                    <div class="sync-slide-img" id="sync-slide-3" style="background-image: url('assets/images/circuit_pattern.jpg');"></div>
+                    <div class="sync-slide-img" id="sync-slide-4" style="background-image: url('assets/images/closing_governance.jpg');"></div>
+                    <div class="sync-slide-gradient"></div>
                 </div>
 
-                <div class="sync-content-box">
-                    <div class="sync-spinner-radar">
-                        <div class="radar-sweep"></div>
-                        <span class="radar-dot"></span>
+                <div class="loading-sync-body">
+                    <div class="sync-status-header">
+                        <div class="sync-beacon-glow"></div>
+                        <span class="sync-title-tag">SISTEMA CIBERNÉTICO V2.0 // ESTABLECIENDO ENLACE OPERATIVO</span>
                     </div>
 
-                    <div class="card-badge" style="background: rgba(73, 245, 193, 0.12); border-color: var(--color-agency-green); color: var(--color-agency-green);">ENLACE NEURONAL // SINCRONIZACIÓN</div>
-                    <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
-                    <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
-
-                    <div class="sync-status-terminal">
-                        <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
+                    <div class="sync-center-info">
+                        <h2 class="sync-main-label">SINCRONIZANDO TERMINAL CON FARO-0</h2>
+                        <p class="sync-sub-label" id="sync-player-tag">OPERADOR: CONECTANDO... // PIN: F4R0</p>
                     </div>
 
-                    <div class="sync-progress-track">
-                        <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
+                    <div class="sync-progress-container">
+                        <div class="sync-progress-track">
+                            <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <div class="sync-meta-row">
+                            <span class="sync-terminal-line" id="sync-terminal-line">1/4 Verificando integridad de componentes locales en memoria...</span>
+                            <span class="sync-encryption-tag">🔒 ENLACE CIFRADO LOCAL</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- BARRA SUPERIOR DE SISTEMA FARO & ESTADO DE AGENCIA -->
-        <header class="cyber-header">
-            <div class="header-brand">
+        <!-- 1. BANNER SUPERIOR PERMANENTE / HEADER (TÍTULO Y ESTADO) -->
+        <header class="cyber-header" id="cyber-header">
+            <div class="brand-block">
                 <div class="faro-pulse-node"></div>
                 <div class="brand-text">
-                    <span class="faro-title">FARO // SYSTEM V2.1</span>
+                    <span class="faro-title">FARO</span>
                     <span class="faro-subtitle">Facilitador Autónomo de Respuesta Operativa</span>
                 </div>
             </div>
 
-            <!-- Badge Central de Webinar Interactivo -->
-            <div class="header-center-badge">
-                <span class="badge-webinar">WEBINAR INTERACTIVO // FARO V2.0</span>
+            <div class="session-badge-container">
+                <span class="badge-webinar">WEBINAR INTERACTIVO // DEMO DE AGENCIA</span>
             </div>
 
-            <!-- Controles a la Derecha: Estado de FARO y Toggle Facilitador -->
+            <!-- Controles a la Derecha: Estado de FARO y Toggle Controlador -->
             <div class="header-right-controls">
-                <div class="header-status-badge">
-                    <span class="status-label">ESTADO:</span>
-                    <span class="status-value" id="faro-status-text">CALIBRACIÓN</span>
+                <div class="faro-live-status-pill">
+                    <span class="status-dot"></span>
+                    <span class="status-text-label">ESTADO DE FARO:</span>
+                    <strong class="status-value-bold" id="faro-status-text">CALIBRACIÓN</strong>
                 </div>
-                <button class="btn-toggle-fac" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Facilitador">🎛 Facilitador ▾</button>
+                <button class="btn-toggle-fac" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
             </div>
         </header>
 
@@ -438,7 +440,7 @@
                     <div class="action-row" style="margin-top: 10px;">
                         <button class="btn-detroit-primary btn-disabled-mission" id="btn-start-calibration" onclick="startCalibrationExperience()" disabled style="opacity: 0.45; cursor: not-allowed;">
                             <span class="detroit-btn-glow"></span>
-                            <span class="btn-text" id="btn-start-calibration-text">🔒 ESPERANDO AL FACILITADOR...</span>
+                            <span class="btn-text" id="btn-start-calibration-text">🔒 ESPERANDO AL CONTROLADOR...</span>
                         </button>
                     </div>
 
@@ -447,6 +449,10 @@
                         <div class="fac-gate-header">
                             <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 1</span>
                             <span class="fac-gate-status" id="fac-gate-1-status-text">ESTADO: JUGADORES EN ESPERA</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-1-player-count">0</span> operadores en este punto
                         </div>
                         <p class="fac-gate-desc">Los operadores están visualizando la bienvenida. Pulsa el botón para habilitarles el inicio del protocolo de calibración.</p>
                         <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-1" onclick="facUnlockGate1()">
@@ -507,11 +513,11 @@
                         </div>
                     </div>
 
-                    <!-- PREGUNTA DE CONFIRMACIÓN DEL JUGADOR (BOTÓN DETROIT BECOME HUMAN DESHABILITADO HASTA LEER Y DESBLOQUEO DEL FACILITADOR) -->
+                    <!-- PREGUNTA DE CONFIRMACIÓN DEL JUGADOR (BOTÓN DETROIT BECOME HUMAN DESHABILITADO HASTA LEER Y DESBLOQUEO DEL CONTROLADOR) -->
                     <div class="faro-start-prompt-row" id="faro-start-prompt-box">
                         <button class="btn-detroit-primary btn-disabled-mission" id="faro-start-calibration-btn" onclick="confirmStartCalibrationRounds()" disabled>
                             <span class="detroit-btn-glow"></span>
-                            <span class="btn-text" id="faro-start-calib-btn-text">🔒 ESPERANDO AL FACILITADOR...</span>
+                            <span class="btn-text" id="faro-start-calib-btn-text">🔒 ESPERANDO AL CONTROLADOR...</span>
                         </button>
                     </div>
 
@@ -520,6 +526,10 @@
                         <div class="fac-gate-header">
                             <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 2</span>
                             <span class="fac-gate-status" id="fac-gate-2-status-text">ESTADO: DIÁLOGO DE FARO</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-2-player-count">0</span> operadores en este punto
                         </div>
                         <p class="fac-gate-desc">Habilita a todos los operadores para comenzar las 4 rondas de calibración y pasa al panel de monitoreo en tiempo real.</p>
                         <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-2" onclick="facUnlockGate2AndGoRealtime()">
@@ -573,7 +583,7 @@
                     <div class="action-row" style="margin-top: 24px;">
                         <button class="btn-detroit-primary btn-disabled-mission" id="btn-processing-verify-kernel" onclick="proceedFromProcessingToReveal()" disabled style="opacity: 0.45; cursor: not-allowed;">
                             <span class="detroit-btn-glow"></span>
-                            <span class="btn-text" id="btn-processing-verify-text">🔒 ESPERANDO AL FACILITADOR...</span>
+                            <span class="btn-text" id="btn-processing-verify-text">🔒 ESPERANDO AL CONTROLADOR...</span>
                         </button>
                     </div>
                 </div>
@@ -728,6 +738,10 @@
                         <div class="fac-gate-header">
                             <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 3</span>
                             <span class="fac-gate-status" id="fac-gate-3-status-text">ESTADO: LIBRETO AGENCIA CEDIDA</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-3-player-count">0</span> operadores en este punto
                         </div>
                         <p class="fac-gate-desc">Habilita a los jugadores para avanzar a la verificación de estado del kernel.</p>
                         <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-3" onclick="facUnlockGate3()">
@@ -1279,7 +1293,7 @@
                     </div>
                     
                     <h2 class="fourth-wall-title" id="fw-case-title">DISCUSIÓN EN VIVO // CASO 01</h2>
-                    <p class="fourth-wall-subtitle" id="fw-case-subtitle">Puntos de conversación y análisis pedagógico para el Facilitador y Participantes.</p>
+                    <p class="fourth-wall-subtitle" id="fw-case-subtitle">Puntos de conversación y análisis pedagógico para el Controlador y Participantes.</p>
 
                     <!-- CONTENEDOR DE BULLET POINTS DE DISCUSIÓN -->
                     <div class="fourth-wall-bullets-box" id="fw-bullets-container">
@@ -1517,11 +1531,11 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     </div>
                 </div>
 
-                <!-- BOTÓN OPERADOR (CONDICIONADO AL FACILITADOR) -->
+                <!-- BOTÓN OPERADOR (CONDICIONADO AL CONTROLADOR) -->
                 <div class="objective-action-row" style="margin-top:18px;" id="player-objective-action-row">
                     <button class="btn-detroit-primary btn-disabled-mission" id="btn-player-start-case-1" style="width:100%; justify-content:center; padding:14px; opacity: 0.45; cursor: not-allowed;" onclick="closeGameObjectiveModalAndStartGame()" disabled>
                         <span class="detroit-btn-glow"></span>
-                        <span class="btn-text" id="btn-player-start-case-1-text">🔒 ESPERANDO QUE EL FACILITADOR INICIE LA OPERACIÓN...</span>
+                        <span class="btn-text" id="btn-player-start-case-1-text">🔒 ESPERANDO QUE EL CONTROLADOR INICIE LA OPERACIÓN...</span>
                     </button>
                 </div>
 
@@ -1530,6 +1544,10 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     <div class="fac-gate-header">
                         <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 4</span>
                         <span class="fac-gate-status" id="fac-gate-4-status-text">ESTADO: OBJETIVO GENERAL</span>
+                    </div>
+                    <div class="fac-gate-players-indicator">
+                        <span class="fac-gate-player-icon">👥</span>
+                        <span class="fac-gate-player-num" id="fac-gate-4-player-count">0</span> operadores en este punto
                     </div>
                     <p class="fac-gate-desc">Inicia la Primera Operación (Caso 01) para toda la sala de operadores conectados.</p>
                     <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-4" style="width:100%; justify-content:center; padding:14px;" onclick="facUnlockGate4AndStartCase1()">

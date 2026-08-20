@@ -743,7 +743,7 @@ function handleIncomingSyncEvent(event) {
         }
     }
 
-    // Fuerza inicio de caso 01 para toda la sala (Emitido por el Facilitador)
+    // Fuerza inicio de caso 01 para toda la sala (Emitido por el Controlador)
     if (event.type === 'FAC_FORCE_START_CASE_1') {
         if (gameStateV2.userRole === 'operator') {
             const objOverlay = document.getElementById('game-objective-overlay');
@@ -753,18 +753,33 @@ function handleIncomingSyncEvent(event) {
         }
     }
 
-    // Registro de jugador conectado (Para telemetría de Facilitador)
+    // Registro de jugador conectado (Para telemetría de Controlador)
     if (event.type === 'PLAYER_CONNECTED') {
         const p = event.payload;
         if (p && p.playerId) {
             facState.connectedPlayers[p.playerId] = {
                 name: p.name || 'Operador',
+                currentScreen: 'screen-waiting',
                 round: 1,
                 finished: false,
                 surrendered: false,
                 lastSeen: Date.now()
             };
             updateFacilitatorRealtimeUI();
+            updateGatePlayerCounts();
+        }
+    }
+
+    // Actualización de pantalla del jugador (Para contar operadores en cada candado)
+    if (event.type === 'PLAYER_SCREEN_UPDATE') {
+        const p = event.payload;
+        if (p && p.playerId) {
+            if (!facState.connectedPlayers[p.playerId]) {
+                facState.connectedPlayers[p.playerId] = { name: 'Operador', round: 1, finished: false, surrendered: false };
+            }
+            facState.connectedPlayers[p.playerId].currentScreen = p.screen;
+            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
+            updateGatePlayerCounts();
         }
     }
 
@@ -776,8 +791,10 @@ function handleIncomingSyncEvent(event) {
                 facState.connectedPlayers[p.playerId] = { name: 'Operador', finished: false, surrendered: false };
             }
             facState.connectedPlayers[p.playerId].round = p.round || 1;
+            facState.connectedPlayers[p.playerId].currentScreen = 'screen-calibration';
             facState.connectedPlayers[p.playerId].lastSeen = Date.now();
             updateFacilitatorRealtimeUI();
+            updateGatePlayerCounts();
         }
     }
 
@@ -790,10 +807,32 @@ function handleIncomingSyncEvent(event) {
             }
             facState.connectedPlayers[p.playerId].finished = true;
             facState.connectedPlayers[p.playerId].surrendered = !!p.surrendered;
+            facState.connectedPlayers[p.playerId].currentScreen = 'screen-calibration-processing';
             facState.connectedPlayers[p.playerId].lastSeen = Date.now();
             updateFacilitatorRealtimeUI();
+            updateGatePlayerCounts();
         }
     }
+}
+
+function updateGatePlayerCounts() {
+    const players = Object.values(facState.connectedPlayers);
+    
+    // Conteo exacto en cada uno de los 4 candados
+    const g1Count = players.filter(p => !p.currentScreen || p.currentScreen === 'screen-waiting').length;
+    const g2Count = players.filter(p => p.currentScreen === 'screen-calibration').length;
+    const g3Count = players.filter(p => p.currentScreen === 'screen-calibration-processing').length;
+    const g4Count = players.filter(p => p.currentScreen === 'game-objective-overlay').length;
+
+    const elG1 = document.getElementById('fac-gate-1-player-count');
+    const elG2 = document.getElementById('fac-gate-2-player-count');
+    const elG3 = document.getElementById('fac-gate-3-player-count');
+    const elG4 = document.getElementById('fac-gate-4-player-count');
+
+    if (elG1) elG1.innerText = g1Count;
+    if (elG2) elG2.innerText = g2Count;
+    if (elG3) elG3.innerText = g3Count;
+    if (elG4) elG4.innerText = g4Count;
 }
 
 function updateFacilitatorRealtimeUI() {
@@ -850,6 +889,8 @@ function updateFacilitatorRealtimeUI() {
     const elCtrlFill = document.getElementById('fac-res-controlled-fill');
     if (elCtrlPct) elCtrlPct.innerText = `${controlledPct}%`;
     if (elCtrlFill) elCtrlFill.style.width = `${controlledPct}%`;
+
+    updateGatePlayerCounts();
 }
 
 function updateGateUI() {
@@ -878,7 +919,7 @@ function updateGateUI() {
                 startBtn.classList.add('btn-disabled-mission');
                 startBtn.style.opacity = '0.45';
                 startBtn.style.cursor = 'not-allowed';
-                if (startBtnTxt) startBtnTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+                if (startBtnTxt) startBtnTxt.innerText = "🔒 ESPERANDO AL CONTROLADOR...";
             }
         }
     }
@@ -905,7 +946,7 @@ function updateGateUI() {
                 faroStartBtn.classList.add('btn-disabled-mission');
                 faroStartBtn.style.opacity = '0.45';
                 faroStartBtn.style.cursor = 'not-allowed';
-                if (faroStartBtnTxt) faroStartBtnTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+                if (faroStartBtnTxt) faroStartBtnTxt.innerText = "🔒 ESPERANDO AL CONTROLADOR...";
             }
         }
     }
@@ -932,7 +973,7 @@ function updateGateUI() {
                 procVerifyBtn.classList.add('btn-disabled-mission');
                 procVerifyBtn.style.opacity = '0.45';
                 procVerifyBtn.style.cursor = 'not-allowed';
-                if (procVerifyTxt) procVerifyTxt.innerText = "🔒 ESPERANDO AL FACILITADOR...";
+                if (procVerifyTxt) procVerifyTxt.innerText = "🔒 ESPERANDO AL CONTROLADOR...";
             }
         }
     }
@@ -957,9 +998,11 @@ function updateGateUI() {
             playerStartCaseBtn.classList.add('btn-disabled-mission');
             playerStartCaseBtn.style.opacity = '0.45';
             playerStartCaseBtn.style.cursor = 'not-allowed';
-            if (playerStartCaseTxt) playerStartCaseTxt.innerText = "🔒 ESPERANDO QUE EL FACILITADOR INICIE LA OPERACIÓN...";
+            if (playerStartCaseTxt) playerStartCaseTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR INICIE LA OPERACIÓN...";
         }
     }
+
+    updateGatePlayerCounts();
 }
 
 function checkUrlRoleParam() {
@@ -972,7 +1015,7 @@ function checkUrlRoleParam() {
     }
 }
 
-// Funciones de control de candados disparadas por el Facilitador
+// Funciones de control de candados disparadas por el Controlador
 function facUnlockGate1() {
     gameStateV2.sessionGates.gate1_intro = true;
     broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
@@ -1141,7 +1184,7 @@ function goToLoginScreen() {
 function devSkipIntroDirectToGame() {
     if (!gameStateV2.playerProfile) {
         gameStateV2.playerProfile = {
-            name: gameStateV2.userRole === 'facilitator' ? "Facilitador Pruebas" : "Operador Pruebas",
+            name: gameStateV2.userRole === 'facilitator' ? "Controlador Pruebas" : "Operador Pruebas",
             email: "dev@faro.internal",
             pin: DEFAULT_SESSION_PIN,
             role: gameStateV2.userRole,
@@ -1170,7 +1213,7 @@ function handleFacilitatorLogin(event) {
     const pass = passInput ? passInput.value.trim() : "";
     const pin = pinInput ? pinInput.value.trim() : "";
 
-    // Contraseña de facilitador
+    // Contraseña de controlador
     if (pass !== "F4R0_ADMIN" && pass !== "admin") {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
@@ -1192,8 +1235,8 @@ function handleFacilitatorLogin(event) {
     if (errorAlert) errorAlert.style.display = 'none';
 
     gameStateV2.playerProfile = {
-        name: "Controlador / Facilitador",
-        email: "facilitador@faro-system.internal",
+        name: "Controlador",
+        email: "controlador@faro-system.internal",
         pin: pin,
         role: "facilitator",
         loginTimestamp: new Date().toISOString()
@@ -1367,6 +1410,10 @@ function switchScreenV2(screenId) {
         target.classList.add('active');
         target.style.display = 'block';
         gameStateV2.activeScreen = screenId;
+    }
+
+    if (gameStateV2.userRole === 'operator') {
+        broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: screenId });
     }
 
     updateHeaderUI();
@@ -2423,6 +2470,10 @@ function flipParaCard(cardEl, letter) {
 function openGameObjectiveModal() {
     const overlay = document.getElementById('game-objective-overlay');
     if (overlay) overlay.style.display = 'flex';
+    if (gameStateV2.userRole === 'operator') {
+        broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: 'game-objective-overlay' });
+    }
+    updateGateUI();
 }
 
 function closeGameObjectiveModalAndStartGame() {
@@ -4257,10 +4308,10 @@ function toggleFacilitatorBar() {
     if (!bar) return;
     if (bar.style.display === 'none') {
         bar.style.display = 'flex';
-        if (btn) btn.innerHTML = '🎛 Facilitador ▾';
+        if (btn) btn.innerHTML = '🎛 Controlador ▾';
     } else {
         bar.style.display = 'none';
-        if (btn) btn.innerHTML = '🎛 Facilitador ▴';
+        if (btn) btn.innerHTML = '🎛 Controlador ▴';
     }
 }
 
