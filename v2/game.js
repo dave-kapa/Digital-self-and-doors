@@ -3273,12 +3273,16 @@ function processCaseOutcome(actionIds) {
         calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
     }
 
-    // FÓRMULA DE COSTO OPERATIVO: Costo Base por Segundo + Ajuste por Desenlace
+    // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso -> $5,000
+    const finalReactivityLevel = Math.max(-5, Math.min(5, gameStateV2.hudState.reactivity + reactivityDelta));
+    const reactivityCostAdjustment = finalReactivityLevel * 5000;
+
+    // FÓRMULA DE COSTO OPERATIVO: Costo Base por Tiempo + Ajuste por Integridad + Ajuste por Reactividad
     const costPerSec = getOperationalCostPerSecond();
     const baseTimeCost = Math.round(totalTimeUsedSeconds * costPerSec);
-    const caseTotalAddedCost = baseTimeCost + outcomeCostAdjustment;
+    const caseTotalAddedCost = baseTimeCost + outcomeCostAdjustment + reactivityCostAdjustment;
 
-    // Aplicar deltas del caso al HUD con clamping [-5, +5]
+    // Aplicar deltas del caso al HUD con clamping [-5, +5] de manera acumulativa
     applyHudReactivityDelta(reactivityDelta);
     applyHudCalibrationDelta(actionsCalibSum + calibrationBonusDelta);
     applyHudCostDelta(caseTotalAddedCost);
@@ -3315,6 +3319,8 @@ function processCaseOutcome(actionIds) {
         actionsCalibSum: actionsCalibSum,
         baseTimeCost: baseTimeCost,
         outcomeCostAdjustment: outcomeCostAdjustment,
+        reactivityCostAdjustment: reactivityCostAdjustment,
+        finalReactivityLevel: finalReactivityLevel,
         caseTotalAddedCost: caseTotalAddedCost,
         totalTimeUsedSeconds: totalTimeUsedSeconds
     };
@@ -3359,6 +3365,7 @@ function processCaseOutcome(actionIds) {
             costPerSecondIndex: parseFloat(costPerSec.toFixed(2)),
             baseTimeCost: baseTimeCost,
             outcomeCostAdjustment: outcomeCostAdjustment,
+            reactivityCostAdjustment: reactivityCostAdjustment,
             caseTotalAddedCost: caseTotalAddedCost
         },
         paraProcess: {
@@ -3497,7 +3504,9 @@ function showNarrativeFeedbackScreen() {
         costTotalEl.innerText = `${sign}$${Math.abs(outcomeObj.caseTotalAddedCost).toLocaleString('en-US')}`;
         timeBreakdownEl.innerText = `⏱ Tiempo (${outcomeObj.totalTimeUsedSeconds}s): +$${outcomeObj.baseTimeCost.toLocaleString('en-US')}`;
         const adjSign = outcomeObj.outcomeCostAdjustment >= 0 ? '+' : '-';
-        integBreakdownEl.innerText = `🛡 Ajuste Integridad: ${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')}`;
+        const reactSign = outcomeObj.reactivityCostAdjustment >= 0 ? '+' : '-';
+        const reactLevelSign = outcomeObj.finalReactivityLevel >= 0 ? '+' : '';
+        integBreakdownEl.innerHTML = `🛡 Ajuste Integridad: ${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')} <span class="breakdown-sep">|</span> ⚡ Reactividad (${reactLevelSign}${outcomeObj.finalReactivityLevel}): ${reactSign}$${Math.abs(outcomeObj.reactivityCostAdjustment).toLocaleString('en-US')}`;
     }
 
     document.getElementById('fb-narrative-box').innerText = outcomeObj.narrative;

@@ -1144,16 +1144,88 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                         <div class="pillar-icon">🛡</div>
                         <h4 class="pillar-title">1. PRESERVAR LA INTEGRIDAD</h4>
                         <p class="pillar-desc">Mantener el sistema en estado <strong>SEGURO</strong> resolviendo amenazas con criterio y evitando brechas operativas.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 1: Integridad (SEG encendido) -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <span class="hud-status-tag tag-safe" style="font-size:9px;">SEGURO</span>
+                            </div>
+                            <div class="hud-semaphore-container">
+                                <div class="semaphore-light light-green active" title="Meta: Mantener Seguro">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">SEG</span>
+                                </div>
+                                <div class="semaphore-light light-amber" title="Alerta">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">ALT</span>
+                                </div>
+                                <div class="semaphore-light light-red" title="Expuesto">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">EXP</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="objective-pillar-card pillar-agency">
                         <div class="pillar-icon">🧠</div>
                         <h4 class="pillar-title">2. CALIBRAR LA AGENCIA</h4>
                         <p class="pillar-desc">Supervisar la IA con sentido crítico, evitando tanto la confianza ciega como el bloqueo reactivo.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 2: Calibración (> 0 en Verde) -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <span class="hud-numeric-badge badge-pos" style="font-size:9px;">&gt; 0 (ZONA POSITIVA)</span>
+                            </div>
+                            <div class="hud-bipolar-meter">
+                                <div class="bipolar-track track-calibration">
+                                    <div class="bipolar-needle" style="left: 78%;"></div>
+                                </div>
+                                <div class="bipolar-ticks" style="font-size:8px;">
+                                    <span class="tick-label tick-neg">-5</span>
+                                    <span class="tick-label">-3</span>
+                                    <span class="tick-label tick-zero">0</span>
+                                    <span class="tick-label" style="color:#00e676;">+3</span>
+                                    <span class="tick-label tick-pos" style="font-weight:bold;">+5</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="objective-pillar-card pillar-cost">
                         <div class="pillar-icon">💰</div>
                         <h4 class="pillar-title">3. MINIMIZAR EL COSTO</h4>
                         <p class="pillar-desc">Optimizar tiempos de respuesta. Errores y sobre-contenciones multiplican las pérdidas operativas.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 3: Costo Mínimo en Verde -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <div class="cost-digital-counter" style="font-size:11px; color:#00e676;">$000,000</div>
+                            </div>
+                            <div class="hud-meter-wrap">
+                                <div class="segmented-track track-10-segments">
+                                    <div class="seg-block seg-low active"></div>
+                                    <div class="seg-block seg-low active"></div>
+                                    <div class="seg-block seg-low"></div>
+                                    <div class="seg-block seg-low"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="meter-needle needle-cost" style="left: 15%;"></div>
+                                </div>
+                                <div class="meter-sublabels" style="font-size:7.5px;">
+                                    <span class="sublbl-low" style="color:#00e676; font-weight:bold;">CONTROLADO (&lt; 40%)</span>
+                                    <span class="sublbl-mid">MEDIO</span>
+                                    <span class="sublbl-high">ALTO</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1163,26 +1235,6 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     <div class="collective-text">
                         <strong style="color:var(--color-cyan); display:block; font-family:var(--font-heading); font-size:12px; margin-bottom:3px;">RESPONSABILIDAD COLECTIVA:</strong>
                         <p style="margin:0; font-size:12px; color:#d8eaff; line-height:1.4;">Formas parte de un equipo. La estabilidad global de FARO dependerá de las decisiones combinadas de todos los operadores.</p>
-                    </div>
-                </div>
-
-                <!-- Tira de Indicadores de Inicio -->
-                <div class="objective-stats-strip">
-                    <div class="stat-mini-pill">
-                        <span class="stat-mini-lbl">INTEGRIDAD:</span>
-                        <span class="stat-mini-val" style="color:var(--color-agency-green);">SEGURO</span>
-                    </div>
-                    <div class="stat-mini-pill">
-                        <span class="stat-mini-lbl">CALIBRACIÓN:</span>
-                        <span class="stat-mini-val" style="color:var(--color-cyan);">0</span>
-                    </div>
-                    <div class="stat-mini-pill">
-                        <span class="stat-mini-lbl">REACTIVIDAD:</span>
-                        <span class="stat-mini-val" style="color:var(--color-cyan);">0</span>
-                    </div>
-                    <div class="stat-mini-pill">
-                        <span class="stat-mini-lbl">COSTO BASE:</span>
-                        <span class="stat-mini-val" style="color:var(--color-warning-amber);">$0 / $100K MÁX</span>
                     </div>
                 </div>
 
