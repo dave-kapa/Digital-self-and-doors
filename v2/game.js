@@ -1465,11 +1465,28 @@ function renderGroupResultsPageY(res, cData, cumData) {
 
 // PÁGINA Z: MATRIZ DE ACCIONES Y DICTAMEN (2x3)
 function renderGroupResultsPageZ(res, cData, cumData) {
-    // Header IG
+    // Header IG (Badge y Semáforo de 3 Bombillos SEG / ALT / EXP)
     const zBadge = document.getElementById('bc-z-ig-badge');
     if (zBadge) {
         zBadge.className = `z-ig-badge tag-${res.globalIntegrity}`;
-        zBadge.innerText = res.globalIntegrity.toUpperCase();
+        zBadge.innerText = res.globalIntegrity === 'safe' ? 'SEGURO' : (res.globalIntegrity === 'alert' ? 'ALERTA' : 'EXPUESTO');
+    }
+
+    const semSafe = document.getElementById('bc-z-sem-safe');
+    const semAlert = document.getElementById('bc-z-sem-alert');
+    const semExp = document.getElementById('bc-z-sem-exposed');
+    if (semSafe && semAlert && semExp) {
+        semSafe.classList.remove('active');
+        semAlert.classList.remove('active');
+        semExp.classList.remove('active');
+
+        if (res.globalIntegrity === 'safe') {
+            semSafe.classList.add('active');
+        } else if (res.globalIntegrity === 'alert') {
+            semAlert.classList.add('active');
+        } else if (res.globalIntegrity === 'exposed') {
+            semExp.classList.add('active');
+        }
     }
 
     // Totales de acciones para cálculo de porcentajes

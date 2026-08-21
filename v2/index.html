@@ -1608,8 +1608,22 @@
                         <!-- Header de Integridad en Página Z -->
                         <div class="z-page-integrity-banner">
                             <div class="z-ig-info">
-                                <span class="z-ig-label">INTEGRIDAD GLOBAL DEL SISTEMA EN ESTE CASO:</span>
+                                <span class="z-ig-label">INTEGRIDAD GLOBAL DEL SISTEMA:</span>
                                 <span class="z-ig-badge tag-safe" id="bc-z-ig-badge">SEGURO</span>
+                                <div class="hud-semaphore-container z-ig-semaphore" id="bc-z-ig-semaphore">
+                                    <div class="semaphore-light light-green active" id="bc-z-sem-safe" title="Sistema Seguro">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">SEG</span>
+                                    </div>
+                                    <div class="semaphore-light light-amber" id="bc-z-sem-alert" title="Alerta de Intrusión">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">ALT</span>
+                                    </div>
+                                    <div class="semaphore-light light-red" id="bc-z-sem-exposed" title="Sistema Expuesto / Brecha">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">EXP</span>
+                                    </div>
+                                </div>
                             </div>
                             <!-- Leyenda de Doble Barra -->
                             <div class="dual-bar-legend" style="margin:0;">
