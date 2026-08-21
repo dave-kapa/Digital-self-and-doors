@@ -729,6 +729,130 @@
                 </div>
             </section>
 
+            <!-- PANTALLA FACILITADOR 3: CASO EN VIVO (MONITOREO DE PARTIDO Y TELEMETRÍA EN TIEMPO REAL) -->
+            <section class="view-screen" id="screen-fac-case-live" style="display:none;">
+                <div class="cyber-card glass-panel fac-dashboard-card fac-case-live-card">
+                    <div class="card-badge" style="background:rgba(255,107,53,0.15); border-color:#ff6b35; color:#ff6b35;">SALA DE CONTROL // CASO EN VIVO</div>
+                    <h2 class="fac-dashboard-title" id="fac-case-live-title">CASO 01: CONTENCIÓN DE AUTONOMÍA</h2>
+                    <p class="fac-dashboard-desc">Monitoreo en tiempo real del progreso operativo, balance económico y decisiones P.A.R.A. de todos los operadores en la sala.</p>
+
+                    <!-- Tarjeta de Censo de Jugadores del Caso (100% Base con Recálculo a 60s) -->
+                    <div class="fac-case-census-card">
+                        <div class="fac-census-info-group">
+                            <div class="census-stat-item">
+                                <span class="census-stat-label">OPERADORES ACTIVOS (100% BASE):</span>
+                                <strong class="census-stat-val" id="fac-case-census-total">0</strong>
+                            </div>
+                            <div class="census-timer-pill" id="fac-case-census-pill">
+                                <span class="census-timer-icon">⏱</span>
+                                <span class="census-timer-text" id="fac-case-census-status">Censo inicial activo (Recálculo definitivo en: <strong id="fac-case-census-countdown">60s</strong>)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid de las 6 Métricas Principales de Telemetría + Alternativas -->
+                    <div class="fac-live-metrics-grid">
+                        
+                        <!-- Métrica 1: % Avance (Reacción Inicial Completada) -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">1. AVANCE EN P.A.R.A.</span>
+                                <span class="metric-pct-val" id="fac-case-metric-reactions-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">REACCIÓN INICIAL</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill" id="fac-case-metric-reactions-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-reactions-count">0 / 0 operadores en P.A.R.A.</span>
+                        </div>
+
+                        <!-- Métrica 2: % Casos Completados -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(0,230,118,0.15); border-color:#00e676; color:#00e676;">2. COMPLETADOS</span>
+                                <span class="metric-pct-val" id="fac-case-metric-finished-pct" style="color:#00e676;">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">ACCIONES EJECUTADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-green" id="fac-case-metric-finished-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-finished-count">0 / 0 operadores listos</span>
+                        </div>
+
+                        <!-- Métrica 3: Costo Promedio del Caso -->
+                        <div class="fac-live-metric-card metric-card-cost">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(255,213,79,0.15); border-color:#ffd54f; color:#ffd54f;">3. COSTO PROMEDIO</span>
+                            </div>
+                            <h4 class="metric-card-title">BALANCE ECONÓMICO</h4>
+                            <div class="metric-cost-val" id="fac-case-metric-avg-cost">$0</div>
+                            <span class="metric-sub-detail" id="fac-case-metric-cost-status">Promedio de operadores finalizados</span>
+                        </div>
+
+                        <!-- Métrica 4: % Total de Pausas Usadas -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">4. PAUSAS [P]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-pauses-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">PAUSAS USADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-amber" id="fac-case-metric-pauses-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-pauses-count">0 / 0 pausas posibles</span>
+                        </div>
+
+                        <!-- Métrica 5: % de Análisis Usados -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">5. ANÁLISIS [A]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-analyses-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">ANÁLISIS EJECUTADOS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-cyan" id="fac-case-metric-analyses-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-analyses-count">0 / 0 análisis posibles</span>
+                        </div>
+
+                        <!-- Métrica 6: % de Revisiones Usadas -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">6. REVISIONES [R]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-revisions-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">REVISIONES EJECUTADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-purple" id="fac-case-metric-revisions-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-revisions-count">0 / 0 revisiones posibles</span>
+                        </div>
+
+                        <!-- Métrica 7: # Alternativas Relevantes Descubiertas -->
+                        <div class="fac-live-metric-card metric-card-alternatives">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">7. ALTERNATIVAS CLAVE</span>
+                            </div>
+                            <h4 class="metric-card-title">ACCIONES RELEVANTES</h4>
+                            <div class="metric-num-highlight" id="fac-case-metric-actions-num">0</div>
+                            <span class="metric-sub-detail">medidas pertinentes consideradas</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Fila de Acciones del Controlador -->
+                    <div class="fac-action-row fac-live-actions-row" style="margin-top:24px; display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap;">
+                        <button type="button" class="btn-detroit-secondary btn-fac-inspect" id="btn-fac-inspect-case" onclick="facInspectCase()">
+                            <span class="btn-text">👁️ INSPECCIONAR CASO (VISTA OPERADOR) ➔</span>
+                        </button>
+                        <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-finish-case" onclick="facUnlockGateBCAndGoResults()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🏁 CERRAR CASO Y VER RESULTADOS GLOBALES (FIN DE PARTIDO) ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <!-- PANTALLA 2A: CAPÍTULO 3 — REVELACIÓN DE FARO Y RESULTADOS -->
             <section class="view-screen" id="screen-faro-reveal">
                 <div class="cyber-card glass-panel reveal-card">
@@ -931,6 +1055,17 @@
             <!-- PANTALLA 4: RUNNER DE CASOS -->
             <section class="view-screen" id="screen-case">
                 <div class="case-layout">
+
+                    <!-- BANNER DE MODO INSPECCIÓN DE CONTROLADOR (Visible solo cuando el Controlador entra a ver el caso) -->
+                    <div class="fac-inspect-mode-banner" id="fac-inspect-banner" style="display:none;">
+                        <div class="fac-inspect-info">
+                            <span class="inspect-icon">👁️</span>
+                            <span class="inspect-text"><strong>MODO INSPECCIÓN:</strong> Estás explorando la vista de operador. Tus acciones no afectan la telemetría grupal.</span>
+                        </div>
+                        <button type="button" class="btn-fac-return-live" onclick="facReturnToCaseLive()">
+                            ◀ VOLVER A CASO EN VIVO
+                        </button>
+                    </div>
 
                     <!-- MOMENTO 1: PANTALLA INTRODUCTORIA DEL CASO (ANTES DE ENTRAR) -->
                     <div class="cyber-card glass-panel case-moment-1-panel" id="case-phase-intro">
@@ -1299,10 +1434,28 @@
                             <span class="banner-text" id="fb-module-title">¡MÓDULO RECUPERADO!</span>
                         </div>
 
-                        <div class="action-row">
-                            <button class="btn-detroit-primary" onclick="showFourthWallScreen()">
+                        <!-- BOTÓN OPERADOR // CANDADO CASO 1 -> PANTALLA BC (RESULTADOS GLOBALES) -->
+                        <div class="action-row" style="margin-top: 24px;" id="player-case-bc-action-row">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-case-go-bc" onclick="proceedToCaseGroupResults()" disabled style="opacity: 0.45; cursor: not-allowed;">
                                 <span class="detroit-btn-glow"></span>
-                                <span class="btn-text">PAUSA DE DELIBERACIÓN // ANÁLISIS ➔</span>
+                                <span class="btn-text" id="btn-case-go-bc-text">🔒 ESPERANDO RESULTADOS GLOBALES DEL CONTROLADOR...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO BC: DESBLOQUEAR RESULTADOS GLOBALES DEL CASO) -->
+                        <div class="fac-gate-control-box" id="fac-gate-bc-container" style="display:none; margin-top:16px;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO RESULTADOS GLOBALES</span>
+                                <span class="fac-gate-status" id="fac-gate-bc-status-text">ESTADO: OPERADORES EN BALANCE INDIVIDUAL</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-bc-player-count">0</span> operadores en este punto
+                            </div>
+                            <p class="fac-gate-desc">Habilita a todos los operadores para ver la pantalla de resultados globales del caso (Fin de Partido // Pantalla BC).</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-bc" onclick="facUnlockGateBCAndGoResults()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🔓 HABILITAR RESULTADOS GLOBALES A OPERADORES ➔</span>
                             </button>
                         </div>
                     </div>
