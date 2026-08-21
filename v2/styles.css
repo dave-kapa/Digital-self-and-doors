@@ -5254,6 +5254,23 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
     gap: 12px;
 }
 
+.final-objectives-tier1-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.final-objectives-tier2-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.highlight-ig-card {
+    background: radial-gradient(circle at top left, rgba(14, 35, 55, 0.95), rgba(5, 14, 25, 0.95)) !important;
+    border-color: rgba(0, 216, 255, 0.35) !important;
+}
+
 .group-metric-card {
     background: rgba(10, 24, 40, 0.85);
     border: 1px solid rgba(0, 216, 255, 0.25);

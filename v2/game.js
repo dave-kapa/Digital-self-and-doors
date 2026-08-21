@@ -2366,7 +2366,35 @@ function updateHudUI() {
     const hud = gameStateV2.hudState;
     if (!hud) return;
 
-    // 1. INTEGRIDAD DEL SISTEMA (Semáforo Tri-State)
+    const isFac = gameStateV2.userRole === 'facilitator';
+
+    // 1. TÍTULOS ADAPTATIVOS DE COMPONENTES DEL HUD
+    const lblIntegrity = document.getElementById('hud-integrity-title-label') || document.querySelector('#hud-card-integrity .hud-card-label');
+    const lblCost = document.getElementById('hud-cost-title-label') || document.querySelector('#hud-card-cost .hud-card-label');
+    const lblCal = document.getElementById('hud-calibration-title-label') || document.querySelector('#hud-card-calibration .hud-card-label');
+    const lblReact = document.getElementById('hud-reactivity-title-label') || document.querySelector('#hud-card-reactivity .hud-card-label');
+
+    if (lblIntegrity) lblIntegrity.innerText = isFac ? "INTEGRIDAD GLOBAL DEL SISTEMA" : "INTEGRIDAD DE SISTEMA INDIVIDUAL";
+    if (lblCost) lblCost.innerText = isFac ? "COSTO DE OPERACIÓN GLOBAL" : "COSTO DE OPERACIÓN";
+    if (lblCal) lblCal.innerText = isFac ? "CALIBRACIÓN GLOBAL" : "CALIBRACIÓN (AGENCIA)";
+    if (lblReact) lblReact.innerText = isFac ? "REACTIVIDAD GLOBAL" : "REACTIVIDAD (IMPULSO)";
+
+    // 2. OBTENER VALORES SEGÚN ROL (GLOBALES ACUMULADOS PARA FACILITADOR, INDIVIDUALES PARA OPERADOR)
+    let displayIntegrity = hud.integrity;
+    let displayCost = hud.costDollars;
+    let displayCal = hud.calibration;
+    let displayReact = hud.reactivity;
+
+    if (isFac) {
+        // En el Facilitador, mostrar las métricas globales acumuladas consolidadas hasta el momento
+        const cum = getAllCasesCumulativeGroupResults();
+        displayIntegrity = cum.globalIntegrity || 'safe';
+        displayCost = cum.avgCost || 0;
+        displayCal = Math.round(cum.cgaAvgNum || 0);
+        displayReact = Math.round(cum.rgaAvgNum || 0);
+    }
+
+    // 3. INTEGRIDAD DEL SISTEMA (Semáforo Tri-State)
     const intLabel = document.getElementById('hud-integrity-label');
     const semSafe = document.getElementById('sem-light-safe');
     const semAlert = document.getElementById('sem-light-alert');
@@ -2377,17 +2405,17 @@ function updateHudUI() {
         semAlert.classList.remove('active');
         semExposed.classList.remove('active');
 
-        if (hud.integrity === 'safe') {
+        if (displayIntegrity === 'safe') {
             semSafe.classList.add('active');
             if (intLabel) {
                 intLabel.className = 'hud-status-tag tag-safe';
                 intLabel.innerText = 'SEGURO';
             }
-        } else if (hud.integrity === 'alert') {
+        } else if (displayIntegrity === 'alert') {
             semAlert.classList.add('active');
             if (intLabel) {
                 intLabel.className = 'hud-status-tag tag-alert';
-                intLabel.innerText = 'EN ALERTA';
+                intLabel.innerText = 'ALERTA';
             }
         } else {
             semExposed.classList.add('active');
@@ -2398,14 +2426,14 @@ function updateHudUI() {
         }
     }
 
-    // 2. COSTO DE LA OPERACIÓN (Contador 6 cifras + 10 Segmentos + Aguja)
+    // 4. COSTO DE LA OPERACIÓN (Contador 6 cifras + 10 Segmentos + Aguja)
     const costCounter = document.getElementById('hud-cost-counter');
     const costNeedle = document.getElementById('cost-meter-needle');
     if (costCounter) {
-        costCounter.innerText = `$${hud.costDollars.toLocaleString('en-US', { minimumIntegerDigits: 6, useGrouping: true })}`;
+        costCounter.innerText = `$${displayCost.toLocaleString('en-US', { minimumIntegerDigits: 6, useGrouping: true })}`;
     }
     // Calcular porcentaje de costo (escala base $100,000 = 100%)
-    const costPct = Math.min(100, Math.max(0, (hud.costDollars / 100000) * 100));
+    const costPct = Math.min(100, Math.max(0, (displayCost / 100000) * 100));
     if (costNeedle) {
         costNeedle.style.left = `${costPct}%`;
     }
@@ -2420,31 +2448,31 @@ function updateHudUI() {
         }
     });
 
-    // 3. CALIBRACIÓN (-5 a +5, Rojo a Verde)
+    // 5. CALIBRACIÓN (-5 a +5, Rojo a Verde)
     const calVal = document.getElementById('hud-calibration-val');
     const calNeedle = document.getElementById('cal-bipolar-needle');
     if (calVal) {
-        const sign = hud.calibration > 0 ? '+' : '';
-        calVal.innerText = `${sign}${hud.calibration}`;
-        calVal.className = 'hud-numeric-badge ' + (hud.calibration > 0 ? 'badge-pos' : (hud.calibration === 0 ? 'badge-zero' : 'badge-neg'));
+        const sign = displayCal > 0 ? '+' : '';
+        calVal.innerText = `${sign}${displayCal}`;
+        calVal.className = 'hud-numeric-badge ' + (displayCal > 0 ? 'badge-pos' : (displayCal === 0 ? 'badge-zero' : 'badge-neg'));
     }
     if (calNeedle) {
         // Mapeo de escala -5..+5 a 0%..100%
-        const calPct = Math.min(100, Math.max(0, ((hud.calibration - (-5)) / 10) * 100));
+        const calPct = Math.min(100, Math.max(0, ((displayCal - (-5)) / 10) * 100));
         calNeedle.style.left = `${calPct}%`;
     }
 
-    // 4. REACTIVIDAD (-5 a +5, Verde a Rojo)
+    // 6. REACTIVIDAD (-5 a +5, Verde a Rojo)
     const reactVal = document.getElementById('hud-reactivity-val');
     const reactNeedle = document.getElementById('react-bipolar-needle');
     if (reactVal) {
-        const sign = hud.reactivity > 0 ? '+' : '';
-        reactVal.innerText = `${sign}${hud.reactivity}`;
-        reactVal.className = 'hud-numeric-badge ' + (hud.reactivity < 0 ? 'badge-pos' : (hud.reactivity === 0 ? 'badge-zero' : 'badge-neg'));
+        const sign = displayReact > 0 ? '+' : '';
+        reactVal.innerText = `${sign}${displayReact}`;
+        reactVal.className = 'hud-numeric-badge ' + (displayReact < 0 ? 'badge-pos' : (displayReact === 0 ? 'badge-zero' : 'badge-neg'));
     }
     if (reactNeedle) {
         // Mapeo de escala -5..+5 a 0%..100%
-        const reactPct = Math.min(100, Math.max(0, ((hud.reactivity - (-5)) / 10) * 100));
+        const reactPct = Math.min(100, Math.max(0, ((displayReact - (-5)) / 10) * 100));
         reactNeedle.style.left = `${reactPct}%`;
     }
 }
@@ -2674,11 +2702,11 @@ const claudiaMissionPages = [
         text: "“FARO no se rebeló. Hizo aquello para lo que fue construido: detectar oportunidades de acción y utilizar los permisos disponibles. El problema es que nuestras decisiones ampliaron esos permisos más de lo que esperábamos.”"
     },
     {
-        title: "MISIÓN // RECUPERAR AGENCIA",
-        text: "“Tenemos cuatro capas que recuperar. Primero, cuánto control le entregamos a FARO. Segundo, qué representación puede construir de nosotros. Tercero, cómo reconocemos que un estímulo está capturando nuestra atención. Y cuarto, cómo convertimos todo eso en una decisión.”"
+        title: "JERARQUÍA DE OBJETIVOS // ALPHA Y BETA",
+        text: "“Para superar la misión y recuperar el control tenemos una jerarquía clara:\n\n• OBJETIVO ALPHA: Calibración de Agencia — Mantener supervisión crítica, precisión y confianza apropiada ante FARO sin delegar a ciegas ni bloquear por impulso.\n• OBJETIVOS BETA: Preservar la Integridad del Sistema en estado Seguro y contener el Costo Operativo.”"
     },
     {
-        title: "OBJETIVO // NO DERROTAR A FARO",
+        title: "PROPÓSITO // NO DERROTAR A FARO",
         text: "“No buscamos apagar la inteligencia artificial. Buscamos reconstruir una relación en la que FARO pueda ampliar nuestras capacidades sin sustituir nuestro criterio, supervisión y responsabilidad.”"
     },
     {

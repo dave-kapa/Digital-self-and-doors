@@ -288,7 +288,7 @@
                 <!-- 1. INTEGRIDAD DEL SISTEMA (Semáforo Tri-State) -->
                 <div class="hud-card hud-integrity-card" id="hud-card-integrity" title="Integridad del Sistema (Seguro / Alerta / Expuesto)">
                     <div class="hud-card-header">
-                        <span class="hud-card-label">INTEGRIDAD SISTEMA</span>
+                        <span class="hud-card-label" id="hud-integrity-title-label">INTEGRIDAD DE SISTEMA INDIVIDUAL</span>
                         <span class="hud-status-tag tag-safe" id="hud-integrity-label">SEGURO</span>
                     </div>
                     <div class="hud-semaphore-container">
@@ -310,7 +310,7 @@
                 <!-- 2. COSTO DE LA OPERACIÓN (Contador 6 cifras + 10 Segmentos) -->
                 <div class="hud-card hud-cost-card" id="hud-card-cost" title="Costo Operativo Acumulado">
                     <div class="hud-card-header">
-                        <span class="hud-card-label">COSTO OPERACIÓN</span>
+                        <span class="hud-card-label" id="hud-cost-title-label">COSTO DE OPERACIÓN</span>
                         <div class="cost-digital-counter" id="hud-cost-counter">$012,450</div>
                     </div>
                     <div class="hud-meter-wrap">
@@ -339,7 +339,7 @@
                 <!-- 3. CALIBRACIÓN (-5 a +5, Rojo a Verde) -->
                 <div class="hud-card hud-gauge-card hud-calibration-card" id="hud-card-calibration" title="Calibración de Agencia Humano–Máquina (-5 a +5)">
                     <div class="hud-card-header">
-                        <span class="hud-card-label">CALIBRACIÓN (AGENCIA)</span>
+                        <span class="hud-card-label" id="hud-calibration-title-label">CALIBRACIÓN (AGENCIA)</span>
                         <span class="hud-numeric-badge badge-pos" id="hud-calibration-val">+1</span>
                     </div>
                     <div class="hud-bipolar-meter">
@@ -359,7 +359,7 @@
                 <!-- 4. REACTIVIDAD (-5 a +5, Verde a Rojo) -->
                 <div class="hud-card hud-gauge-card hud-reactivity-card" id="hud-card-reactivity" title="Nivel de Reactividad / Impulsividad (-5 a +5)">
                     <div class="hud-card-header">
-                        <span class="hud-card-label">REACTIVIDAD (IMPULSO)</span>
+                        <span class="hud-card-label" id="hud-reactivity-title-label">REACTIVIDAD (IMPULSO)</span>
                         <span class="hud-numeric-badge badge-pos" id="hud-reactivity-val">-1</span>
                     </div>
                     <div class="hud-bipolar-meter">
@@ -1877,62 +1877,57 @@
                             </div>
                         </div>
 
-                        <!-- 1. Integridad Global Acumulada del Sistema (IG) -->
-                        <div class="group-card-box highlight-ig-box">
-                            <div class="group-box-title">
-                                <span class="box-icon">🛡</span>
-                                <h4>1. INTEGRIDAD GLOBAL ACUMULADA DEL SISTEMA (IG)</h4>
-                                <span class="ig-global-badge tag-safe" id="final-ig-status-pill">ESTADO: SEGURO</span>
-                            </div>
-                            <div class="ig-distribution-row">
-                                <div class="ig-dist-item">
-                                    <span class="ig-dot-safe"></span>
-                                    <span class="ig-label">SEGURO: <strong id="final-ig-safe-pct">0%</strong></span>
-                                </div>
-                                <div class="ig-dist-item">
-                                    <span class="ig-dot-alert"></span>
-                                    <span class="ig-label">ALERTA: <strong id="final-ig-alert-pct">0%</strong></span>
-                                </div>
-                                <div class="ig-dist-item">
-                                    <span class="ig-dot-exposed"></span>
-                                    <span class="ig-label">EXPUESTO: <strong id="final-ig-exposed-pct">0%</strong></span>
-                                </div>
-                            </div>
-                            <div class="multi-color-bar-track">
-                                <div class="bar-slice bar-slice-safe" id="final-ig-bar-safe" style="width:0%;"></div>
-                                <div class="bar-slice bar-slice-alert" id="final-ig-bar-alert" style="width:0%;"></div>
-                                <div class="bar-slice bar-slice-exposed" id="final-ig-bar-exposed" style="width:0%;"></div>
-                            </div>
-                            <p class="ig-rule-explain">* Regla IG Acumulada: 100% Seguro = Seguro | 100% Expuesto = Expuesto | Mixto = Alerta.</p>
-                        </div>
-
-                        <!-- 2, 3, 4, 5: Métricas Clave Grid (TG, CG, CGA, RGA) -->
-                        <div class="group-metrics-summary-grid">
+                        <!-- NIVEL 1: OBJETIVOS CLAVE DE LA MISIÓN (ALPHA Y BETA) -->
+                        <div class="final-objectives-tier1-grid">
                             
-                            <!-- 2. Tiempo Global Acumulado (TG) -->
-                            <div class="group-metric-card">
-                                <span class="gmetric-badge">2. TIEMPO GLOBAL (TG)</span>
-                                <div class="gmetric-value" id="final-metric-tg-val">0s</div>
-                                <span class="gmetric-sub">Promedio de tiempo real de reloj</span>
-                            </div>
-
-                            <!-- 3. Costo Global Acumulado (CG) -->
-                            <div class="group-metric-card metric-card-gold">
-                                <span class="gmetric-badge" style="color:#ffd54f; border-color:#ffd54f; background:rgba(255,213,79,0.15);">3. COSTO GLOBAL (CG)</span>
-                                <div class="gmetric-value val-gold" id="final-metric-cg-val">$0</div>
-                                <span class="gmetric-sub">Promedio de balance económico</span>
-                            </div>
-
-                            <!-- 4. Calibración Global Acumulada (CGA) -->
+                            <!-- 1. Calibración Global Acumulada (CGA) - OBJETIVO ALPHA -->
                             <div class="group-metric-card metric-card-cga">
-                                <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">4. CALIBRACIÓN GLOBAL (CGA)</span>
+                                <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">1. CALIBRACIÓN GLOBAL (CGA) // OBJ. ALPHA</span>
                                 <div class="gmetric-value val-cga" id="final-cga-avg-val">+0.0</div>
                                 <div class="dist-mini-row">
                                     <span class="dist-pos" title="Positiva (+2 a +5)">🟢 <strong id="final-cga-pos-pct">0%</strong></span>
                                     <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-cga-neu-pct">0%</strong></span>
                                     <span class="dist-neg" title="Negativa (-5 a -2)">🔴 <strong id="final-cga-neg-pct">0%</strong></span>
                                 </div>
-                                <span class="gmetric-sub">Indicador clave de superación de misión</span>
+                                <span class="gmetric-sub">Objetivo Principal: Supervisión crítica y agencia</span>
+                            </div>
+
+                            <!-- 2. Integridad Global Acumulada del Sistema (IG) - OBJETIVO BETA 1 -->
+                            <div class="group-metric-card highlight-ig-card">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span class="gmetric-badge" style="color:var(--color-cyan); border-color:rgba(0,216,255,0.4); background:rgba(0,216,255,0.12);">2. INTEGRIDAD GLOBAL (IG) // OBJ. BETA</span>
+                                    <span class="ig-global-badge tag-safe" id="final-ig-status-pill" style="margin:0; font-size:9.5px; padding:2px 8px;">SEGURO</span>
+                                </div>
+                                <div class="ig-distribution-row" style="margin:6px 0 4px 0; gap:8px;">
+                                    <div class="ig-dist-item"><span class="ig-dot-safe"></span><span style="font-size:10.5px;">SEG: <strong id="final-ig-safe-pct">0%</strong></span></div>
+                                    <div class="ig-dist-item"><span class="ig-dot-alert"></span><span style="font-size:10.5px;">ALT: <strong id="final-ig-alert-pct">0%</strong></span></div>
+                                    <div class="ig-dist-item"><span class="ig-dot-exposed"></span><span style="font-size:10.5px;">EXP: <strong id="final-ig-exposed-pct">0%</strong></span></div>
+                                </div>
+                                <div class="multi-color-bar-track" style="height:7px; margin-bottom:4px;">
+                                    <div class="bar-slice bar-slice-safe" id="final-ig-bar-safe" style="width:0%;"></div>
+                                    <div class="bar-slice bar-slice-alert" id="final-ig-bar-alert" style="width:0%;"></div>
+                                    <div class="bar-slice bar-slice-exposed" id="final-ig-bar-exposed" style="width:0%;"></div>
+                                </div>
+                                <span class="gmetric-sub">Objetivo Secundario: Contención de brechas</span>
+                            </div>
+
+                            <!-- 3. Costo Global Acumulado (CG) - OBJETIVO BETA 2 -->
+                            <div class="group-metric-card metric-card-gold">
+                                <span class="gmetric-badge" style="color:#ffd54f; border-color:#ffd54f; background:rgba(255,213,79,0.15);">3. COSTO GLOBAL (CG) // OBJ. BETA</span>
+                                <div class="gmetric-value val-gold" id="final-metric-cg-val">$0</div>
+                                <span class="gmetric-sub">Objetivo Secundario: Eficiencia del gasto operativo</span>
+                            </div>
+
+                        </div>
+
+                        <!-- NIVEL 2: MÉTRICAS DE PROCESO (TIEMPO Y REACTIVIDAD) -->
+                        <div class="final-objectives-tier2-grid" style="margin-top:12px;">
+                            
+                            <!-- 4. Tiempo Global Acumulado (TG) -->
+                            <div class="group-metric-card">
+                                <span class="gmetric-badge">4. TIEMPO GLOBAL (TG)</span>
+                                <div class="gmetric-value" id="final-metric-tg-val">0s</div>
+                                <span class="gmetric-sub">Promedio de tiempo real de reloj</span>
                             </div>
 
                             <!-- 5. Reactividad Global Acumulada (RGA) -->
@@ -1944,7 +1939,7 @@
                                     <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-rga-neu-pct">0%</strong></span>
                                     <span class="dist-neg" title="Alta (+2 a +5)">🔴 <strong id="final-rga-high-pct">0%</strong></span>
                                 </div>
-                                <span class="gmetric-sub">Promedio de reactividad acumulada</span>
+                                <span class="gmetric-sub">Métrica de Proceso: Contención del impulso</span>
                             </div>
 
                         </div>
