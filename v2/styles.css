@@ -5023,6 +5023,536 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
     }
 }
 
+/* ==========================================================================
+   PANTALLA BC: FIN DEL CASO / RESULTADOS GLOBALES (PÁGINAS X, Y, Z)
+   ========================================================================== */
+.group-results-card {
+    max-width: 1040px;
+    width: 96%;
+    padding: 20px 24px;
+}
+
+.group-results-header {
+    margin-bottom: 16px;
+}
+
+.group-results-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    color: #ffffff;
+    margin: 6px 0 2px 0;
+    letter-spacing: 0.5px;
+}
+
+.group-results-subtitle {
+    font-size: 12px;
+    color: #b0c9e8;
+    margin: 0;
+}
+
+/* Selector de Subpáginas (Pestañas X, Y, Z) */
+.group-results-tabs {
+    display: flex;
+    gap: 8px;
+    background: rgba(4, 14, 26, 0.85);
+    border: 1px solid rgba(0, 216, 255, 0.25);
+    padding: 6px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+
+.group-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.group-tab-btn .tab-letter {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: #8da4be;
+    letter-spacing: 0.5px;
+}
+
+.group-tab-btn .tab-label {
+    font-family: var(--font-heading);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.group-tab-btn:hover {
+    background: rgba(0, 216, 255, 0.08);
+    border-color: rgba(0, 216, 255, 0.3);
+}
+
+.group-tab-btn.active {
+    background: rgba(0, 216, 255, 0.18);
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 14px rgba(0, 216, 255, 0.3);
+}
+
+.group-tab-btn.active .tab-letter {
+    color: var(--color-cyan);
+}
+
+.group-tab-btn.active .tab-label {
+    color: #ffffff;
+    text-shadow: 0 0 8px var(--color-cyan);
+}
+
+/* Cajas de Contenido de la Pantalla */
+.group-card-box {
+    background: rgba(10, 24, 40, 0.8);
+    border: 1px solid rgba(0, 216, 255, 0.22);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+
+.group-box-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.group-box-title h4 {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2f1ff;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.group-box-desc {
+    font-size: 11.5px;
+    color: #a4c2e0;
+    margin: -4px 0 12px 0;
+}
+
+/* 1. Grid de Reacciones Iniciales */
+.initial-reactions-dist-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reaction-dist-row {
+    background: rgba(2, 10, 18, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
+.reaction-dist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.reaction-dist-text {
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.reaction-dist-pct {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--color-cyan);
+}
+
+.reaction-dist-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.reaction-dist-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d8ff, #00e676);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+/* 2. Caja de Integridad Global (IG) */
+.highlight-ig-box {
+    background: radial-gradient(circle at top left, rgba(14, 35, 55, 0.9), rgba(5, 14, 25, 0.9));
+    border-color: rgba(73, 245, 193, 0.35);
+}
+
+.ig-global-badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.ig-distribution-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.ig-dist-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #e2f1ff;
+}
+
+.ig-dot-safe { width: 8px; height: 8px; border-radius: 50%; background: #00e676; box-shadow: 0 0 6px #00e676; }
+.ig-dot-alert { width: 8px; height: 8px; border-radius: 50%; background: #ffb300; box-shadow: 0 0 6px #ffb300; }
+.ig-dot-exposed { width: 8px; height: 8px; border-radius: 50%; background: #ff2a6d; box-shadow: 0 0 6px #ff2a6d; }
+
+.multi-color-bar-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+}
+
+.bar-slice { height: 100%; transition: width 0.4s ease; }
+.bar-slice-safe { background: #00e676; }
+.bar-slice-alert { background: #ffb300; }
+.bar-slice-exposed { background: #ff2a6d; }
+
+.ig-rule-explain {
+    font-size: 10px;
+    color: #9cb8d9;
+    font-style: italic;
+    margin: 6px 0 0 0;
+}
+
+/* 3, 4, 5, 6. Grid de Métricas Resumen (TG, CG, CGA, RGA) */
+.group-metrics-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.group-metric-card {
+    background: rgba(10, 24, 40, 0.85);
+    border: 1px solid rgba(0, 216, 255, 0.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gmetric-badge {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--color-cyan);
+    background: rgba(0, 216, 255, 0.12);
+    border: 1px solid rgba(0, 216, 255, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    align-self: flex-start;
+    letter-spacing: 0.5px;
+}
+
+.gmetric-value {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 4px 0 2px 0;
+}
+
+.gmetric-value.val-gold {
+    color: #ffd54f;
+    text-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+}
+
+.gmetric-value.val-cga {
+    color: #00e676;
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
+}
+
+.gmetric-value.val-rga {
+    color: #ff7a00;
+    text-shadow: 0 0 10px rgba(255, 122, 0, 0.4);
+}
+
+.dist-mini-row {
+    display: flex;
+    gap: 8px;
+    font-size: 10.5px;
+    color: #e2f1ff;
+    margin: 2px 0 4px 0;
+}
+
+.gmetric-sub {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: #9cb8d9;
+}
+
+/* Página Y: Gráfica de Puertas de Atención con Doble Barra */
+.dual-bar-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #e2f1ff;
+}
+
+.legend-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.bar-color-case { background: var(--color-cyan); box-shadow: 0 0 6px var(--color-cyan); }
+.bar-color-cumulative { background: #b388ff; box-shadow: 0 0 6px #b388ff; }
+
+.attention-doors-chart-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.door-chart-row {
+    background: rgba(2, 10, 18, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+
+.door-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.door-name {
+    font-family: var(--font-heading);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.door-dual-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.door-single-bar-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar-tag-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: #9cb8d9;
+    width: 65px;
+}
+
+.door-bar-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.door-bar-fill-case {
+    height: 100%;
+    background: var(--color-cyan);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.door-bar-fill-cum {
+    height: 100%;
+    background: #b388ff;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.bar-count-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 800;
+    color: #ffffff;
+    width: 45px;
+    text-align: right;
+}
+
+/* Página Z: Matriz de Acciones 2x3 */
+.z-page-integrity-banner {
+    background: rgba(4, 18, 32, 0.85);
+    border: 1px solid rgba(0, 216, 255, 0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.z-ig-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.z-ig-label {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    color: #ffb74d;
+}
+
+.z-ig-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.actions-matrix-2x3-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.matrix-sector-cell {
+    background: rgba(10, 24, 40, 0.85);
+    border: 1.5px solid rgba(0, 216, 255, 0.25);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sector-cell-hizo {
+    border-top: 3px solid #00e676;
+}
+
+.sector-cell-nohizo {
+    border-top: 3px solid #ff2a6d;
+}
+
+.sector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sector-tag-hizo {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    color: #00e676;
+    background: rgba(0, 230, 118, 0.15);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+.sector-tag-nohizo {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    color: #ff2a6d;
+    background: rgba(255, 42, 109, 0.15);
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+
+.sector-type {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: #9cb8d9;
+}
+
+.sector-title {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 2px 0 6px 0;
+}
+
+.sector-dual-bars-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sector-bar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sector-bar-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    color: #b8d4f0;
+}
+
+.bar-cost-tag {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: #ffd54f;
+}
+
+.sector-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+@media (max-width: 860px) {
+    .actions-matrix-2x3-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 
 
 

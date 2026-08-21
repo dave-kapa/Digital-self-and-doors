@@ -14,7 +14,8 @@ let gameStateV2 = {
         gate2_calib: false,     // Desbloquea botón "SÍ, INICIAR CALIBRACIÓN"
         gate3_kernel: false,    // Desbloquea botón "VERIFICAR ESTADO DEL KERNEL"
         gate4_case1: false,     // Desbloquea botón "INICIAR PRIMERA OPERACIÓN // CASO 01"
-        gate_case_bc: false     // Desbloquea botón de Pantalla B -> BC (Resultados grupales del caso)
+        gate_case_bc: false,    // Desbloquea botón de Pantalla B -> BC (Resultados grupales del caso)
+        gate_deliberation: false // Desbloquea botón de Pantalla BC -> Deliberación (Cuarta Pared)
     },
     playerProfile: null, // { name, email, pin, loginTimestamp }
     faroStatus: 'CALIBRACIÓN',
@@ -729,6 +730,28 @@ function broadcastSyncEvent(type, payload) {
     } catch (e) {}
 }
 
+function createEmptyCaseGroupResult() {
+    return {
+        finishedPlayers: [],
+        initialReactionsCount: [0, 0, 0],
+        integrityCounts: { safe: 0, alert: 0, exposed: 0 },
+        globalIntegrity: 'safe',
+        avgRealTime: 0,
+        avgCost: 0,
+        calibrationList: [],
+        reactivityList: [],
+        doorsCounts: {},
+        matrixSectors: {
+            'hizo_debiahacer': { count: 0, cost: 0 },
+            'hizo_nodebia': { count: 0, cost: 0 },
+            'hizo_norelevante': { count: 0, cost: 0 },
+            'nohizo_debiahacer': { count: 0, cost: 0 },
+            'nohizo_nodebia': { count: 0, cost: 0 },
+            'nohizo_norelevante': { count: 0, cost: 0 }
+        }
+    };
+}
+
 // Estado de monitoreo grupal para el Facilitador
 const facState = {
     connectedPlayers: {}, // { [playerId]: { name, round: 1..4, finished: bool, surrendered: bool, currentScreen, lastSeen } }
@@ -737,6 +760,12 @@ const facState = {
         1: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 },
         2: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 },
         3: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 }
+    },
+    casesGroupResults: {
+        0: createEmptyCaseGroupResult(),
+        1: createEmptyCaseGroupResult(),
+        2: createEmptyCaseGroupResult(),
+        3: createEmptyCaseGroupResult()
     }
 };
 
@@ -898,18 +927,21 @@ function updateGatePlayerCounts() {
     const g3Count = players.filter(p => p.currentScreen === 'screen-calibration-processing').length;
     const g4Count = players.filter(p => p.currentScreen === 'game-objective-overlay').length;
     const gBCCount = players.filter(p => p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case-results-b').length;
+    const gDelibCount = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
 
     const elG1 = document.getElementById('fac-gate-1-player-count');
     const elG2 = document.getElementById('fac-gate-2-player-count');
     const elG3 = document.getElementById('fac-gate-3-player-count');
     const elG4 = document.getElementById('fac-gate-4-player-count');
     const elGBC = document.getElementById('fac-gate-bc-player-count');
+    const elGDelib = document.getElementById('fac-gate-delib-player-count');
 
     if (elG1) elG1.innerText = g1Count;
     if (elG2) elG2.innerText = g2Count;
     if (elG3) elG3.innerText = g3Count;
     if (elG4) elG4.innerText = g4Count;
     if (elGBC) elGBC.innerText = gBCCount;
+    if (elGDelib) elGDelib.innerText = gDelibCount;
 }
 
 // Control del Temporizador de Censo a 60 Segundos para cada Caso
@@ -1065,13 +1097,429 @@ function facUnlockGateBCAndGoResults() {
     broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
     updateGateUI();
     
-    showFourthWallScreen();
+    openCaseGroupResultsScreen(gameStateV2.currentCaseIndex || 0);
 }
 
 // Operador: Avanzar de Pantalla B a Resultados Grupales (BC)
 function proceedToCaseGroupResults() {
     const depEnabled = gameStateV2.facilitatorDependency !== false;
     if (depEnabled && !gameStateV2.sessionGates.gate_case_bc) {
+        return;
+    }
+    openCaseGroupResultsScreen(gameStateV2.currentCaseIndex || 0);
+}
+
+// Abrir Pantalla de Resultados Globales del Caso (Pantalla BC)
+function openCaseGroupResultsScreen(caseIdx = 0) {
+    gameStateV2.currentCaseIndex = caseIdx;
+    const cData = casesDataV2[caseIdx];
+    const titleEl = document.getElementById('bc-case-title');
+    if (titleEl && cData) {
+        titleEl.innerText = `${cData.title.toUpperCase()} // RESULTADOS GLOBALES`;
+    }
+
+    if (gameStateV2.userRole === 'operator') {
+        broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: 'screen-case-group-results' });
+    }
+
+    switchGroupResultsTab('X');
+    recomputeCaseGroupResults(caseIdx);
+    switchScreenV2('screen-case-group-results');
+    updateGateUI();
+}
+
+// Navegación entre Subpáginas X, Y, Z
+function switchGroupResultsTab(tabLetter) {
+    const tabs = ['X', 'Y', 'Z'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-page-${t.toLowerCase()}`);
+        const page = document.getElementById(`group-subpage-${t.toLowerCase()}`);
+        if (btn) {
+            if (t === tabLetter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+        if (page) {
+            page.style.display = (t === tabLetter) ? 'block' : 'none';
+        }
+    });
+}
+
+// Registro y Re-cálculo de Resultados Grupales
+function recordPlayerCaseResultForGroup(caseIdx, pData) {
+    if (!pData) return;
+    if (!facState.casesGroupResults[caseIdx]) {
+        facState.casesGroupResults[caseIdx] = createEmptyCaseGroupResult();
+    }
+    const res = facState.casesGroupResults[caseIdx];
+    
+    // Evitar duplicados del mismo jugador
+    const existingIdx = res.finishedPlayers.findIndex(p => p.playerId === pData.playerId);
+    if (existingIdx >= 0) {
+        res.finishedPlayers[existingIdx] = pData;
+    } else {
+        res.finishedPlayers.push(pData);
+    }
+
+    recomputeCaseGroupResults(caseIdx);
+}
+
+function recomputeCaseGroupResults(caseIdx) {
+    if (!facState.casesGroupResults[caseIdx]) {
+        facState.casesGroupResults[caseIdx] = createEmptyCaseGroupResult();
+    }
+    const res = facState.casesGroupResults[caseIdx];
+    const cData = casesDataV2[caseIdx];
+    
+    // Si no hay jugadores remotos registrados, poblar con el registro del jugador local si existe
+    if (res.finishedPlayers.length === 0) {
+        const localImpulseIdx = (gameStateV2.currentCaseImpulseData && cData.impulses)
+            ? cData.impulses.findIndex(imp => imp.text === gameStateV2.currentCaseImpulseData.text)
+            : 0;
+
+        res.finishedPlayers.push({
+            playerId: gameStateV2.playerId,
+            impulseIndex: localImpulseIdx >= 0 ? localImpulseIdx : 0,
+            integrity: gameStateV2.hudState.integrity || 'safe',
+            realTimeSeconds: 45,
+            narrativeTimeSeconds: 120,
+            cost: gameStateV2.hudState.costDollars || 12450,
+            calibration: gameStateV2.hudState.calibration || 1,
+            reactivity: gameStateV2.hudState.reactivity || -1,
+            doorsActivated: (gameStateV2.paraState.completedAnalyses || []).map(a => a.title),
+            matrixEvaluations: []
+        });
+    }
+
+    const players = res.finishedPlayers;
+    const total = players.length;
+
+    // 1. Reacción Inicial
+    res.initialReactionsCount = [0, 0, 0];
+    players.forEach(p => {
+        const idx = (typeof p.impulseIndex === 'number' && p.impulseIndex >= 0 && p.impulseIndex <= 2) ? p.impulseIndex : 0;
+        res.initialReactionsCount[idx]++;
+    });
+
+    // 2. Integridad Global (IG)
+    res.integrityCounts = { safe: 0, alert: 0, exposed: 0 };
+    players.forEach(p => {
+        const integ = p.integrity || 'safe';
+        if (res.integrityCounts[integ] !== undefined) res.integrityCounts[integ]++;
+    });
+
+    // Regla IG: 100% Seguro = Seguro | 100% Expuesto = Expuesto | Mixto = Alerta
+    if (res.integrityCounts.safe === total) {
+        res.globalIntegrity = 'safe';
+    } else if (res.integrityCounts.exposed === total) {
+        res.globalIntegrity = 'exposed';
+    } else {
+        res.globalIntegrity = 'alert';
+    }
+
+    // Actualizar HUD global con la nueva IG
+    setHudIntegrity(res.globalIntegrity);
+
+    // 3. TG (Tiempo Real Reloj) y 4. CG (Costo Operación)
+    let realTimeSum = 0;
+    let costSum = 0;
+    res.calibrationList = [];
+    res.reactivityList = [];
+    res.doorsCounts = {};
+    
+    // Reiniciar matriz de sectores
+    res.matrixSectors = {
+        'hizo_debiahacer': { count: 0, cost: 0 },
+        'hizo_nodebia': { count: 0, cost: 0 },
+        'hizo_norelevante': { count: 0, cost: 0 },
+        'nohizo_debiahacer': { count: 0, cost: 0 },
+        'nohizo_nodebia': { count: 0, cost: 0 },
+        'nohizo_norelevante': { count: 0, cost: 0 }
+    };
+
+    players.forEach(p => {
+        realTimeSum += (p.realTimeSeconds || 45);
+        costSum += (p.cost || 0);
+        if (typeof p.calibration === 'number') res.calibrationList.push(p.calibration);
+        if (typeof p.reactivity === 'number') res.reactivityList.push(p.reactivity);
+
+        // Puertas de Atención
+        if (Array.isArray(p.doorsActivated)) {
+            p.doorsActivated.forEach(d => {
+                res.doorsCounts[d] = (res.doorsCounts[d] || 0) + 1;
+            });
+        }
+
+        // Matriz de Acciones
+        if (Array.isArray(p.matrixEvaluations)) {
+            p.matrixEvaluations.forEach(m => {
+                if (res.matrixSectors[m.sectorKey]) {
+                    res.matrixSectors[m.sectorKey].count++;
+                    res.matrixSectors[m.sectorKey].cost += (m.cost || 0);
+                }
+            });
+        }
+    });
+
+    res.avgRealTime = Math.round(realTimeSum / total);
+    res.avgCost = Math.round(costSum / total);
+
+    renderCaseGroupResults(caseIdx);
+}
+
+function getCumulativeGroupResults(upToCaseIdx) {
+    const cumDoors = {};
+    const cumMatrix = {
+        'hizo_debiahacer': { count: 0, cost: 0 },
+        'hizo_nodebia': { count: 0, cost: 0 },
+        'hizo_norelevante': { count: 0, cost: 0 },
+        'nohizo_debiahacer': { count: 0, cost: 0 },
+        'nohizo_nodebia': { count: 0, cost: 0 },
+        'nohizo_norelevante': { count: 0, cost: 0 }
+    };
+
+    for (let i = 0; i <= upToCaseIdx; i++) {
+        const res = facState.casesGroupResults[i];
+        if (res) {
+            Object.keys(res.doorsCounts || {}).forEach(d => {
+                cumDoors[d] = (cumDoors[d] || 0) + res.doorsCounts[d];
+            });
+            Object.keys(res.matrixSectors || {}).forEach(k => {
+                cumMatrix[k].count += res.matrixSectors[k].count;
+                cumMatrix[k].cost += res.matrixSectors[k].cost;
+            });
+        }
+    }
+
+    return { cumDoors, cumMatrix };
+}
+
+// Renderizado de las 3 Subpáginas de Resultados Globales
+function renderCaseGroupResults(caseIdx) {
+    const res = facState.casesGroupResults[caseIdx];
+    const cData = casesDataV2[caseIdx];
+    if (!res || !cData) return;
+
+    const cumData = getCumulativeGroupResults(caseIdx);
+
+    renderGroupResultsPageX(res, cData);
+    renderGroupResultsPageY(res, cData, cumData);
+    renderGroupResultsPageZ(res, cData, cumData);
+}
+
+// PÁGINA X: RESULTADOS GLOBALES DEL CASO
+function renderGroupResultsPageX(res, cData) {
+    const total = Math.max(1, res.finishedPlayers.length);
+
+    // 1. Distribución Reacción Inicial
+    const reactContainer = document.getElementById('bc-reactions-dist-container');
+    if (reactContainer && cData.impulses) {
+        reactContainer.innerHTML = cData.impulses.map((imp, idx) => {
+            const count = res.initialReactionsCount[idx] || 0;
+            const pct = Math.round((count / total) * 100);
+            return `
+                <div class="reaction-dist-row">
+                    <div class="reaction-dist-header">
+                        <span class="reaction-dist-text"><strong>Opción ${idx + 1}:</strong> “${imp.text}”</span>
+                        <span class="reaction-dist-pct">${pct}% <small style="font-size:10px; color:#a4c2e0;">(${count}/${total})</small></span>
+                    </div>
+                    <div class="reaction-dist-bar-track">
+                        <div class="reaction-dist-bar-fill" style="width:${pct}%;"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // 2. Integridad Global (IG)
+    const safePct = Math.round((res.integrityCounts.safe / total) * 100);
+    const alertPct = Math.round((res.integrityCounts.alert / total) * 100);
+    const exposedPct = Math.round((res.integrityCounts.exposed / total) * 100);
+
+    const elSafe = document.getElementById('bc-ig-safe-pct');
+    const elAlert = document.getElementById('bc-ig-alert-pct');
+    const elExp = document.getElementById('bc-ig-exposed-pct');
+    if (elSafe) elSafe.innerText = `${safePct}%`;
+    if (elAlert) elAlert.innerText = `${alertPct}%`;
+    if (elExp) elExp.innerText = `${exposedPct}%`;
+
+    const barSafe = document.getElementById('bc-ig-bar-safe');
+    const barAlert = document.getElementById('bc-ig-bar-alert');
+    const barExp = document.getElementById('bc-ig-bar-exposed');
+    if (barSafe) barSafe.style.width = `${safePct}%`;
+    if (barAlert) barAlert.style.width = `${alertPct}%`;
+    if (barExp) barExp.style.width = `${exposedPct}%`;
+
+    const igPill = document.getElementById('bc-ig-status-pill');
+    if (igPill) {
+        igPill.className = `ig-global-badge tag-${res.globalIntegrity}`;
+        igPill.innerText = `ESTADO IG: ${res.globalIntegrity.toUpperCase()}`;
+    }
+
+    // 3. Tiempo Global (TG)
+    const tgEl = document.getElementById('bc-tg-val');
+    if (tgEl) tgEl.innerText = `${res.avgRealTime}s`;
+
+    // 4. Costo Global (CG)
+    const cgEl = document.getElementById('bc-cg-val');
+    if (cgEl) cgEl.innerText = `$${res.avgCost.toLocaleString('en-US')}`;
+
+    // 5. Calibración Global Actual (CGA)
+    const calibs = res.calibrationList.length > 0 ? res.calibrationList : [1];
+    const posCal = calibs.filter(v => v >= 2).length;
+    const neuCal = calibs.filter(v => v >= -1 && v <= 1).length;
+    const negCal = calibs.filter(v => v <= -2).length;
+    const avgCal = (calibs.reduce((a, b) => a + b, 0) / calibs.length).toFixed(1);
+
+    const cgaAvgEl = document.getElementById('bc-cga-avg');
+    const cgaPosEl = document.getElementById('bc-cga-pos-pct');
+    const cgaNeuEl = document.getElementById('bc-cga-neu-pct');
+    const cgaNegEl = document.getElementById('bc-cga-neg-pct');
+    if (cgaAvgEl) cgaAvgEl.innerText = `${parseFloat(avgCal) >= 0 ? '+' : ''}${avgCal}`;
+    if (cgaPosEl) cgaPosEl.innerText = `${Math.round((posCal / calibs.length) * 100)}%`;
+    if (cgaNeuEl) cgaNeuEl.innerText = `${Math.round((neuCal / calibs.length) * 100)}%`;
+    if (cgaNegEl) cgaNegEl.innerText = `${Math.round((negCal / calibs.length) * 100)}%`;
+
+    // 6. Reactividad Global Actual (RGA)
+    const reacts = res.reactivityList.length > 0 ? res.reactivityList : [-1];
+    const lowReact = reacts.filter(v => v <= -2).length;
+    const neuReact = reacts.filter(v => v >= -1 && v <= 1).length;
+    const highReact = reacts.filter(v => v >= 2).length;
+    const avgReact = (reacts.reduce((a, b) => a + b, 0) / reacts.length).toFixed(1);
+
+    const rgaAvgEl = document.getElementById('bc-rga-avg');
+    const rgaLowEl = document.getElementById('bc-rga-low-pct');
+    const rgaNeuEl = document.getElementById('bc-rga-neu-pct');
+    const rgaHighEl = document.getElementById('bc-rga-high-pct');
+    if (rgaAvgEl) rgaAvgEl.innerText = `${parseFloat(avgReact) >= 0 ? '+' : ''}${avgReact}`;
+    if (rgaLowEl) rgaLowEl.innerText = `${Math.round((lowReact / reacts.length) * 100)}%`;
+    if (rgaNeuEl) rgaNeuEl.innerText = `${Math.round((neuReact / reacts.length) * 100)}%`;
+    if (rgaHighEl) rgaHighEl.innerText = `${Math.round((highReact / reacts.length) * 100)}%`;
+}
+
+// PÁGINA Y: DISTRIBUCIÓN DE PUERTAS DE ATENCIÓN
+function renderGroupResultsPageY(res, cData, cumData) {
+    const container = document.getElementById('bc-doors-chart-container');
+    if (!container) return;
+
+    // Obtener lista de puertas del caso actual o lista estándar
+    const doorsList = (cData.analysisRounds && cData.analysisRounds.length > 0)
+        ? cData.analysisRounds.map(r => r.title)
+        : ["Puerta 1: Supuestos de Urgencia", "Puerta 2: Supuestos de Autoridad", "Puerta 3: Supuestos de Impacto"];
+
+    // Encontrar el valor máximo para escalar barras
+    let maxVal = 1;
+    doorsList.forEach(d => {
+        const cCount = res.doorsCounts[d] || 0;
+        const cumCount = cumData.cumDoors[d] || cCount;
+        if (cumCount > maxVal) maxVal = cumCount;
+    });
+
+    container.innerHTML = doorsList.map(d => {
+        const caseCount = res.doorsCounts[d] || 0;
+        const cumCount = cumData.cumDoors[d] || caseCount;
+        const casePct = Math.min(100, Math.round((caseCount / maxVal) * 100));
+        const cumPct = Math.min(100, Math.round((cumCount / maxVal) * 100));
+
+        return `
+            <div class="door-chart-row">
+                <div class="door-chart-header">
+                    <span class="door-name">🚪 ${d}</span>
+                </div>
+                <div class="door-dual-bars">
+                    <div class="door-single-bar-line">
+                        <span class="bar-tag-label" style="color:var(--color-cyan);">Caso:</span>
+                        <div class="door-bar-track">
+                            <div class="door-bar-fill-case" style="width:${casePct}%;"></div>
+                        </div>
+                        <span class="bar-count-num" style="color:var(--color-cyan);">${caseCount} elec.</span>
+                    </div>
+                    <div class="door-single-bar-line">
+                        <span class="bar-tag-label" style="color:#b388ff;">Acumulado:</span>
+                        <div class="door-bar-track">
+                            <div class="door-bar-fill-cum" style="width:${cumPct}%;"></div>
+                        </div>
+                        <span class="bar-count-num" style="color:#b388ff;">${cumCount} elec.</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// PÁGINA Z: MATRIZ DE ACCIONES Y DICTAMEN (2x3)
+function renderGroupResultsPageZ(res, cData, cumData) {
+    // Header IG
+    const zBadge = document.getElementById('bc-z-ig-badge');
+    if (zBadge) {
+        zBadge.className = `z-ig-badge tag-${res.globalIntegrity}`;
+        zBadge.innerText = res.globalIntegrity.toUpperCase();
+    }
+
+    // Totales de acciones para cálculo de porcentajes
+    const totalCaseActions = Math.max(1, Object.values(res.matrixSectors).reduce((a, b) => a + b.count, 0));
+    const totalCumActions = Math.max(1, Object.values(cumData.cumMatrix).reduce((a, b) => a + b.count, 0));
+
+    const sectorsMap = [
+        { key: 'hizo_debiahacer', containerId: 'sector-bar-box-hizo-debiahacer' },
+        { key: 'hizo_nodebia', containerId: 'sector-bar-box-hizo-nodebia' },
+        { key: 'hizo_norelevante', containerId: 'sector-bar-box-hizo-norelevante' },
+        { key: 'nohizo_debiahacer', containerId: 'sector-bar-box-nohizo-debiahacer' },
+        { key: 'nohizo_nodebia', containerId: 'sector-bar-box-nohizo-nodebia' },
+        { key: 'nohizo_norelevante', containerId: 'sector-bar-box-nohizo-norelevante' }
+    ];
+
+    sectorsMap.forEach(sec => {
+        const box = document.getElementById(sec.containerId);
+        if (!box) return;
+
+        const caseData = res.matrixSectors[sec.key] || { count: 0, cost: 0 };
+        const cumSecData = cumData.cumMatrix[sec.key] || { count: 0, cost: 0 };
+
+        const casePct = Math.round((caseData.count / totalCaseActions) * 100);
+        const cumPct = Math.round((cumSecData.count / totalCumActions) * 100);
+
+        box.innerHTML = `
+            <!-- Barra Caso Actual -->
+            <div class="sector-bar-block">
+                <div class="sector-bar-info">
+                    <span style="color:var(--color-cyan); font-weight:700;">Caso: ${casePct}% (${caseData.count})</span>
+                    <span class="bar-cost-tag">+$${caseData.cost.toLocaleString('en-US')}</span>
+                </div>
+                <div class="sector-bar-track">
+                    <div class="bar-color-case" style="height:100%; width:${casePct}%; border-radius:4px;"></div>
+                </div>
+            </div>
+
+            <!-- Barra Acumulado Histórico -->
+            <div class="sector-bar-block">
+                <div class="sector-bar-info">
+                    <span style="color:#b388ff; font-weight:700;">Acum.: ${cumPct}% (${cumSecData.count})</span>
+                    <span class="bar-cost-tag">+$${cumSecData.cost.toLocaleString('en-US')}</span>
+                </div>
+                <div class="sector-bar-track">
+                    <div class="bar-color-cumulative" style="height:100%; width:${cumPct}%; border-radius:4px;"></div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Controlador: Habilitar Pausa de Deliberación
+function facUnlockDeliberationGate() {
+    gameStateV2.sessionGates.gate_deliberation = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    
+    showFourthWallScreen();
+}
+
+// Operador: Avanzar a Pausa de Deliberación
+function proceedToDeliberation() {
+    const depEnabled = gameStateV2.facilitatorDependency !== false;
+    if (depEnabled && !gameStateV2.sessionGates.gate_deliberation) {
         return;
     }
     showFourthWallScreen();
@@ -1293,7 +1741,7 @@ function updateGateUI() {
         }
     }
 
-    // CANDADO BC (case-phase-feedback -> screen-fourth-wall / resultados globales)
+    // CANDADO BC (case-phase-feedback -> screen-case-group-results / resultados globales)
     const facGateBC = document.getElementById('fac-gate-bc-container');
     const playerCaseBCRow = document.getElementById('player-case-bc-action-row');
     const playerCaseBCBtn = document.getElementById('btn-case-go-bc');
@@ -1314,6 +1762,30 @@ function updateGateUI() {
             playerCaseBCBtn.style.opacity = '0.45';
             playerCaseBCBtn.style.cursor = 'not-allowed';
             if (playerCaseBCTxt) playerCaseBCTxt.innerText = "🔒 ESPERANDO RESULTADOS GLOBALES DEL CONTROLADOR...";
+        }
+    }
+
+    // CANDADO DELIBERACIÓN (screen-case-group-results -> screen-fourth-wall)
+    const facGateDelib = document.getElementById('fac-gate-delib-container');
+    const playerDelibRow = document.getElementById('player-delib-action-row');
+    const playerDelibBtn = document.getElementById('btn-group-go-deliberation');
+    const playerDelibTxt = document.getElementById('btn-group-go-delib-text');
+
+    if (facGateDelib) facGateDelib.style.display = isFac ? 'flex' : 'none';
+    if (playerDelibRow) playerDelibRow.style.display = isFac ? 'none' : 'flex';
+    if (playerDelibBtn) {
+        if (effectiveGates.gate_deliberation) {
+            playerDelibBtn.disabled = false;
+            playerDelibBtn.classList.remove('btn-disabled-mission');
+            playerDelibBtn.style.opacity = '1';
+            playerDelibBtn.style.cursor = 'pointer';
+            if (playerDelibTxt) playerDelibTxt.innerText = "CONTINUAR A LA PAUSA DE DELIBERACIÓN ➔";
+        } else {
+            playerDelibBtn.disabled = true;
+            playerDelibBtn.classList.add('btn-disabled-mission');
+            playerDelibBtn.style.opacity = '0.45';
+            playerDelibBtn.style.cursor = 'not-allowed';
+            if (playerDelibTxt) playerDelibTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR ABRA LA DELIBERACIÓN...";
         }
     }
 
@@ -4238,12 +4710,54 @@ function processCaseOutcome(actionIds) {
     }
     gameStateV2.sessionLog.cases.push(caseRecord);
 
+    // Calcular índice de impulso inicial
+    let impulseIndex = 0;
+    if (gameStateV2.currentCaseImpulseData && cData.impulses) {
+        const foundIdx = cData.impulses.findIndex(imp => imp.text === gameStateV2.currentCaseImpulseData.text || imp.id === gameStateV2.currentCaseImpulseData.id);
+        if (foundIdx >= 0) impulseIndex = foundIdx;
+    }
+
+    // Clasificar evaluaciones de matriz en los 6 cuadrantes
+    const matrixEvals = actionsEvaluationList.map(item => {
+        let reqType = 'norelevante';
+        if (item.quadrant && item.quadrant.badgeClass) {
+            if (item.quadrant.badgeClass.includes('opp') || item.quadrant.badgeClass.includes('omission')) {
+                reqType = 'debiahacer';
+            } else if (item.quadrant.badgeClass.includes('extra') || item.quadrant.badgeClass.includes('containment')) {
+                reqType = 'nodebia';
+            } else {
+                reqType = 'norelevante';
+            }
+        }
+        const prefix = item.isExecuted ? 'hizo_' : 'nohizo_';
+        return {
+            id: item.id,
+            text: item.text,
+            isExecuted: item.isExecuted,
+            sectorKey: prefix + reqType,
+            cost: item.isExecuted ? (item.cost || 0) : 0
+        };
+    });
+
+    const finishedPayload = {
+        playerId: gameStateV2.playerId,
+        caseIndex: gameStateV2.currentCaseIndex,
+        impulseIndex: impulseIndex,
+        integrity: caseIntegrity,
+        realTimeSeconds: Math.round(deliberationSeconds),
+        narrativeTimeSeconds: Math.round(totalTimeUsedSeconds),
+        cost: caseTotalAddedCost,
+        calibration: gameStateV2.hudState.calibration,
+        reactivity: gameStateV2.hudState.reactivity,
+        doorsActivated: (gameStateV2.paraState.completedAnalyses || []).map(a => a.title),
+        matrixEvaluations: matrixEvals
+    };
+
+    // Registrar en el estado grupal local
+    recordPlayerCaseResultForGroup(gameStateV2.currentCaseIndex, finishedPayload);
+
     if (gameStateV2.userRole === 'operator') {
-        broadcastSyncEvent('PLAYER_CASE_FINISHED', {
-            playerId: gameStateV2.playerId,
-            caseIndex: gameStateV2.currentCaseIndex,
-            cost: caseTotalAddedCost
-        });
+        broadcastSyncEvent('PLAYER_CASE_FINISHED', finishedPayload);
     }
 
     // ==========================================================================
