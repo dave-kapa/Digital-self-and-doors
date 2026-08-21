@@ -16,7 +16,8 @@ let gameStateV2 = {
         gate4_case1: false,     // Desbloquea botón "INICIAR PRIMERA OPERACIÓN // CASO 01"
         gate_case_bc: false,    // Desbloquea botón de Pantalla B -> BC (Resultados grupales del caso)
         gate_deliberation: false, // Desbloquea botón de Pantalla BC -> Deliberación (Cuarta Pared)
-        gate_next_case: false   // Desbloquea botón de Cuarta Pared -> Siguiente Caso / Terminar Juego
+        gate_next_case: false,  // Desbloquea botón de Cuarta Pared -> Siguiente Caso / Terminar Juego
+        gate_final_closing: false // Desbloquea botón de Resultado Final -> Cierre Final
     },
     nextCaseTarget: null, // { type: 'case', caseIndex: 1 } | { type: 'final_results' }
     resolvedCases: [], // Índices de casos ya resueltos en la sesión
@@ -940,6 +941,7 @@ function updateGatePlayerCounts() {
     const gBCCount = players.filter(p => p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case-results-b').length;
     const gDelibCount = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
     const gNextCaseCount = players.filter(p => p.currentScreen === 'screen-fourth-wall').length;
+    const gFinalClosingCount = players.filter(p => p.currentScreen === 'screen-game-final-results').length;
 
     const elG1 = document.getElementById('fac-gate-1-player-count');
     const elG2 = document.getElementById('fac-gate-2-player-count');
@@ -948,6 +950,7 @@ function updateGatePlayerCounts() {
     const elGBC = document.getElementById('fac-gate-bc-player-count');
     const elGDelib = document.getElementById('fac-gate-delib-player-count');
     const elGNextCase = document.getElementById('fac-gate-nextcase-player-count');
+    const elGFinal = document.getElementById('fac-gate-final-player-count');
 
     if (elG1) elG1.innerText = g1Count;
     if (elG2) elG2.innerText = g2Count;
@@ -956,6 +959,7 @@ function updateGatePlayerCounts() {
     if (elGBC) elGBC.innerText = gBCCount;
     if (elGDelib) elGDelib.innerText = gDelibCount;
     if (elGNextCase) elGNextCase.innerText = gNextCaseCount;
+    if (elGFinal) elGFinal.innerText = gFinalClosingCount;
 }
 
 // Control del Temporizador de Censo a 60 Segundos para cada Caso
@@ -1851,6 +1855,30 @@ function updateGateUI() {
             playerFWBtn.style.opacity = '0.45';
             playerFWBtn.style.cursor = 'not-allowed';
             if (playerFWTxt) playerFWTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR INDIQUE EL SIGUIENTE PASO...";
+        }
+    }
+
+    // CANDADO CIERRE FINAL (screen-game-final-results -> screen-closing)
+    const facGateFinal = document.getElementById('fac-gate-final-closing-container');
+    const playerFinalRow = document.getElementById('player-final-action-row');
+    const playerFinalBtn = document.getElementById('btn-final-go-closing');
+    const playerFinalTxt = document.getElementById('btn-final-go-closing-text');
+
+    if (facGateFinal) facGateFinal.style.display = isFac ? 'flex' : 'none';
+    if (playerFinalRow) playerFinalRow.style.display = isFac ? 'none' : 'flex';
+    if (playerFinalBtn) {
+        if (effectiveGates.gate_final_closing) {
+            playerFinalBtn.disabled = false;
+            playerFinalBtn.classList.remove('btn-disabled-mission');
+            playerFinalBtn.style.opacity = '1';
+            playerFinalBtn.style.cursor = 'pointer';
+            if (playerFinalTxt) playerFinalTxt.innerText = "CONTINUAR AL CIERRE FINAL Y COFRE DE AGENCIA ➔";
+        } else {
+            playerFinalBtn.disabled = true;
+            playerFinalBtn.classList.add('btn-disabled-mission');
+            playerFinalBtn.style.opacity = '0.45';
+            playerFinalBtn.style.cursor = 'not-allowed';
+            if (playerFinalTxt) playerFinalTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR DE PASO AL CIERRE FINAL...";
         }
     }
 
@@ -5216,7 +5244,7 @@ function confirmNextCaseSelection() {
 
     // El Controlador navega inmediatamente al destino
     if (target.type === 'final_results') {
-        renderFinalScreenV2();
+        openFinalGameResultsScreen();
     } else {
         startFacCaseLive(target.caseIndex);
     }
@@ -5237,7 +5265,7 @@ function proceedFromFourthWallToNext() {
     }
 
     if (target.type === 'final_results') {
-        renderFinalScreenV2();
+        openFinalGameResultsScreen();
     } else {
         startCaseSequence(target.caseIndex);
     }
@@ -5248,8 +5276,348 @@ function proceedToNextCase() {
     if (nextIdx < casesDataV2.length) {
         startCaseSequence(nextIdx);
     } else {
-        renderFinalScreenV2();
+        openFinalGameResultsScreen();
     }
+}
+
+// ==========================================================================
+// PANTALLA: RESULTADO FINAL DEL JUEGO (EVALUACIÓN GLOBAL DE LA SESIÓN)
+// ==========================================================================
+
+function openFinalGameResultsScreen() {
+    renderFinalGameResults();
+    switchScreenV2('screen-game-final-results');
+    updateGateUI();
+}
+
+function switchFinalResultsTab(tabLetter) {
+    const tabs = ['X', 'Y', 'Z'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`final-tab-btn-page-${t.toLowerCase()}`);
+        const page = document.getElementById(`final-subpage-${t.toLowerCase()}`);
+        if (t === tabLetter) {
+            if (btn) btn.classList.add('active');
+            if (page) page.style.display = 'block';
+        } else {
+            if (btn) btn.classList.remove('active');
+            if (page) page.style.display = 'none';
+        }
+    });
+}
+
+function getAllCasesCumulativeGroupResults() {
+    const resolved = (gameStateV2.resolvedCases && gameStateV2.resolvedCases.length > 0)
+        ? gameStateV2.resolvedCases
+        : [0];
+    
+    let totalFinishedCount = 0;
+    let safeSum = 0;
+    let alertSum = 0;
+    let exposedSum = 0;
+    let realTimeSum = 0;
+    let costSum = 0;
+    let allCalibrations = [];
+    let allReactivities = [];
+    const cumDoors = {};
+    const cumMatrix = {
+        'hizo_debiahacer': { count: 0, cost: 0 },
+        'hizo_nodebia': { count: 0, cost: 0 },
+        'hizo_norelevante': { count: 0, cost: 0 },
+        'nohizo_debiahacer': { count: 0, cost: 0 },
+        'nohizo_nodebia': { count: 0, cost: 0 },
+        'nohizo_norelevante': { count: 0, cost: 0 }
+    };
+
+    resolved.forEach(idx => {
+        const res = facState.casesGroupResults[idx];
+        if (res) {
+            const count = res.finishedPlayers ? res.finishedPlayers.length : 0;
+            totalFinishedCount += count;
+            safeSum += (res.integrityCounts.safe || 0);
+            alertSum += (res.integrityCounts.alert || 0);
+            exposedSum += (res.integrityCounts.exposed || 0);
+            
+            realTimeSum += (res.avgRealTime || 45) * Math.max(1, count);
+            costSum += (res.avgCost || 0) * Math.max(1, count);
+
+            allCalibrations = allCalibrations.concat(res.calibrationList || []);
+            allReactivities = allReactivities.concat(res.reactivityList || []);
+
+            Object.keys(res.doorsCounts || {}).forEach(d => {
+                cumDoors[d] = (cumDoors[d] || 0) + res.doorsCounts[d];
+            });
+            Object.keys(res.matrixSectors || {}).forEach(k => {
+                cumMatrix[k].count += res.matrixSectors[k].count;
+                cumMatrix[k].cost += res.matrixSectors[k].cost;
+            });
+        }
+    });
+
+    const totalEvaluations = Math.max(1, safeSum + alertSum + exposedSum);
+    const safePct = Math.round((safeSum / totalEvaluations) * 100);
+    const alertPct = Math.round((alertSum / totalEvaluations) * 100);
+    const exposedPct = Math.max(0, 100 - safePct - alertPct);
+
+    let globalIntegrity = 'alert';
+    if (safeSum === totalEvaluations) globalIntegrity = 'safe';
+    else if (exposedSum === totalEvaluations) globalIntegrity = 'exposed';
+    else globalIntegrity = 'alert';
+
+    // Actualizar HUD global con la IG definitiva
+    setHudIntegrity(globalIntegrity);
+
+    const avgRealTime = Math.round(realTimeSum / Math.max(1, totalFinishedCount || 1));
+    const avgCost = Math.round(costSum / Math.max(1, totalFinishedCount || 1));
+
+    // Promedio y distribuciones CGA
+    const cgaPos = allCalibrations.filter(v => v >= 2).length;
+    const cgaNeu = allCalibrations.filter(v => v >= -1 && v <= 1).length;
+    const cgaNeg = allCalibrations.filter(v => v <= -2).length;
+    const cgaTotal = Math.max(1, allCalibrations.length);
+    const cgaPosPct = Math.round((cgaPos / cgaTotal) * 100);
+    const cgaNeuPct = Math.round((cgaNeu / cgaTotal) * 100);
+    const cgaNegPct = Math.max(0, 100 - cgaPosPct - cgaNeuPct);
+    const cgaAvgNum = allCalibrations.length > 0
+        ? (allCalibrations.reduce((a, b) => a + b, 0) / allCalibrations.length)
+        : 0;
+    const cgaAvg = (cgaAvgNum >= 0 ? '+' : '') + cgaAvgNum.toFixed(1);
+
+    // Promedio y distribuciones RGA
+    const rgaLow = allReactivities.filter(v => v <= -2).length;
+    const rgaNeu = allReactivities.filter(v => v >= -1 && v <= 1).length;
+    const rgaHigh = allReactivities.filter(v => v >= 2).length;
+    const rgaTotal = Math.max(1, allReactivities.length);
+    const rgaLowPct = Math.round((rgaLow / rgaTotal) * 100);
+    const rgaNeuPct = Math.round((rgaNeu / rgaTotal) * 100);
+    const rgaHighPct = Math.max(0, 100 - rgaLowPct - rgaNeuPct);
+    const rgaAvgNum = allReactivities.length > 0
+        ? (allReactivities.reduce((a, b) => a + b, 0) / allReactivities.length)
+        : 0;
+    const rgaAvg = (rgaAvgNum >= 0 ? '+' : '') + rgaAvgNum.toFixed(1);
+
+    return {
+        resolvedCases: resolved,
+        safePct, alertPct, exposedPct, globalIntegrity,
+        avgRealTime, avgCost,
+        cgaPosPct, cgaNeuPct, cgaNegPct, cgaAvg, cgaAvgNum,
+        rgaLowPct, rgaNeuPct, rgaHighPct, rgaAvg,
+        cumDoors, cumMatrix
+    };
+}
+
+function renderFinalGameResults() {
+    const cumData = getAllCasesCumulativeGroupResults();
+
+    renderFinalResultsPageX(cumData);
+    renderFinalResultsPageY(cumData);
+    renderFinalResultsPageZ(cumData);
+}
+
+// PÁGINA X: EVALUACIÓN GLOBAL ACUMULADA DE LA MISIÓN
+function renderFinalResultsPageX(cumData) {
+    // 0. Banner de Veredicto de Misión
+    const verdictBox = document.getElementById('final-mission-verdict-box');
+    const verdictIcon = document.getElementById('final-verdict-icon');
+    const verdictTag = document.getElementById('final-verdict-tag');
+    const verdictTitle = document.getElementById('final-verdict-title');
+    const verdictDesc = document.getElementById('final-verdict-desc');
+
+    const isPassed = cumData.cgaAvgNum >= 0 && cumData.globalIntegrity !== 'exposed';
+
+    if (verdictBox) {
+        verdictBox.className = `final-mission-verdict-box ${isPassed ? 'verdict-passed' : 'verdict-failed'}`;
+    }
+    if (verdictIcon) verdictIcon.innerText = isPassed ? '🛡️' : '⚠️';
+    if (verdictTag) verdictTag.innerText = isPassed ? 'DICTAMEN FINAL: MISIÓN SUPERADA' : 'DICTAMEN FINAL: MISIÓN COMPROMETIDA';
+    if (verdictTitle) {
+        verdictTitle.innerText = isPassed 
+            ? 'CONTROL Y AGENCIA RECUPERADOS // ÉXITO OPERATIVO' 
+            : 'AGENCIA CEDIDA A FARO // ALTO RIESGO DE EXPOSICIÓN';
+    }
+    if (verdictDesc) {
+        verdictDesc.innerText = isPassed
+            ? `El grupo demostró calibración positiva (${cumData.cgaAvg}), contuvo respuestas impulsivas y mantuvo la integridad del sistema bajo control.`
+            : `El grupo cedió control de forma desproporcionada o acumuló calibración desajustada (${cumData.cgaAvg}), reduciendo la supervisión crítica frente a FARO.`;
+    }
+
+    // 1. Integridad Global Acumulada
+    const pill = document.getElementById('final-ig-status-pill');
+    if (pill) {
+        pill.className = `ig-global-badge tag-${cumData.globalIntegrity}`;
+        pill.innerText = `ESTADO: ${cumData.globalIntegrity === 'safe' ? 'SEGURO' : (cumData.globalIntegrity === 'alert' ? 'ALERTA' : 'EXPUESTO')}`;
+    }
+
+    const sPctEl = document.getElementById('final-ig-safe-pct');
+    const aPctEl = document.getElementById('final-ig-alert-pct');
+    const ePctEl = document.getElementById('final-ig-exposed-pct');
+    if (sPctEl) sPctEl.innerText = `${cumData.safePct}%`;
+    if (aPctEl) aPctEl.innerText = `${cumData.alertPct}%`;
+    if (ePctEl) ePctEl.innerText = `${cumData.exposedPct}%`;
+
+    const bSafe = document.getElementById('final-ig-bar-safe');
+    const bAlert = document.getElementById('final-ig-bar-alert');
+    const bExp = document.getElementById('final-ig-bar-exposed');
+    if (bSafe) bSafe.style.width = `${cumData.safePct}%`;
+    if (bAlert) bAlert.style.width = `${cumData.alertPct}%`;
+    if (bExp) bExp.style.width = `${cumData.exposedPct}%`;
+
+    // 2. TG: Tiempo Real Global
+    const tgEl = document.getElementById('final-metric-tg-val');
+    if (tgEl) tgEl.innerText = `${cumData.avgRealTime}s`;
+
+    // 3. CG: Costo Global
+    const cgEl = document.getElementById('final-metric-cg-val');
+    if (cgEl) cgEl.innerText = `$${cumData.avgCost.toLocaleString('en-US')}`;
+
+    // 4. CGA: Calibración Global
+    const cgaAvgEl = document.getElementById('final-cga-avg-val');
+    if (cgaAvgEl) cgaAvgEl.innerText = `CGA: ${cumData.cgaAvg}`;
+
+    const cgaPosEl = document.getElementById('final-cga-pos-pct');
+    const cgaNeuEl = document.getElementById('final-cga-neu-pct');
+    const cgaNegEl = document.getElementById('final-cga-neg-pct');
+    if (cgaPosEl) cgaPosEl.innerText = `${cumData.cgaPosPct}%`;
+    if (cgaNeuEl) cgaNeuEl.innerText = `${cumData.cgaNeuPct}%`;
+    if (cgaNegEl) cgaNegEl.innerText = `${cumData.cgaNegPct}%`;
+
+    const cgaBarPos = document.getElementById('final-cga-bar-pos');
+    const cgaBarNeu = document.getElementById('final-cga-bar-neu');
+    const cgaBarNeg = document.getElementById('final-cga-bar-neg');
+    if (cgaBarPos) cgaBarPos.style.width = `${cumData.cgaPosPct}%`;
+    if (cgaBarNeu) cgaBarNeu.style.width = `${cumData.cgaNeuPct}%`;
+    if (cgaBarNeg) cgaBarNeg.style.width = `${cumData.cgaNegPct}%`;
+
+    // 5. RGA: Reactividad Global
+    const rgaAvgEl = document.getElementById('final-rga-avg-val');
+    if (rgaAvgEl) rgaAvgEl.innerText = `RGA: ${cumData.rgaAvg}`;
+
+    const rgaLowEl = document.getElementById('final-rga-low-pct');
+    const rgaNeuEl = document.getElementById('final-rga-neu-pct');
+    const rgaHighEl = document.getElementById('final-rga-high-pct');
+    if (rgaLowEl) rgaLowEl.innerText = `${cumData.rgaLowPct}%`;
+    if (rgaNeuEl) rgaNeuEl.innerText = `${cumData.rgaNeuPct}%`;
+    if (rgaHighEl) rgaHighEl.innerText = `${cumData.rgaHighPct}%`;
+
+    const rgaBarLow = document.getElementById('final-rga-bar-low');
+    const rgaBarNeu = document.getElementById('final-rga-bar-neu');
+    const rgaBarHigh = document.getElementById('final-rga-bar-high');
+    if (rgaBarLow) rgaBarLow.style.width = `${cumData.rgaLowPct}%`;
+    if (rgaBarNeu) rgaBarNeu.style.width = `${cumData.rgaNeuPct}%`;
+    if (rgaBarHigh) rgaBarHigh.style.width = `${cumData.rgaHighPct}%`;
+}
+
+// PÁGINA Y: PUERTAS DE ATENCIÓN ACUMULADAS
+function renderFinalResultsPageY(cumData) {
+    const container = document.getElementById('final-doors-chart-container');
+    if (!container) return;
+
+    // Obtener catálogo de todas las puertas de atención presentes en los casos
+    const allDoors = [];
+    const seenTitles = new Set();
+    casesDataV2.forEach(c => {
+        if (c.analysisLenses) {
+            c.analysisLenses.forEach(l => {
+                if (!seenTitles.has(l.title)) {
+                    seenTitles.add(l.title);
+                    allDoors.push({ title: l.title, text: l.text });
+                }
+            });
+        }
+    });
+
+    const totalCumSelections = Math.max(1, Object.values(cumData.cumDoors).reduce((a, b) => a + b, 0));
+
+    container.innerHTML = allDoors.map(door => {
+        const count = cumData.cumDoors[door.title] || 0;
+        const pct = Math.round((count / totalCumSelections) * 100);
+
+        return `
+            <div class="door-chart-item">
+                <div class="door-info-header">
+                    <span class="door-name">${door.title}</span>
+                    <span class="door-legend-counts">
+                        <span style="color:#b388ff; font-weight:700;">Acumulado: ${pct}% (${count})</span>
+                    </span>
+                </div>
+                <div class="door-bar-track">
+                    <div class="bar-color-cumulative" style="height:100%; width:${pct}%; border-radius:4px;"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// PÁGINA Z: MATRIZ DE ACCIONES ACUMULADA (2x3)
+function renderFinalResultsPageZ(cumData) {
+    // Header IG (Badge y Semáforo de 3 Bombillos SEG / ALT / EXP)
+    const zBadge = document.getElementById('final-z-ig-badge');
+    if (zBadge) {
+        zBadge.className = `z-ig-badge tag-${cumData.globalIntegrity}`;
+        zBadge.innerText = cumData.globalIntegrity === 'safe' ? 'SEGURO' : (cumData.globalIntegrity === 'alert' ? 'ALERTA' : 'EXPUESTO');
+    }
+
+    const semSafe = document.getElementById('final-z-sem-safe');
+    const semAlert = document.getElementById('final-z-sem-alert');
+    const semExp = document.getElementById('final-z-sem-exposed');
+    if (semSafe && semAlert && semExp) {
+        semSafe.classList.remove('active');
+        semAlert.classList.remove('active');
+        semExp.classList.remove('active');
+
+        if (cumData.globalIntegrity === 'safe') {
+            semSafe.classList.add('active');
+        } else if (cumData.globalIntegrity === 'alert') {
+            semAlert.classList.add('active');
+        } else if (cumData.globalIntegrity === 'exposed') {
+            semExp.classList.add('active');
+        }
+    }
+
+    const totalCumActions = Math.max(1, Object.values(cumData.cumMatrix).reduce((a, b) => a + b.count, 0));
+
+    const sectorsMap = [
+        { key: 'hizo_debiahacer', containerId: 'final-sector-box-hizo-debiahacer' },
+        { key: 'hizo_nodebia', containerId: 'final-sector-box-hizo-nodebia' },
+        { key: 'hizo_norelevante', containerId: 'final-sector-box-hizo-norelevante' },
+        { key: 'nohizo_debiahacer', containerId: 'final-sector-box-nohizo-debiahacer' },
+        { key: 'nohizo_nodebia', containerId: 'final-sector-box-nohizo-nodebia' },
+        { key: 'nohizo_norelevante', containerId: 'final-sector-box-nohizo-norelevante' }
+    ];
+
+    sectorsMap.forEach(sec => {
+        const box = document.getElementById(sec.containerId);
+        if (!box) return;
+
+        const cumSecData = cumData.cumMatrix[sec.key] || { count: 0, cost: 0 };
+        const cumPct = Math.round((cumSecData.count / totalCumActions) * 100);
+
+        box.innerHTML = `
+            <div class="sector-bar-block">
+                <div class="sector-bar-info">
+                    <span style="color:#b388ff; font-weight:700;">Acum.: ${cumPct}% (${cumSecData.count})</span>
+                    <span class="bar-cost-tag">+$${cumSecData.cost.toLocaleString('en-US')}</span>
+                </div>
+                <div class="sector-bar-track">
+                    <div class="bar-color-cumulative" style="height:100%; width:${cumPct}%; border-radius:4px;"></div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function facUnlockFinalClosingGate() {
+    gameStateV2.sessionGates.gate_final_closing = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    renderFinalScreenV2();
+}
+
+function proceedToClosingScreen() {
+    const depEnabled = gameStateV2.facilitatorDependency !== false;
+    if (depEnabled && !gameStateV2.sessionGates.gate_final_closing) {
+        return;
+    }
+    renderFinalScreenV2();
 }
 
 // ==========================================================================
