@@ -750,49 +750,26 @@
                         </div>
                     </div>
 
-                    <!-- Grid de las 6 Métricas Principales de Telemetría + Alternativas -->
+                    <!-- Grid de las 7 Métricas Principales de Telemetría en Vivo -->
                     <div class="fac-live-metrics-grid">
                         
-                        <!-- Métrica 1: % Avance (Reacción Inicial Completada) -->
+                        <!-- Métrica 1: % Reacción Inicial (Avance en P.A.R.A.) -->
                         <div class="fac-live-metric-card">
                             <div class="metric-top-row">
-                                <span class="metric-badge">1. AVANCE EN P.A.R.A.</span>
+                                <span class="metric-badge">1. REACCIÓN INICIAL</span>
                                 <span class="metric-pct-val" id="fac-case-metric-reactions-pct">0%</span>
                             </div>
-                            <h4 class="metric-card-title">REACCIÓN INICIAL</h4>
+                            <h4 class="metric-card-title">AVANCE EN P.A.R.A.</h4>
                             <div class="fac-metric-bar-track">
                                 <div class="fac-metric-bar-fill" id="fac-case-metric-reactions-fill" style="width:0%;"></div>
                             </div>
                             <span class="metric-sub-detail" id="fac-case-metric-reactions-count">0 / 0 operadores en P.A.R.A.</span>
                         </div>
 
-                        <!-- Métrica 2: % Casos Completados -->
+                        <!-- Métrica 2: % Total de Pausas Usadas -->
                         <div class="fac-live-metric-card">
                             <div class="metric-top-row">
-                                <span class="metric-badge" style="background:rgba(0,230,118,0.15); border-color:#00e676; color:#00e676;">2. COMPLETADOS</span>
-                                <span class="metric-pct-val" id="fac-case-metric-finished-pct" style="color:#00e676;">0%</span>
-                            </div>
-                            <h4 class="metric-card-title">ACCIONES EJECUTADAS</h4>
-                            <div class="fac-metric-bar-track">
-                                <div class="fac-metric-bar-fill fill-green" id="fac-case-metric-finished-fill" style="width:0%;"></div>
-                            </div>
-                            <span class="metric-sub-detail" id="fac-case-metric-finished-count">0 / 0 operadores listos</span>
-                        </div>
-
-                        <!-- Métrica 3: Costo Promedio del Caso -->
-                        <div class="fac-live-metric-card metric-card-cost">
-                            <div class="metric-top-row">
-                                <span class="metric-badge" style="background:rgba(255,213,79,0.15); border-color:#ffd54f; color:#ffd54f;">3. COSTO PROMEDIO</span>
-                            </div>
-                            <h4 class="metric-card-title">BALANCE ECONÓMICO</h4>
-                            <div class="metric-cost-val" id="fac-case-metric-avg-cost">$0</div>
-                            <span class="metric-sub-detail" id="fac-case-metric-cost-status">Promedio de operadores finalizados</span>
-                        </div>
-
-                        <!-- Métrica 4: % Total de Pausas Usadas -->
-                        <div class="fac-live-metric-card">
-                            <div class="metric-top-row">
-                                <span class="metric-badge">4. PAUSAS [P]</span>
+                                <span class="metric-badge">2. PAUSAS [P]</span>
                                 <span class="metric-pct-val" id="fac-case-metric-pauses-pct">0%</span>
                             </div>
                             <h4 class="metric-card-title">PAUSAS USADAS</h4>
@@ -802,10 +779,10 @@
                             <span class="metric-sub-detail" id="fac-case-metric-pauses-count">0 / 0 pausas posibles</span>
                         </div>
 
-                        <!-- Métrica 5: % de Análisis Usados -->
+                        <!-- Métrica 3: % de Análisis Usados -->
                         <div class="fac-live-metric-card">
                             <div class="metric-top-row">
-                                <span class="metric-badge">5. ANÁLISIS [A]</span>
+                                <span class="metric-badge">3. ANÁLISIS [A]</span>
                                 <span class="metric-pct-val" id="fac-case-metric-analyses-pct">0%</span>
                             </div>
                             <h4 class="metric-card-title">ANÁLISIS EJECUTADOS</h4>
@@ -815,10 +792,10 @@
                             <span class="metric-sub-detail" id="fac-case-metric-analyses-count">0 / 0 análisis posibles</span>
                         </div>
 
-                        <!-- Métrica 6: % de Revisiones Usadas -->
+                        <!-- Métrica 4: % de Revisiones Usadas -->
                         <div class="fac-live-metric-card">
                             <div class="metric-top-row">
-                                <span class="metric-badge">6. REVISIONES [R]</span>
+                                <span class="metric-badge">4. REVISIONES [R]</span>
                                 <span class="metric-pct-val" id="fac-case-metric-revisions-pct">0%</span>
                             </div>
                             <h4 class="metric-card-title">REVISIONES EJECUTADAS</h4>
@@ -828,14 +805,37 @@
                             <span class="metric-sub-detail" id="fac-case-metric-revisions-count">0 / 0 revisiones posibles</span>
                         </div>
 
-                        <!-- Métrica 7: # Alternativas Relevantes Descubiertas -->
+                        <!-- Métrica 5: # Alternativas Relevantes Descubiertas -->
                         <div class="fac-live-metric-card metric-card-alternatives">
                             <div class="metric-top-row">
-                                <span class="metric-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">7. ALTERNATIVAS CLAVE</span>
+                                <span class="metric-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">5. ALTERNATIVAS CLAVE</span>
                             </div>
                             <h4 class="metric-card-title">ACCIONES RELEVANTES</h4>
                             <div class="metric-num-highlight" id="fac-case-metric-actions-num">0</div>
                             <span class="metric-sub-detail">medidas pertinentes consideradas</span>
+                        </div>
+
+                        <!-- Métrica 6: % Casos Completados -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(0,230,118,0.15); border-color:#00e676; color:#00e676;">6. COMPLETADOS</span>
+                                <span class="metric-pct-val" id="fac-case-metric-finished-pct" style="color:#00e676;">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">ACCIONES EJECUTADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-green" id="fac-case-metric-finished-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-finished-count">0 / 0 operadores listos</span>
+                        </div>
+
+                        <!-- Métrica 7: Costo Promedio del Caso -->
+                        <div class="fac-live-metric-card metric-card-cost">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(255,213,79,0.15); border-color:#ffd54f; color:#ffd54f;">7. COSTO PROMEDIO</span>
+                            </div>
+                            <h4 class="metric-card-title">BALANCE ECONÓMICO</h4>
+                            <div class="metric-cost-val" id="fac-case-metric-avg-cost">$0</div>
+                            <span class="metric-sub-detail" id="fac-case-metric-cost-status">Promedio de operadores finalizados</span>
                         </div>
 
                     </div>
