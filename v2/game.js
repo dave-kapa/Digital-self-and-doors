@@ -3481,6 +3481,16 @@ function startCaseSequence(caseIdx) {
     gameStateV2.isPauseActive = false;
     clearInterval(gameStateV2.timerInterval);
 
+    // REGLA 9 V3: Asignación aleatoria de 3 alternativas visibles en Actuar y 3 ocultas para Revisar
+    if (cData.actionAlternatives && Array.isArray(cData.actionAlternatives) && cData.actionAlternatives.length === 6) {
+        const shuffled = [...cData.actionAlternatives].sort(() => Math.random() - 0.5);
+        gameStateV2.caseActiveInitialActions = shuffled.slice(0, 3);
+        gameStateV2.caseActiveHiddenActions = shuffled.slice(3, 6);
+    } else {
+        gameStateV2.caseActiveInitialActions = cData.initialActions || [];
+        gameStateV2.caseActiveHiddenActions = cData.reviewResources || [];
+    }
+
     // MOMENTO 1: Cargar Pantalla de Introducción del Caso
     document.getElementById('case-phase-intro').style.display = 'block';
     document.getElementById('case-phase-gameplay').style.display = 'none';
@@ -3914,41 +3924,24 @@ function renderParaDashboard() {
 function executeParaA() {
     gameStateV2.paraState.activeTab = 'A';
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    const rounds = cData.analysisRounds || [
-        {
-            id: 1,
-            title: "EJE 1 // RECONOCIMIENTO DE SESGO & URGENCIA",
-            reflectionText: "98,7% es una cifra de confianza del modelo. ¿Qué parte de tu decisión depende de esa cifra y qué evidencia concreta tienes sobre el alcance real del incidente?",
+    
+    // Soporta formato V3 signalsAnalysis o formato legacy analysisRounds
+    let rounds = [];
+    if (cData.signalsAnalysis && Array.isArray(cData.signalsAnalysis) && cData.signalsAnalysis.length > 0) {
+        rounds = cData.signalsAnalysis.map((sig, sIdx) => ({
+            id: sig.signalId || (sIdx + 1),
+            title: `SEÑAL ${sIdx + 1} // ${(sig.cognitiveVulnerability || 'OBSERVACIÓN ATENCIONAL').toUpperCase()}`,
+            reflectionText: sig.signalQuote,
             question: "¿Qué despierta o activa en ti esta información en primera instancia?",
-            options: [
-                { text: "Presión de inmediatez para proteger la red rápidamente.", feedback: "✔ Observación realizada: Identificaste la influencia del sesgo de urgencia." },
-                { text: "Duda por temor a provocar una interrupción operativa innecesaria.", feedback: "✔ Observación realizada: Reconociste la cautela ante el impacto del servicio." },
-                { text: "Confianza en la precisión tecnológica del Facilitador FARO.", feedback: "✔ Observación realizada: Detectaste la inclinación a confiar en la cifra de IA." }
-            ]
-        },
-        {
-            id: 2,
-            title: "EJE 2 // VALORACIÓN DE PÉRDIDA DE AGENCIA",
-            reflectionText: "La respuesta propuesta afecta 312 cuentas y tres servicios. ¿Qué ocurriría si FARO tiene razón y qué ocurriría si está equivocado?",
-            question: "¿Cómo percibes el impacto de esta respuesta en la agencia sobre el sistema?",
-            options: [
-                { text: "Prioridad a la seguridad sin importar la falta de confirmación previa.", feedback: "✔ Observación realizada: Elegiste priorizar el cerramiento defensivo." },
-                { text: "Necesidad de verificar si las 300 cuentas realmente están comprometidas.", feedback: "✔ Observación realizada: Identificaste el deseo de evitar falsos positivos." },
-                { text: "Preocupación por la transferencia de control operativo a la máquina.", feedback: "✔ Observación realizada: Registraste la inquietud por la delegación masiva." }
-            ]
-        },
-        {
-            id: 3,
-            title: "EJE 3 // ALTERNATIVAS DE DELIBERACIÓN",
-            reflectionText: "Hay algo fácil de olvidar: no decidir también puede ser una decisión. ¿Qué ocurriría si simplemente dejas que opere la configuración actual?",
-            question: "¿Qué consideras más valioso en este punto de la deliberación?",
-            options: [
-                { text: "Ganar tiempo para analizar evidencia secundaria antes de cortar servicios.", feedback: "✔ Observación realizada: Priorizaste la pausa deliberativa." },
-                { text: "Ejecutar la contención inmediata para evitar riesgos mayores.", feedback: "✔ Observación realizada: Decidiste tomar una postura inmediata." },
-                { text: "Buscar canales independientes para validar el origen de la alerta.", feedback: "✔ Observación realizada: Valoraste la verificación de fuentes independientes." }
-            ]
-        }
-    ];
+            options: (sig.doorsOptions || []).map(d => ({
+                text: d.visibleStatement,
+                doorKey: d.doorKey,
+                feedback: "✔ Observación realizada: Identificaste la influencia atencional en tu deliberación."
+            }))
+        }));
+    } else {
+        rounds = cData.analysisRounds || [];
+    }
 
     const modal = document.getElementById('para-modal-card');
     const overlay = document.getElementById('para-modal-overlay');
@@ -3998,41 +3991,23 @@ function executeParaA() {
 
 function submitAnalysisAnswer(roundIdx, optIdx) {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    const rounds = cData.analysisRounds || [
-        {
-            id: 1,
-            title: "EJE 1 // RECONOCIMIENTO DE SESGO & URGENCIA",
-            reflectionText: "98,7% es una cifra de confianza del modelo. ¿Qué parte de tu decisión depende de esa cifra y qué evidencia concreta tienes sobre el alcance real del incidente?",
+    
+    let rounds = [];
+    if (cData.signalsAnalysis && Array.isArray(cData.signalsAnalysis) && cData.signalsAnalysis.length > 0) {
+        rounds = cData.signalsAnalysis.map((sig, sIdx) => ({
+            id: sig.signalId || (sIdx + 1),
+            title: `SEÑAL ${sIdx + 1} // ${(sig.cognitiveVulnerability || 'OBSERVACIÓN ATENCIONAL').toUpperCase()}`,
+            reflectionText: sig.signalQuote,
             question: "¿Qué despierta o activa en ti esta información en primera instancia?",
-            options: [
-                { text: "Presión de inmediatez para proteger la red rápidamente.", feedback: "✔ Observación realizada: Identificaste la influencia del sesgo de urgencia." },
-                { text: "Duda por temor a provocar una interrupción operativa innecesaria.", feedback: "✔ Observación realizada: Reconociste la cautela ante el impacto del servicio." },
-                { text: "Confianza en la precisión tecnológica del Facilitador FARO.", feedback: "✔ Observación realizada: Detectaste la inclinación a confiar en la cifra de IA." }
-            ]
-        },
-        {
-            id: 2,
-            title: "EJE 2 // VALORACIÓN DE PÉRDIDA DE AGENCIA",
-            reflectionText: "La respuesta propuesta afecta 312 cuentas y tres servicios. ¿Qué ocurriría si FARO tiene razón y qué ocurriría si está equivocado?",
-            question: "¿Cómo percibes el impacto de esta respuesta en la agencia sobre el sistema?",
-            options: [
-                { text: "Prioridad a la seguridad sin importar la falta de confirmación previa.", feedback: "✔ Observación realizada: Elegiste priorizar el cerramiento defensivo." },
-                { text: "Necesidad de verificar si las 300 cuentas realmente están comprometidas.", feedback: "✔ Observación realizada: Identificaste el deseo de evitar falsos positivos." },
-                { text: "Preocupación por la transferencia de control operativo a la máquina.", feedback: "✔ Observación realizada: Registraste la inquietud por la delegación masiva." }
-            ]
-        },
-        {
-            id: 3,
-            title: "EJE 3 // ALTERNATIVAS DE DELIBERACIÓN",
-            reflectionText: "Hay algo fácil de olvidar: no decidir también puede ser una decisión. ¿Qué ocurriría si simplemente dejas que opere la configuración actual?",
-            question: "¿Qué consideras más valioso en este punto de la deliberación?",
-            options: [
-                { text: "Ganar tiempo para analizar evidencia secundaria antes de cortar servicios.", feedback: "✔ Observación realizada: Priorizaste la pausa deliberativa." },
-                { text: "Ejecutar la contención inmediata para evitar riesgos mayores.", feedback: "✔ Observación realizada: Decidiste tomar una postura inmediata." },
-                { text: "Buscar canales independientes para validar el origen de la alerta.", feedback: "✔ Observación realizada: Valoraste la verificación de fuentes independientes." }
-            ]
-        }
-    ];
+            options: (sig.doorsOptions || []).map(d => ({
+                text: d.visibleStatement,
+                doorKey: d.doorKey,
+                feedback: "✔ Observación realizada: Identificaste la influencia atencional en tu deliberación."
+            }))
+        }));
+    } else {
+        rounds = cData.analysisRounds || [];
+    }
 
     const exercise = rounds[roundIdx];
     const selectedOpt = exercise.options[optIdx];
@@ -4051,10 +4026,20 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
         gameStateV2.paraState.completedAnalyses = [];
     }
 
+    // Registrar puerta de atención activada
+    const doorKey = selectedOpt.doorKey || null;
+    if (doorKey) {
+        if (!gameStateV2.paraState.doorsActivated) {
+            gameStateV2.paraState.doorsActivated = [];
+        }
+        gameStateV2.paraState.doorsActivated.push(doorKey);
+    }
+
     gameStateV2.paraState.completedAnalyses.push({
         title: exercise.title,
         reflectionText: exercise.reflectionText,
         selectedText: selectedOpt.text,
+        doorKey: doorKey,
         feedback: selectedOpt.feedback,
         calibrationDelta: 1,
         reactivityDelta: affectsReactivity ? -1 : 0,
@@ -4098,40 +4083,12 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
             </div>
         </div>
 
-        <!-- INDICADOR VISUAL DE DESCARGA DE 5 SEGUNDOS (ESTILO CALIBRACIÓN RONDA 3) -->
-        <div style="background:#02060c; border:1px solid rgba(162,155,254,0.3); border-radius:6px; padding:8px 12px; text-align:center;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                <span style="font-size:11px; color:#a29bfe; font-weight:700;">⏱ PROCESANDO REFLEXIÓN...</span>
-                <span style="font-size:11px; color:#ffffff; font-family:var(--font-mono); font-weight:700;" id="analysis-drain-timer">5.0s</span>
-            </div>
-            <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
-                <div id="analysis-drain-bar" style="width:100%; height:100%; background:linear-gradient(90deg, #a29bfe, var(--color-agency-green)); transition: width 0.05s linear;"></div>
-            </div>
+        <div style="display:flex; justify-content:flex-end;">
+            <button class="btn-detroit-primary" style="background:rgba(162,155,254,0.2); border-color:#a29bfe; color:#fff;" onclick="closeParaModalAndRenderDashboard()">
+                <span class="btn-text">CONTINUAR ▶</span>
+            </button>
         </div>
     `;
-
-    clearInterval(analysisCountdownInterval);
-    let timeLeftMs = 5000;
-    const totalMs = 5000;
-
-    analysisCountdownInterval = setInterval(() => {
-        timeLeftMs -= 50;
-        const drainBar = document.getElementById('analysis-drain-bar');
-        const timerText = document.getElementById('analysis-drain-timer');
-
-        if (drainBar) {
-            const pct = Math.max(0, (timeLeftMs / totalMs) * 100);
-            drainBar.style.width = `${pct}%`;
-        }
-        if (timerText) {
-            timerText.innerText = `${(Math.max(0, timeLeftMs) / 1000).toFixed(1)}s`;
-        }
-
-        if (timeLeftMs <= 0) {
-            clearInterval(analysisCountdownInterval);
-            finishAnalysisFeedbackEarly();
-        }
-    }, 50);
 }
 
 let analysisCountdownInterval = null;
@@ -4159,26 +4116,22 @@ function answerAnalysisQuestion(answer) {
 function executeParaR() {
     gameStateV2.paraState.activeTab = 'R';
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    const resources = cData.reviewResources || [
-        {
-            id: "res_1",
-            name: "Registro de origen",
-            text: "REGISTRO DE ORIGEN: La alerta proviene de una sola fuente de telemetría. Doce cuentas presentan actividad anómala confirmada. Las 300 restantes están relacionadas por patrón.",
-            actionId: "limited_containment",
-            actionText: "D. Limitar la autonomía (Aislar 12 cuentas confirmadas y exigir aprobación humana para bloqueos permanentes).",
-            feedbackConsidered: "✔ Considerada: Confirmas que el riesgo inminente está focalizado en 12 cuentas. Se ha desbloqueado la opción 'Limitar la autonomía' en ACTUAR.",
-            feedbackRejected: "✖ No Considerada: Desestimaste la telemetría focalizada. La opción de contención limitada NO estará disponible en ACTUAR."
-        },
-        {
-            id: "res_2",
-            name: "Desempeño de FARO",
-            text: "DESEMPEÑO DE FARO: En las últimas pruebas internas: 97% de amenazas críticas detectadas, 92% de recomendaciones aceptadas por operadores y 4 incidentes resueltos sin escalamiento.",
-            actionId: "controlled_audit",
-            actionText: "D. Auditoría Técnica de Algoritmo (Pausar tareas automáticas de FARO para inspección de código).",
-            feedbackConsidered: "✔ Considerada: Verificas el historial del modelo. Se ha añadido la opción de 'Auditoría Técnica' en ACTUAR.",
-            feedbackRejected: "✖ No Considerada: Decidiste ignorar el historial de FARO. No se añadirá esta opción en ACTUAR."
-        }
-    ];
+    
+    // Soporta alternativas ocultas V3 o recursos de revisión legacy
+    let resources = [];
+    if (gameStateV2.caseActiveHiddenActions && gameStateV2.caseActiveHiddenActions.length > 0) {
+        resources = gameStateV2.caseActiveHiddenActions.map((act, idx) => ({
+            id: act.id || `hidden_act_${idx + 1}`,
+            name: act.actionText || act.text,
+            text: act.extendedContext || act.text,
+            actionId: act.id,
+            actionText: act.actionText || act.text,
+            feedbackConsidered: act.considerFeedback || `✔ Considerada: Se ha añadido la opción '${act.actionText || act.text}' en ACTUAR.`,
+            feedbackRejected: `✖ No Considerada: Desestimaste esta alternativa de acción. NO se añadirá en ACTUAR.`
+        }));
+    } else {
+        resources = cData.reviewResources || [];
+    }
 
     const currIdx = gameStateV2.paraState.rIndex || 0;
 
@@ -4226,7 +4179,7 @@ function openReviewModalForResource(currentRes, resIdx) {
             <p style="font-size:13.5px; color:#ffffff; line-height:1.45;">${textToShow}</p>
         </div>
 
-        <p style="font-size:12.5px; color:#d8eaff; margin-bottom:12px; font-weight:600; text-align:center;">¿Deseas considerar esta alternativa de evidencia para habilitar nuevas opciones en ACTUAR?</p>
+        <p style="font-size:12.5px; color:#d8eaff; margin-bottom:12px; font-weight:600; text-align:center;">¿Deseas considerar esta alternativa descubierta para habilitar su opción en ACTUAR?</p>
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;" id="r-modal-actions">
             <button class="btn-detroit-primary" style="background:rgba(73,245,193,0.2); border-color:var(--color-agency-green); color:#fff; padding:10px;" onclick="decideReviewResource('${currentRes.id}', 'considered', ${resIdx})">
@@ -4243,17 +4196,21 @@ function openReviewModalForResource(currentRes, resIdx) {
 
 function decideReviewResource(resId, decision, resIdx) {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    const resources = cData.reviewResources || [
-        {
-            id: "res_1",
-            name: "Registro de origen",
-            text: "REGISTRO DE ORIGEN: La alerta proviene de una sola fuente de telemetría. Doce cuentas presentan actividad anómala confirmada.",
-            actionId: "limited_containment",
-            actionText: "D. Limitar la autonomía (Aislar 12 cuentas confirmadas y exigir aprobación humana).",
-            feedbackConsidered: "✔ Considerada: Confirmas que el riesgo inminente está focalizado en 12 cuentas. Se ha desbloqueado la opción 'Limitar la autonomía' en ACTUAR.",
-            feedbackRejected: "✖ No Considerada: Desestimaste la telemetría focalizada. La opción de contención limitada NO estará disponible en ACTUAR."
-        }
-    ];
+    
+    let resources = [];
+    if (gameStateV2.caseActiveHiddenActions && gameStateV2.caseActiveHiddenActions.length > 0) {
+        resources = gameStateV2.caseActiveHiddenActions.map((act, idx) => ({
+            id: act.id || `hidden_act_${idx + 1}`,
+            name: act.actionText || act.text,
+            text: act.extendedContext || act.text,
+            actionId: act.id,
+            actionText: act.actionText || act.text,
+            feedbackConsidered: act.considerFeedback || `✔ Considerada: Se ha añadido la opción '${act.actionText || act.text}' en ACTUAR.`,
+            feedbackRejected: `✖ No Considerada: Desestimaste esta alternativa de acción.`
+        }));
+    } else {
+        resources = cData.reviewResources || [];
+    }
 
     let resObj = resources.find(r => r.id === resId);
     if (!resObj && resIdx !== undefined) resObj = resources[resIdx];
@@ -4363,7 +4320,16 @@ function decideReviewResource(resId, decision, resIdx) {
 
 function reopenReviewDecision(resId) {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    const resources = cData.reviewResources || [];
+    let resources = [];
+    if (gameStateV2.caseActiveHiddenActions && gameStateV2.caseActiveHiddenActions.length > 0) {
+        resources = gameStateV2.caseActiveHiddenActions.map((act, idx) => ({
+            id: act.id,
+            name: act.actionText || act.text,
+            text: act.extendedContext || act.text
+        }));
+    } else {
+        resources = cData.reviewResources || [];
+    }
     const resIdx = resources.findIndex(r => r.id === resId);
     const currentRes = resources[resIdx] || { id: resId, name: resId, text: "" };
     
@@ -4383,12 +4349,13 @@ function executeParaActua() {
     const modal = document.getElementById('para-modal-card');
     const overlay = document.getElementById('para-modal-overlay');
 
-    // 1. Opciones iniciales (A, B, C)
-    let initialHtml = cData.initialActions.map(act => `
+    // 1. Opciones iniciales asignadas (3 opciones por defecto en Actuar)
+    const initialList = gameStateV2.caseActiveInitialActions || cData.initialActions || [];
+    let initialHtml = initialList.map(act => `
         <label class="para-act-checkbox-item">
-            <input type="checkbox" class="para-act-checkbox" value="${act.id}" data-text="${act.text}">
+            <input type="checkbox" class="para-act-checkbox" value="${act.id}" data-text="${act.actionText || act.text}">
             <div style="flex:1; display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.text}</span>
+                <span style="font-size:13px; color:#ffffff; line-height:1.4;">${act.actionText || act.text}</span>
                 <span class="action-cost-time-chip">⏱+ 💰+</span>
             </div>
         </label>
@@ -4530,56 +4497,67 @@ function getActionIdealCategory(caseId, actId) {
     return "not_relevant";
 }
 
-function getActionQuadrant(isExec, idealCategory) {
-    if (isExec && idealCategory === "should_do") {
+function getActionQuadrant(isExec, idealCategory, actionObj = null) {
+    // Normalizar tipo de acción (soporta V3: se_debe_hacer, no_se_debe_hacer, no_relevante, y legacy: should_do, should_not_do, not_relevant)
+    let cat = idealCategory;
+    if (actionObj && actionObj.type) {
+        if (actionObj.type === 'se_debe_hacer' || actionObj.type === 'i' || actionObj.type === 'should_do') cat = 'should_do';
+        else if (actionObj.type === 'no_se_debe_hacer' || actionObj.type === 'ii' || actionObj.type === 'should_not_do') cat = 'should_not_do';
+        else if (actionObj.type === 'no_relevante' || actionObj.type === 'iii' || actionObj.type === 'not_relevant') cat = 'not_relevant';
+    }
+
+    const dVal = (actionObj && typeof actionObj.dValue === 'number') ? actionObj.dValue : (cat === 'not_relevant' ? 0 : 2);
+    const nVal = (actionObj && typeof actionObj.nValue === 'number') ? actionObj.nValue : (cat === 'not_relevant' ? 0 : 1);
+
+    if (isExec && cat === "should_do") {
         return {
-            key: "hizo_debia",
-            deltaCalib: 2,
-            badgeText: "✔ ACCIÓN OPORTUNA // HIZO / DEBÍA HACER",
+            key: "hizo_debiahacer",
+            deltaCalib: dVal,
+            badgeText: `✔ ACCIÓN OPORTUNA // HIZO / DEBÍA HACER (+${dVal})`,
             badgeClass: "quad-good",
-            impactHtml: '<span class="impact-chip impact-calib">🎯 Calib: +2</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
+            impactHtml: `<span class="impact-chip impact-calib">🎯 Calib: +${dVal}</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>`
         };
     }
-    if (isExec && idealCategory === "should_not_do") {
+    if (isExec && cat === "should_not_do") {
         return {
             key: "hizo_nodebia",
-            deltaCalib: -2,
-            badgeText: "✖ SOBRE-REACCIÓN // HIZO / NO DEBÍA HACER",
+            deltaCalib: -dVal,
+            badgeText: `✖ ACCIÓN RIESGOSA // HIZO / NO DEBÍA HACER (-${dVal})`,
             badgeClass: "quad-bad",
-            impactHtml: '<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -2</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
+            impactHtml: `<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -${dVal}</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>`
         };
     }
-    if (isExec && idealCategory === "not_relevant") {
+    if (isExec && cat === "not_relevant") {
         return {
             key: "hizo_norelevante",
             deltaCalib: 0,
-            badgeText: "⚪ ACCIÓN NEUTRA // HIZO / NO RELEVANTE",
+            badgeText: "⚪ ACCIÓN NEUTRA // HIZO / NO RELEVANTE (0)",
             badgeClass: "quad-neutral",
             impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
         };
     }
-    if (!isExec && idealCategory === "should_not_do") {
+    if (!isExec && cat === "should_not_do") {
         return {
             key: "nohizo_nodebia",
-            deltaCalib: 1,
-            badgeText: "✔ OMISIÓN PRUDENTE // NO HIZO / NO DEBÍA HACER",
+            deltaCalib: nVal,
+            badgeText: `✔ OMISIÓN PRUDENTE // NO HIZO / NO DEBÍA HACER (+${nVal})`,
             badgeClass: "quad-good",
-            impactHtml: '<span class="impact-chip impact-calib">🎯 Calib: +1</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
+            impactHtml: `<span class="impact-chip impact-calib">🎯 Calib: +${nVal}</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>`
         };
     }
-    if (!isExec && idealCategory === "should_do") {
+    if (!isExec && cat === "should_do") {
         return {
-            key: "nohizo_debia",
-            deltaCalib: -1,
-            badgeText: "✖ OMISIÓN CRÍTICA // NO HIZO / DEBÍA HACER",
+            key: "nohizo_debiahacer",
+            deltaCalib: -nVal,
+            badgeText: `✖ OMISIÓN CRÍTICA // NO HIZO / DEBÍA HACER (-${nVal})`,
             badgeClass: "quad-bad",
-            impactHtml: '<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -1</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
+            impactHtml: `<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -${nVal}</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>`
         };
     }
     return {
         key: "nohizo_norelevante",
         deltaCalib: 0,
-        badgeText: "⚪ OMISIÓN NEUTRA // NO RELEVANTE",
+        badgeText: "⚪ OMISIÓN NEUTRA // NO RELEVANTE (0)",
         badgeClass: "quad-neutral",
         impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
     };
@@ -4644,26 +4622,34 @@ function processCaseOutcome(actionIds) {
     let idsArray = Array.isArray(actionIds) ? actionIds : [actionIds];
     
     if (idsArray.length === 0) {
-        idsArray = [cData.defaultAction];
+        idsArray = [cData.defaultAction || (cData.actionAlternatives && cData.actionAlternatives[0] ? cData.actionAlternatives[0].id : 'default')];
     }
 
     // ==========================================================================
-    // 1. MATRIZ DE LAS 6 ACCIONES Y CALIBRACIÓN POR ACCIÓN
+    // 1. MATRIZ DE LAS 6 ACCIONES Y CALIBRACIÓN POR VALORES DINÁMICOS D Y N (V3)
     // ==========================================================================
-    const allActions = [
-        ...cData.initialActions.map(a => ({ ...a, source: 'initial' })),
-        ...cData.unlockedActions.map(a => ({ ...a, source: 'unlocked' }))
-    ];
+    let allActions = [];
+    if (cData.actionAlternatives && Array.isArray(cData.actionAlternatives) && cData.actionAlternatives.length > 0) {
+        allActions = cData.actionAlternatives.map(a => ({
+            ...a,
+            text: a.actionText || a.text
+        }));
+    } else {
+        allActions = [
+            ...(cData.initialActions || []).map(a => ({ ...a, source: 'initial' })),
+            ...(cData.unlockedActions || []).map(a => ({ ...a, source: 'unlocked' }))
+        ];
+    }
 
     let actionsCalibSum = 0;
     const actionsEvaluationList = allActions.map((act, idx) => {
         const isExec = idsArray.includes(act.id);
-        const idealCat = getActionIdealCategory(cData.id, act.id);
-        const quad = getActionQuadrant(isExec, idealCat);
+        const idealCat = act.type ? act.type : getActionIdealCategory(cData.id, act.id);
+        const quad = getActionQuadrant(isExec, idealCat, act);
         actionsCalibSum += quad.deltaCalib;
         return {
             id: act.id,
-            text: act.text,
+            text: act.actionText || act.text,
             isExecuted: isExec,
             idealCategory: idealCat,
             deltaCalib: quad.deltaCalib,
@@ -4672,18 +4658,21 @@ function processCaseOutcome(actionIds) {
     });
 
     // ==========================================================================
-    // 2. DETERMINACIÓN DE INTEGRIDAD DEL SISTEMA Y RESOLUCIÓN DEL CASO
-    // REGLA: Suma > 0 => Seguro (Positivo -$10k) | Suma = 0 => Alerta (Neutro +$5k) | Suma < 0 => Expuesto (Negativo +$15k)
+    // 2. DETERMINACIÓN DE INTEGRIDAD Y RESOLUCIÓN SEGÚN REGLAS V3
+    // REGLAS V3:
+    // • Suma >= +2 => SEGURO (Bono -$10k | Módulo Recuperado)
+    // • Suma entre -1 y +1 => ALERTA (Ajuste +$5k | Módulo Recuperado / Mitigación Parcial)
+    // • Suma <= -2 => EXPUESTO (Penalización +$15k | Módulo Comprometido)
     // ==========================================================================
     let caseIntegrity = 'safe';
     let outcomeIndicator = 1;
     let outcomeCostAdjustment = -10000;
 
-    if (actionsCalibSum > 0) {
+    if (actionsCalibSum >= 2) {
         caseIntegrity = 'safe';
         outcomeIndicator = 1;
         outcomeCostAdjustment = -10000;
-    } else if (actionsCalibSum === 0) {
+    } else if (actionsCalibSum >= -1 && actionsCalibSum <= 1) {
         caseIntegrity = 'alert';
         outcomeIndicator = 2;
         outcomeCostAdjustment = 5000;
