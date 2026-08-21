@@ -5163,6 +5163,21 @@ const fourthWallData = {
     }
 };
 
+function facUnlockDeliberationGate() {
+    gameStateV2.sessionGates.gate_deliberation = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    showFourthWallScreen();
+}
+
+function proceedToDeliberation() {
+    const depEnabled = gameStateV2.facilitatorDependency !== false;
+    if (depEnabled && !gameStateV2.sessionGates.gate_deliberation) {
+        return;
+    }
+    showFourthWallScreen();
+}
+
 function showFourthWallScreen() {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
     const fwData = fourthWallData[cData.id] || fourthWallData.case_1;
