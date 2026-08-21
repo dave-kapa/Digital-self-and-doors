@@ -1238,7 +1238,7 @@ function recomputeCaseGroupResults(caseIdx) {
     }
 
     // Actualizar HUD global con la nueva IG
-    setHudIntegrity(res.globalIntegrity);
+    gameStateV2.hudState.integrity = res.globalIntegrity;
 
     // 3. TG (Tiempo Real Reloj) y 4. CG (Costo Operación)
     let realTimeSum = 0;
@@ -5445,8 +5445,8 @@ function getAllCasesCumulativeGroupResults() {
     else if (exposedSum === totalEvaluations) globalIntegrity = 'exposed';
     else globalIntegrity = 'alert';
 
-    // Actualizar HUD global con la IG definitiva
-    setHudIntegrity(globalIntegrity);
+    // Guardar IG definitiva en estado
+    gameStateV2.hudState.integrity = globalIntegrity;
 
     const avgRealTime = Math.round(realTimeSum / Math.max(1, totalFinishedCount || 1));
     const avgCost = Math.round(costSum / Math.max(1, totalFinishedCount || 1));
