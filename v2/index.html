@@ -1909,90 +1909,42 @@
                         <!-- 2, 3, 4, 5: Métricas Clave Grid (TG, CG, CGA, RGA) -->
                         <div class="group-metrics-summary-grid">
                             
-                            <!-- 2. TG: Tiempo Global Acumulado -->
-                            <div class="group-card-box metric-box">
-                                <div class="group-box-title">
-                                    <span class="box-icon">⏱</span>
-                                    <h4>2. TIEMPO GLOBAL ACUMULADO (TG)</h4>
-                                </div>
-                                <div class="metric-big-value" id="final-metric-tg-val">0s</div>
-                                <p class="metric-box-sub">Promedio de Tiempo Real Total (segundos de reloj) por caso.</p>
+                            <!-- 2. Tiempo Global Acumulado (TG) -->
+                            <div class="group-metric-card">
+                                <span class="gmetric-badge">2. TIEMPO GLOBAL (TG)</span>
+                                <div class="gmetric-value" id="final-metric-tg-val">0s</div>
+                                <span class="gmetric-sub">Promedio de tiempo real de reloj</span>
                             </div>
 
-                            <!-- 3. CG: Costo Global Total / Promedio -->
-                            <div class="group-card-box metric-box">
-                                <div class="group-box-title">
-                                    <span class="box-icon">💲</span>
-                                    <h4>3. COSTO GLOBAL ACUMULADO (CG)</h4>
-                                </div>
-                                <div class="metric-big-value cost-value" id="final-metric-cg-val">$0</div>
-                                <p class="metric-box-sub">Promedio de costo operativo acumulado por operador en los casos jugados.</p>
+                            <!-- 3. Costo Global Acumulado (CG) -->
+                            <div class="group-metric-card metric-card-gold">
+                                <span class="gmetric-badge" style="color:#ffd54f; border-color:#ffd54f; background:rgba(255,213,79,0.15);">3. COSTO GLOBAL (CG)</span>
+                                <div class="gmetric-value val-gold" id="final-metric-cg-val">$0</div>
+                                <span class="gmetric-sub">Promedio de balance económico</span>
                             </div>
 
-                            <!-- 4. CGA: Calibración Global Acumulada -->
-                            <div class="group-card-box metric-box-wide">
-                                <div class="group-box-title">
-                                    <span class="box-icon">🎯</span>
-                                    <h4>4. CALIBRACIÓN GLOBAL ACUMULADA (CGA)</h4>
-                                    <span class="metric-avg-pill" id="final-cga-avg-val">CGA: +0.0</span>
+                            <!-- 4. Calibración Global Acumulada (CGA) -->
+                            <div class="group-metric-card metric-card-cga">
+                                <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">4. CALIBRACIÓN GLOBAL (CGA)</span>
+                                <div class="gmetric-value val-cga" id="final-cga-avg-val">+0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Positiva (+2 a +5)">🟢 <strong id="final-cga-pos-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-cga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Negativa (-5 a -2)">🔴 <strong id="final-cga-neg-pct">0%</strong></span>
                                 </div>
-                                <p class="metric-box-sub" style="margin-bottom:8px;">Distribución acumulada de precisión y apropiada confianza en la sesión:</p>
-                                <div class="bipolar-distribution-bars">
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label pos-label">Positiva (+2 a +5)</span>
-                                            <strong class="bar-pct" id="final-cga-pos-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-pos" id="final-cga-bar-pos" style="width:0%;"></div></div>
-                                    </div>
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label neutral-label">Neutra (-1 a +1)</span>
-                                            <strong class="bar-pct" id="final-cga-neu-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-neu" id="final-cga-bar-neu" style="width:0%;"></div></div>
-                                    </div>
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label neg-label">Negativa (-5 a -2)</span>
-                                            <strong class="bar-pct" id="final-cga-neg-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-neg" id="final-cga-bar-neg" style="width:0%;"></div></div>
-                                    </div>
-                                </div>
+                                <span class="gmetric-sub">Indicador clave de superación de misión</span>
                             </div>
 
-                            <!-- 5. RGA: Reactividad Global Acumulada -->
-                            <div class="group-card-box metric-box-wide">
-                                <div class="group-box-title">
-                                    <span class="box-icon">⚡</span>
-                                    <h4>5. REACTIVIDAD GLOBAL ACUMULADA (RGA)</h4>
-                                    <span class="metric-avg-pill pill-reactivity" id="final-rga-avg-val">RGA: 0.0</span>
+                            <!-- 5. Reactividad Global Acumulada (RGA) -->
+                            <div class="group-metric-card metric-card-rga">
+                                <span class="gmetric-badge" style="color:#ff7a00; border-color:#ff7a00; background:rgba(255,122,0,0.15);">5. REACTIVIDAD GLOBAL (RGA)</span>
+                                <div class="gmetric-value val-rga" id="final-rga-avg-val">-0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Baja (-5 a -2)">🟢 <strong id="final-rga-low-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-rga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Alta (+2 a +5)">🔴 <strong id="final-rga-high-pct">0%</strong></span>
                                 </div>
-                                <p class="metric-box-sub" style="margin-bottom:8px;">Distribución acumulada de contención del impulso en la sesión:</p>
-                                <div class="bipolar-distribution-bars">
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label pos-label">Baja / Contenida (-5 a -2)</span>
-                                            <strong class="bar-pct" id="final-rga-low-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-pos" id="final-rga-bar-low" style="width:0%;"></div></div>
-                                    </div>
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label neutral-label">Neutra (-1 a +1)</span>
-                                            <strong class="bar-pct" id="final-rga-neu-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-neu" id="final-rga-bar-neu" style="width:0%;"></div></div>
-                                    </div>
-                                    <div class="bipolar-dist-bar-item">
-                                        <div class="bar-header-info">
-                                            <span class="bar-label neg-label">Alta / Impulsiva (+2 a +5)</span>
-                                            <strong class="bar-pct" id="final-rga-high-pct">0%</strong>
-                                        </div>
-                                        <div class="bipolar-track"><div class="bipolar-fill fill-neg" id="final-rga-bar-high" style="width:0%;"></div></div>
-                                    </div>
-                                </div>
+                                <span class="gmetric-sub">Promedio de reactividad acumulada</span>
                             </div>
 
                         </div>

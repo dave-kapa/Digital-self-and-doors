@@ -5319,6 +5319,7 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
     display: flex;
     gap: 16px;
     margin-bottom: 12px;
+    flex-wrap: wrap;
 }
 
 .legend-item {
@@ -5341,47 +5342,71 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
 .attention-doors-chart-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .door-chart-row {
-    background: rgba(2, 10, 18, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(4, 14, 26, 0.85);
+    border: 1px solid rgba(0, 216, 255, 0.18);
     border-radius: 6px;
-    padding: 10px 12px;
+    padding: 10px 14px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.door-chart-row:hover {
+    border-color: rgba(0, 216, 255, 0.4);
+    background: rgba(0, 216, 255, 0.04);
 }
 
 .door-chart-header {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.door-title-box {
+    display: flex;
     align-items: center;
-    margin-bottom: 6px;
+    gap: 6px;
 }
 
 .door-name {
     font-family: var(--font-heading);
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: 700;
     color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+.door-desc-sub {
+    font-size: 10.5px;
+    color: #9cb8d9;
+    font-style: italic;
+    margin: 2px 0 6px 0;
 }
 
 .door-dual-bars {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .door-single-bar-line {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .bar-tag-label {
     font-family: var(--font-mono);
-    font-size: 9.5px;
+    font-size: 10px;
+    font-weight: 700;
     color: #9cb8d9;
-    width: 65px;
+    width: 75px;
+    flex-shrink: 0;
 }
 
 .door-bar-track {
@@ -5394,16 +5419,18 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
 
 .door-bar-fill-case {
     height: 100%;
-    background: var(--color-cyan);
+    background: linear-gradient(90deg, #00b4d8, #00f0ff);
     border-radius: 4px;
     transition: width 0.4s ease;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 .door-bar-fill-cum {
     height: 100%;
-    background: #b388ff;
+    background: linear-gradient(90deg, #7c4dff, #b388ff);
     border-radius: 4px;
     transition: width 0.4s ease;
+    box-shadow: 0 0 8px rgba(179, 136, 255, 0.4);
 }
 
 .bar-count-num {
@@ -5411,8 +5438,9 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
     font-size: 11px;
     font-weight: 800;
     color: #ffffff;
-    width: 45px;
+    min-width: 95px;
     text-align: right;
+    flex-shrink: 0;
 }
 
 /* Página Z: Matriz de Acciones 2x3 */

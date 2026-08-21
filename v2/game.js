@@ -1417,49 +1417,88 @@ function renderGroupResultsPageX(res, cData) {
     if (rgaHighEl) rgaHighEl.innerText = `${Math.round((highReact / reacts.length) * 100)}%`;
 }
 
-// PÁGINA Y: DISTRIBUCIÓN DE PUERTAS DE ATENCIÓN
+// CATÁLOGO MAESTRO DE LAS 9 PUERTAS DE ATENCIÓN (ATTENTION DOORS)
+const MASTER_ATTENTION_DOORS = [
+    { key: "proteccion", num: 1, title: "Puerta 1: Protección", label: "Sensación de seguridad o delegación en la herramienta defensiva", icon: "🛡️" },
+    { key: "responsabilidad", num: 2, title: "Puerta 2: Responsabilidad", label: "Sensación de obligación personal o evitación de culpa", icon: "⚖️" },
+    { key: "conveniencia", num: 3, title: "Puerta 3: Conveniencia", label: "Ahorro de esfuerzo cognitivo y aceptación de respuestas preprocesadas", icon: "⚡" },
+    { key: "perdida", num: 4, title: "Puerta 4: Pérdida", label: "Urgencia temporal, escasez o costo percibido de esperar", icon: "⏳" },
+    { key: "coherencia", num: 5, title: "Puerta 5: Coherencia", label: "Ausencia de anomalías visibles y formato consistente con expectativas", icon: "🧩" },
+    { key: "identidad", num: 6, title: "Puerta 6: Identidad", label: "Apelación al rol profesional, competencia técnica o reputación", icon: "👤" },
+    { key: "jerarquia", num: 7, title: "Puerta 7: Jerarquía", label: "Presión de autoridad formal, rango superior o directrices institucionales", icon: "🏛️" },
+    { key: "curiosidad", num: 8, title: "Puerta 8: Curiosidad", label: "Estímulo ante novedad, datos privilegiados o accesos preliminares", icon: "🔍" },
+    { key: "validacion", num: 9, title: "Puerta 9: Validación", label: "Búsqueda de aprobación social, confirmación de pares o consenso", icon: "🤝" }
+];
+
+function getStandardDoorKey(doorStr) {
+    const s = (doorStr || '').toLowerCase();
+    if (s.includes('protección') || s.includes('proteccion')) return 'proteccion';
+    if (s.includes('responsabilidad')) return 'responsabilidad';
+    if (s.includes('conveniencia')) return 'conveniencia';
+    if (s.includes('pérdida') || s.includes('perdida')) return 'perdida';
+    if (s.includes('coherencia')) return 'coherencia';
+    if (s.includes('identidad')) return 'identidad';
+    if (s.includes('jerarquía') || s.includes('jerarquia')) return 'jerarquia';
+    if (s.includes('curiosidad')) return 'curiosidad';
+    if (s.includes('validación') || s.includes('validacion')) return 'validacion';
+    return null;
+}
+
+// PÁGINA Y: DISTRIBUCIÓN DE PUERTAS DE ATENCIÓN (FIN DEL CASO)
 function renderGroupResultsPageY(res, cData, cumData) {
     const container = document.getElementById('bc-doors-chart-container');
     if (!container) return;
 
-    // Obtener lista de puertas del caso actual o lista estándar
-    const doorsList = (cData.analysisRounds && cData.analysisRounds.length > 0)
-        ? cData.analysisRounds.map(r => r.title)
-        : ["Puerta 1: Supuestos de Urgencia", "Puerta 2: Supuestos de Autoridad", "Puerta 3: Supuestos de Impacto"];
+    // Obtener las puertas exploradas en este caso desde analysisLenses
+    const caseLenses = cData.analysisLenses || [];
+    const doorsList = caseLenses.map(l => {
+        const key = getStandardDoorKey(l.title);
+        const master = MASTER_ATTENTION_DOORS.find(m => m.key === key);
+        return {
+            title: l.title,
+            displayTitle: master ? `${master.icon} ${master.title}` : `🚪 ${l.title}`,
+            desc: master ? master.label : (l.text || ''),
+            key: key || l.title
+        };
+    });
 
     // Encontrar el valor máximo para escalar barras
     let maxVal = 1;
     doorsList.forEach(d => {
-        const cCount = res.doorsCounts[d] || 0;
-        const cumCount = cumData.cumDoors[d] || cCount;
+        const cCount = res.doorsCounts[d.title] || (d.key && res.doorsCounts[d.key]) || 0;
+        const cumCount = cumData.cumDoors[d.title] || (d.key && cumData.cumDoors[d.key]) || cCount;
         if (cumCount > maxVal) maxVal = cumCount;
+        if (cCount > maxVal) maxVal = cCount;
     });
 
     container.innerHTML = doorsList.map(d => {
-        const caseCount = res.doorsCounts[d] || 0;
-        const cumCount = cumData.cumDoors[d] || caseCount;
+        const caseCount = res.doorsCounts[d.title] || (d.key && res.doorsCounts[d.key]) || 0;
+        const cumCount = cumData.cumDoors[d.title] || (d.key && cumData.cumDoors[d.key]) || caseCount;
         const casePct = Math.min(100, Math.round((caseCount / maxVal) * 100));
         const cumPct = Math.min(100, Math.round((cumCount / maxVal) * 100));
 
         return `
             <div class="door-chart-row">
                 <div class="door-chart-header">
-                    <span class="door-name">🚪 ${d}</span>
+                    <div class="door-title-box">
+                        <span class="door-name">${d.displayTitle}</span>
+                    </div>
                 </div>
+                <div class="door-desc-sub">${d.desc}</div>
                 <div class="door-dual-bars">
                     <div class="door-single-bar-line">
-                        <span class="bar-tag-label" style="color:var(--color-cyan);">Caso:</span>
+                        <span class="bar-tag-label" style="color:var(--color-cyan);">Caso actual:</span>
                         <div class="door-bar-track">
                             <div class="door-bar-fill-case" style="width:${casePct}%;"></div>
                         </div>
-                        <span class="bar-count-num" style="color:var(--color-cyan);">${caseCount} elec.</span>
+                        <span class="bar-count-num" style="color:var(--color-cyan);">${caseCount} selecc.</span>
                     </div>
                     <div class="door-single-bar-line">
                         <span class="bar-tag-label" style="color:#b388ff;">Acumulado:</span>
                         <div class="door-bar-track">
                             <div class="door-bar-fill-cum" style="width:${cumPct}%;"></div>
                         </div>
-                        <span class="bar-count-num" style="color:#b388ff;">${cumCount} elec.</span>
+                        <span class="bar-count-num" style="color:#b388ff;">${cumCount} selecc.</span>
                     </div>
                 </div>
             </div>
@@ -5506,41 +5545,47 @@ function renderFinalResultsPageX(cumData) {
     if (rgaBarHigh) rgaBarHigh.style.width = `${cumData.rgaHighPct}%`;
 }
 
-// PÁGINA Y: PUERTAS DE ATENCIÓN ACUMULADAS
+// PÁGINA Y: PUERTAS DE ATENCIÓN ACUMULADAS (RESULTADO FINAL DEL JUEGO)
 function renderFinalResultsPageY(cumData) {
     const container = document.getElementById('final-doors-chart-container');
     if (!container) return;
 
-    // Obtener catálogo de todas las puertas de atención presentes en los casos
-    const allDoors = [];
-    const seenTitles = new Set();
-    casesDataV2.forEach(c => {
-        if (c.analysisLenses) {
-            c.analysisLenses.forEach(l => {
-                if (!seenTitles.has(l.title)) {
-                    seenTitles.add(l.title);
-                    allDoors.push({ title: l.title, text: l.text });
-                }
-            });
-        }
+    // Calcular el total de selecciones por puerta del catálogo maestro
+    const doorStats = MASTER_ATTENTION_DOORS.map(m => {
+        let count = 0;
+        // Buscar en cumData.cumDoors tanto por clave como por variaciones de título
+        Object.keys(cumData.cumDoors || {}).forEach(dTitle => {
+            if (getStandardDoorKey(dTitle) === m.key) {
+                count += cumData.cumDoors[dTitle];
+            }
+        });
+        return { ...m, count };
     });
 
-    const totalCumSelections = Math.max(1, Object.values(cumData.cumDoors).reduce((a, b) => a + b, 0));
+    const totalCumSelections = Math.max(1, doorStats.reduce((a, b) => a + b.count, 0));
+    const maxCount = Math.max(1, ...doorStats.map(d => d.count));
 
-    container.innerHTML = allDoors.map(door => {
-        const count = cumData.cumDoors[door.title] || 0;
-        const pct = Math.round((count / totalCumSelections) * 100);
+    container.innerHTML = doorStats.map(door => {
+        const pctOfTotal = Math.round((door.count / totalCumSelections) * 100);
+        const barWidth = Math.min(100, Math.round((door.count / maxCount) * 100));
 
         return `
-            <div class="door-chart-item">
-                <div class="door-info-header">
-                    <span class="door-name">${door.title}</span>
-                    <span class="door-legend-counts">
-                        <span style="color:#b388ff; font-weight:700;">Acumulado: ${pct}% (${count})</span>
+            <div class="door-chart-row">
+                <div class="door-chart-header">
+                    <div class="door-title-box">
+                        <span class="door-name">${door.icon} ${door.title}</span>
+                    </div>
+                    <span style="font-family:var(--font-mono); font-size:11px; color:#b388ff; font-weight:800;">
+                        ${door.count} selecciones (${pctOfTotal}%)
                     </span>
                 </div>
-                <div class="door-bar-track">
-                    <div class="bar-color-cumulative" style="height:100%; width:${pct}%; border-radius:4px;"></div>
+                <div class="door-desc-sub">${door.label}</div>
+                <div class="door-single-bar-line">
+                    <span class="bar-tag-label" style="color:#b388ff;">Acumulado:</span>
+                    <div class="door-bar-track">
+                        <div class="door-bar-fill-cum" style="width:${barWidth}%;"></div>
+                    </div>
+                    <span class="bar-count-num" style="color:#b388ff;">${door.count} selecc.</span>
                 </div>
             </div>
         `;
