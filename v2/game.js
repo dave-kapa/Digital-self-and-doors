@@ -15,8 +15,11 @@ let gameStateV2 = {
         gate3_kernel: false,    // Desbloquea botón "VERIFICAR ESTADO DEL KERNEL"
         gate4_case1: false,     // Desbloquea botón "INICIAR PRIMERA OPERACIÓN // CASO 01"
         gate_case_bc: false,    // Desbloquea botón de Pantalla B -> BC (Resultados grupales del caso)
-        gate_deliberation: false // Desbloquea botón de Pantalla BC -> Deliberación (Cuarta Pared)
+        gate_deliberation: false, // Desbloquea botón de Pantalla BC -> Deliberación (Cuarta Pared)
+        gate_next_case: false   // Desbloquea botón de Cuarta Pared -> Siguiente Caso / Terminar Juego
     },
+    nextCaseTarget: null, // { type: 'case', caseIndex: 1 } | { type: 'final_results' }
+    resolvedCases: [], // Índices de casos ya resueltos en la sesión
     playerProfile: null, // { name, email, pin, loginTimestamp }
     faroStatus: 'CALIBRACIÓN',
     casePauseTokens: 3, // 3 pausas por cada caso
@@ -780,6 +783,14 @@ function handleIncomingSyncEvent(event) {
         }
     }
 
+    // Actualización de Destino de Siguiente Caso fijado por el Controlador
+    if (event.type === 'FAC_SET_NEXT_CASE_TARGET') {
+        if (event.payload && event.payload.target) {
+            gameStateV2.nextCaseTarget = event.payload.target;
+            updateGateUI();
+        }
+    }
+
     // Fuerza inicio de caso 01 para toda la sala (Emitido por el Controlador)
     if (event.type === 'FAC_FORCE_START_CASE_1') {
         if (gameStateV2.userRole === 'operator') {
@@ -928,6 +939,7 @@ function updateGatePlayerCounts() {
     const g4Count = players.filter(p => p.currentScreen === 'game-objective-overlay').length;
     const gBCCount = players.filter(p => p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case-results-b').length;
     const gDelibCount = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
+    const gNextCaseCount = players.filter(p => p.currentScreen === 'screen-fourth-wall').length;
 
     const elG1 = document.getElementById('fac-gate-1-player-count');
     const elG2 = document.getElementById('fac-gate-2-player-count');
@@ -935,6 +947,7 @@ function updateGatePlayerCounts() {
     const elG4 = document.getElementById('fac-gate-4-player-count');
     const elGBC = document.getElementById('fac-gate-bc-player-count');
     const elGDelib = document.getElementById('fac-gate-delib-player-count');
+    const elGNextCase = document.getElementById('fac-gate-nextcase-player-count');
 
     if (elG1) elG1.innerText = g1Count;
     if (elG2) elG2.innerText = g2Count;
@@ -942,6 +955,7 @@ function updateGatePlayerCounts() {
     if (elG4) elG4.innerText = g4Count;
     if (elGBC) elGBC.innerText = gBCCount;
     if (elGDelib) elGDelib.innerText = gDelibCount;
+    if (elGNextCase) elGNextCase.innerText = gNextCaseCount;
 }
 
 // Control del Temporizador de Censo a 60 Segundos para cada Caso
@@ -1786,6 +1800,40 @@ function updateGateUI() {
             playerDelibBtn.style.opacity = '0.45';
             playerDelibBtn.style.cursor = 'not-allowed';
             if (playerDelibTxt) playerDelibTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR ABRA LA DELIBERACIÓN...";
+        }
+    }
+
+    // CANDADO SIGUIENTE CASO / TERMINAR JUEGO (screen-fourth-wall -> siguiente caso o resultado final)
+    const facGateNextCase = document.getElementById('fac-gate-nextcase-container');
+    const playerFWRow = document.getElementById('player-fw-action-row');
+    const playerFWBtn = document.getElementById('btn-fw-continue');
+    const playerFWTxt = document.getElementById('fw-btn-text');
+
+    if (facGateNextCase) facGateNextCase.style.display = isFac ? 'flex' : 'none';
+    if (playerFWRow) playerFWRow.style.display = isFac ? 'none' : 'flex';
+    if (playerFWBtn) {
+        if (effectiveGates.gate_next_case) {
+            playerFWBtn.disabled = false;
+            playerFWBtn.classList.remove('btn-disabled-mission');
+            playerFWBtn.style.opacity = '1';
+            playerFWBtn.style.cursor = 'pointer';
+
+            const target = gameStateV2.nextCaseTarget;
+            if (target && target.type === 'final_results') {
+                if (playerFWTxt) playerFWTxt.innerText = "🏁 IR AL RESULTADO FINAL DEL JUEGO ➔";
+            } else if (target && target.type === 'case' && casesDataV2[target.caseIndex]) {
+                const c = casesDataV2[target.caseIndex];
+                const num = String(target.caseIndex + 1).padStart(2, '0');
+                if (playerFWTxt) playerFWTxt.innerText = `▶ CONTINUAR AL CASO ${num}: ${c.title} ➔`;
+            } else {
+                if (playerFWTxt) playerFWTxt.innerText = "CONTINUAR AL SIGUIENTE CASO ➔";
+            }
+        } else {
+            playerFWBtn.disabled = true;
+            playerFWBtn.classList.add('btn-disabled-mission');
+            playerFWBtn.style.opacity = '0.45';
+            playerFWBtn.style.cursor = 'not-allowed';
+            if (playerFWTxt) playerFWTxt.innerText = "🔒 ESPERANDO QUE EL CONTROLADOR INDIQUE EL SIGUIENTE PASO...";
         }
     }
 
@@ -5007,6 +5055,18 @@ function showFourthWallScreen() {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
     const fwData = fourthWallData[cData.id] || fourthWallData.case_1;
 
+    // Registrar caso resuelto en la lista de la sesión
+    if (!gameStateV2.resolvedCases) {
+        gameStateV2.resolvedCases = [];
+    }
+    if (!gameStateV2.resolvedCases.includes(gameStateV2.currentCaseIndex)) {
+        gameStateV2.resolvedCases.push(gameStateV2.currentCaseIndex);
+    }
+
+    // Reiniciar candado de siguiente caso para esta pausa de deliberación
+    gameStateV2.sessionGates.gate_next_case = false;
+    gameStateV2.nextCaseTarget = null;
+
     const titleEl = document.getElementById('fw-case-title');
     const subtitleEl = document.getElementById('fw-case-subtitle');
     if (titleEl) titleEl.innerText = fwData.title;
@@ -5027,17 +5087,143 @@ function showFourthWallScreen() {
         promptEl.innerText = fwData.discussionPrompt;
     }
 
-    const btnTextEl = document.getElementById('fw-btn-text');
-    const isLastCase = gameStateV2.currentCaseIndex >= casesDataV2.length - 1;
-    if (btnTextEl) {
-        btnTextEl.innerText = isLastCase ? "CONTINUAR AL CIERRE FINAL DE LA EXPERIENCIA ➔" : "CONTINUAR AL SIGUIENTE CASO ➔";
-    }
-
     switchScreenV2('screen-fourth-wall');
+    updateGateUI();
 }
 
+// Modal de Selección de Siguiente Caso / Terminar Juego
+function openSelectNextCaseModal() {
+    const modal = document.getElementById('modal-select-next-case');
+    const container = document.getElementById('next-case-options-list');
+    if (!modal || !container) return;
+
+    // Filtrar casos que aún NO han sido resueltos en esta sesión
+    const resolved = gameStateV2.resolvedCases || [];
+    const pendingCases = casesDataV2
+        .map((c, idx) => ({ ...c, originalIdx: idx }))
+        .filter(c => !resolved.includes(c.originalIdx));
+
+    let optionsHtml = '';
+
+    if (pendingCases.length > 0) {
+        optionsHtml += pendingCases.map((c, i) => {
+            const isFirst = i === 0;
+            const caseNum = String(c.originalIdx + 1).padStart(2, '0');
+            return `
+                <label class="next-case-option-item ${isFirst ? 'selected' : ''}" onclick="selectNextCaseRadio('case_${c.originalIdx}')">
+                    <input type="radio" name="next_case_choice" value="case_${c.originalIdx}" class="next-case-radio" ${isFirst ? 'checked' : ''}>
+                    <div class="next-case-info">
+                        <div class="next-case-badge-title">
+                            <span class="next-case-tag">CASO ${caseNum}</span>
+                            <span class="next-case-title-text">${c.title}</span>
+                        </div>
+                        <span class="next-case-desc">${c.targetModule || c.introDescription || ''}</span>
+                    </div>
+                </label>
+            `;
+        }).join('');
+    } else {
+        optionsHtml += `
+            <div style="background:rgba(0,216,255,0.06); border:1px dashed var(--color-cyan); padding:12px; border-radius:6px; text-align:center; font-size:12px; color:#cde4f7; margin-bottom:8px;">
+                ✔ ¡Todos los 4 casos del simulador han sido resueltos!
+            </div>
+        `;
+    }
+
+    // Opción permanente: Terminar el juego
+    const isTermSelected = pendingCases.length === 0;
+    optionsHtml += `
+        <label class="next-case-option-item next-case-terminate-item ${isTermSelected ? 'selected' : ''}" onclick="selectNextCaseRadio('final_results')">
+            <input type="radio" name="next_case_choice" value="final_results" class="next-case-radio" ${isTermSelected ? 'checked' : ''}>
+            <div class="next-case-info">
+                <div class="next-case-badge-title">
+                    <span class="next-case-tag">CIERRE</span>
+                    <span class="next-case-title-text">🏁 TERMINAR EL JUEGO Y VER RESULTADO FINAL</span>
+                </div>
+                <span class="next-case-desc">Concluir la sesión y calcular si el grupo superó la misión con los casos completados.</span>
+            </div>
+        </label>
+    `;
+
+    container.innerHTML = optionsHtml;
+    modal.style.display = 'flex';
+}
+
+function selectNextCaseRadio(val) {
+    const items = document.querySelectorAll('.next-case-option-item');
+    items.forEach(item => {
+        const radio = item.querySelector('input[type="radio"]');
+        if (radio && radio.value === val) {
+            radio.checked = true;
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    });
+}
+
+function closeSelectNextCaseModal() {
+    const modal = document.getElementById('modal-select-next-case');
+    if (modal) modal.style.display = 'none';
+}
+
+function confirmNextCaseSelection() {
+    const checkedRadio = document.querySelector('input[name="next_case_choice"]:checked');
+    if (!checkedRadio) {
+        alert("Por favor selecciona una opción.");
+        return;
+    }
+
+    const val = checkedRadio.value;
+    let target = null;
+
+    if (val === 'final_results') {
+        target = { type: 'final_results' };
+    } else if (val.startsWith('case_')) {
+        const idx = parseInt(val.replace('case_', ''), 10);
+        target = { type: 'case', caseIndex: idx };
+    }
+
+    gameStateV2.nextCaseTarget = target;
+    gameStateV2.sessionGates.gate_next_case = true;
+
+    // Resetear candados internos de caso para la nueva ronda
+    gameStateV2.sessionGates.gate_case_bc = false;
+    gameStateV2.sessionGates.gate_deliberation = false;
+
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    broadcastSyncEvent('FAC_SET_NEXT_CASE_TARGET', { target: target });
+
+    closeSelectNextCaseModal();
+    updateGateUI();
+
+    // El Controlador navega inmediatamente al destino
+    if (target.type === 'final_results') {
+        renderFinalScreenV2();
+    } else {
+        startFacCaseLive(target.caseIndex);
+    }
+}
+
+// Operador: Avanzar desde la Deliberación al destino fijado por el Controlador
 function proceedFromFourthWallToNext() {
-    proceedToNextCase();
+    const depEnabled = gameStateV2.facilitatorDependency !== false;
+    if (depEnabled && !gameStateV2.sessionGates.gate_next_case) {
+        return;
+    }
+
+    const target = gameStateV2.nextCaseTarget;
+    if (!target) {
+        // Fallback secuencial
+        proceedToNextCase();
+        return;
+    }
+
+    if (target.type === 'final_results') {
+        renderFinalScreenV2();
+    } else {
+        startCaseSequence(target.caseIndex);
+    }
 }
 
 function proceedToNextCase() {

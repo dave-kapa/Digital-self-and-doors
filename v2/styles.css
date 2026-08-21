@@ -5552,6 +5552,115 @@ input:checked + .cyber-switch-track-mini .cyber-switch-thumb-mini {
     }
 }
 
+/* ==========================================================================
+   MODAL DE SELECCIÓN DE SIGUIENTE CASO / TERMINAR JUEGO
+   ========================================================================== */
+.next-case-modal-card {
+    max-width: 580px;
+    width: 92%;
+    padding: 22px 24px;
+    border: 1.5px solid rgba(0, 216, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 216, 255, 0.2);
+}
+
+.next-case-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.next-case-option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(4, 14, 26, 0.85);
+    border: 1.5px solid rgba(0, 216, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.next-case-option-item:hover {
+    background: rgba(0, 216, 255, 0.08);
+    border-color: rgba(0, 216, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.next-case-option-item.selected {
+    background: rgba(0, 216, 255, 0.15);
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 14px rgba(0, 216, 255, 0.3);
+}
+
+.next-case-radio {
+    accent-color: var(--color-cyan);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.next-case-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.next-case-badge-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.next-case-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--color-cyan);
+    background: rgba(0, 216, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.next-case-title-text {
+    font-family: var(--font-heading);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.next-case-desc {
+    font-size: 11px;
+    color: #9cb8d9;
+}
+
+.next-case-terminate-item {
+    border-color: rgba(255, 179, 0, 0.3);
+}
+
+.next-case-terminate-item:hover {
+    background: rgba(255, 179, 0, 0.08);
+    border-color: #ffb300;
+}
+
+.next-case-terminate-item.selected {
+    background: rgba(255, 179, 0, 0.15);
+    border-color: #ffb300;
+    box-shadow: 0 0 14px rgba(255, 179, 0, 0.3);
+}
+
+.next-case-terminate-item .next-case-radio {
+    accent-color: #ffb300;
+}
+
+.next-case-terminate-item .next-case-tag {
+    color: #ffb300;
+    background: rgba(255, 179, 0, 0.15);
+}
+
+
 
 
 

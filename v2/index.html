@@ -1756,15 +1756,70 @@
                         <p class="discussion-box-prompt" id="fw-discussion-prompt">"¿En qué procesos...?"</p>
                     </div>
 
-                    <!-- BOTÓN DE NAVEGACIÓN -->
+                    <!-- FILA DE NAVEGACIÓN Y CANDADO DE SIGUIENTE CASO -->
                     <div class="action-row" style="margin-top: 24px;">
-                        <button class="btn-detroit-primary" id="btn-fw-continue" onclick="proceedFromFourthWallToNext()">
-                            <span class="detroit-btn-glow"></span>
-                            <span class="btn-text" id="fw-btn-text">CONTINUAR AL SIGUIENTE CASO ➔</span>
-                        </button>
+                        
+                        <!-- BOTÓN OPERADOR // CANDADO HACIA SIGUIENTE CASO -->
+                        <div id="player-fw-action-row" style="width:100%; display:flex; justify-content:center;">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-fw-continue" onclick="proceedFromFourthWallToNext()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text" id="fw-btn-text">🔒 ESPERANDO QUE EL CONTROLADOR INDIQUE EL SIGUIENTE PASO...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO SIGUIENTE CASO / TERMINAR JUEGO) -->
+                        <div class="fac-gate-control-box" id="fac-gate-nextcase-container" style="display:none; width:100%; margin-top:10px;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // SELECCIÓN DE SIGUIENTE DESTINO</span>
+                                <span class="fac-gate-status" id="fac-gate-nextcase-status-text">ESTADO: EN DISCUSIÓN PEDAGÓGICA</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-nextcase-player-count">0</span> operadores en deliberación
+                            </div>
+                            <p class="fac-gate-desc">Selecciona el siguiente caso a resolver o da por concluida la partida para ver el resultado final de la sesión.</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-open-next-case-modal" onclick="openSelectNextCaseModal()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🎛 ELEGIR SIGUIENTE CASO O TERMINAR JUEGO ➔</span>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </section>
+
+            <!-- MODAL CONTROLADOR: SELECCIÓN DE SIGUIENTE CASO O TERMINAR JUEGO -->
+            <div class="cyber-modal-overlay" id="modal-select-next-case" style="display:none;">
+                <div class="cyber-card glass-panel next-case-modal-card">
+                    <div class="modal-header-row" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,216,255,0.25); padding-bottom:10px; margin-bottom:16px;">
+                        <div>
+                            <span class="card-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">🎛 SALA DE MANDO // SIGUIENTE PASO</span>
+                            <h3 style="color:#ffffff; font-family:var(--font-heading); font-size:16px; margin:4px 0 0 0;">SELECCIÓN DEL SIGUIENTE DESTINO</h3>
+                        </div>
+                        <button type="button" class="fac-btn" onclick="closeSelectNextCaseModal()" style="font-size:14px; padding:4px 10px;">✖</button>
+                    </div>
+
+                    <p style="font-size:12px; color:#b0c9e8; margin-bottom:14px;">
+                        Selecciona el próximo caso que resolverán los operadores o finaliza el juego para calcular la evaluación global final.
+                    </p>
+
+                    <!-- Lista de Opciones de Casos Pendientes y Terminar Juego -->
+                    <div class="next-case-options-list" id="next-case-options-list">
+                        <!-- Opciones inyectadas dinámicamente -->
+                    </div>
+
+                    <!-- Botones de Acción del Modal -->
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                        <button type="button" class="btn-detroit-secondary" onclick="closeSelectNextCaseModal()">
+                            <span class="btn-text">CANCELAR</span>
+                        </button>
+                        <button type="button" class="btn-detroit-primary" id="btn-confirm-next-case" onclick="confirmNextCaseSelection()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">CONFIRMAR DESTINO PARA LA SALA ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <!-- PANTALLA 5: CIERRE FINAL Y COFRE -->
             <section class="view-screen" id="screen-closing">
