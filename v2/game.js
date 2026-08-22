@@ -78,6 +78,12 @@ let gameStateV2 = {
     isTimerPaused: false
 };
 
+// ESTADO GLOBAL DEL FACILITADOR / CONTROLADOR (TIEMPO REAL)
+let facState = {
+    connectedPlayers: [],
+    casesGroupResults: {}
+};
+
 // ==========================================================================
 // CANAL DE SINCRONIZACIÓN MULTI-PESTAÑA (FACILITADOR <-> JUGADORES)
 // ==========================================================================
@@ -152,6 +158,13 @@ function handleIncomingSyncMessage(msg) {
             if (gameStateV2.userRole === 'facilitator' && typeof updateFacilitatorRealtimeUI === 'function') {
                 updateFacilitatorRealtimeUI();
             }
+        } else if (type === 'DEPENDENCY_UPDATE') {
+            gameStateV2.facilitatorDependency = payload.dependency;
+            try {
+                localStorage.setItem('faro_facilitator_dependency', payload.dependency ? 'true' : 'false');
+            } catch(e) {}
+            updateDependencyToggleUI();
+            updateGateUI();
         } else if (type === 'PLAYER_CASE_FINISHED') {
             if (gameStateV2.userRole === 'facilitator' && typeof handleFacilitatorPlayerFinishedCase === 'function') {
                 handleFacilitatorPlayerFinishedCase(payload);
@@ -1802,11 +1815,42 @@ function updateFacilitatorRealtimeUI() {
     updateGatePlayerCounts();
 }
 
+function updateGatePlayerCounts() {
+    if (typeof facState === 'undefined' || !facState.connectedPlayers) return;
+    const players = facState.connectedPlayers || [];
+    const totalCount = players.length;
+
+    const elGate1Count = document.getElementById('fac-gate-1-player-count');
+    if (elGate1Count) elGate1Count.innerText = totalCount;
+
+    const elGate2Count = document.getElementById('fac-gate-2-player-count');
+    if (elGate2Count) elGate2Count.innerText = players.filter(p => p.currentScreen === 'screen-calibration').length;
+
+    const elGate3Count = document.getElementById('fac-gate-3-player-count');
+    if (elGate3Count) elGate3Count.innerText = players.filter(p => p.currentScreen === 'screen-calibration-processing' || p.calibFinished).length;
+
+    const elGate4Count = document.getElementById('fac-gate-4-player-count');
+    if (elGate4Count) elGate4Count.innerText = players.filter(p => p.currentScreen === 'game-objective-overlay' || p.currentScreen === 'screen-claudia-debrief').length;
+
+    const elGateBCCount = document.getElementById('fac-gate-bc-player-count');
+    if (elGateBCCount) elGateBCCount.innerText = players.filter(p => p.caseFinished || p.currentScreen === 'case-phase-feedback').length;
+
+    const elGateDelibCount = document.getElementById('fac-gate-delib-player-count');
+    if (elGateDelibCount) elGateDelibCount.innerText = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
+
+    const elGateNextCount = document.getElementById('fac-gate-nextcase-player-count');
+    if (elGateNextCount) elGateNextCount.innerText = players.filter(p => p.currentScreen === 'screen-fourth-wall').length;
+
+    const elGateFinalCount = document.getElementById('fac-gate-final-player-count');
+    if (elGateFinalCount) elGateFinalCount.innerText = players.filter(p => p.currentScreen === 'screen-game-final-results').length;
+}
+
 function handleToggleFacilitatorDependency(checked) {
     gameStateV2.facilitatorDependency = !!checked;
     try {
         localStorage.setItem('faro_facilitator_dependency', checked ? 'true' : 'false');
     } catch(e) {}
+    broadcastSyncEvent('DEPENDENCY_UPDATE', { dependency: !!checked });
     updateDependencyToggleUI();
     updateGateUI();
 }
@@ -1852,7 +1896,10 @@ function updateGateUI() {
         gate2_calib: true,
         gate3_kernel: true,
         gate4_case1: true,
-        gate_case_bc: true
+        gate_case_bc: true,
+        gate_deliberation: true,
+        gate_next_case: true,
+        gate_final_closing: true
     };
 
     // CANDADO 1 (screen-waiting)
@@ -2127,6 +2174,25 @@ function facUnlockGate4AndStartCase1() {
     
     // El Controlador entra directo a la pantalla "Caso en Vivo"
     startFacCaseLive(0);
+}
+
+function facInspectCase() {
+    switchScreenV2('screen-case');
+    const returnBar = document.querySelector('.fac-case-inspect-banner');
+    if (returnBar) returnBar.style.display = 'flex';
+}
+
+function facReturnToCaseLive() {
+    const returnBar = document.querySelector('.fac-case-inspect-banner');
+    if (returnBar) returnBar.style.display = 'none';
+    startFacCaseLive(gameStateV2.currentCaseIndex);
+}
+
+function facUnlockGateBCAndGoResults() {
+    gameStateV2.sessionGates.gate_case_bc = true;
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    updateGateUI();
+    showGroupResultsScreen(gameStateV2.currentCaseIndex);
 }
 
 // ==========================================================================
