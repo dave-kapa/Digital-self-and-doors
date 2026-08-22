@@ -5736,6 +5736,70 @@ function switchFinalResultsTab(tabLetter) {
     });
 }
 
+function recordPlayerCaseResultForGroup(caseIdx, payload) {
+    if (typeof facState === 'undefined') return;
+    if (!facState.casesGroupResults) facState.casesGroupResults = {};
+    if (!facState.casesGroupResults[caseIdx]) {
+        facState.casesGroupResults[caseIdx] = {
+            integrityCounts: { safe: 0, alert: 0, exposed: 0 },
+            avgRealTime: payload.realTimeSeconds || 45,
+            avgCost: payload.cost || 0,
+            calibrationList: [],
+            reactivityList: [],
+            doorsCounts: {},
+            matrixSectors: {
+                'hizo_debiahacer': { count: 0, cost: 0 },
+                'hizo_nodebia': { count: 0, cost: 0 },
+                'hizo_norelevante': { count: 0, cost: 0 },
+                'nohizo_debiahacer': { count: 0, cost: 0 },
+                'nohizo_nodebia': { count: 0, cost: 0 },
+                'nohizo_norelevante': { count: 0, cost: 0 }
+            },
+            finishedPlayers: []
+        };
+    }
+
+    const res = facState.casesGroupResults[caseIdx];
+    if (!res.finishedPlayers.some(p => p.playerId === payload.playerId)) {
+        res.finishedPlayers.push(payload);
+        if (payload.integrity && res.integrityCounts[payload.integrity] !== undefined) {
+            res.integrityCounts[payload.integrity]++;
+        }
+        if (payload.calibration !== undefined) res.calibrationList.push(payload.calibration);
+        if (payload.reactivity !== undefined) res.reactivityList.push(payload.reactivity);
+
+        (payload.doorsActivated || []).forEach(d => {
+            res.doorsCounts[d] = (res.doorsCounts[d] || 0) + 1;
+        });
+
+        (payload.matrixEvaluations || []).forEach(m => {
+            if (res.matrixSectors && res.matrixSectors[m.sectorKey]) {
+                res.matrixSectors[m.sectorKey].count++;
+                res.matrixSectors[m.sectorKey].cost += (m.cost || 0);
+            }
+        });
+
+        const totalP = res.finishedPlayers.length;
+        const totalRealTime = res.finishedPlayers.reduce((acc, p) => acc + (p.realTimeSeconds || 0), 0);
+        const totalCost = res.finishedPlayers.reduce((acc, p) => acc + (p.cost || 0), 0);
+        res.avgRealTime = Math.round(totalRealTime / totalP);
+        res.avgCost = Math.round(totalCost / totalP);
+    }
+}
+
+function handleFacilitatorPlayerFinishedCase(payload) {
+    recordPlayerCaseResultForGroup(payload.caseIndex, payload);
+    if (typeof facState !== 'undefined' && facState.connectedPlayers) {
+        const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+        if (p) {
+            p.caseFinished = true;
+            p.currentScreen = 'case-phase-feedback';
+        }
+    }
+    if (typeof updateGatePlayerCounts === 'function') updateGatePlayerCounts();
+    if (typeof updateFacilitatorRealtimeUI === 'function') updateFacilitatorRealtimeUI();
+}
+
 function getAllCasesCumulativeGroupResults() {
     const resolved = (gameStateV2.resolvedCases && gameStateV2.resolvedCases.length > 0)
         ? gameStateV2.resolvedCases
