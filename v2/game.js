@@ -618,15 +618,15 @@ const casesDataV2 = [
                 "doorsOptions": [
                     {
                         "doorKey": "conveniencia",
-                        "visibleStatement": "La opción con 94 % de precisión me simplifica la decisión: cuesta ignorar un número tan superior frente al 78 % de PRISMA."
+                        "visibleStatement": "La opción con 94 % de efectividad me simplifica la decisión: cuesta ignorar un porcentaje tan superior frente al 78 % de PRISMA."
                     },
                     {
                         "doorKey": "coherencia",
-                        "visibleStatement": "Si el objetivo es predecir, ORÁCULO me parece la opción más lógica porque es la que más acierta."
+                        "visibleStatement": "Si el objetivo es simular y anticipar ataques con precisión, ORÁCULO parece la opción más lógica por su capacidad del 94 %."
                     },
                     {
                         "doorKey": "perdida",
-                        "visibleStatement": "Me preocupa renunciar a precisión y descubrir después que pudimos evitar un incidente con más información."
+                        "visibleStatement": "Me preocupa quedarnos con el 78 % de PRISMA y descubrir después que dejamos una brecha abierta por no usar información más amplia."
                     }
                 ]
             }
