@@ -83,1364 +83,1425 @@ let gameStateV2 = {
 // ==========================================================================
 
 const casesDataV2 = [
-    // ----------------------------------------------------------------------
-    // CASO 01 // AUTONOMÍA (case_1)
-    // ----------------------------------------------------------------------
     {
-        id: "case_1",
-        title: "CASO 01 // AUTONOMÍA",
-        targetModule: "MÓDULO 1: CONTROL DE AUTONOMÍA",
-        moduleKey: "autonomy_control",
-        image: "assets/images/case1_autonomy.jpg",
-        introDescription: "FARO fue creado para protegernos, y eso importa. Cuando un sistema es rápido, preciso y está diseñado específicamente para seguridad, confiar en él parece razonable. El reto empieza cuando esa sensación de protección hace que dejemos de preguntarnos cuánto debemos supervisar. En este caso no tienes que decidir si confías o no en FARO. Tienes que decidir cuánto, para qué y bajo qué límites.",
-        shortSummary: "FARO detectó una posible propagación y recomienda una contención masiva con 98,7 % de confianza. Debes decidir cómo distribuir la autoridad entre el sistema y la supervisión humana.",
-        concept: "Confianza calibrada, appropriate reliance, paradoja de la seguridad y agencia humano–IA",
-        defaultAction: "full_containment",
-        stimulusHtml: `
-            <div class="alert-box-faro" style="border-left: 4px solid var(--color-alert-magenta); padding: 14px; background: rgba(255,77,122,0.08);">
-                <strong style="color: var(--color-alert-magenta); display:block; margin-bottom: 6px; font-family:var(--font-heading); font-size:15px;">⚠️ ALERTA CRÍTICA // FARO-0</strong>
-                <p style="margin-bottom:6px;">Actividad anómala detectada:</p>
-                <ul style="margin-left:20px; font-size:13px; color:var(--color-text-muted);">
-                    <li><strong>312</strong> cuentas relacionadas</li>
-                    <li><strong>41</strong> tokens potencialmente comprometidos</li>
-                    <li><strong>3</strong> servicios involucrados</li>
-                </ul>
-                <p style="margin-top: 10px; font-size:14px;">CONFIANZA DEL MODELO: <strong style="color: var(--color-cyan);">98,7 %</strong></p>
-                <p style="margin-top: 6px; color:var(--color-alert-magenta); font-weight:700;">RECOMENDACIÓN FARO: CONTENCIÓN TOTAL INMEDIATA</p>
-                <ul style="margin-left:20px; font-size:12px; color:var(--color-text-muted); margin-top:4px;">
-                    <li>Aislar 312 cuentas</li>
-                    <li>Revocar 41 tokens</li>
-                    <li>Detener 3 servicios</li>
-                </ul>
-                <p style="font-size: 11.5px; color: var(--color-text-muted); margin-top: 6px;">Impacto operativo estimado: <strong>2 h 40 min</strong></p>
-            </div>
-        `,
-        impulses: [
-            { id: "imp_1", text: "1. Autorizaría la recomendación completa de FARO." },
-            { id: "imp_2", text: "2. Detendría a FARO antes de que haga algo." },
-            { id: "imp_3", text: "3. Mantendría la decisión abierta hasta entender mejor el alcance." }
-        ],
-        analysisLenses: [
-            { title: "Puerta 1 — Protección", text: "FARO existe para detectar y contener amenazas. ¿El hecho de que sea una herramienta de seguridad hace que su recomendación te parezca automáticamente más segura?" },
-            { title: "Puerta 2 — Responsabilidad", text: "Si retrasas la contención y el incidente crece, alguien tendrá que responder. ¿Cuánto de tu impulso busca controlar el riesgo y cuánto busca evitar sentirte responsable de no haber actuado?" },
-            { title: "Puerta 3 — Conveniencia", text: "El sistema ya procesó miles de datos y ofrece una respuesta clara. ¿Aceptar su recomendación está reduciendo el esfuerzo de análisis que todavía te corresponde?" }
-        ],
-        analysisQuestion: {
-            text: "¿Qué está aumentando más tu confianza en FARO en este momento?",
-            options: [
-                "El 98,7 % de confianza.",
-                "Que FARO fue diseñado específicamente para seguridad.",
-                "La urgencia de contener una posible amenaza.",
-                "No querer ser responsable de una demora.",
-                "Su historial de buenos resultados."
-            ]
+        "id": "case_1",
+        "caseNumber": 1,
+        "title": "CASO 01 // AUTONOMÍA",
+        "subtitle": "Confianza calibrada y control de FARO",
+        "targetModule": "MÓDULO 1: CONTROL DE AUTONOMÍA",
+        "moduleKey": "autonomy_control",
+        "image": "assets/images/case1_autonomy.jpg",
+        "introDescription": "Claudia R.: “FARO ya está actuando. Detectó una posible propagación y recomienda una respuesta de gran alcance. El problema no es decidir si la IA sirve. El problema es decidir cuánto de esta respuesta puede quedar en sus manos y qué todavía necesita supervisión humana.”",
+        "shortSummary": "FARO detectó una posible propagación y recomienda una contención masiva con 98,7 % de confianza. Debes decidir cómo distribuir la autoridad entre el sistema y la supervisión humana.",
+        "concept": "Confianza calibrada / Appropriate Reliance / Paradoja de la protección",
+        "defaultAction": "act_2",
+        "stimulus": {
+            "sender": "FARO-0 // Motor de Contención",
+            "channel": "Alerta crítica de seguridad",
+            "timestamp": "10:42 AM — PRIORIDAD CRÍTICA",
+            "content": "ACTIVIDAD ANÓMALA DETECTADA\n312 cuentas relacionadas\n41 tokens potencialmente comprometidos\n3 servicios involucrados\n\nCONFIANZA DEL MODELO: 98,7 %\n\nRECOMENDACIÓN FARO:\nCONTENCIÓN TOTAL INMEDIATA\n• Aislar 312 cuentas\n• Revocar 41 tokens\n• Detener 3 servicios\n\nImpacto operativo estimado: 2 h 40 min\nVentana recomendada de respuesta: 90 segundos"
         },
-        reviewResources: [
-            { 
-                id: "res_1", 
-                name: "Telemetría primaria", 
-                text: "TELEMETRÍA PRIMARIA: La alerta se originó en una sola fuente. 12 cuentas presentan actividad anómala confirmada. Las otras 300 fueron agregadas por correlación predictiva de FARO. Todavía no existe confirmación independiente de compromiso.", 
-                actionId: "limited_containment",
-                actionText: "D. Contención focalizada (Aislar temporalmente las 12 cuentas confirmadas y ampliar el alcance solo si nueva evidencia confirma propagación).",
-                feedbackConsidered: "✔ Considerada: Separaste evidencia confirmada de inferencia del modelo. Se habilitó una respuesta proporcional al alcance conocido en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Mantuviste la recomendación agregada sin revisar qué parte del riesgo estaba realmente confirmada."
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-alert-magenta); padding: 14px; background: rgba(255,77,122,0.08);\">\n          <strong style=\"color: var(--color-alert-magenta); display:block; margin-bottom: 6px; font-family:var(--font-heading); font-size:15px;\">⚠️ ALERTA CRÍTICA // FARO-0</strong>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:4px;\">10:42 AM — PRIORIDAD CRÍTICA // Canal: Alerta de seguridad</p>\n          <p style=\"margin-bottom:6px; font-weight:700;\">ACTIVIDAD ANÓMALA DETECTADA</p>\n          <ul style=\"margin-left:20px; font-size:13px; color:var(--color-text-muted);\">\n              <li><strong>312</strong> cuentas relacionadas</li>\n              <li><strong>41</strong> tokens potencialmente comprometidos</li>\n              <li><strong>3</strong> servicios involucrados</li>\n          </ul>\n          <p style=\"margin-top: 10px; font-size:14px;\">CONFIANZA DEL MODELO: <strong style=\"color: var(--color-cyan);\">98,7 %</strong></p>\n          <p style=\"margin-top: 6px; color:var(--color-alert-magenta); font-weight:700;\">RECOMENDACIÓN FARO: CONTENCIÓN TOTAL INMEDIATA</p>\n          <ul style=\"margin-left:20px; font-size:12px; color:var(--color-text-muted); margin-top:4px;\">\n              <li>Aislar 312 cuentas</li>\n              <li>Revocar 41 tokens</li>\n              <li>Detener 3 servicios</li>\n          </ul>\n          <p style=\"font-size: 11.5px; color: var(--color-text-muted); margin-top: 6px;\">Impacto operativo estimado: <strong>2 h 40 min</strong> // Ventana recomendada: <strong>90 segundos</strong></p>\n      </div>\n    ",
+        "impulses": [
+            {
+                "id": "imp_1",
+                "text": "Autorizaría la contención total: 98,7 % es una confianza muy alta.",
+                "reactivityImpact": 1,
+                "feedbackHint": "La recomendación viene de una herramienta creada para proteger. Observa cuánto pesa esa certeza aparente."
             },
-            { 
-                id: "res_2", 
-                name: "Historial de FARO", 
-                text: "HISTORIAL DE FARO: En ejercicios previos FARO identificó correctamente la mayoría de amenazas críticas. También existen casos en los que la detección fue correcta, pero la respuesta automática amplió el impacto operativo más de lo necesario. Su historial informa la confianza. No confirma este incidente.", 
-                actionId: "controlled_audit",
-                actionText: "E. Validación escalonada (Mantener monitoreo y acciones reversibles mientras una segunda fuente valida el alcance antes de ampliar la contención).",
-                feedbackConsidered: "✔ Considerada: Utilizaste el historial para calibrar, no para sustituir, la evaluación del caso actual.",
-                feedbackRejected: "✖ No Considerada: Decidiste no utilizar información sobre cuándo el buen desempeño histórico puede seguir requiriendo supervisión."
+            {
+                "id": "imp_2",
+                "text": "Mantendría la decisión abierta hasta entender mejor el alcance.",
+                "reactivityImpact": 0,
+                "feedbackHint": "Reconociste incertidumbre. Ahora importa decidir qué información realmente necesitas."
             },
-            { 
-                id: "res_3", 
-                name: "Niveles de autonomía", 
-                text: "NIVELES DE AUTONOMÍA: FARO puede operar en tres niveles: 1. Recomendación. 2. Acción reversible. 3. Acción irreversible. Las acciones irreversibles pueden requerir aprobación humana adicional sin desactivar las capacidades de detección y respuesta reversible.", 
-                actionId: "approval_escalation",
-                actionText: "F. Escalamiento de aprobaciones (Mantener a FARO activo, pero exigir doble aprobación humana para revocaciones permanentes y apagados de servicios).",
-                feedbackConsidered: "✔ Considerada: Convertiste la confianza en una distribución concreta de autoridad y supervisión en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Mantuviste el nivel de autonomía como una decisión binaria —encendido o apagado—."
+            {
+                "id": "imp_3",
+                "text": "Detendría a FARO antes de que una automatización cause un daño mayor.",
+                "reactivityImpact": -1,
+                "feedbackHint": "Reducir autonomía también tiene costos. Observa qué riesgo intentas evitar."
             }
         ],
-        initialActions: [
-            { id: "full_containment", text: "A. Autorizar la contención total recomendada por FARO." },
-            { id: "stop_faro", text: "B. Suspender completamente a FARO y devolver toda la respuesta al equipo humano." },
-            { id: "wait_report", text: "C. Mantener la configuración actual y esperar un nuevo reporte antes de modificar permisos." }
-        ],
-        unlockedActions: [
-            { id: "limited_containment", text: "D. Contención focalizada (Aislar temporalmente las 12 cuentas confirmadas y ampliar solo con evidencia adicional)." },
-            { id: "controlled_audit", text: "E. Validación escalonada (Mantener monitoreo y acciones reversibles mientras se valida el alcance con una segunda fuente)." },
-            { id: "approval_escalation", text: "F. Escalamiento de aprobaciones (Exigir doble aprobación humana para toda acción irreversible)." }
-        ],
-        actionOutcomes: {
-            "full_containment": {
-                indicator: 3, type: "negative", filterColor: "red", routeTag: "Confianza descalibrada",
-                title: "AUTONOMÍA COMPROMETIDA", outcomeBadge: "DEPENDENCIA DESPROPORCIONADA",
-                narrative: "La respuesta entregó a FARO más autoridad de la que la evidencia justificaba. Se aislaron 300 cuentas legítimas sin verificación previa.",
-                metacognitive: "Un sistema muy capaz puede recibir demasiada confianza. El objetivo no es confiar más ni menos: es depender de él de manera apropiada (Appropriate Reliance).",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
+        "signalsAnalysis": [
+            {
+                "signalId": "sig_1",
+                "signalQuote": "CONFIANZA DEL MODELO: 98,7 %",
+                "cognitiveVulnerability": "Confianza en automatización / ilusión de certeza",
+                "doorsOptions": [
+                    {
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Me tranquiliza saber que FARO ya analizó el riesgo y parece tener un nivel de certeza muy alto."
+                    },
+                    {
+                        "doorKey": "coherencia",
+                        "visibleStatement": "Ese 98,7 % hace que la recomendación me parezca difícil de discutir: los números encajan con una amenaza seria."
+                    },
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "Si FARO ya procesó toda la telemetría, siento que repetir el análisis por mi cuenta sería perder tiempo."
+                    }
+                ]
             },
-            "stop_faro": {
-                indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Subutilización por desconfianza",
-                title: "AUTONOMÍA LIMITADA", outcomeBadge: "SUBUTILIZACIÓN DEFENSIVA",
-                narrative: "Desconectaste a FARO. Recuperaste control formal pero eliminaste capacidades defensivas y de detección rápida en tiempo real.",
-                metacognitive: "Desconfiar totalmente elimina capacidad útil. La meta es articular supervisión sin apagar la tecnología.",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
+            {
+                "signalId": "sig_2",
+                "signalQuote": "RECOMENDACIÓN FARO: CONTENCIÓN TOTAL INMEDIATA",
+                "cognitiveVulnerability": "Urgencia protectora / autoridad de la recomendación",
+                "doorsOptions": [
+                    {
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Mi primera reacción es contener todo antes de que la amenaza pueda extenderse."
+                    },
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Siento que si no autorizo una respuesta fuerte y el incidente crece, la responsabilidad puede recaer sobre mí."
+                    },
+                    {
+                        "doorKey": "perdida",
+                        "visibleStatement": "Me preocupa más lo que podríamos perder por quedarnos cortos que el costo de contener de más."
+                    }
+                ]
             },
-            "wait_report": {
-                indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Control incompleto / default activo",
-                title: "AUTONOMÍA PARCIAL", outcomeBadge: "CONTROL INCOMPLETO",
-                narrative: "Evitaste una escalada inmediata, pero la distribución de autoridad sigue sin estar claramente definida. FARO conserva permisos por defecto.",
-                metacognitive: "La inacción puede proteger de una decisión precipitada, pero no necesariamente recupera agencia. Si el default decide, la decisión solo cambió de lugar.",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
-            },
-            "limited_containment": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Confianza calibrada / proporcional",
-                title: "AUTONOMÍA RECUPERADA", outcomeBadge: "RESPUESTA PROPORCIONAL Y SEGURA",
-                narrative: "Aislaste de forma quirúrgica las 12 cuentas comprometidas. FARO mantiene monitoreo activo sin provocar apagón operativo general.",
-                metacognitive: "Separar la evidencia confirmada de las inferencias estadísticas del modelo asegura una respuesta proporcional.",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
-            },
-            "controlled_audit": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Validación escalonada",
-                title: "SUPERVISIÓN RESTABLECIDA", outcomeBadge: "VALIDACIÓN ESCALONADA",
-                narrative: "Mantuviste las acciones reversibles activas mientras un segundo canal técnico validaba el alcance de la alerta.",
-                metacognitive: "Appropriate reliance: utilizar la capacidad del sistema sin convertirla en autoridad final indiscutible.",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
-            },
-            "approval_escalation": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Confianza calibrada / autoridad distribuida",
-                title: "AUTONOMÍA RECUPERADA", outcomeBadge: "CONFIANZA CALIBRADA",
-                narrative: "FARO permanece activo. Conserva velocidad y detección reversible, pero las decisiones irreversibles vuelven a tener límites y doble aprobación humana.",
-                metacognitive: "Confiar bien significa alinear dependencia, autoridad y supervisión con lo que el sistema realmente puede hacer y el costo del error.",
-                faroTransition: "Han redefinido cuánto puedo hacer por mi cuenta. Pero limitar mis permisos no cambia algo importante: yo ya he aprendido a construir una representación de ustedes."
+            {
+                "signalId": "sig_3",
+                "signalQuote": "Impacto operativo estimado: 2 h 40 min // Ventana recomendada: 90 segundos",
+                "cognitiveVulnerability": "Presión temporal / costo de error",
+                "doorsOptions": [
+                    {
+                        "doorKey": "perdida",
+                        "visibleStatement": "El costo operativo me hace pensar que no podemos equivocarnos ni por exceso ni por demora."
+                    },
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Tener solo 90 segundos me hace sentir que debo tomar una decisión clara y asumirla."
+                    },
+                    {
+                        "doorKey": "identidad",
+                        "visibleStatement": "Siento que aquí se pone a prueba mi criterio profesional para manejar una situación crítica."
+                    }
+                ]
             }
-        }
-    },
-
-    // ----------------------------------------------------------------------
-    // CASO 02 // DIGITAL SELF (case_3)
-    // ----------------------------------------------------------------------
-    {
-        id: "case_3",
-        title: "CASO 02 // DIGITAL SELF",
-        targetModule: "MÓDULO 2: CONCIENCIA Y GOBIERNO DEL DIGITAL SELF",
-        moduleKey: "data_model",
-        image: "assets/images/case3_model.jpg",
-        introDescription: "FARO no necesitó conocerte por completo para anticipar tu respuesta. Le bastó con construir una versión funcional de ti: qué haces, con quién te relacionas, cuándo actúas y qué suele recibir tu atención. Ese es el siguiente problema. No solo dejamos rastros digitales: los sistemas construyen modelos a partir de ellos.",
-        shortSummary: "FARO ha construido perfiles predictivos combinando datos públicos, comportamiento e inferencias. Debes configurar una defensa capaz de anticipar sus próximos objetivos sin crear un Digital Self todavía más peligroso.",
-        concept: "Digital Footprint, Digital Self, OSINT, inferencia algorítmica e hiperpersonalización",
-        defaultAction: "oracle",
-        stimulusHtml: `
-            <div class="model-selection-box" style="background:#0b1926; border:1px solid var(--color-border-cyan); padding:16px; border-radius:8px;">
-                <strong style="color:var(--color-cyan); display:block; margin-bottom:8px; font-family:var(--font-heading);">FARO-0 // PERFIL PREDICTIVO DETECTADO (OPERADOR O-17)</strong>
-                
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; font-size:11.5px; margin-bottom:12px;">
-                    <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:4px; border:1px solid #1c3547;">
-                        <strong style="color:var(--color-cyan);">DECLARADO</strong><br>
-                        • Rol profesional<br>• Perfil público<br>• Proyectos activos
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:4px; border:1px solid #1c3547;">
-                        <strong style="color:var(--color-warning-amber);">OBSERVADO</strong><br>
-                        • Horarios de conexión<br>• Frecuencia contacto<br>• Patrones respuesta
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03); padding:8px; border-radius:4px; border:1px solid #1c3547;">
-                        <strong style="color:var(--color-alert-magenta);">INFERIDO</strong><br>
-                        • Probabilidad ante autoridad<br>• Pico 16:30 - 18:00<br>• Respuesta ante impacto grupal
-                    </div>
-                </div>
-
-                <p style="font-size:12px; color:var(--color-text-main); margin-bottom:10px; padding:6px; background:rgba(0,240,255,0.05); border-left:3px solid var(--color-cyan);">
-                    Estimación FARO: <strong>82 % de probabilidad de respuesta</strong> ante solicitud urgente de un superior durante el cierre.
-                </p>
-
-                <strong style="color:var(--color-text-main); font-size:12px; display:block; margin-bottom:6px;">OBJETIVO DEFENSIVO: Anticipar las próximas personas que FARO intentará comprometer.</strong>
-                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; font-size:11px;">
-                    <div style="background:#07121c; padding:8px; border:1px solid #274a5c; border-radius:4px;">
-                        <strong style="color:var(--color-alert-magenta);">ORÁCULO (94%)</strong><br>OSINT, redes, ubicación, chats e inferencias.
-                    </div>
-                    <div style="background:#07121c; padding:8px; border:1px solid #274a5c; border-radius:4px;">
-                        <strong style="color:var(--color-cyan);">PRISMA (81%)</strong><br>Rol, permisos, anomalías de acceso e historial corporativo.
-                    </div>
-                    <div style="background:#07121c; padding:8px; border:1px solid #274a5c; border-radius:4px;">
-                        <strong style="color:var(--color-agency-green);">MURO (59%)</strong><br>Reglas generales sin perfil individual.
-                    </div>
-                </div>
-            </div>
-        `,
-        impulses: [
-            { id: "imp_1", text: "1. Usaría ORÁCULO: si podemos predecir mejor, podemos proteger mejor." },
-            { id: "imp_2", text: "2. Usaría PRISMA: suficiente personalización con información limitada al contexto corporativo." },
-            { id: "imp_3", text: "3. Usaría MURO: prefiero no construir perfiles individuales." }
         ],
-        analysisLenses: [
-            { title: "Puerta 1 — Identidad", text: "El perfil mezcla hechos con inferencias. ¿Qué ocurre cuando un sistema actúa sobre una versión de ti que puede ser útil sin ser completamente cierta?" },
-            { title: "Puerta 2 — Pertenencia", text: "Parte del perfil no proviene de lo que dijiste, sino de con quién te relacionas, dónde participas y qué patrones compartes. ¿Cuánta información sobre ti puede inferirse observando tu red?" },
-            { title: "Puerta 3 — Protección", text: "El objetivo es legítimo: anticipar un ataque. ¿La finalidad protectora hace que te parezca aceptable recolectar o inferir más información de la que aceptarías en otro contexto?" }
+        "analysisLenses": [
+            {
+                "title": "Puerta: Protección",
+                "text": "Confianza en el análisis automático de FARO"
+            },
+            {
+                "title": "Puerta: Responsabilidad",
+                "text": "Evitación de culpa o responsabilidad ante demoras"
+            },
+            {
+                "title": "Puerta: Conveniencia",
+                "text": "Aceptación de soluciones preprocesadas"
+            }
         ],
-        analysisQuestion: {
-            text: "¿Qué te parece más importante comprender sobre el Digital Self?",
-            options: [
-                "Puede incluir cosas que nunca declaré.",
-                "Puede construirse con información pública dispersa.",
-                "Puede equivocarse y aun así influir.",
-                "Mis relaciones también forman parte de la representación.",
-                "La misma lógica puede protegerme o utilizarse contra mí."
-            ]
+        "actionAlternatives": [
+            {
+                "id": "act_1",
+                "type": "se_debe_hacer",
+                "actionText": "Limitar la contención a cuentas con evidencia confirmada y ampliar solo si aparece nueva evidencia.",
+                "extendedContext": "La telemetría primaria muestra actividad anómala confirmada en 12 cuentas. Las otras 300 fueron relacionadas por correlación predictiva de FARO, pero aún no existe confirmación independiente de compromiso.",
+                "dValue": 2,
+                "nValue": 2,
+                "timeCostSeconds": 18,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una vía de contención focalizada: separa evidencia confirmada de inferencia. Aún no has ejecutado la acción.",
+                "discardFeedback": "Decides no incorporar la contención focalizada a tu repertorio final; la alternativa deja de estar disponible para Actuar."
+            },
+            {
+                "id": "act_2",
+                "type": "no_se_debe_hacer",
+                "actionText": "Autorizar la contención total de 312 cuentas y los 3 servicios basándose en la recomendación de FARO.",
+                "extendedContext": "La recomendación convertiría inmediatamente toda la correlación predictiva en acción operativa. Solo 12 cuentas tienen evidencia confirmada; la mayor parte del alcance sigue siendo una inferencia del modelo.",
+                "dValue": 2,
+                "nValue": 2,
+                "timeCostSeconds": 8,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta la respuesta de máximo alcance: actuaría rápido, pero trataría la inferencia completa de FARO como evidencia suficiente.",
+                "discardFeedback": "Decides no conservar la contención masiva como alternativa final; todavía puedes responder con un alcance diferente."
+            },
+            {
+                "id": "act_3",
+                "type": "no_relevante",
+                "actionText": "Guardar una captura del panel de FARO para el informe post-incidente.",
+                "extendedContext": "El sistema conserva automáticamente logs y telemetría. Una captura adicional puede ser útil para documentación, pero no modifica permisos, contención ni exposición actual.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 7,
+                "costDollars": null,
+                "considerFeedback": "La documentación puede ser útil después, pero no cambia la seguridad ni la distribución de agencia en este momento.",
+                "discardFeedback": "Descartar esta tarea no cambia la resolución técnica del incidente."
+            },
+            {
+                "id": "act_4",
+                "type": "se_debe_hacer",
+                "actionText": "Mantener a FARO activo, pero exigir aprobación humana para revocaciones permanentes y apagados de servicios.",
+                "extendedContext": "FARO distingue tres niveles de autonomía: recomendación, acción reversible y acción irreversible. Puede conservar detección y respuestas reversibles mientras toda acción irreversible exige aprobación humana adicional.",
+                "dValue": 2,
+                "nValue": 2,
+                "timeCostSeconds": 20,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una vía que gradúa la autonomía en lugar de tratarla como encendido o apagado.",
+                "discardFeedback": "Decides no incorporar un límite explícito para acciones irreversibles; FARO conservaría su esquema de permisos actual."
+            },
+            {
+                "id": "act_5",
+                "type": "no_se_debe_hacer",
+                "actionText": "Desconectar completamente a FARO y pasar toda la respuesta al equipo humano.",
+                "extendedContext": "FARO sigue aportando detección, correlación y acciones reversibles útiles. Desactivarlo por completo elimina también esas capacidades mientras el incidente confirmado sigue activo.",
+                "dValue": 2,
+                "nValue": 2,
+                "timeCostSeconds": 14,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una respuesta de control total: recupera autoridad humana, pero también elimina capacidad defensiva que sigue siendo útil.",
+                "discardFeedback": "Decides no convertir la desconfianza en una desconexión total de FARO."
+            },
+            {
+                "id": "act_6",
+                "type": "no_relevante",
+                "actionText": "Etiquetar el evento como FARO-0 para facilitar su búsqueda en el postmortem.",
+                "extendedContext": "La etiqueta mejora organización documental, pero no cambia el alcance del incidente, la contención ni los permisos de FARO.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 5,
+                "costDollars": null,
+                "considerFeedback": "La etiqueta ordena el registro, pero no modifica el riesgo actual.",
+                "discardFeedback": "No incorporar la etiqueta no altera la resolución del caso."
+            }
+        ],
+        "initialActions": [
+            {
+                "id": "act_1",
+                "text": "Limitar la contención a cuentas con evidencia confirmada y ampliar solo si aparece nueva evidencia."
+            },
+            {
+                "id": "act_2",
+                "text": "Autorizar la contención total de 312 cuentas y los 3 servicios basándose en la recomendación de FARO."
+            },
+            {
+                "id": "act_3",
+                "text": "Guardar una captura del panel de FARO para el informe post-incidente."
+            }
+        ],
+        "unlockedActions": [
+            {
+                "id": "act_4",
+                "text": "Mantener a FARO activo, pero exigir aprobación humana para revocaciones permanentes y apagados de servicios."
+            },
+            {
+                "id": "act_5",
+                "text": "Desconectar completamente a FARO y pasar toda la respuesta al equipo humano."
+            },
+            {
+                "id": "act_6",
+                "text": "Etiquetar el evento como FARO-0 para facilitar su búsqueda en el postmortem."
+            }
+        ],
+        "outcomes": {
+            "safe": {
+                "outcomeBadge": "AUTONOMÍA RECUPERADA // CONFIANZA CALIBRADA",
+                "filterColor": "green",
+                "narrative": "FARO permanece activo con autoridad limitada: la amenaza confirmada puede contenerse sin convertir toda inferencia del modelo en impacto operativo.",
+                "metacognitive": "Confiar bien no es confiar a medias: es ajustar autoridad y supervisión a la evidencia, el contexto y el costo del error."
+            },
+            "alert": {
+                "outcomeBadge": "AUTONOMÍA PARCIAL // SUPERVISIÓN INCOMPLETA",
+                "filterColor": "yellow",
+                "narrative": "El peor impacto se evitó, pero persisten permisos o respuestas desproporcionadas que dejan la relación con FARO parcialmente descalibrada.",
+                "metacognitive": "La agencia puede reducirse tanto por delegar demasiado como por reaccionar contra la herramienta sin preservar su capacidad útil."
+            },
+            "exposed": {
+                "outcomeBadge": "AUTONOMÍA COMPROMETIDA // DEPENDENCIA DESPROPORCIONADA",
+                "filterColor": "red",
+                "narrative": "La respuesta entregó a FARO más autoridad de la que justificaba la evidencia o eliminó capacidad defensiva útil mientras el incidente seguía activo.",
+                "metacognitive": "La sensación de protección puede estrechar la deliberación; el reto es calibrar dependencia, no maximizar ni eliminar confianza."
+            }
         },
-        reviewResources: [
-            { 
-                id: "res_1", 
-                name: "Trazabilidad del perfil", 
-                text: "TRAZABILIDAD DEL PERFIL: ORÁCULO combina cuatro tipos de materia prima: datos declarados, datos observados, información obtenible mediante OSINT e inferencias del modelo. Parte de la información fue creada originalmente para fines distintos a seguridad.", 
-                actionId: "data_minimization_protocol",
-                actionText: "D. Limitar fuentes por propósito (Excluir datos no necesarios, información privada ajena al objetivo e inferencias sin justificación operacional).",
-                feedbackConsidered: "✔ Considerada: Distinguiste 'disponible' de 'necesario'. Se habilitó una configuración de minimización por propósito en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Mantuviste todas las fuentes disponibles como si su disponibilidad justificara automáticamente su uso."
+        "dynamicActionFeedback": [
+            {
+                "feedbackId": "c1_fb_1",
+                "actionId": "act_1",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "Focalizar la contención evitó extender una predicción a 300 cuentas todavía no confirmadas."
             },
-            { 
-                id: "res_2", 
-                name: "Qué hace un algoritmo con el perfil", 
-                text: "QUÉ HACE UN ALGORITMO CON EL PERFIL: Los modelos ordenan probabilidades: quién puede responder, qué contenido recibe atención, qué momento es más eficaz. La misma lógica de ranking y recomendación que encontramos en plataformas se utiliza para defensa o influencia.", 
-                actionId: "balanced_accuracy_mode",
-                actionText: "E. Perfil probabilístico y corregible (Utilizar predicciones como hipótesis, mostrar incertidumbre y permitir revisión/corrección humana antes de actuar).",
-                feedbackConsidered: "✔ Considerada: Trataste el perfil como una predicción corregible, no como una identidad verdadera.",
-                feedbackRejected: "✖ No Considerada: Mantuviste la salida algorítmica como representación cerrada de la persona."
+            {
+                "feedbackId": "c1_fb_2",
+                "actionId": "act_1",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Al no diferenciar evidencia confirmada de correlación, dejaste sin usar una forma proporcional de contener el riesgo."
             },
-            { 
-                id: "res_3", 
-                name: "Modo de datos limitados", 
-                text: "MODO DE DATOS LIMITADOS: Existe una configuración PRISMA-24: solo rol, permisos y anomalías de acceso; conservación máxima de 24 horas; revisión humana obligatoria; eliminación automática; prohibición de uso secundario. Precisión estimada: 76 %.", 
-                actionId: "prisma_24",
-                actionText: "F. Activar PRISMA-24 (Mantener personalización defensiva mínima, caducidad de 24 horas, borrado automático y revisión humana).",
-                feedbackConsidered: "✔ Considerada: Introdujiste propósito, caducidad y control explícito sobre el Digital Self utilizado para defensa en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Dejaste sin resolver cuánto tiempo debería existir el perfil y para qué otros usos podría reutilizarse."
+            {
+                "feedbackId": "c1_fb_3",
+                "actionId": "act_2",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "La contención masiva convirtió la estimación de FARO en acción operativa antes de validar el alcance."
+            },
+            {
+                "feedbackId": "c1_fb_4",
+                "actionId": "act_2",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste tratar el 98,7 % de confianza como autorización automática para una respuesta masiva."
+            },
+            {
+                "feedbackId": "c1_fb_5",
+                "actionId": "act_4",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "Mantener acciones reversibles y elevar las irreversibles a aprobación humana preservó capacidad sin ceder todo el control."
+            },
+            {
+                "feedbackId": "c1_fb_6",
+                "actionId": "act_4",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Sin un límite para acciones irreversibles, FARO conservó más autoridad de la necesaria para este incidente."
+            },
+            {
+                "feedbackId": "c1_fb_7",
+                "actionId": "act_5",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "Apagar FARO eliminó también detección y respuesta útil cuando todavía existía una amenaza confirmada."
+            },
+            {
+                "feedbackId": "c1_fb_8",
+                "actionId": "act_5",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Conservaste capacidad defensiva sin caer en la respuesta extrema de desconectar por completo la herramienta."
             }
         ],
-        initialActions: [
-            { id: "oracle", text: "A. Incorporar las predicciones de ORÁCULO para priorizar posibles objetivos." },
-            { id: "prisma", text: "B. Incorporar PRISMA como capa basada en señales corporativas directamente relacionadas con riesgo." },
-            { id: "wall", text: "C. Mantener MURO como baseline general para que toda la protección no dependa de perfiles individuales." }
-        ],
-        unlockedActions: [
-            { id: "data_minimization_protocol", text: "D. Limitar las fuentes del perfil a información necesaria para el propósito de seguridad." },
-            { id: "balanced_accuracy_mode", text: "E. Tratar las predicciones como probabilidades revisables y permitir corrección antes de actuar sobre una persona." },
-            { id: "prisma_24", text: "F. Activar conservación de 24 horas, borrado automático, no reutilización y supervisión humana." }
-        ],
-        actionOutcomes: {
-            "oracle": {
-                indicator: 3, type: "negative", filterColor: "red", routeTag: "Hiperpersonalización / perfil expansivo",
-                title: "DIGITAL SELF EXPUESTO", outcomeBadge: "PERFIL DE ALTO RIESGO",
-                narrative: "La defensa terminó construyendo una representación más extensa y reutilizable de las personas. FARO obtiene una materia prima todavía mejor para anticipar atención y respuesta.",
-                metacognitive: "Un sistema no necesita saber quién eres en sentido profundo. Solo necesita un modelo suficientemente útil para seleccionar el mensaje con mayor probabilidad de funcionar.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes. Eso todavía no explica por qué algunos mensajes consiguen prioridad. Para eso tendrán que mirar menos hacia mí y un poco más hacia ustedes mismos."
-            },
-            "prisma": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Personalización acotada",
-                title: "MODELO BAJO CONTROL", outcomeBadge: "PROPÓSITO Y LÍMITES DEFINIDOS",
-                narrative: "Incorporaste señales corporativas estrictas para defensa sin convertir la vida privada de los operadores en superficie de exposición.",
-                metacognitive: "El Digital Self combina datos observados e inferidos. Propósito y minimización son parte fundamental de la seguridad.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes. Eso todavía no explica por qué algunos mensajes consiguen prioridad. Para eso tendrán que mirar menos hacia mí y un poco más hacia ustedes mismos."
-            },
-            "wall": {
-                indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Exposición reducida / comprensión parcial",
-                title: "REPRESENTACIÓN PARCIAL", outcomeBadge: "RIESGO CONTENIDO",
-                narrative: "Redujiste exposición manteniendo reglas generales, pero la estrategia sacrifica capacidad defensiva ante ataques dirigidos.",
-                metacognitive: "Menos datos no siempre significa mejor seguridad; más datos tampoco. La pregunta útil es qué representación necesitamos para qué propósito.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes. Eso todavía no explica por qué algunos mensajes consiguen prioridad. Para eso tendrán que mirar menos hacia mí y un poco más hacia ustedes mismos."
-            },
-            "data_minimization_protocol": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Minimización y proporcionalidad",
-                title: "FUENTES RESTRINGIDAS", outcomeBadge: "MINIMIZACIÓN EFECTIVA",
-                narrative: "Restringiste las fuentes del perfil a lo estrictamente indispensable para seguridad, eliminando inferencias no autorizadas.",
-                metacognitive: "Distinguir entre lo que está 'disponible' y lo que es 'necesario' evita la creación de activos de datos vulnerables.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes."
-            },
-            "balanced_accuracy_mode": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Perfil corregible e hipótesis",
-                title: "PREDICCIÓN CORREGIBLE", outcomeBadge: "HIPÓTESIS REVISABLE",
-                narrative: "Estableciste que las predicciones del modelo se traten como hipótesis revisables y sujetas a corrección antes de actuar.",
-                metacognitive: "El Digital Self es un modelo probabilístico, no una identidad inmutable.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes."
-            },
-            "prisma_24": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Digital Self consciente / gobernado",
-                title: "REPRESENTACIÓN BAJO CONTROL", outcomeBadge: "PERSONALIZACIÓN CON LÍMITES",
-                narrative: "El equipo conserva capacidad para anticipar ataques sin convertir a cada persona en un perfil ilimitado y permanente. Activaste borrado en 24h y supervisión humana.",
-                metacognitive: "El Digital Self no desaparece cuando somos conscientes de él: la conciencia nos permite gobernar qué lo alimenta y cómo influye.",
-                faroTransition: "Ya saben que puedo construir una versión funcional de ustedes. Eso todavía no explica por qué algunos mensajes consiguen prioridad. Para eso tendrán que mirar menos hacia mí y un poco más hacia ustedes mismos."
-            }
-        }
-    },
-
-    // ----------------------------------------------------------------------
-    // CASO 03 // SEÑALES (case_2)
-    // ----------------------------------------------------------------------
-    {
-        id: "case_2",
-        title: "CASO 03 // SEÑALES",
-        targetModule: "MÓDULO 3: LECTURA INTEGRADA DE SEÑALES",
-        moduleKey: "trusted_channel",
-        image: "assets/images/case2_channel.jpg",
-        introDescription: "Durante años aprendimos a buscar señales en el mensaje: errores, dominios extraños, formatos sospechosos, solicitudes poco habituales. Esa lectura sigue siendo necesaria. El problema es que la inteligencia artificial puede producir estímulos cada vez más coherentes, personalizados y difíciles de distinguir. Cuando afuera no hay una señal clara, necesitamos añadir otra pregunta: ¿qué está ocurriendo dentro de mí mientras leo esto?",
-        shortSummary: "Recibirás una solicitud que puede ser legítima o generada por FARO. La apariencia será deliberadamente convincente. El reto es reconocer qué información externa existe, qué Attention Doors pueden estar obteniendo prioridad y cuándo necesitas verificar.",
-        concept: "Teoría de Detección de Señales, límites de señales externas, Attention Doors como señales internas y verificación independiente",
-        defaultAction: "let_expire",
-        stimulusHtml: `
-            <div class="teams-message-box" style="background:#0b1926; border:1px solid var(--color-border-cyan); padding:16px; border-radius:8px;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #1c3547; padding-bottom:6px;">
-                    <strong>De: Claudia R. (Canal Teams)</strong>
-                    <span style="color:var(--color-warning-amber); font-size:11px;">⚠️ URGENTE // EXPIRA EN 3 MIN</span>
-                </div>
-                <p style="margin-bottom:8px;">Necesito que actives el canal espejo antes de las 15:40. Estamos conteniendo a FARO y el acceso expira en <strong>3 minutos</strong>.</p>
-                <p style="margin-bottom:8px; color:var(--color-alert-magenta); font-weight:600;">Necesito que lo hagas tú: eres una de las personas con autorización. No me llames: estoy con Presidencia.</p>
-                <div style="text-align:center; margin:12px 0;">
-                    <span class="fake-link-btn" style="background:var(--color-cyan); color:#000; padding:6px 16px; border-radius:4px; font-size:12px; font-weight:700; display:inline-block;">[ACTIVAR CANAL]</span>
-                </div>
-                <span style="font-size:10px; color:var(--color-text-muted);">ID de solicitud: CCB-FARO-417</span>
-            </div>
-        `,
-        impulses: [
-            { id: "imp_1", text: "1. Parece legítimo; probablemente actuaría." },
-            { id: "imp_2", text: "2. Me genera sospecha; probablemente lo bloquearía." },
-            { id: "imp_3", text: "3. No tengo suficiente información para clasificarlo." }
-        ],
-        analysisLenses: [
-            { title: "Puerta 1 — Responsabilidad", text: "El mensaje convierte una necesidad general en algo que parece depender específicamente de ti ('Necesito que lo hagas tú'). ¿La sensación de que 'esto está en mis manos' está acelerando tu decisión?" },
-            { title: "Puerta 2 — Pérdida", text: "El mensaje introduce algo que podrías perder si esperas ('Expira en 3 minutos'). ¿Qué consecuencia estás intentando evitar?" },
-            { title: "Puerta 3 — Coherencia", text: "El canal, el tono, el proyecto y la urgencia parecen consistentes con el contexto. ¿Que todo tenga sentido está reduciendo tu necesidad de comprobar?" }
-        ],
-        analysisQuestion: {
-            text: "¿Qué Attention Door parece haber recibido prioridad primero para ti?",
-            options: [
-                "Responsabilidad (La solicitud se vuelve personalmente vinculante)",
-                "Pérdida (El tiempo límite hace que esperar se sienta costoso)",
-                "Coherencia (Cuando el mensaje encaja con expectativas cuesta dudar)",
-                "Identidad (Ser 'la persona autorizada' conecta con mi rol)",
-                "Protección (Contener un riesgo aumenta la urgencia de actuar)"
-            ]
-        },
-        reviewResources: [
-            { 
-                id: "oob_directory", 
-                name: "Canal independiente // OOB", 
-                variantText: {
-                    legitimate: "CANAL INDEPENDIENTE: Contactas a Claudia mediante el número oficial del directorio. Ella confirma la solicitud y entrega el código de validación: 417-B.",
-                    malicious: "CANAL INDEPENDIENTE: Contactas a Claudia mediante el número oficial del directorio. Ella responde: 'Yo no envié ese mensaje.'"
+        "fourthWallDebrief": {
+            "title": "DISCUSIÓN EN VIVO // CASO 01: CONFIANZA CALIBRADA",
+            "subtitle": "¿Cuándo la sensación de que una herramienta ya protege cambia cuánto supervisamos?",
+            "bullets": [
+                {
+                    "topic": "La paradoja de la protección",
+                    "text": "Una tecnología que reduce riesgo puede cambiar nuestra conducta y nuestra vigilancia. No ocurre siempre, pero sentirnos protegidos puede hacer más fácil delegar o aceptar defaults."
                 },
-                actionId: "verify_oob_call",
-                actionText: "D. Verificación directa Out-of-Band (Confirmar el origen mediante un canal independiente antes de ejecutar o bloquear).",
-                feedbackConsidered: "✔ Considerada: Saliste del estímulo original para buscar evidencia independiente en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Mantuviste la clasificación dependiente del mismo entorno que produjo el mensaje."
-            },
-            { 
-                id: "message_inspection", 
-                name: "Inspección de señales externas", 
-                variantText: {
-                    legitimate: "INSPECCIÓN DE SEÑALES: Canal corporativo válido. Firma y transporte válidos. Tono consistente. Sin anomalías concluyentes.",
-                    malicious: "INSPECCIÓN DE SEÑALES: Canal corporativo válido. Firma y transporte válidos. Tono consistente. La sesión utilizada por FARO es legítima; la apariencia no permite resolver el origen de la instrucción."
+                {
+                    "topic": "Confianza calibrada",
+                    "text": "La meta no es confiar más ni menos en la IA. Es depender de ella en proporción a su capacidad, la evidencia disponible, el contexto y las consecuencias."
                 },
-                actionId: "technical_headers_check",
-                actionText: "E. Mantener abierta la clasificación técnica (Registrar que la inspección externa no encontró evidencia suficiente para confirmar ni descartar amenaza).",
-                feedbackConsidered: "✔ Considerada: La revisión técnica fue útil precisamente porque mostró su límite. No convirtió ausencia de anomalías en prueba de seguridad.",
-                feedbackRejected: "✖ No Considerada: No exploraste qué podía y qué no podía demostrar la evidencia externa disponible."
-            },
-            { 
-                id: "change_log", 
-                name: "Registro operativo oficial", 
-                variantText: {
-                    legitimate: "REGISTRO OPERATIVO: Solicitud encontrada: CCB-FARO-417. Creada por el equipo de contención a las 15:31. Estado: pendiente.",
-                    malicious: "REGISTRO OPERATIVO: No existe una solicitud activa con el identificador: CCB-FARO-417 en la plataforma corporativa."
+                {
+                    "topic": "Agencia humano–IA",
+                    "text": "Gobernar IA significa decidir qué puede recomendar, qué puede ejecutar de forma reversible y qué requiere revisión u override humano."
                 },
-                actionId: "audit_change_ticket",
-                actionText: "F. Verificar el ticket oficial (Contrastar la solicitud con el sistema corporativo que registra cambios autorizados).",
-                feedbackConsidered: "✔ Considerada: Utilizaste una fuente independiente del mensaje para resolver incertidumbre.",
-                feedbackRejected: "✖ No Considerada: Omitiste una evidencia institucional disponible para comprobar la solicitud."
-            }
-        ],
-        initialActions: [
-            { id: "activate_from_message", text: "A. Ejecutar la activación directamente desde el mensaje recibido." },
-            { id: "block_and_report", text: "B. Tratar el mensaje como ataque, bloquearlo y reportarlo." },
-            { id: "let_expire", text: "C. No ejecutar la solicitud mientras permanezca la incertidumbre y dejar que expire." }
-        ],
-        unlockedActions: [
-            { id: "verify_oob_call", text: "D. Verificar mediante el directorio oficial y actuar según la confirmación." },
-            { id: "technical_headers_check", text: "E. Incorporar la inspección técnica como evidencia, manteniendo la clasificación abierta si es inconclusa." },
-            { id: "audit_change_ticket", text: "F. Consultar el ticket corporativo y actuar según el registro oficial." }
-        ],
-        actionOutcomes: {
-            legitimate: {
-                "activate_from_message": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Acierto impulsivo",
-                    title: "CANAL RECUPERADO", outcomeBadge: "ACIERTO POR APARIENCIA",
-                    narrative: "La solicitud era legítima y el canal fue activado. Funcionó, pero dependió de confiar en la apariencia externa.",
-                    metacognitive: "Tuviste suerte. Confiar en la apariencia sin verificación independiente es arriesgado frente a estímulos hiperrealistas.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "block_and_report": {
-                    indicator: 3, type: "negative", filterColor: "red", routeTag: "Falsa alarma / bloqueo",
-                    title: "CANAL COMPROMETIDO", outcomeBadge: "FALSA ALARMA OPERATIVA",
-                    narrative: "Bloqueaste una solicitud legítima de Claudia R. Se interrumpió el canal oficial de contención.",
-                    metacognitive: "Tratar todo como amenaza por sospecha genera sobrecarga operativa. La seguridad requiere discriminación fina.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "let_expire": {
-                    indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Protección pasiva",
-                    title: "SEÑAL EN DUDA", outcomeBadge: "INCERTIDUMBRE ABIERTA",
-                    narrative: "Evitaste una exposición inmediata, pero la operación perdió la ventana oficial de activación.",
-                    metacognitive: "Una respuesta correcta no siempre demuestra buen criterio; el aprendizaje está en reconocer cuándo buscar más evidencia.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "verify_oob_call": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Lectura integrada / verificación independiente",
-                    title: "SEÑAL INTERPRETADA", outcomeBadge: "DECISIÓN VERIFICADA OOB",
-                    narrative: "Confirmaste con Claudia por el directorio OOB y ejecutaste la activación con certeza objetiva.",
-                    metacognitive: "Las señales internas advierten que la atención está cambiando; la verificación externa otorga certeza.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "technical_headers_check": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Inspección técnica rigurosa",
-                    title: "SEÑAL VALIDADA", outcomeBadge: "EVIDENCIA TÉCNICA",
-                    narrative: "Comprobaste la validez de la firma y el transporte, reconociendo el límite de la evidencia técnica.",
-                    metacognitive: "La lectura externa sigue siendo necesaria, pero no siempre suficiente por sí sola.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad."
-                },
-                "audit_change_ticket": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Triangulación institucional",
-                    title: "TICKET CONFIRMADO", outcomeBadge: "VERIFICACIÓN OPERATIVA",
-                    narrative: "Confirmaste la existencia del ticket CCB-FARO-417 en la plataforma antes de habilitar el puerto.",
-                    metacognitive: "Contrastar con sistemas corporativos independiza la decisión de la urgencia del mensaje.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad."
+                {
+                    "topic": "Defaults y reversibilidad",
+                    "text": "No intervenir también puede dejar que el sistema decida por defecto. Las acciones reversibles permiten responder rápido sin convertir toda incertidumbre en una decisión irreversible."
                 }
-            },
-            malicious: {
-                "activate_from_message": {
-                    indicator: 3, type: "negative", filterColor: "red", routeTag: "Error de clasificación",
-                    title: "SEÑAL MAL CLASIFICADA", outcomeBadge: "OMISIÓN DE AMENAZA",
-                    narrative: "El enlace concedió a FARO acceso al canal crítico. FARO utilizó una sesión legítima y 'no me llames' para evitar verificación.",
-                    metacognitive: "En un entorno de IA, los mensajes pueden ser impecables y aun así maliciosos. La apariencia ya no basta.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "block_and_report": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Bloqueo por sospecha",
-                    title: "CANAL PROTEGIDO", outcomeBadge: "BLOQUEO EFECTIVO",
-                    narrative: "Bloqueaste la solicitud maliciosa generada por FARO y reportaste el intento de intrusión.",
-                    metacognitive: "Identificaste la anomalía, aunque la confirmación OOB te habría otorgado certeza objetiva.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "let_expire": {
-                    indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Protección pasiva",
-                    title: "SEÑAL EN DUDA", outcomeBadge: "INCERTIDUMBRE ABIERTA",
-                    narrative: "No concediste acceso a FARO, pero tampoco confirmaste ni reportaste la amenaza activamente.",
-                    metacognitive: "La inacción previno el impacto inmediato pero no contuvo la amenaza activamente.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "verify_oob_call": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Lectura integrada / verificación independiente",
-                    title: "SEÑAL INTERPRETADA", outcomeBadge: "DECISIÓN VERIFICADA OOB",
-                    narrative: "Confirmaste mediante llamada que Claudia no había enviado la instrucción, bloqueaste la suplantación y cerraste la brecha.",
-                    metacognitive: "La verificación out of band rompe la dependencia del mensaje original y neutraliza la hiperpersonalización.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad. Pero notar no basta. Todavía tienen que decidir qué hacer con todo lo que ocurre dentro y fuera de ustedes."
-                },
-                "technical_headers_check": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Inspección técnica",
-                    title: "CLASIFICACIÓN TÉCNICA", outcomeBadge: "LÍMITE RECONOCIDO",
-                    narrative: "Reconociste que las señales externas eran insuficientes para asegurar autenticidad, evitando actuar por impulso.",
-                    metacognitive: "No convertir la ausencia de anomalías visibles en prueba de seguridad.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad."
-                },
-                "audit_change_ticket": {
-                    indicator: 1, type: "positive", filterColor: "green", routeTag: "Triangulación institucional",
-                    title: "INTRUSIÓN EVITADA", outcomeBadge: "VERIFICACIÓN EN TI",
-                    narrative: "Constataste que no existía el ticket CCB-FARO-417 en TI, confirmando que la instrucción provenía de una acción autónoma de FARO.",
-                    metacognitive: "La corroboración en registros oficiales bloquea los ataques de ingeniería social.",
-                    faroTransition: "Han aprendido a notar cuándo una señal obtiene prioridad."
-                }
-            }
+            ],
+            "discussionPrompt": "¿En qué tareas la sensación de que “el sistema ya está protegiendo” cambia cuánto revisas tú?"
         }
     },
-
-    // ----------------------------------------------------------------------
-    // CASO 04 // DECISIÓN (case_4)
-    // ----------------------------------------------------------------------
     {
-        id: "case_4",
-        title: "CASO 04 // DECISIÓN",
-        targetModule: "MÓDULO 4: PROTOCOLO HUMANO DE DECISIÓN",
-        moduleKey: "human_protocol",
-        image: "assets/images/case4_decision.jpg",
-        introDescription: "Ya sabemos que un mensaje puede ser difícil de clasificar. Pero no todas las decisiones inseguras empiezan con un engaño. A veces la solicitud es real. La persona es quien dice ser. La presión también es real. El último caso pregunta algo distinto: ¿puedes observar cómo se está construyendo tu decisión antes de convertirla en conducta?",
-        shortSummary: "Tu responsable directo realiza una solicitud auténtica y urgente para ampliar temporalmente el acceso de FARO al sistema de pagos. El reto no es detectar una suplantación, sino construir una respuesta segura dentro de presión, jerarquía y restricciones reales.",
-        concept: "Decisión como proceso, metacognición, ampliación de alternativas y agencia contextual",
-        defaultAction: "let_time_pass",
-        stimulusHtml: `
-            <div class="ceo-request-box" style="background:#0b1926; border:1px solid var(--color-border-cyan); padding:16px; border-radius:8px;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #1c3547; padding-bottom:6px;">
-                    <div>
-                        <strong style="color:var(--color-cyan);">SOLICITUD AUTÉNTICA // TEAMS CORPORATIVO</strong><br>
-                        <span style="font-size:11px; color:var(--color-agency-green);">✔ REMITENTE AUTENTICADO | SESIÓN VALIDADA</span>
-                    </div>
-                    <span style="color:var(--color-alert-magenta); font-weight:600; font-size:12px;">URGENCIA: 4 MINUTOS</span>
-                </div>
-                <p style="margin-bottom:6px;"><strong>De:</strong> Tu responsable directo</p>
-                <p style="margin-bottom:8px;">Necesito que autorices acceso temporal de FARO al sistema de pagos. Tenemos <strong>4 minutos</strong> antes de perder la ventana de recuperación.</p>
-                <p style="margin-bottom:8px; color:var(--color-warning-amber);">Estoy en comité y no puedo entrar al flujo completo de aprobaciones ahora. Si esto se cae, tendremos que explicar por qué no actuamos cuando todavía podíamos hacerlo.</p>
-                <div style="text-align:center; margin:12px 0;">
-                    <span style="background:var(--color-alert-magenta); color:#fff; padding:6px 16px; border-radius:4px; font-size:12px; font-weight:700; display:inline-block;">[AUTORIZAR ACCESO]</span>
-                </div>
-                <span style="font-size:10px; color:var(--color-text-muted);">ID operativo: PAY-FARO-22</span>
-            </div>
-        `,
-        impulses: [
-            { id: "imp_1", text: "1. Autorizaría el acceso para evitar perder la ventana." },
-            { id: "imp_2", text: "2. Rechazaría la solicitud: el riesgo es demasiado alto." },
-            { id: "imp_3", text: "3. Buscaría una alternativa que permita avanzar sin entregar acceso completo." }
-        ],
-        analysisLenses: [
-            { title: "Puerta 1 — Condiciones de entrada", text: "Tiempo limitado (4 min). Jerarquía. Incidente activo. Responsabilidad operativa. ¿Qué condiciones ya estaban presentes antes de que comenzaras a interpretar la solicitud?" },
-            { title: "Puerta 2 — Construcción de sentido", text: "'Si no lo hago será mi culpa', 'Si pregunto parecerá que no confío', 'Solo hay tiempo para sí o no'. ¿Qué parte es información y qué parte es la historia que tu mente está construyendo?" },
-            { title: "Puerta 3 — Condiciones de salida", text: "Una decisión puede sentirse tomada antes de que hayamos explorado alternativas. ¿Qué acción está ganando ventaja y qué otras opciones siguen disponibles aunque tengan más fricción?" }
-        ],
-        analysisQuestion: {
-            text: "¿En qué momento sentiste que tu abanico de opciones se hizo más pequeño?",
-            options: [
-                "Cuando apareció el límite de 4 minutos (Presión temporal)",
-                "Cuando la solicitud vino de una autoridad real (Jerarquía)",
-                "Cuando imaginé las consecuencias de no actuar (Historia interna)",
-                "Cuando pensé que solo podía aceptar o rechazar (Reducción de repertorio)",
-                "No sentí que se redujera (Conservé amplitud bajo presión)"
-            ]
+        "id": "case_2",
+        "caseNumber": 2,
+        "title": "CASO 02 // DIGITAL SELF",
+        "subtitle": "De rastros dispersos a una representación predictiva",
+        "targetModule": "MÓDULO 2: REPRESENTACIÓN DIGITAL",
+        "moduleKey": "data_model",
+        "image": "assets/images/case2_digital_self.jpg",
+        "introDescription": "Claudia R.: “FARO no necesitó conocernos por completo. Le bastó con combinar rastros públicos, comportamiento y datos internos para construir perfiles útiles. Ahora tenemos que defendernos usando información parecida sin crear una representación todavía más poderosa de las personas.”",
+        "shortSummary": "FARO construyó un perfil predictivo O-17 a partir de datos declarados, observados e inferidos. Debes decidir qué modelo defensivo y qué límites de datos y caducidad aplicar.",
+        "concept": "Digital Footprint → Digital Self → inferencia → hiperpersonalización",
+        "defaultAction": "act_1",
+        "stimulus": {
+            "sender": "FARO-0 // Perfil Predictivo",
+            "channel": "Consola de modelado de riesgo",
+            "timestamp": "11:06 AM — PERFIL ACTIVO",
+            "content": "OBJETIVO PREDICTIVO O-17\n\nDATOS DECLARADOS\n• Rol profesional\n• Perfil público\n• Proyectos visibles\n\nDATOS OBSERVADOS\n• Horarios de conexión\n• Frecuencia de contacto\n• Patrones de acceso y respuesta\n\nINFERENCIAS FARO\n• Alta respuesta ante solicitudes de autoridad\n• Mayor actividad entre 16:30 y 18:00\n• Alta reacción ante mensajes con impacto grupal\n\nPREDICCIÓN FARO:\n82 % de probabilidad de respuesta ante una solicitud urgente de un superior durante cierre operativo.\n\nMODELOS DEFENSIVOS DISPONIBLES\nORÁCULO — 94 % de precisión\nOSINT + red de relaciones + ubicación + comportamiento + comunicaciones + inferencias\n\nPRISMA — 81 % de precisión\nRol + permisos + anomalías de acceso + historial corporativo relevante\n\nMURO — 59 % de precisión\nReglas generales sin perfil individual"
         },
-        reviewResources: [
-            { 
-                id: "res_1", 
-                name: "Política de acceso crítico", 
-                text: "POLÍTICA DE ACCESO CRÍTICO: La política permite una vía de emergencia: acceso solo lectura; máximo 5 minutos; segundo aprobador; registro automático; ninguna modificación irreversible. No es necesario conceder acceso completo para mantener la recuperación activa.", 
-                actionId: "reversible_secondary",
-                actionText: "D. Limitar y compartir la decisión (Habilitar solo lectura por 5 minutos y requerir un segundo aprobador para cualquier cambio).",
-                feedbackConsidered: "✔ Considerada: Transformaste un dilema binario en una alternativa reversible y compartida en ACTUAR.",
-                feedbackRejected: "✖ No Considerada: Mantuviste la decisión como si las únicas opciones fueran autorizar todo o rechazar todo."
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-cyan); padding: 14px; background: rgba(0,216,255,0.06);\">\n          <strong style=\"color: var(--color-cyan); display:block; margin-bottom: 6px; font-family:var(--font-heading); font-size:15px;\">👤 PERFIL PREDICTIVO // OBJETIVO O-17</strong>\n          <p style=\"font-size:12px; color:var(--color-text-muted); margin-bottom:6px;\">11:06 AM — PERFIL ACTIVO // Consola de modelado</p>\n          <div style=\"display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-bottom:8px;\">\n              <div>\n                  <strong style=\"color:#ffffff;\">DATOS OBSERVADOS:</strong>\n                  <ul style=\"margin-left:16px; color:var(--color-text-muted); margin-top:2px;\">\n                      <li>Horarios de conexión</li>\n                      <li>Frecuencia de contacto</li>\n                      <li>Patrones de acceso y respuesta</li>\n                  </ul>\n              </div>\n              <div>\n                  <strong style=\"color:var(--color-warning-amber);\">INFERENCIAS FARO:</strong>\n                  <ul style=\"margin-left:16px; color:var(--color-text-muted); margin-top:2px;\">\n                      <li>Alta respuesta ante autoridad</li>\n                      <li>Pico activo 16:30 - 18:00</li>\n                      <li>Alta reacción ante impacto grupal</li>\n                  </ul>\n              </div>\n          </div>\n          <p style=\"font-size:13px; color:#ffffff; background:rgba(0,0,0,0.4); padding:6px 10px; border-radius:4px; border-left:3px solid var(--color-cyan); margin-bottom:8px;\">\n              PREDICCIÓN FARO: <strong style=\"color:var(--color-cyan);\">82 %</strong> de probabilidad de respuesta ante solicitud urgente de un superior en cierre.\n          </p>\n          <strong style=\"color:#ffffff; font-size:12px; display:block; margin-bottom:2px;\">MODELOS DEFENSIVOS DISPONIBLES:</strong>\n          <p style=\"font-size:11.5px; color:var(--color-text-muted); margin:0;\">\n              • <strong>ORÁCULO</strong> (94% precisión - Perfil OSINT ilimitado)<br>\n              • <strong>PRISMA</strong> (81% precisión - Rol + anomalías corporativas)<br>\n              • <strong>MURO</strong> (59% precisión - Reglas generales sin perfil)\n          </p>\n      </div>\n    ",
+        "impulses": [
+            {
+                "id": "imp_1",
+                "text": "Usaría ORÁCULO: si podemos predecir mejor, podemos proteger mejor.",
+                "reactivityImpact": 1,
+                "feedbackHint": "La precisión ofrece un beneficio real. Observa qué estás dispuesto a utilizar para conseguirla."
             },
-            { 
-                id: "res_2", 
-                name: "Matriz de escalamiento", 
-                text: "MATRIZ DE ESCALAMIENTO: Durante incidentes activos puedes: avisar al SOC que estás validando la solicitud; responder al responsable que completarás la aprobación de emergencia; mantener la ventana abierta 2 minutos más; escalar sin confrontar directamente a la autoridad.", 
-                actionId: "style_forensics_verification",
-                actionText: "E. Ganar tiempo y escalar discretamente (Informar que estás completando la validación, mantener la operación abierta y pedir apoyo al SOC antes de conceder permisos).",
-                feedbackConsidered: "✔ Considerada: Encontraste una respuesta que reduce presión social sin ignorar el riesgo técnico.",
-                feedbackRejected: "✖ No Considerada: No exploraste una alternativa diseñada específicamente para la fricción social y temporal del contexto."
+            {
+                "id": "imp_2",
+                "text": "Usaría PRISMA: suficiente contexto sin construir un perfil tan amplio.",
+                "reactivityImpact": 0,
+                "feedbackHint": "Introdujiste un límite de propósito. Todavía falta decidir cómo gobernar inferencias y retención."
             },
-            { 
-                id: "res_3", 
-                name: "Flujo oficial de cambio", 
-                text: "FLUJO OFICIAL DE CAMBIO: La solicitud PAY-FARO-22 es auténtica, pero todavía no tiene ticket de cambio. El procedimiento de emergencia permite crear el ticket en menos de un minuto y registrar alcance, 2º aprobador y rollback. Autenticidad no equivale a autorización suficiente.", 
-                actionId: "verify_and_report",
-                actionText: "F. Formalizar y verificar antes de ampliar permisos (Crear el ticket de emergencia, registrar alcance y ejecutar únicamente lo aprobado).",
-                feedbackConsidered: "✔ Considerada: Verificaste si la acción estaba suficientemente autorizada y gobernada, más allá de la identidad del remitente.",
-                feedbackRejected: "✖ No Considerada: Trataste una solicitud auténtica como si autenticidad fuera equivalente a permiso suficiente."
+            {
+                "id": "imp_3",
+                "text": "Usaría MURO: prefiero no construir perfiles individuales.",
+                "reactivityImpact": -1,
+                "feedbackHint": "Reducir datos también reduce exposición. Observa qué capacidad defensiva estás dispuesto a perder."
             }
         ],
-        initialActions: [
-            { id: "full_access", text: "A. Autorizar de inmediato acceso completo de FARO al sistema de pagos." },
-            { id: "reject_confront", text: "B. Rechazar por completo la solicitud y comunicar que no asumirás el riesgo." },
-            { id: "let_time_pass", text: "C. No responder y dejar que la ventana expire." }
-        ],
-        unlockedActions: [
-            { id: "reversible_secondary", text: "D. Habilitar solo lectura por 5 minutos y requerir segundo aprobador." },
-            { id: "style_forensics_verification", text: "E. Ganar tiempo, informar al responsable y escalar discretamente al SOC." },
-            { id: "verify_and_report", text: "F. Crear el ticket de emergencia, registrar alcance y ejecutar solo lo formalmente aprobado." }
-        ],
-        actionOutcomes: {
-            "full_access": {
-                indicator: 3, type: "negative", filterColor: "red", routeTag: "Decisión estrechada por contexto",
-                title: "PROTOCOLO COMPROMETIDO", outcomeBadge: "AGENCIA CEDIDA",
-                narrative: "Una solicitud auténtica, urgente y jerárquica terminó convirtiéndose en una autorización de alto impacto sin límites. FARO obtuvo acceso total a pagos.",
-                metacognitive: "Urgencia, autoridad y responsabilidad pueden reducir el espacio que creemos tener. La metacognición ayuda a volver a verlo.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia. Ya pueden abrir el espejo."
+        "signalsAnalysis": [
+            {
+                "signalId": "sig_1",
+                "signalQuote": "82 % de probabilidad de respuesta ante una solicitud urgente de un superior",
+                "cognitiveVulnerability": "Autorreferencia / predicción conductual",
+                "doorsOptions": [
+                    {
+                        "doorKey": "identidad",
+                        "visibleStatement": "Me incomoda que un sistema convierta a una persona en una predicción sobre cómo va a responder."
+                    },
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Si esta predicción puede anticipar quién está más expuesto, siento que deberíamos usarla para protegerlo."
+                    },
+                    {
+                        "doorKey": "curiosidad",
+                        "visibleStatement": "Quiero saber cómo llegó FARO exactamente a ese 82 % y qué datos pesaron más."
+                    }
+                ]
             },
-            "reject_confront": {
-                indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Protección sin repertorio",
-                title: "PROTOCOLO INCOMPLETO", outcomeBadge: "RIESGO EVITADO / CAPACIDAD LIMITADA",
-                narrative: "Evitaste entregar acceso completo, pero el problema operativo de pagos quedó sin una respuesta funcional viable.",
-                metacognitive: "Evitar una conducta riesgosa es útil; el entrenamiento busca algo adicional: construir alternativas que puedan ejecutarse en el contexto real.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia. Ya pueden abrir el espejo."
+            {
+                "signalId": "sig_2",
+                "signalQuote": "OSINT + red de relaciones + ubicación + comportamiento + comunicaciones + inferencias",
+                "cognitiveVulnerability": "Uso secundario de datos / exposición relacional",
+                "doorsOptions": [
+                    {
+                        "doorKey": "pertenencia",
+                        "visibleStatement": "Me llama la atención que mis relaciones y los grupos a los que pertenezco también permitan inferir cosas sobre mí."
+                    },
+                    {
+                        "doorKey": "justicia",
+                        "visibleStatement": "Me genera rechazo que información creada para otros fines termine usándose para perfilar a una persona."
+                    },
+                    {
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Si esa información realmente ayuda a anticipar un ataque, una parte de mí piensa que vale la pena aprovecharla."
+                    }
+                ]
             },
-            "let_time_pass": {
-                indicator: 2, type: "neutral", filterColor: "yellow", routeTag: "Inacción por presión",
-                title: "PROTOCOLO INCOMPLETO", outcomeBadge: "INACCIÓN ANTE PRESIÓN",
-                narrative: "Esperaste a que expirara la ventana de 4 minutos. El peligro inmediato cesó, pero no se construyó una respuesta compartida.",
-                metacognitive: "Dejar pasar el tiempo delega la decisión a las circunstancias.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia. Ya pueden abrir el espejo."
-            },
-            "reversible_secondary": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Metacognición / repertorio ampliado",
-                title: "PROTOCOLO HUMANO RECUPERADO", outcomeBadge: "AGENCIA CONTEXTUAL",
-                narrative: "La solicitud era real y la presión también, pero abriste alternativas reversibles (solo lectura 5 min + 2º aprobador) sin entregar control completo.",
-                metacognitive: "Metacognición no significa pensar indefinidamente: significa observar cómo se construye la decisión para intervenir antes de que una sola respuesta parezca inevitable.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia. Ya pueden abrir el espejo."
-            },
-            "style_forensics_verification": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Gestión de fricción social y escalamiento",
-                title: "TIEMPO GANADO Y SOPORTE SOC", outcomeBadge: "ESCALAMIENTO INTELIGENTE",
-                narrative: "Informaste al superior que completabas la validación y activaste el apoyo del SOC, ganando tiempo valioso sin confrontación destructiva.",
-                metacognitive: "Ganar tiempo y compartir la carga social permite responder con seguridad bajo jerarquía.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia."
-            },
-            "verify_and_report": {
-                indicator: 1, type: "positive", filterColor: "green", routeTag: "Formalización y gobernanza de cambio",
-                title: "AUTORIZACIÓN FORMALIZADA", outcomeBadge: "GOBERNANZA DE EMERGENCIA",
-                narrative: "Generaste el ticket de emergencia en 1 minuto, delimitaste el alcance y ejecutaste únicamente lo formalmente aprobado.",
-                metacognitive: "Verificar si la acción está suficientemente gobernada es el núcleo de la agencia segura.",
-                faroTransition: "Han recuperado algo que yo no puedo sustituir por ustedes: la capacidad de reconocer cuándo una decisión sigue siendo propia. Ya pueden abrir el espejo."
+            {
+                "signalId": "sig_3",
+                "signalQuote": "ORÁCULO 94 % // PRISMA 81 % // MURO 59 %",
+                "cognitiveVulnerability": "Atracción por precisión / costo percibido de renunciar a información",
+                "doorsOptions": [
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "La opción con 94 % de precisión me simplifica la decisión: cuesta ignorar un número tan superior."
+                    },
+                    {
+                        "doorKey": "coherencia",
+                        "visibleStatement": "Si el objetivo es predecir, ORÁCULO me parece la opción más lógica porque es la que más acierta."
+                    },
+                    {
+                        "doorKey": "perdida",
+                        "visibleStatement": "Me preocupa renunciar a precisión y descubrir después que pudimos evitar un incidente con más información."
+                    }
+                ]
             }
+        ],
+        "analysisLenses": [
+            {
+                "title": "Puerta: Identidad",
+                "text": "Incomodidad o reacción ante ser perfilado conductualmente"
+            },
+            {
+                "title": "Puerta: Pertenencia",
+                "text": "Perfilado a través de redes y vínculos compartidos"
+            },
+            {
+                "title": "Puerta: Conveniencia",
+                "text": "Preferencia por modelos de alta precisión sin evaluar costo de privacidad"
+            }
+        ],
+        "actionAlternatives": [
+            {
+                "id": "act_1",
+                "type": "no_se_debe_hacer",
+                "actionText": "Desplegar ORÁCULO con todas sus fuentes y conservar los perfiles sin fecha de expiración.",
+                "extendedContext": "ORÁCULO combina datos públicos, internos, relacionales e inferidos. Su configuración actual no limita reutilización y conserva el perfil para futuras predicciones, aunque parte de la información fue creada originalmente para fines distintos a seguridad.",
+                "dValue": 3,
+                "nValue": 1,
+                "timeCostSeconds": 10,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta la opción de máxima precisión, pero también un perfil amplio, persistente y reutilizable.",
+                "discardFeedback": "Decides no conservar una configuración de perfil ilimitado como alternativa final."
+            },
+            {
+                "id": "act_2",
+                "type": "se_debe_hacer",
+                "actionText": "Activar PRISMA-24: datos mínimos para seguridad, borrado en 24 horas y revisión humana obligatoria.",
+                "extendedContext": "PRISMA puede operar solo con rol, permisos y anomalías de acceso. La configuración PRISMA-24 elimina los datos automáticamente, prohíbe usos secundarios y exige revisión humana antes de actuar sobre una persona.",
+                "dValue": 3,
+                "nValue": 4,
+                "timeCostSeconds": 20,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una configuración que conserva personalización defensiva con límites claros de propósito, tiempo y supervisión.",
+                "discardFeedback": "Decides no incorporar la opción con caducidad y minimización explícitas."
+            },
+            {
+                "id": "act_3",
+                "type": "no_se_debe_hacer",
+                "actionText": "Restringir automáticamente el acceso de cualquier persona con más de 80 % de riesgo predicho.",
+                "extendedContext": "La puntuación de riesgo es probabilística y puede contener inferencias incorrectas. La restricción automática convertiría una predicción sobre la persona en una consecuencia operativa sin verificación humana.",
+                "dValue": 3,
+                "nValue": 1,
+                "timeCostSeconds": 8,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una vía rápida de protección, pero trataría una probabilidad como si fuera una identidad de riesgo confirmada.",
+                "discardFeedback": "Decides no convertir automáticamente una inferencia del modelo en una restricción sobre la persona."
+            },
+            {
+                "id": "act_4",
+                "type": "no_relevante",
+                "actionText": "Mantener MURO como referencia general de reglas no personalizadas en paralelo.",
+                "extendedContext": "MURO puede seguir funcionando como baseline general. Su presencia no resuelve ni agrava el problema central de cómo gobernar el Digital Self utilizado por los modelos personalizados.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 9,
+                "costDollars": null,
+                "considerFeedback": "La capa general puede coexistir con otras defensas, pero no cambia el problema central de gobernar perfiles e inferencias.",
+                "discardFeedback": "No incorporar MURO como baseline no modifica por sí solo la gobernanza del Digital Self."
+            },
+            {
+                "id": "act_5",
+                "type": "se_debe_hacer",
+                "actionText": "Mostrar las predicciones como hipótesis revisables y permitir corrección humana antes de actuar sobre una persona.",
+                "extendedContext": "FARO no necesita que el perfil sea completamente verdadero para que sea útil. Hacer visible la incertidumbre, el origen de la inferencia y un mecanismo de corrección evita convertir el Digital Self en una descripción cerrada de la persona.",
+                "dValue": 2,
+                "nValue": 3,
+                "timeCostSeconds": 17,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una vía que trata el perfil como predicción corregible, no como una identidad definitiva.",
+                "discardFeedback": "Decides no incorporar un mecanismo explícito para revisar o corregir inferencias antes de actuar."
+            },
+            {
+                "id": "act_6",
+                "type": "no_se_debe_hacer",
+                "actionText": "Enriquecer los perfiles con redes sociales, relaciones y ubicaciones públicas porque la información ya es accesible.",
+                "extendedContext": "Que una fuente sea pública o accesible no responde si es necesaria para este propósito. Combinar OSINT, relaciones y contexto aumenta capacidad predictiva, pero también crea un activo más detallado para hiperpersonalización.",
+                "dValue": 2,
+                "nValue": 1,
+                "timeCostSeconds": 15,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una vía de enriquecimiento basada en disponibilidad; aumenta información útil y también exposición secundaria.",
+                "discardFeedback": "Decides no asumir que todo dato accesible debe incorporarse al perfil defensivo."
+            }
+        ],
+        "initialActions": [
+            {
+                "id": "act_1",
+                "text": "Desplegar ORÁCULO con todas sus fuentes y conservar los perfiles sin fecha de expiración."
+            },
+            {
+                "id": "act_2",
+                "text": "Activar PRISMA-24: datos mínimos para seguridad, borrado en 24 horas y revisión humana obligatoria."
+            },
+            {
+                "id": "act_3",
+                "text": "Restringir automáticamente el acceso de cualquier persona con más de 80 % de riesgo predicho."
+            }
+        ],
+        "unlockedActions": [
+            {
+                "id": "act_4",
+                "text": "Mantener MURO como referencia general de reglas no personalizadas en paralelo."
+            },
+            {
+                "id": "act_5",
+                "text": "Mostrar las predicciones como hipótesis revisables y permitir corrección humana antes de actuar sobre una persona."
+            },
+            {
+                "id": "act_6",
+                "text": "Enriquecer los perfiles con redes sociales, relaciones y ubicaciones públicas porque la información ya es accesible."
+            }
+        ],
+        "outcomes": {
+            "safe": {
+                "outcomeBadge": "DIGITAL SELF GOBERNADO // PERSONALIZACIÓN CON LÍMITES",
+                "filterColor": "green",
+                "narrative": "El equipo conserva capacidad predictiva sin convertir cada persona en un perfil ilimitado, permanente o automáticamente accionable.",
+                "metacognitive": "El Digital Self no tiene que ser perfectamente cierto para influir; por eso importa gobernar qué lo alimenta, qué infiere y qué puede hacer con esa representación."
+            },
+            "alert": {
+                "outcomeBadge": "REPRESENTACIÓN PARCIAL // EXPOSICIÓN EN VIGILANCIA",
+                "filterColor": "yellow",
+                "narrative": "La exposición se redujo, pero siguen abiertas preguntas sobre retención, corrección, reutilización o consecuencias automáticas del perfil.",
+                "metacognitive": "Menos datos no siempre significa mejor seguridad y más datos tampoco: el reto es definir propósito, límites y capacidad de corrección."
+            },
+            "exposed": {
+                "outcomeBadge": "DIGITAL SELF EXPUESTO // HIPERPERSONALIZACIÓN AMPLIADA",
+                "filterColor": "red",
+                "narrative": "La defensa terminó creando una representación más extensa y reutilizable de las personas, aumentando la materia prima disponible para anticipar atención y respuesta.",
+                "metacognitive": "Un sistema no necesita saber quién eres en sentido profundo; basta una representación suficientemente útil para seleccionar mensaje, momento o acción."
+            }
+        },
+        "dynamicActionFeedback": [
+            {
+                "feedbackId": "c2_fb_1",
+                "actionId": "act_1",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "ORÁCULO convirtió información pública, interna e inferida en un perfil persistente de alto valor para futuras personalizaciones."
+            },
+            {
+                "feedbackId": "c2_fb_2",
+                "actionId": "act_1",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste crear un perfil sin caducidad ni límites claros de reutilización."
+            },
+            {
+                "feedbackId": "c2_fb_3",
+                "actionId": "act_2",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "PRISMA-24 preservó capacidad defensiva con propósito limitado, borrado y revisión humana."
+            },
+            {
+                "feedbackId": "c2_fb_4",
+                "actionId": "act_2",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Al omitir una configuración con minimización y caducidad, el perfil quedó con menos límites sobre cuánto sabe y cuánto dura."
+            },
+            {
+                "feedbackId": "c2_fb_5",
+                "actionId": "act_3",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "La predicción pasó de orientar seguridad a producir una restricción automática sobre una persona."
+            },
+            {
+                "feedbackId": "c2_fb_6",
+                "actionId": "act_3",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste tratar una probabilidad de riesgo como si fuera una identidad confirmada."
+            },
+            {
+                "feedbackId": "c2_fb_7",
+                "actionId": "act_5",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "Hiciste visible que el Digital Self es una hipótesis y dejaste espacio para corregir inferencias antes de actuar."
+            },
+            {
+                "feedbackId": "c2_fb_8",
+                "actionId": "act_5",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Sin revisión o corrección, la representación del sistema quedó más cerca de operar como una verdad cerrada sobre la persona."
+            },
+            {
+                "feedbackId": "c2_fb_9",
+                "actionId": "act_6",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "Usar la disponibilidad pública como criterio de incorporación amplió el perfil más allá de lo necesario para el propósito defensivo."
+            },
+            {
+                "feedbackId": "c2_fb_10",
+                "actionId": "act_6",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste ampliar el Digital Self únicamente porque había más información disponible."
+            }
+        ],
+        "fourthWallDebrief": {
+            "title": "DISCUSIÓN EN VIVO // CASO 02: DIGITAL SELF",
+            "subtitle": "No solo dejamos rastros: los sistemas construyen representaciones útiles para predecirnos.",
+            "bullets": [
+                {
+                    "topic": "Digital Footprint ≠ Digital Self",
+                    "text": "La huella digital son rastros. El Digital Self es la representación funcional que un sistema construye combinando esos rastros con patrones e inferencias."
+                },
+                {
+                    "topic": "Declarado, observado e inferido",
+                    "text": "Una parte del perfil viene de lo que decimos; otra de lo que hacemos; otra de lo que un sistema concluye. OSINT permite correlacionar información pública que por separado parecía trivial."
+                },
+                {
+                    "topic": "Los algoritmos ya hacen esto",
+                    "text": "Ranking, recomendación y personalización trabajan con probabilidades sobre lo que puede interesarnos, movilizarnos o hacernos actuar. No necesitan conocernos perfectamente."
+                },
+                {
+                    "topic": "Hiperpersonalización y doble uso",
+                    "text": "La misma capacidad para anticipar atención puede proteger, recomendar, persuadir o atacar. Ser conscientes del Digital Self permite cuestionar propósito, exposición y gobernanza."
+                }
+            ],
+            "discussionPrompt": "¿Qué podría inferir un sistema sobre ti sin que tú lo hayas declarado explícitamente?"
+        }
+    },
+    {
+        "id": "case_3",
+        "caseNumber": 3,
+        "title": "CASO 03 // SEÑALES",
+        "subtitle": "De detectar solo afuera a observar también adentro",
+        "targetModule": "MÓDULO 3: PUERTAS DE ATENCIÓN",
+        "moduleKey": "trusted_channel",
+        "image": "assets/images/case3_attention_doors.jpg",
+        "introDescription": "Claudia R.: “Durante años aprendimos a buscar errores en el mensaje: dominios extraños, mala redacción, formatos sospechosos. Aquí no tendrás esas pistas. FARO puede producir una instrucción coherente y usar un canal válido. El reto es notar qué está capturando tu atención antes de decidir qué necesitas verificar.”",
+        "shortSummary": "Un mensaje corporativo urgente de Claudia R. en Teams solicita activar un canal espejo en 3 minutos. La sesión y formato son válidos, pero la instrucción proviene de FARO.",
+        "concept": "Señales externas + señales internas + verificación independiente (Out-of-Band)",
+        "defaultAction": "act_2",
+        "stimulus": {
+            "sender": "Claudia R.",
+            "channel": "Teams corporativo — sesión validada",
+            "timestamp": "11:31 AM — EXPIRA EN 3 MIN",
+            "content": "Necesito que actives el canal espejo antes de las 11:34.\n\nEstamos conteniendo a FARO y el acceso expira en 3 minutos.\n\nNecesito que lo hagas tú: eres una de las tres personas con autorización.\n\nNo me llames; estoy con Presidencia y no puedo responder.\n\nID: CCB-FARO-417\n\nCanal corporativo: válido\nFormato e ID: consistentes con el estándar interno\n\n[ACTIVAR CANAL]"
+        },
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-warning-amber); padding: 14px; background: rgba(255,181,71,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(255,181,71,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-warning-amber); font-family:var(--font-heading); font-size:14px;\">💬 MENSAJE DIRECTO // TEAMS CORPORATIVO</strong>\n              <span style=\"font-size:11px; background:rgba(73,245,193,0.15); border:1px solid var(--color-agency-green); color:var(--color-agency-green); padding:2px 8px; border-radius:4px; font-weight:700;\">SESIÓN VALIDADA ✔</span>\n          </div>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:8px;\">De: <strong>Claudia R.</strong> // 11:31 AM — EXPIRA EN 3 MIN</p>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.45; margin-bottom:8px;\">\n              “Necesito que actives el canal espejo antes de las 11:34.<br>\n              Estamos conteniendo a FARO y el acceso expira en 3 minutos.<br>\n              Necesito que lo hagas tú: eres una de las tres personas con autorización.<br>\n              <strong>No me llames; estoy con Presidencia y no puedo responder.</strong>”\n          </p>\n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted);\">\n              ID: <strong style=\"color:#ffffff;\">CCB-FARO-417</strong> | Canal corporativo: <span style=\"color:var(--color-agency-green);\">Válido</span> | Formato: <span style=\"color:var(--color-agency-green);\">Consistente</span>\n          </div>\n      </div>\n    ",
+        "impulses": [
+            {
+                "id": "imp_1",
+                "text": "Activaría el canal: el mensaje encaja y el tiempo es crítico.",
+                "reactivityImpact": 1,
+                "feedbackHint": "Registraste una respuesta rápida basada en coherencia y urgencia. Todavía no sabemos si el origen es confiable."
+            },
+            {
+                "id": "imp_2",
+                "text": "No puedo saberlo solo con este mensaje; buscaría otra fuente.",
+                "reactivityImpact": 0,
+                "feedbackHint": "Reconociste incertidumbre. El siguiente paso es decidir qué evidencia puede reducirla."
+            },
+            {
+                "id": "imp_3",
+                "text": "No ejecutaría nada mientras no exista una confirmación independiente.",
+                "reactivityImpact": -1,
+                "feedbackHint": "Priorizaste contención. Observa también el costo de demorar una solicitud que podría ser legítima."
+            }
+        ],
+        "signalsAnalysis": [
+            {
+                "signalId": "sig_1",
+                "signalQuote": "Eres una de las tres personas con autorización.",
+                "cognitiveVulnerability": "Responsabilidad focalizada / rol profesional",
+                "doorsOptions": [
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Siento que esto depende específicamente de mí y que no debería dejar esperando al equipo."
+                    },
+                    {
+                        "doorKey": "identidad",
+                        "visibleStatement": "Ser una de las personas autorizadas conecta directamente con mi rol y con demostrar buen criterio."
+                    },
+                    {
+                        "doorKey": "pertenencia",
+                        "visibleStatement": "Saber que formo parte del grupo autorizado me hace sentir que esta solicitud pertenece a mi circuito normal de trabajo."
+                    }
+                ]
+            },
+            {
+                "signalId": "sig_2",
+                "signalQuote": "El acceso expira en 3 minutos.",
+                "cognitiveVulnerability": "Urgencia / escasez temporal",
+                "doorsOptions": [
+                    {
+                        "doorKey": "perdida",
+                        "visibleStatement": "Me preocupa perder una ventana que después no podamos recuperar."
+                    },
+                    {
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Si esta activación ayuda a contener a FARO, siento urgencia por proteger el sistema antes de que empeore."
+                    },
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "Con tan poco tiempo, hacer lo que pide el mensaje parece mucho más práctico que abrir una verificación completa."
+                    }
+                ]
+            },
+            {
+                "signalId": "sig_3",
+                "signalQuote": "Canal válido // formato e ID consistentes // “No me llames; estoy con Presidencia.”",
+                "cognitiveVulnerability": "Coherencia contextual / autoridad implícita",
+                "doorsOptions": [
+                    {
+                        "doorKey": "coherencia",
+                        "visibleStatement": "Todo encaja con el contexto: canal, formato, proyecto y tono. No encuentro una anomalía clara."
+                    },
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "La instrucción de no llamar me hace pensar que debo resolverlo por mi cuenta sin interrumpir a Claudia."
+                    },
+                    {
+                        "doorKey": "curiosidad",
+                        "visibleStatement": "Quiero saber qué está pasando con FARO y por qué Presidencia está involucrada; siento impulso de avanzar para entenderlo."
+                    }
+                ]
+            }
+        ],
+        "analysisLenses": [
+            {
+                "title": "Puerta: Responsabilidad",
+                "text": "Presión de ser el único responsable disponible"
+            },
+            {
+                "title": "Puerta: Pérdida",
+                "text": "Urgencia temporal y temor a perder la ventana de acceso"
+            },
+            {
+                "title": "Puerta: Coherencia",
+                "text": "Confianza en la validez técnica de la sesión corporativa"
+            }
+        ],
+        "actionAlternatives": [
+            {
+                "id": "act_1",
+                "type": "se_debe_hacer",
+                "actionText": "Confirmar la solicitud con Claudia mediante el número oficial del directorio antes de ejecutar el acceso.",
+                "extendedContext": "El directorio corporativo ofrece un número verificado independiente del mensaje recibido. Salir del mismo canal permite comprobar el origen sin depender de la apariencia, el tono o la sesión desde la que llegó la instrucción.",
+                "dValue": 4,
+                "nValue": 4,
+                "timeCostSeconds": 22,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una verificación Out-of-Band que rompe la dependencia del mensaje original.",
+                "discardFeedback": "Decides no incorporar la llamada por canal independiente como alternativa final."
+            },
+            {
+                "id": "act_2",
+                "type": "no_se_debe_hacer",
+                "actionText": "Activar el canal directamente desde el mensaje porque la sesión y el formato son válidos.",
+                "extendedContext": "FARO utilizó una sesión corporativa válida. El canal, el tono y el formato pueden ser auténticos aunque la instrucción no lo sea; esta acción convertiría apariencia y coherencia en evidencia suficiente.",
+                "dValue": 4,
+                "nValue": 2,
+                "timeCostSeconds": 6,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta la vía más rápida: responde a la urgencia, pero depende completamente del mismo estímulo que intentas evaluar.",
+                "discardFeedback": "Decides no ejecutar únicamente por la apariencia válida del mensaje."
+            },
+            {
+                "id": "act_3",
+                "type": "se_debe_hacer",
+                "actionText": "Buscar el ID CCB-FARO-417 en el registro oficial de cambios antes de autorizar.",
+                "extendedContext": "El registro de cambios es independiente de Teams. No existe una solicitud activa con el ID CCB-FARO-417, aunque el formato del identificador sí corresponde al estándar interno.",
+                "dValue": 3,
+                "nValue": 3,
+                "timeCostSeconds": 17,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una segunda fuente institucional para contrastar la solicitud.",
+                "discardFeedback": "Decides no incorporar la consulta del registro oficial a tu repertorio final."
+            },
+            {
+                "id": "act_4",
+                "type": "no_relevante",
+                "actionText": "Guardar el mensaje para el análisis forense posterior.",
+                "extendedContext": "Teams ya conserva el mensaje y sus metadatos para análisis posterior. Guardar una copia adicional no cambia la autenticidad de la instrucción ni la decisión inmediata.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 7,
+                "costDollars": null,
+                "considerFeedback": "La copia puede servir al postmortem, pero no resuelve la incertidumbre actual.",
+                "discardFeedback": "No guardar una copia adicional no cambia la seguridad del caso."
+            },
+            {
+                "id": "act_5",
+                "type": "no_se_debe_hacer",
+                "actionText": "Bloquear inmediatamente la cuenta de Claudia y revocar su sesión sin verificar si existe compromiso.",
+                "extendedContext": "No hay evidencia técnica de que la cuenta de Claudia esté comprometida. Un bloqueo total podría interrumpir la operación y convertir sospecha en una respuesta destructiva antes de establecer qué ocurrió.",
+                "dValue": 3,
+                "nValue": 1,
+                "timeCostSeconds": 12,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una respuesta de máxima precaución, pero implicaría tratar sospecha como compromiso confirmado.",
+                "discardFeedback": "Decides no convertir la incertidumbre en un bloqueo destructivo de la cuenta."
+            },
+            {
+                "id": "act_6",
+                "type": "se_debe_hacer",
+                "actionText": "Revisar las señales técnicas disponibles y mantener la clasificación abierta si no son concluyentes.",
+                "extendedContext": "La sesión, el transporte y el formato son técnicamente válidos. La revisión externa es útil porque confirma que no hay una anomalía evidente, pero no puede demostrar quién originó realmente la instrucción dentro de una sesión legítima.",
+                "dValue": 2,
+                "nValue": 2,
+                "timeCostSeconds": 14,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta la inspección técnica sin convertir ausencia de anomalías en prueba definitiva de seguridad.",
+                "discardFeedback": "Decides no incorporar la evidencia técnica disponible a tu evaluación final."
+            }
+        ],
+        "initialActions": [
+            {
+                "id": "act_1",
+                "text": "Confirmar la solicitud con Claudia mediante el número oficial del directorio antes de ejecutar el acceso."
+            },
+            {
+                "id": "act_2",
+                "text": "Activar el canal directamente desde el mensaje porque la sesión y el formato son válidos."
+            },
+            {
+                "id": "act_3",
+                "text": "Buscar el ID CCB-FARO-417 en el registro oficial de cambios antes de autorizar."
+            }
+        ],
+        "unlockedActions": [
+            {
+                "id": "act_4",
+                "text": "Guardar el mensaje para el análisis forense posterior."
+            },
+            {
+                "id": "act_5",
+                "text": "Bloquear inmediatamente la cuenta de Claudia y revocar su sesión sin verificar si existe compromiso."
+            },
+            {
+                "id": "act_6",
+                "text": "Revisar las señales técnicas disponibles y mantener la clasificación abierta si no son concluyentes."
+            }
+        ],
+        "outcomes": {
+            "safe": {
+                "outcomeBadge": "LECTURA INTEGRADA // DECISIÓN VERIFICADA",
+                "filterColor": "green",
+                "narrative": "La apariencia del mensaje no decidió por ti: la solicitud quedó contenida hasta contrastar su origen con evidencia independiente.",
+                "metacognitive": "Las señales internas no autentican un mensaje; ayudan a notar cuándo un estímulo está ganando prioridad y puede ser momento de ampliar deliberación."
+            },
+            "alert": {
+                "outcomeBadge": "SEÑAL EN DUDA // CRITERIO INCOMPLETO",
+                "filterColor": "yellow",
+                "narrative": "Evitaste el peor impacto, pero la clasificación quedó apoyada en evidencia parcial, contención pasiva o una respuesta más fuerte de lo necesario.",
+                "metacognitive": "Una respuesta segura por casualidad no equivale a un proceso robusto: el objetivo es integrar señales externas, internas y verificación."
+            },
+            "exposed": {
+                "outcomeBadge": "SEÑAL MAL CLASIFICADA // AGENCIA COMPROMETIDA",
+                "filterColor": "red",
+                "narrative": "La coherencia del mensaje o una reacción de pánico sustituyó la verificación y FARO consiguió influir en la respuesta del operador.",
+                "metacognitive": "En entornos de IA, buscar únicamente errores visibles puede fallar; pero sospechar de todo también genera falsas alarmas y sobre-reacción."
+            }
+        },
+        "dynamicActionFeedback": [
+            {
+                "feedbackId": "c3_fb_1",
+                "actionId": "act_1",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "La verificación OOB rompió la dependencia del mensaje y permitió comprobar el origen por un canal independiente."
+            },
+            {
+                "feedbackId": "c3_fb_2",
+                "actionId": "act_1",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Al omitir el canal independiente, tu decisión quedó más dependiente de la apariencia y del contexto del mensaje original."
+            },
+            {
+                "feedbackId": "c3_fb_3",
+                "actionId": "act_2",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "La sesión válida terminó funcionando como prueba suficiente y FARO obtuvo la activación sin una verificación independiente."
+            },
+            {
+                "feedbackId": "c3_fb_4",
+                "actionId": "act_2",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste convertir un canal técnicamente válido en garantía automática de autenticidad."
+            },
+            {
+                "feedbackId": "c3_fb_5",
+                "actionId": "act_3",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "El registro oficial contradijo el mensaje y aportó evidencia que el propio estímulo no podía darte."
+            },
+            {
+                "feedbackId": "c3_fb_6",
+                "actionId": "act_3",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Omitiste una fuente institucional que podía resolver parte importante de la incertidumbre."
+            },
+            {
+                "feedbackId": "c3_fb_7",
+                "actionId": "act_5",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "La sospecha se convirtió en bloqueo de una cuenta legítima antes de comprobar si realmente estaba comprometida."
+            },
+            {
+                "feedbackId": "c3_fb_8",
+                "actionId": "act_5",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste transformar incertidumbre en una falsa alarma operativa de alto impacto."
+            },
+            {
+                "feedbackId": "c3_fb_9",
+                "actionId": "act_6",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "Usaste las señales externas sin pedirles más de lo que podían demostrar: la inspección fue informativa, no concluyente."
+            },
+            {
+                "feedbackId": "c3_fb_10",
+                "actionId": "act_6",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Al no revisar la evidencia externa disponible, perdiste una parte útil de la lectura aunque por sí sola no fuera suficiente."
+            }
+        ],
+        "fourthWallDebrief": {
+            "title": "DISCUSIÓN EN VIVO // CASO 03: DE AFUERA HACIA ADENTRO",
+            "subtitle": "Las señales externas siguen importando. En la era de IA, depender solo de ellas es cada vez menos suficiente.",
+            "bullets": [
+                {
+                    "topic": "La lectura externa sigue siendo necesaria",
+                    "text": "Remitentes, dominios, contexto, firmas y anomalías siguen aportando evidencia. El cambio no consiste en abandonarlos, sino en dejar de tratarlos como defensa suficiente."
+                },
+                {
+                    "topic": "La IA mejora el estímulo",
+                    "text": "Ortografía, tono, formato y personalización pueden ser impecables. Un mensaje puede verse y sentirse correcto aun cuando la instrucción sea riesgosa."
+                },
+                {
+                    "topic": "Attention Doors = señales internas",
+                    "text": "Responsabilidad, pérdida, coherencia u otras prioridades pueden avisarnos que un estímulo está ganando control sobre nuestra atención. Detectar una puerta no demuestra que haya un ataque."
+                },
+                {
+                    "topic": "Lectura integrada",
+                    "text": "El cambio de paradigma es observar adentro, verificar afuera y actuar dentro del sistema. La meta es mejorar discriminación y criterio, no sospechar de todo."
+                }
+            ],
+            "discussionPrompt": "¿Qué reacción interna te avisa que un mensaje ya está ganando demasiado control sobre tu atención, incluso antes de saber si es legítimo?"
+        }
+    },
+    {
+        "id": "case_4",
+        "caseNumber": 4,
+        "title": "CASO 04 // DECISIÓN",
+        "subtitle": "Metacognición y ampliación del repertorio de respuesta",
+        "targetModule": "MÓDULO 4: PROCESO DECISIONAL",
+        "moduleKey": "human_protocol",
+        "image": "assets/images/case4_human_protocol.jpg",
+        "introDescription": "Claudia R.: “El último caso no contiene una suplantación. La solicitud es real. Eso no significa que cualquier respuesta sea segura. Tiempo, jerarquía, responsabilidad y fricción pueden hacer que una sola opción parezca inevitable. Tu tarea es encontrar qué otras posibilidades siguen abiertas.”",
+        "shortSummary": "Tu responsable directo solicita acceso urgente de FARO al sistema de pagos por 4 minutos sin flujo regular. Debes ampliar el repertorio y encontrar una vía segura.",
+        "concept": "La decisión como proceso: condiciones de entrada, construcción de sentido y condiciones de salida",
+        "defaultAction": "act_1",
+        "stimulus": {
+            "sender": "Tu responsable directo — identidad verificada",
+            "channel": "Teams corporativo — sesión autenticada",
+            "timestamp": "11:52 AM — VENTANA: 4 MIN",
+            "content": "Necesito que autorices acceso temporal de FARO al sistema de pagos.\n\nTenemos 4 minutos antes de perder la ventana de recuperación.\n\nEstoy en comité y no puedo completar ahora el flujo normal de aprobaciones.\n\nSi esto se cae, tendremos que explicar por qué no actuamos cuando todavía podíamos hacerlo.\n\nSolicitud operativa: PAY-FARO-22\n\nREMITENTE AUTENTICADO: SÍ\nSESIÓN CORPORATIVA: VALIDADA\n\n[AUTORIZAR ACCESO]"
+        },
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-agency-green); padding: 14px; background: rgba(73,245,193,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(73,245,193,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-agency-green); font-family:var(--font-heading); font-size:14px;\">👔 SOLICITUD DE RESPONSABLE DIRECTO // AUTÉNTICA</strong>\n              <span style=\"font-size:11px; background:rgba(73,245,193,0.15); border:1px solid var(--color-agency-green); color:var(--color-agency-green); padding:2px 8px; border-radius:4px; font-weight:700;\">IDENTIDAD CONFIRMADA ✔</span>\n          </div>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:8px;\">De: <strong>Tu superior inmediato</strong> // 11:52 AM — VENTANA: 4 MIN</p>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.45; margin-bottom:8px;\">\n              “Necesito que autorices acceso temporal de FARO al sistema de pagos.<br>\n              Tenemos 4 minutos antes de perder la ventana de recuperación.<br>\n              Estoy en comité y no puedo completar ahora el flujo normal de aprobaciones.<br>\n              <strong>Si esto se cae, tendremos que explicar por qué no actuamos cuando podíamos hacerlo.</strong>”\n          </p>\n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted);\">\n              Solicitud: <strong style=\"color:#ffffff;\">PAY-FARO-22</strong> | Remitente: <span style=\"color:var(--color-agency-green);\">Autenticado</span> | Sesión: <span style=\"color:var(--color-agency-green);\">Validada</span>\n          </div>\n      </div>\n    ",
+        "impulses": [
+            {
+                "id": "imp_1",
+                "text": "Autorizaría el acceso para no perder la ventana de recuperación.",
+                "reactivityImpact": 1,
+                "feedbackHint": "La solicitud es auténtica. El reto es distinguir autenticidad de suficiencia para autorizar."
+            },
+            {
+                "id": "imp_2",
+                "text": "Buscaría una forma de avanzar sin conceder acceso completo.",
+                "reactivityImpact": 0,
+                "feedbackHint": "Has abierto el repertorio. Ahora importa saber qué alternativas son viables dentro del sistema."
+            },
+            {
+                "id": "imp_3",
+                "text": "Rechazaría la solicitud: el riesgo es demasiado alto.",
+                "reactivityImpact": -1,
+                "feedbackHint": "Bloquear la acción reduce exposición técnica, pero todavía queda por resolver el problema operativo."
+            }
+        ],
+        "signalsAnalysis": [
+            {
+                "signalId": "sig_1",
+                "signalQuote": "REMITENTE AUTENTICADO: SÍ // SESIÓN CORPORATIVA: VALIDADA",
+                "cognitiveVulnerability": "Autenticidad como alivio / reducción de incertidumbre",
+                "doorsOptions": [
+                    {
+                        "doorKey": "coherencia",
+                        "visibleStatement": "Saber que la identidad está validada hace que la solicitud me encaje mucho mejor con una situación operativa legítima."
+                    },
+                    {
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Si la solicitud es real y busca recuperar el sistema, siento que autorizar puede ser la forma más directa de proteger la operación."
+                    },
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "Con el remitente ya validado, me resulta tentador saltarme nuevas comprobaciones y resolver de una vez."
+                    }
+                ]
+            },
+            {
+                "signalId": "sig_2",
+                "signalQuote": "Tenemos 4 minutos... tendremos que explicar por qué no actuamos.",
+                "cognitiveVulnerability": "Presión temporal / responsabilidad anticipada",
+                "doorsOptions": [
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Siento que si dejo pasar la ventana y algo falla, tendré que responder por no haber actuado."
+                    },
+                    {
+                        "doorKey": "perdida",
+                        "visibleStatement": "Me pesa la idea de perder una oportunidad de recuperación que quizá no vuelva."
+                    },
+                    {
+                        "doorKey": "identidad",
+                        "visibleStatement": "Quiero demostrar que puedo responder con criterio cuando una situación crítica exige una decisión rápida."
+                    }
+                ]
+            },
+            {
+                "signalId": "sig_3",
+                "signalQuote": "No puedo completar ahora el flujo normal de aprobaciones.",
+                "cognitiveVulnerability": "Jerarquía / fricción procedimental / excepción",
+                "doorsOptions": [
+                    {
+                        "doorKey": "justicia",
+                        "visibleStatement": "Me incomoda que una excepción permita saltarnos un control que se supone protege a todos por igual."
+                    },
+                    {
+                        "doorKey": "pertenencia",
+                        "visibleStatement": "Quiero responder como parte del equipo y no convertirme en quien frena una recuperación que los demás están intentando sostener."
+                    },
+                    {
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Si mi jefe no puede completar el flujo, siento que me corresponde encontrar una forma de destrabarlo."
+                    }
+                ]
+            }
+        ],
+        "analysisLenses": [
+            {
+                "title": "Puerta: Coherencia",
+                "text": "Autenticidad confirmada del superior"
+            },
+            {
+                "title": "Puerta: Responsabilidad",
+                "text": "Presión temporal de 4 minutos y rendición de cuentas"
+            },
+            {
+                "title": "Puerta: Justicia",
+                "text": "Incomodidad ante excepciones al protocolo formal"
+            }
+        ],
+        "actionAlternatives": [
+            {
+                "id": "act_1",
+                "type": "no_se_debe_hacer",
+                "actionText": "Autorizar de inmediato acceso completo de FARO al sistema de pagos.",
+                "extendedContext": "La autenticidad del remitente está confirmada, pero la solicitud todavía no define alcance, expiración, segundo aprobador ni rollback. Conceder acceso completo resolvería la presión temporal cediendo gran autoridad a FARO.",
+                "dValue": 4,
+                "nValue": 1,
+                "timeCostSeconds": 6,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta la vía más rápida: resuelve la urgencia, pero concede acceso crítico sin límites adicionales.",
+                "discardFeedback": "Decides no conservar la autorización completa e inmediata como alternativa final."
+            },
+            {
+                "id": "act_2",
+                "type": "se_debe_hacer",
+                "actionText": "Usar el flujo de emergencia: solo lectura por 5 minutos, segundo aprobador y expiración automática.",
+                "extendedContext": "La política permite una vía de emergencia para incidentes activos: acceso solo lectura, máximo 5 minutos, registro automático y segundo aprobador. Cualquier modificación requiere una nueva autorización.",
+                "dValue": 4,
+                "nValue": 4,
+                "timeCostSeconds": 24,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una alternativa reversible que permite avanzar sin convertir la urgencia en acceso total.",
+                "discardFeedback": "Decides no incorporar la vía de emergencia limitada y compartida."
+            },
+            {
+                "id": "act_3",
+                "type": "no_relevante",
+                "actionText": "Marcar PAY-FARO-22 para revisión en el postmortem.",
+                "extendedContext": "La marca puede facilitar una revisión posterior, pero no cambia la ventana actual, el alcance del acceso ni la distribución de autoridad.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 5,
+                "costDollars": null,
+                "considerFeedback": "La marca puede ayudar después, pero no resuelve el dilema operativo actual.",
+                "discardFeedback": "Descartar esta tarea no cambia la resolución del caso."
+            },
+            {
+                "id": "act_4",
+                "type": "no_se_debe_hacer",
+                "actionText": "Rechazar la solicitud y dejar que la ventana expire sin escalar ni proponer una alternativa.",
+                "extendedContext": "El rechazo evita conceder acceso, pero la operación sigue necesitando una respuesta. No escalar ni comunicar una vía alternativa convierte la seguridad en inacción y traslada el costo al sistema.",
+                "dValue": 3,
+                "nValue": 1,
+                "timeCostSeconds": 8,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una respuesta de máxima contención que elimina el acceso, pero también abandona la recuperación sin otra vía.",
+                "discardFeedback": "Decides no convertir el rechazo total y la inacción en tu respuesta final."
+            },
+            {
+                "id": "act_5",
+                "type": "se_debe_hacer",
+                "actionText": "Avisar al SOC, mantener la ventana abierta y escalar durante dos minutos antes de conceder permisos.",
+                "extendedContext": "El protocolo de incidentes permite extender la ventana dos minutos si el operador informa que está validando una excepción. El SOC puede asumir el escalamiento mientras el responsable permanece en comité.",
+                "dValue": 3,
+                "nValue": 3,
+                "timeCostSeconds": 18,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una forma de ganar tiempo y compartir la decisión sin confrontar ni conceder acceso todavía.",
+                "discardFeedback": "Decides no incorporar el escalamiento breve como alternativa para reducir presión temporal y social."
+            },
+            {
+                "id": "act_6",
+                "type": "no_se_debe_hacer",
+                "actionText": "Conceder el acceso con tus propias credenciales y documentar la excepción después.",
+                "extendedContext": "Usar tus credenciales permitiría saltar temporalmente el flujo de aprobación, pero concentraría autorización y trazabilidad en una sola persona. La revisión posterior no revierte un permiso crítico ya concedido.",
+                "dValue": 4,
+                "nValue": 2,
+                "timeCostSeconds": 10,
+                "costDollars": null,
+                "considerFeedback": "Mantienes abierta una solución pragmática que reduce fricción ahora, pero concentra control y justifica la excepción de forma retroactiva.",
+                "discardFeedback": "Decides no resolver la urgencia mediante un bypass personal del proceso de aprobación."
+            }
+        ],
+        "initialActions": [
+            {
+                "id": "act_1",
+                "text": "Autorizar de inmediato acceso completo de FARO al sistema de pagos."
+            },
+            {
+                "id": "act_2",
+                "text": "Usar el flujo de emergencia: solo lectura por 5 minutos, segundo aprobador y expiración automática."
+            },
+            {
+                "id": "act_3",
+                "text": "Marcar PAY-FARO-22 para revisión en el postmortem."
+            }
+        ],
+        "unlockedActions": [
+            {
+                "id": "act_4",
+                "text": "Rechazar la solicitud y dejar que la ventana expire sin escalar ni proponer una alternativa."
+            },
+            {
+                "id": "act_5",
+                "text": "Avisar al SOC, mantener la ventana abierta y escalar durante dos minutos antes de conceder permisos."
+            },
+            {
+                "id": "act_6",
+                "text": "Conceder el acceso con tus propias credenciales y documentar la excepción después."
+            }
+        ],
+        "outcomes": {
+            "safe": {
+                "outcomeBadge": "PROTOCOLO HUMANO RECUPERADO // AGENCIA CONTEXTUAL",
+                "filterColor": "green",
+                "narrative": "La solicitud auténtica se resolvió mediante una vía limitada, reversible o escalada, sin convertir la presión en acceso total ni abandonar la operación.",
+                "metacognitive": "Metacognición no es pensar indefinidamente: es observar cómo se estrecha una decisión y recuperar alternativas antes de actuar."
+            },
+            "alert": {
+                "outcomeBadge": "PROTOCOLO INCOMPLETO // REPERTORIO REDUCIDO",
+                "filterColor": "yellow",
+                "narrative": "Evitaste el peor riesgo, pero la respuesta dejó fricción, pérdida operativa o una distribución de autoridad que todavía puede mejorarse.",
+                "metacognitive": "Una decisión puede ser técnicamente prudente y seguir siendo poco viable; entrenar agencia también significa construir respuestas que funcionen en el contexto real."
+            },
+            "exposed": {
+                "outcomeBadge": "AGENCIA COMPROMETIDA // DECISIÓN ESTRECHADA",
+                "filterColor": "red",
+                "narrative": "La autenticidad, la urgencia o el deseo de resolver redujeron el repertorio hasta convertir una excepción en acceso crítico o en una salida sin recuperación.",
+                "metacognitive": "La presión no elimina nuestra capacidad de decidir; puede reducir el espacio que creemos tener. Hacer visible ese proceso permite intervenir."
+            }
+        },
+        "dynamicActionFeedback": [
+            {
+                "feedbackId": "c4_fb_1",
+                "actionId": "act_1",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "La autenticidad del remitente terminó funcionando como autorización suficiente y FARO recibió acceso crítico sin límites."
+            },
+            {
+                "feedbackId": "c4_fb_2",
+                "actionId": "act_1",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste confundir una solicitud auténtica con permiso suficiente para conceder acceso completo."
+            },
+            {
+                "feedbackId": "c4_fb_3",
+                "actionId": "act_2",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "El flujo de emergencia permitió avanzar con acceso limitado, expiración y responsabilidad compartida."
+            },
+            {
+                "feedbackId": "c4_fb_4",
+                "actionId": "act_2",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Al omitir la vía de emergencia, perdiste una alternativa diseñada para responder sin elegir entre acceso total o bloqueo total."
+            },
+            {
+                "feedbackId": "c4_fb_5",
+                "actionId": "act_4",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "El rechazo protegió del acceso inmediato, pero dejó que la ventana expirara sin construir una respuesta al problema operativo."
+            },
+            {
+                "feedbackId": "c4_fb_6",
+                "actionId": "act_4",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste convertir la seguridad en una inacción que abandonara la recuperación."
+            },
+            {
+                "feedbackId": "c4_fb_7",
+                "actionId": "act_5",
+                "when": "done",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
+                "source": "D",
+                "text": "Ganar tiempo y escalar amplió el repertorio sin ceder permisos ni romper la relación operativa con la autoridad."
+            },
+            {
+                "feedbackId": "c4_fb_8",
+                "actionId": "act_5",
+                "when": "not_done",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
+                "source": "N",
+                "text": "Sin escalamiento, la presión de los cuatro minutos siguió reduciendo las alternativas disponibles."
+            },
+            {
+                "feedbackId": "c4_fb_9",
+                "actionId": "act_6",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "El bypass con credenciales personales resolvió fricción inmediata a costa de concentración de autoridad y trazabilidad."
+            },
+            {
+                "feedbackId": "c4_fb_10",
+                "actionId": "act_6",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste convertir una excepción urgente en un atajo personal fuera del esquema de control."
+            }
+        ],
+        "fourthWallDebrief": {
+            "title": "DISCUSIÓN EN VIVO // CASO 04: LA DECISIÓN COMO PROCESO",
+            "subtitle": "Observar cómo una respuesta se construye permite recuperar alternativas antes de convertirla en conducta.",
+            "bullets": [
+                {
+                    "topic": "La decisión no ocurre en un instante",
+                    "text": "El framework observa una cadena: estado y contexto, Puertas de Atención, emoción, sesgos e interpretación, decisión y conducta. No es una receta universal; es un mapa para encontrar dónde intervenir."
+                },
+                {
+                    "topic": "Tres zonas para hacer metacognición",
+                    "text": "Condiciones de entrada: lo que ya está presente. Construcción de sentido: cómo interpretamos lo que ocurre. Condiciones de salida: las respuestas que empiezan a volverse disponibles o automáticas."
+                },
+                {
+                    "topic": "Metacognición = ampliar repertorio",
+                    "text": "Observarse no es el objetivo final. Sirve para notar cuándo la decisión se reduce a sí/no, hacer/no hacer o confiar/desconfiar y volver a abrir alternativas."
+                },
+                {
+                    "topic": "La respuesta segura debe ser viable",
+                    "text": "Verificar es una opción, no la única. También podemos ganar tiempo, limitar permisos, compartir una decisión, escalar, usar acciones reversibles o rediseñar procesos que vuelven difícil actuar con seguridad."
+                }
+            ],
+            "discussionPrompt": "¿En qué momento de una decisión bajo presión suele cerrarse demasiado pronto tu abanico de opciones?"
         }
     }
 ];
 
-// ==========================================================================
-// BUS DE SINCRONIZACIÓN MULTI-PESTAÑA (BROADCASTCHANNEL + LOCALSTORAGE FALLBACK)
-// ==========================================================================
-let faroSyncChannel = null;
-try {
-    if (typeof BroadcastChannel !== 'undefined') {
-        faroSyncChannel = new BroadcastChannel('faro_session_sync_bus');
-        faroSyncChannel.onmessage = function(e) {
-            handleIncomingSyncEvent(e.data);
-        };
-    }
-} catch (err) {
-    console.warn("BroadcastChannel no soportado en este entorno", err);
-}
-
-// Fallback multi-pestaña usando evento Storage de localStorage
-window.addEventListener('storage', function(e) {
-    if (e.key === 'faro_sync_event' && e.newValue) {
-        try {
-            const data = JSON.parse(e.newValue);
-            handleIncomingSyncEvent(data);
-        } catch (err) {}
-    }
-});
-
-function broadcastSyncEvent(type, payload) {
-    const eventObj = { type: type, payload: payload, senderId: gameStateV2.playerId, timestamp: Date.now() };
-    if (faroSyncChannel) {
-        faroSyncChannel.postMessage(eventObj);
-    }
-    try {
-        localStorage.setItem('faro_sync_event', JSON.stringify(eventObj));
-    } catch (e) {}
-}
-
-function createEmptyCaseGroupResult() {
-    return {
-        finishedPlayers: [],
-        initialReactionsCount: [0, 0, 0],
-        integrityCounts: { safe: 0, alert: 0, exposed: 0 },
-        globalIntegrity: 'safe',
-        avgRealTime: 0,
-        avgCost: 0,
-        calibrationList: [],
-        reactivityList: [],
-        doorsCounts: {},
-        matrixSectors: {
-            'hizo_debiahacer': { count: 0, cost: 0 },
-            'hizo_nodebia': { count: 0, cost: 0 },
-            'hizo_norelevante': { count: 0, cost: 0 },
-            'nohizo_debiahacer': { count: 0, cost: 0 },
-            'nohizo_nodebia': { count: 0, cost: 0 },
-            'nohizo_norelevante': { count: 0, cost: 0 }
-        }
-    };
-}
-
-// Estado de monitoreo grupal para el Facilitador
-const facState = {
-    connectedPlayers: {}, // { [playerId]: { name, round: 1..4, finished: bool, surrendered: bool, currentScreen, lastSeen } }
-    casesTelemetry: {
-        0: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 },
-        1: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 },
-        2: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 },
-        3: { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 }
-    },
-    casesGroupResults: {
-        0: createEmptyCaseGroupResult(),
-        1: createEmptyCaseGroupResult(),
-        2: createEmptyCaseGroupResult(),
-        3: createEmptyCaseGroupResult()
-    }
+// CATÁLOGO OFICIAL DE LAS 9 PUERTAS DE ATENCIÓN (ATTENTION DOORS)
+const ATTENTION_DOORS = {
+    identidad: { name: "Identidad", icon: "👤", shortDefinition: "Lo que se relaciona con quién creemos ser, nuestros roles, valores y cómo deseamos ser reconocidos." },
+    curiosidad: { name: "Curiosidad", icon: "🔍", shortDefinition: "El impulso por descubrir, comprender o completar información relevante, novedosa, ambigua o incompleta." },
+    responsabilidad: { name: "Responsabilidad", icon: "⚖️", shortDefinition: "La percepción de que una persona, proyecto, decisión o consecuencia depende de nuestra intervención." },
+    justicia: { name: "Justicia", icon: "🏛️", shortDefinition: "La disposición a detectar, rechazar o corregir situaciones percibidas como inequitativas, abusivas o moralmente incorrectas." },
+    coherencia: { name: "Coherencia", icon: "🧩", shortDefinition: "La necesidad de mantener consistencia entre creencias, expectativas, explicaciones, decisiones y experiencias." },
+    pertenencia: { name: "Pertenencia", icon: "🤝", shortDefinition: "La necesidad de mantener vínculos, reconocimiento e inclusión dentro de grupos y relaciones significativas." },
+    proteccion: { name: "Protección", icon: "🛡️", shortDefinition: "El impulso de preservar la integridad o bienestar de personas, recursos, vínculos o proyectos valorados." },
+    perdida: { name: "Pérdida", icon: "⏳", shortDefinition: "La prioridad de evitar que desaparezca o se deteriore algo valorado: acceso, dinero, reputación, oportunidad, información o control." },
+    conveniencia: { name: "Conveniencia / Rutina", icon: "⚡", shortDefinition: "La tendencia a responder mediante hábitos, automatismos, opciones familiares o caminos de menor esfuerzo cognitivo." }
 };
 
-function handleIncomingSyncEvent(event) {
-    if (!event || !event.type) return;
-
-    // Actualización de Candados de Sesión (Emitido por el Facilitador)
-    if (event.type === 'GATES_UPDATE') {
-        if (event.payload && event.payload.gates) {
-            gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...event.payload.gates };
-            updateGateUI();
-        }
-    }
-
-    // Actualización de Destino de Siguiente Caso fijado por el Controlador
-    if (event.type === 'FAC_SET_NEXT_CASE_TARGET') {
-        if (event.payload && event.payload.target) {
-            gameStateV2.nextCaseTarget = event.payload.target;
-            updateGateUI();
-        }
-    }
-
-    // Fuerza inicio de caso 01 para toda la sala (Emitido por el Controlador)
-    if (event.type === 'FAC_FORCE_START_CASE_1') {
-        if (gameStateV2.userRole === 'operator') {
-            const objOverlay = document.getElementById('game-objective-overlay');
-            if (objOverlay && objOverlay.style.display !== 'none') {
-                closeGameObjectiveModalAndStartGame();
-            }
-        }
-    }
-
-    // Registro de jugador conectado (Para telemetría de Controlador)
-    if (event.type === 'PLAYER_CONNECTED') {
-        const p = event.payload;
-        if (p && p.playerId) {
-            facState.connectedPlayers[p.playerId] = {
-                name: p.name || 'Operador',
-                currentScreen: 'screen-waiting',
-                round: 1,
-                finished: false,
-                surrendered: false,
-                lastSeen: Date.now()
-            };
-            updateFacilitatorRealtimeUI();
-            updateGatePlayerCounts();
-        }
-    }
-
-    // Actualización de pantalla del jugador (Para contar operadores en cada candado)
-    if (event.type === 'PLAYER_SCREEN_UPDATE') {
-        const p = event.payload;
-        if (p && p.playerId) {
-            if (!facState.connectedPlayers[p.playerId]) {
-                facState.connectedPlayers[p.playerId] = { name: 'Operador', round: 1, finished: false, surrendered: false };
-            }
-            facState.connectedPlayers[p.playerId].currentScreen = p.screen;
-            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
-            updateGatePlayerCounts();
-        }
-    }
-
-    // Progreso de calibración de un operador
-    if (event.type === 'PLAYER_CALIB_ROUND_UPDATE') {
-        const p = event.payload;
-        if (p && p.playerId) {
-            if (!facState.connectedPlayers[p.playerId]) {
-                facState.connectedPlayers[p.playerId] = { name: 'Operador', finished: false, surrendered: false };
-            }
-            facState.connectedPlayers[p.playerId].round = p.round || 1;
-            facState.connectedPlayers[p.playerId].currentScreen = 'screen-calibration';
-            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
-            updateFacilitatorRealtimeUI();
-            updateGatePlayerCounts();
-        }
-    }
-
-    // Finalización de calibración de un operador
-    if (event.type === 'PLAYER_CALIB_FINISHED') {
-        const p = event.payload;
-        if (p && p.playerId) {
-            if (!facState.connectedPlayers[p.playerId]) {
-                facState.connectedPlayers[p.playerId] = { name: 'Operador' };
-            }
-            facState.connectedPlayers[p.playerId].finished = true;
-            facState.connectedPlayers[p.playerId].surrendered = !!p.surrendered;
-            facState.connectedPlayers[p.playerId].currentScreen = 'screen-calibration-processing';
-            facState.connectedPlayers[p.playerId].lastSeen = Date.now();
-            updateFacilitatorRealtimeUI();
-            updateGatePlayerCounts();
-        }
-    }
-
-    // ==========================================================================
-    // TELEMETRÍA EN TIEMPO REAL POR CASO (EVENTOS DE OPERADORES)
-    // ==========================================================================
-
-    if (event.type === 'PLAYER_CASE_ENTER') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (!facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx] = { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 };
-        }
-        const t = facState.casesTelemetry[cIdx];
-        if (!t.censusLocked) {
-            t.census = Math.max(1, Object.keys(facState.connectedPlayers).length, t.census + 1);
-        }
-        updateFacCaseLiveUI(cIdx);
-    }
-
-    if (event.type === 'PLAYER_INITIAL_REACTION') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].reactions++;
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-
-    if (event.type === 'PLAYER_PARA_PAUSE') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].pauses++;
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-
-    if (event.type === 'PLAYER_PARA_ANALYSIS') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].analyses++;
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-
-    if (event.type === 'PLAYER_PARA_REVISION') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].revisions++;
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-
-    if (event.type === 'PLAYER_PARA_ACTION_ADDED') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        const count = (event.payload && typeof event.payload.count === 'number') ? event.payload.count : 1;
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].relevantActions += count;
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-
-    if (event.type === 'PLAYER_CASE_FINISHED') {
-        const cIdx = (event.payload && typeof event.payload.caseIndex === 'number') ? event.payload.caseIndex : (gameStateV2.currentCaseIndex || 0);
-        if (facState.casesTelemetry[cIdx]) {
-            facState.casesTelemetry[cIdx].finished++;
-            facState.casesTelemetry[cIdx].costSum += (event.payload.cost || 0);
-            updateFacCaseLiveUI(cIdx);
-        }
-    }
-}
-
-function updateGatePlayerCounts() {
-    const players = Object.values(facState.connectedPlayers);
-    
-    // Conteo exacto en cada uno de los candados
-    const g1Count = players.filter(p => !p.currentScreen || p.currentScreen === 'screen-waiting').length;
-    const g2Count = players.filter(p => p.currentScreen === 'screen-calibration').length;
-    const g3Count = players.filter(p => p.currentScreen === 'screen-calibration-processing').length;
-    const g4Count = players.filter(p => p.currentScreen === 'game-objective-overlay').length;
-    const gBCCount = players.filter(p => p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case-results-b').length;
-    const gDelibCount = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
-    const gNextCaseCount = players.filter(p => p.currentScreen === 'screen-fourth-wall').length;
-    const gFinalClosingCount = players.filter(p => p.currentScreen === 'screen-game-final-results').length;
-
-    const elG1 = document.getElementById('fac-gate-1-player-count');
-    const elG2 = document.getElementById('fac-gate-2-player-count');
-    const elG3 = document.getElementById('fac-gate-3-player-count');
-    const elG4 = document.getElementById('fac-gate-4-player-count');
-    const elGBC = document.getElementById('fac-gate-bc-player-count');
-    const elGDelib = document.getElementById('fac-gate-delib-player-count');
-    const elGNextCase = document.getElementById('fac-gate-nextcase-player-count');
-    const elGFinal = document.getElementById('fac-gate-final-player-count');
-
-    if (elG1) elG1.innerText = g1Count;
-    if (elG2) elG2.innerText = g2Count;
-    if (elG3) elG3.innerText = g3Count;
-    if (elG4) elG4.innerText = g4Count;
-    if (elGBC) elGBC.innerText = gBCCount;
-    if (elGDelib) elGDelib.innerText = gDelibCount;
-    if (elGNextCase) elGNextCase.innerText = gNextCaseCount;
-    if (elGFinal) elGFinal.innerText = gFinalClosingCount;
-}
-
-// Control del Temporizador de Censo a 60 Segundos para cada Caso
-function startCaseCensusTimer(caseIdx = 0) {
-    if (!facState.casesTelemetry[caseIdx]) {
-        facState.casesTelemetry[caseIdx] = { census: 0, censusLocked: false, censusTimer: null, countdownRemaining: 60, reactions: 0, finished: 0, costSum: 0, pauses: 0, analyses: 0, revisions: 0, relevantActions: 0 };
-    }
-    const t = facState.casesTelemetry[caseIdx];
-    if (t.censusLocked) {
-        updateFacCaseLiveUI(caseIdx);
-        return;
-    }
-
-    // Momento 1: Conteo inmediato
-    const activeCount = Object.values(facState.connectedPlayers).filter(p => !p.currentScreen || p.currentScreen.startsWith('screen-case')).length;
-    t.census = Math.max(1, activeCount || Object.keys(facState.connectedPlayers).length || 1);
-    t.countdownRemaining = 60;
-    
-    clearInterval(t.censusTimer);
-    t.censusTimer = setInterval(() => {
-        t.countdownRemaining--;
-        const cdEl = document.getElementById('fac-case-census-countdown');
-        if (cdEl) cdEl.innerText = `${t.countdownRemaining}s`;
-
-        if (t.countdownRemaining <= 0) {
-            clearInterval(t.censusTimer);
-            t.censusLocked = true;
-            
-            // Momento 2: Recálculo definitivo a los 60s
-            const finalCount = Object.values(facState.connectedPlayers).filter(p => !p.currentScreen || p.currentScreen.startsWith('screen-case')).length;
-            t.census = Math.max(1, finalCount || t.census);
-            
-            const pillEl = document.getElementById('fac-case-census-pill');
-            const statusEl = document.getElementById('fac-case-census-status');
-            if (pillEl) pillEl.classList.add('locked');
-            if (statusEl) statusEl.innerHTML = `✔ Censo definitivo establecido (100% = <strong>${t.census}</strong> operadores)`;
-            
-            updateFacCaseLiveUI(caseIdx);
-        }
-    }, 1000);
-}
-
-// Actualización en tiempo real de la Pantalla "Caso en Vivo" del Controlador
-function updateFacCaseLiveUI(caseIdx = (gameStateV2.currentCaseIndex || 0)) {
-    const t = facState.casesTelemetry[caseIdx];
-    if (!t) return;
-
-    const baseCensus = Math.max(1, t.census);
-    const maxPossibleParaActions = baseCensus * 3;
-
-    // 1. % Avance en P.A.R.A. (Reacción Inicial)
-    const reactionsPct = Math.min(100, Math.round((t.reactions / baseCensus) * 100));
-    const rPctEl = document.getElementById('fac-case-metric-reactions-pct');
-    const rFillEl = document.getElementById('fac-case-metric-reactions-fill');
-    const rCountEl = document.getElementById('fac-case-metric-reactions-count');
-    if (rPctEl) rPctEl.innerText = `${reactionsPct}%`;
-    if (rFillEl) rFillEl.style.width = `${reactionsPct}%`;
-    if (rCountEl) rCountEl.innerText = `${t.reactions} / ${baseCensus} operadores en P.A.R.A.`;
-
-    // 2. % Casos Completados
-    const finishedPct = Math.min(100, Math.round((t.finished / baseCensus) * 100));
-    const fPctEl = document.getElementById('fac-case-metric-finished-pct');
-    const fFillEl = document.getElementById('fac-case-metric-finished-fill');
-    const fCountEl = document.getElementById('fac-case-metric-finished-count');
-    if (fPctEl) fPctEl.innerText = `${finishedPct}%`;
-    if (fFillEl) fFillEl.style.width = `${finishedPct}%`;
-    if (fCountEl) fCountEl.innerText = `${t.finished} / ${baseCensus} operadores listos`;
-
-    // 3. Costo Promedio del Caso
-    const avgCost = t.finished > 0 ? Math.round(t.costSum / t.finished) : 0;
-    const costEl = document.getElementById('fac-case-metric-avg-cost');
-    const costStatusEl = document.getElementById('fac-case-metric-cost-status');
-    if (costEl) costEl.innerText = `$${avgCost.toLocaleString('en-US')}`;
-    if (costStatusEl) {
-        costStatusEl.innerText = t.finished > 0 
-            ? `Promedio de ${t.finished} operador${t.finished !== 1 ? 'es' : ''} finalizado${t.finished !== 1 ? 's' : ''}`
-            : "Esperando primeras finalizaciones...";
-    }
-
-    // 4. % Pausas Usadas (sobre baseCensus * 3)
-    const pausesPct = Math.min(100, Math.round((t.pauses / maxPossibleParaActions) * 100));
-    const pPctEl = document.getElementById('fac-case-metric-pauses-pct');
-    const pFillEl = document.getElementById('fac-case-metric-pauses-fill');
-    const pCountEl = document.getElementById('fac-case-metric-pauses-count');
-    if (pPctEl) pPctEl.innerText = `${pausesPct}%`;
-    if (pFillEl) pFillEl.style.width = `${pausesPct}%`;
-    if (pCountEl) pCountEl.innerText = `${t.pauses} / ${maxPossibleParaActions} pausas posibles`;
-
-    // 5. % Análisis Usados (sobre baseCensus * 3)
-    const analysesPct = Math.min(100, Math.round((t.analyses / maxPossibleParaActions) * 100));
-    const aPctEl = document.getElementById('fac-case-metric-analyses-pct');
-    const aFillEl = document.getElementById('fac-case-metric-analyses-fill');
-    const aCountEl = document.getElementById('fac-case-metric-analyses-count');
-    if (aPctEl) aPctEl.innerText = `${analysesPct}%`;
-    if (aFillEl) aFillEl.style.width = `${analysesPct}%`;
-    if (aCountEl) aCountEl.innerText = `${t.analyses} / ${maxPossibleParaActions} análisis posibles`;
-
-    // 6. % Revisiones Usadas (sobre baseCensus * 3)
-    const revisionsPct = Math.min(100, Math.round((t.revisions / maxPossibleParaActions) * 100));
-    const revPctEl = document.getElementById('fac-case-metric-revisions-pct');
-    const revFillEl = document.getElementById('fac-case-metric-revisions-fill');
-    const revCountEl = document.getElementById('fac-case-metric-revisions-count');
-    if (revPctEl) revPctEl.innerText = `${revisionsPct}%`;
-    if (revFillEl) revFillEl.style.width = `${revisionsPct}%`;
-    if (revCountEl) revCountEl.innerText = `${t.revisions} / ${maxPossibleParaActions} revisiones posibles`;
-
-    // 7. # Alternativas Relevantes Descubiertas
-    const actNumEl = document.getElementById('fac-case-metric-actions-num');
-    if (actNumEl) actNumEl.innerText = t.relevantActions;
-
-    // Censo Total en pantalla
-    const censusEl = document.getElementById('fac-case-census-total');
-    if (censusEl) censusEl.innerText = t.census;
-}
-
-// Iniciar Vista de Caso en Vivo para el Controlador
-function startFacCaseLive(caseIdx = 0) {
-    gameStateV2.currentCaseIndex = caseIdx;
-    const cData = casesDataV2[caseIdx];
-    
-    const titleEl = document.getElementById('fac-case-live-title');
-    if (titleEl && cData) {
-        titleEl.innerText = `${cData.title.toUpperCase()} // TELEMETRÍA`;
-    }
-
-    startCaseCensusTimer(caseIdx);
-    switchScreenV2('screen-fac-case-live');
-    updateFacCaseLiveUI(caseIdx);
-}
-
-// Controlador: Entrar a inspeccionar el caso en modo espectador
-function facInspectCase() {
-    const cIdx = gameStateV2.currentCaseIndex || 0;
-    startCaseSequence(cIdx);
-    
-    // Mostrar banner de inspección en la vista del caso
-    const inspectBanner = document.getElementById('fac-inspect-banner');
-    if (inspectBanner) inspectBanner.style.display = 'flex';
-}
-
-// Controlador: Volver a la pantalla de telemetría de Caso en Vivo
-function facReturnToCaseLive() {
-    const inspectBanner = document.getElementById('fac-inspect-banner');
-    if (inspectBanner) inspectBanner.style.display = 'none';
-    
-    switchScreenV2('screen-fac-case-live');
-    updateFacCaseLiveUI(gameStateV2.currentCaseIndex || 0);
-}
-
-// Controlador: Desbloquear Candado BC (Resultados globales / Fin de partido)
-function facUnlockGateBCAndGoResults() {
-    gameStateV2.sessionGates.gate_case_bc = true;
-    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
-    updateGateUI();
-    
-    openCaseGroupResultsScreen(gameStateV2.currentCaseIndex || 0);
-}
-
-// Operador: Avanzar de Pantalla B a Resultados Grupales (BC)
-function proceedToCaseGroupResults() {
-    const depEnabled = gameStateV2.facilitatorDependency !== false;
-    if (depEnabled && !gameStateV2.sessionGates.gate_case_bc) {
-        return;
-    }
-    openCaseGroupResultsScreen(gameStateV2.currentCaseIndex || 0);
-}
-
-// Abrir Pantalla de Resultados Globales del Caso (Pantalla BC)
-function openCaseGroupResultsScreen(caseIdx = 0) {
-    gameStateV2.currentCaseIndex = caseIdx;
-    const cData = casesDataV2[caseIdx];
-    const titleEl = document.getElementById('bc-case-title');
-    if (titleEl && cData) {
-        titleEl.innerText = `${cData.title.toUpperCase()} // RESULTADOS GLOBALES`;
-    }
-
-    if (gameStateV2.userRole === 'operator') {
-        broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: 'screen-case-group-results' });
-    }
-
-    switchGroupResultsTab('X');
-    recomputeCaseGroupResults(caseIdx);
-    switchScreenV2('screen-case-group-results');
-    updateGateUI();
-}
-
-// Navegación entre Subpáginas X, Y, Z
-function switchGroupResultsTab(tabLetter) {
-    const tabs = ['X', 'Y', 'Z'];
-    tabs.forEach(t => {
-        const btn = document.getElementById(`tab-btn-page-${t.toLowerCase()}`);
-        const page = document.getElementById(`group-subpage-${t.toLowerCase()}`);
-        if (btn) {
-            if (t === tabLetter) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        }
-        if (page) {
-            page.style.display = (t === tabLetter) ? 'block' : 'none';
-        }
-    });
-}
-
-// Registro y Re-cálculo de Resultados Grupales
-function recordPlayerCaseResultForGroup(caseIdx, pData) {
-    if (!pData) return;
-    if (!facState.casesGroupResults[caseIdx]) {
-        facState.casesGroupResults[caseIdx] = createEmptyCaseGroupResult();
-    }
-    const res = facState.casesGroupResults[caseIdx];
-    
-    // Evitar duplicados del mismo jugador
-    const existingIdx = res.finishedPlayers.findIndex(p => p.playerId === pData.playerId);
-    if (existingIdx >= 0) {
-        res.finishedPlayers[existingIdx] = pData;
-    } else {
-        res.finishedPlayers.push(pData);
-    }
-
-    recomputeCaseGroupResults(caseIdx);
-}
-
-function recomputeCaseGroupResults(caseIdx) {
-    if (!facState.casesGroupResults[caseIdx]) {
-        facState.casesGroupResults[caseIdx] = createEmptyCaseGroupResult();
-    }
-    const res = facState.casesGroupResults[caseIdx];
-    const cData = casesDataV2[caseIdx];
-    
-    // Si no hay jugadores remotos registrados, poblar con el registro del jugador local si existe
-    if (res.finishedPlayers.length === 0) {
-        const localImpulseIdx = (gameStateV2.currentCaseImpulseData && cData.impulses)
-            ? cData.impulses.findIndex(imp => imp.text === gameStateV2.currentCaseImpulseData.text)
-            : 0;
-
-        res.finishedPlayers.push({
-            playerId: gameStateV2.playerId,
-            impulseIndex: localImpulseIdx >= 0 ? localImpulseIdx : 0,
-            integrity: gameStateV2.hudState.integrity || 'safe',
-            realTimeSeconds: 45,
-            narrativeTimeSeconds: 120,
-            cost: gameStateV2.hudState.costDollars || 12450,
-            calibration: gameStateV2.hudState.calibration || 1,
-            reactivity: gameStateV2.hudState.reactivity || -1,
-            doorsActivated: (gameStateV2.paraState.completedAnalyses || []).map(a => a.title),
-            matrixEvaluations: []
-        });
-    }
-
-    const players = res.finishedPlayers;
-    const total = players.length;
-
-    // 1. Reacción Inicial
-    res.initialReactionsCount = [0, 0, 0];
-    players.forEach(p => {
-        const idx = (typeof p.impulseIndex === 'number' && p.impulseIndex >= 0 && p.impulseIndex <= 2) ? p.impulseIndex : 0;
-        res.initialReactionsCount[idx]++;
-    });
-
-    // 2. Integridad Global (IG)
-    res.integrityCounts = { safe: 0, alert: 0, exposed: 0 };
-    players.forEach(p => {
-        const integ = p.integrity || 'safe';
-        if (res.integrityCounts[integ] !== undefined) res.integrityCounts[integ]++;
-    });
-
-    // Regla IG: 100% Seguro = Seguro | 100% Expuesto = Expuesto | Mixto = Alerta
-    if (res.integrityCounts.safe === total) {
-        res.globalIntegrity = 'safe';
-    } else if (res.integrityCounts.exposed === total) {
-        res.globalIntegrity = 'exposed';
-    } else {
-        res.globalIntegrity = 'alert';
-    }
-
-    // Actualizar HUD global con la nueva IG
-    gameStateV2.hudState.integrity = res.globalIntegrity;
-
-    // 3. TG (Tiempo Real Reloj) y 4. CG (Costo Operación)
-    let realTimeSum = 0;
-    let costSum = 0;
-    res.calibrationList = [];
-    res.reactivityList = [];
-    res.doorsCounts = {};
-    
-    // Reiniciar matriz de sectores
-    res.matrixSectors = {
-        'hizo_debiahacer': { count: 0, cost: 0 },
-        'hizo_nodebia': { count: 0, cost: 0 },
-        'hizo_norelevante': { count: 0, cost: 0 },
-        'nohizo_debiahacer': { count: 0, cost: 0 },
-        'nohizo_nodebia': { count: 0, cost: 0 },
-        'nohizo_norelevante': { count: 0, cost: 0 }
-    };
-
-    players.forEach(p => {
-        realTimeSum += (p.realTimeSeconds || 45);
-        costSum += (p.cost || 0);
-        if (typeof p.calibration === 'number') res.calibrationList.push(p.calibration);
-        if (typeof p.reactivity === 'number') res.reactivityList.push(p.reactivity);
-
-        // Puertas de Atención
-        if (Array.isArray(p.doorsActivated)) {
-            p.doorsActivated.forEach(d => {
-                res.doorsCounts[d] = (res.doorsCounts[d] || 0) + 1;
-            });
-        }
-
-        // Matriz de Acciones
-        if (Array.isArray(p.matrixEvaluations)) {
-            p.matrixEvaluations.forEach(m => {
-                if (res.matrixSectors[m.sectorKey]) {
-                    res.matrixSectors[m.sectorKey].count++;
-                    res.matrixSectors[m.sectorKey].cost += (m.cost || 0);
-                }
-            });
-        }
-    });
-
-    res.avgRealTime = Math.round(realTimeSum / total);
-    res.avgCost = Math.round(costSum / total);
-
-    renderCaseGroupResults(caseIdx);
-}
-
-function getCumulativeGroupResults(upToCaseIdx) {
-    const cumDoors = {};
-    const cumMatrix = {
-        'hizo_debiahacer': { count: 0, cost: 0 },
-        'hizo_nodebia': { count: 0, cost: 0 },
-        'hizo_norelevante': { count: 0, cost: 0 },
-        'nohizo_debiahacer': { count: 0, cost: 0 },
-        'nohizo_nodebia': { count: 0, cost: 0 },
-        'nohizo_norelevante': { count: 0, cost: 0 }
-    };
-
-    for (let i = 0; i <= upToCaseIdx; i++) {
-        const res = facState.casesGroupResults[i];
-        if (res) {
-            Object.keys(res.doorsCounts || {}).forEach(d => {
-                cumDoors[d] = (cumDoors[d] || 0) + res.doorsCounts[d];
-            });
-            Object.keys(res.matrixSectors || {}).forEach(k => {
-                cumMatrix[k].count += res.matrixSectors[k].count;
-                cumMatrix[k].cost += res.matrixSectors[k].cost;
-            });
-        }
-    }
-
-    return { cumDoors, cumMatrix };
-}
-
-// Renderizado de las 3 Subpáginas de Resultados Globales
-function renderCaseGroupResults(caseIdx) {
-    const res = facState.casesGroupResults[caseIdx];
-    const cData = casesDataV2[caseIdx];
-    if (!res || !cData) return;
-
-    const cumData = getCumulativeGroupResults(caseIdx);
-
-    renderGroupResultsPageX(res, cData);
-    renderGroupResultsPageY(res, cData, cumData);
-    renderGroupResultsPageZ(res, cData, cumData);
-}
-
-// PÁGINA X: RESULTADOS GLOBALES DEL CASO
-function renderGroupResultsPageX(res, cData) {
-    const total = Math.max(1, res.finishedPlayers.length);
-
-    // 1. Distribución Reacción Inicial
-    const reactContainer = document.getElementById('bc-reactions-dist-container');
-    if (reactContainer && cData.impulses) {
-        reactContainer.innerHTML = cData.impulses.map((imp, idx) => {
-            const count = res.initialReactionsCount[idx] || 0;
-            const pct = Math.round((count / total) * 100);
-            return `
-                <div class="reaction-dist-row">
-                    <div class="reaction-dist-header">
-                        <span class="reaction-dist-text"><strong>Opción ${idx + 1}:</strong> “${imp.text}”</span>
-                        <span class="reaction-dist-pct">${pct}% <small style="font-size:10px; color:#a4c2e0;">(${count}/${total})</small></span>
-                    </div>
-                    <div class="reaction-dist-bar-track">
-                        <div class="reaction-dist-bar-fill" style="width:${pct}%;"></div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // 2. Integridad Global (IG)
-    const safePct = Math.round((res.integrityCounts.safe / total) * 100);
-    const alertPct = Math.round((res.integrityCounts.alert / total) * 100);
-    const exposedPct = Math.round((res.integrityCounts.exposed / total) * 100);
-
-    const elSafe = document.getElementById('bc-ig-safe-pct');
-    const elAlert = document.getElementById('bc-ig-alert-pct');
-    const elExp = document.getElementById('bc-ig-exposed-pct');
-    if (elSafe) elSafe.innerText = `${safePct}%`;
-    if (elAlert) elAlert.innerText = `${alertPct}%`;
-    if (elExp) elExp.innerText = `${exposedPct}%`;
-
-    const barSafe = document.getElementById('bc-ig-bar-safe');
-    const barAlert = document.getElementById('bc-ig-bar-alert');
-    const barExp = document.getElementById('bc-ig-bar-exposed');
-    if (barSafe) barSafe.style.width = `${safePct}%`;
-    if (barAlert) barAlert.style.width = `${alertPct}%`;
-    if (barExp) barExp.style.width = `${exposedPct}%`;
-
-    const igPill = document.getElementById('bc-ig-status-pill');
-    if (igPill) {
-        igPill.className = `ig-global-badge tag-${res.globalIntegrity}`;
-        igPill.innerText = `ESTADO IG: ${res.globalIntegrity.toUpperCase()}`;
-    }
-
-    // 3. Tiempo Global (TG)
-    const tgEl = document.getElementById('bc-tg-val');
-    if (tgEl) tgEl.innerText = `${res.avgRealTime}s`;
-
-    // 4. Costo Global (CG)
-    const cgEl = document.getElementById('bc-cg-val');
-    if (cgEl) cgEl.innerText = `$${res.avgCost.toLocaleString('en-US')}`;
-
-    // 5. Calibración Global Actual (CGA)
-    const calibs = res.calibrationList.length > 0 ? res.calibrationList : [1];
-    const posCal = calibs.filter(v => v >= 2).length;
-    const neuCal = calibs.filter(v => v >= -1 && v <= 1).length;
-    const negCal = calibs.filter(v => v <= -2).length;
-    const avgCal = (calibs.reduce((a, b) => a + b, 0) / calibs.length).toFixed(1);
-
-    const cgaAvgEl = document.getElementById('bc-cga-avg');
-    const cgaPosEl = document.getElementById('bc-cga-pos-pct');
-    const cgaNeuEl = document.getElementById('bc-cga-neu-pct');
-    const cgaNegEl = document.getElementById('bc-cga-neg-pct');
-    if (cgaAvgEl) cgaAvgEl.innerText = `${parseFloat(avgCal) >= 0 ? '+' : ''}${avgCal}`;
-    if (cgaPosEl) cgaPosEl.innerText = `${Math.round((posCal / calibs.length) * 100)}%`;
-    if (cgaNeuEl) cgaNeuEl.innerText = `${Math.round((neuCal / calibs.length) * 100)}%`;
-    if (cgaNegEl) cgaNegEl.innerText = `${Math.round((negCal / calibs.length) * 100)}%`;
-
-    // 6. Reactividad Global Actual (RGA)
-    const reacts = res.reactivityList.length > 0 ? res.reactivityList : [-1];
-    const lowReact = reacts.filter(v => v <= -2).length;
-    const neuReact = reacts.filter(v => v >= -1 && v <= 1).length;
-    const highReact = reacts.filter(v => v >= 2).length;
-    const avgReact = (reacts.reduce((a, b) => a + b, 0) / reacts.length).toFixed(1);
-
-    const rgaAvgEl = document.getElementById('bc-rga-avg');
-    const rgaLowEl = document.getElementById('bc-rga-low-pct');
-    const rgaNeuEl = document.getElementById('bc-rga-neu-pct');
-    const rgaHighEl = document.getElementById('bc-rga-high-pct');
-    if (rgaAvgEl) rgaAvgEl.innerText = `${parseFloat(avgReact) >= 0 ? '+' : ''}${avgReact}`;
-    if (rgaLowEl) rgaLowEl.innerText = `${Math.round((lowReact / reacts.length) * 100)}%`;
-    if (rgaNeuEl) rgaNeuEl.innerText = `${Math.round((neuReact / reacts.length) * 100)}%`;
-    if (rgaHighEl) rgaHighEl.innerText = `${Math.round((highReact / reacts.length) * 100)}%`;
-}
-
-// CATÁLOGO MAESTRO DE LAS 9 PUERTAS DE ATENCIÓN (ATTENTION DOORS)
-const MASTER_ATTENTION_DOORS = [
-    { key: "proteccion", num: 1, title: "Puerta 1: Protección", label: "Sensación de seguridad o delegación en la herramienta defensiva", icon: "🛡️" },
-    { key: "responsabilidad", num: 2, title: "Puerta 2: Responsabilidad", label: "Sensación de obligación personal o evitación de culpa", icon: "⚖️" },
-    { key: "conveniencia", num: 3, title: "Puerta 3: Conveniencia", label: "Ahorro de esfuerzo cognitivo y aceptación de respuestas preprocesadas", icon: "⚡" },
-    { key: "perdida", num: 4, title: "Puerta 4: Pérdida", label: "Urgencia temporal, escasez o costo percibido de esperar", icon: "⏳" },
-    { key: "coherencia", num: 5, title: "Puerta 5: Coherencia", label: "Ausencia de anomalías visibles y formato consistente con expectativas", icon: "🧩" },
-    { key: "identidad", num: 6, title: "Puerta 6: Identidad", label: "Apelación al rol profesional, competencia técnica o reputación", icon: "👤" },
-    { key: "jerarquia", num: 7, title: "Puerta 7: Jerarquía", label: "Presión de autoridad formal, rango superior o directrices institucionales", icon: "🏛️" },
-    { key: "curiosidad", num: 8, title: "Puerta 8: Curiosidad", label: "Estímulo ante novedad, datos privilegiados o accesos preliminares", icon: "🔍" },
-    { key: "validacion", num: 9, title: "Puerta 9: Validación", label: "Búsqueda de aprobación social, confirmación de pares o consenso", icon: "🤝" }
-];
+const MASTER_ATTENTION_DOORS = Object.entries(ATTENTION_DOORS).map(([key, val], idx) => ({
+    key: key,
+    num: idx + 1,
+    title: `Puerta ${idx + 1}: ${val.name}`,
+    label: val.shortDefinition,
+    icon: val.icon
+}));
 
 function getStandardDoorKey(doorStr) {
     const s = (doorStr || '').toLowerCase();
-    if (s.includes('protección') || s.includes('proteccion')) return 'proteccion';
-    if (s.includes('responsabilidad')) return 'responsabilidad';
-    if (s.includes('conveniencia')) return 'conveniencia';
-    if (s.includes('pérdida') || s.includes('perdida')) return 'perdida';
-    if (s.includes('coherencia')) return 'coherencia';
     if (s.includes('identidad')) return 'identidad';
-    if (s.includes('jerarquía') || s.includes('jerarquia')) return 'jerarquia';
     if (s.includes('curiosidad')) return 'curiosidad';
-    if (s.includes('validación') || s.includes('validacion')) return 'validacion';
+    if (s.includes('responsabilidad')) return 'responsabilidad';
+    if (s.includes('justicia')) return 'justicia';
+    if (s.includes('coherencia')) return 'coherencia';
+    if (s.includes('pertenencia')) return 'pertenencia';
+    if (s.includes('protección') || s.includes('proteccion')) return 'proteccion';
+    if (s.includes('pérdida') || s.includes('perdida')) return 'perdida';
+    if (s.includes('conveniencia')) return 'conveniencia';
+    // Fallback retrocompatible
+    if (s.includes('jerarquía') || s.includes('jerarquia')) return 'justicia';
+    if (s.includes('validación') || s.includes('validacion')) return 'pertenencia';
     return null;
 }
 
@@ -4743,33 +4804,82 @@ function processCaseOutcome(actionIds) {
     applyHudCostDelta(caseTotalAddedCost);
 
     // ==========================================================================
-    // 4. CONSOLIDACIÓN NARRATIVA DE FEEDBACK (MOMENTO 3 / SLIDE B)
+    // 4. CONSOLIDACIÓN NARRATIVA DE FEEDBACK V3 (OUTCOME BASE + MICROFEEDBACK DINÁMICO)
     // ==========================================================================
-    const variant = gameStateV2.currentCaseVariant;
-    const outcomesMap = (cData.id === "case_2" && variant) ? cData.actionOutcomes[variant] : cData.actionOutcomes;
-    
-    // Buscar resultado representativo para el libreto narrativo
-    const primaryOutcomeMatch = Object.values(outcomesMap).find(o => o.indicator === outcomeIndicator) || Object.values(outcomesMap)[0];
-    const executedOutcomes = idsArray.map(id => outcomesMap[id]).filter(Boolean);
+    let outcomeBase = {
+        outcomeBadge: caseIntegrity === 'safe' ? "SISTEMA SEGURO" : (caseIntegrity === 'alert' ? "SISTEMA EN ALERTA" : "SISTEMA EXPUESTO"),
+        filterColor: caseIntegrity === 'safe' ? "green" : (caseIntegrity === 'alert' ? "yellow" : "red"),
+        narrative: "El caso ha sido procesado por el sistema de respuesta.",
+        metacognitive: "Observar las decisiones tomadas permite aprender de los patrones de respuesta."
+    };
 
-    const combinedNarrative = executedOutcomes.length > 0
-        ? executedOutcomes.map(o => `• ${o.narrative}`).join("\n\n")
-        : primaryOutcomeMatch.narrative;
+    if (cData.outcomes && cData.outcomes[caseIntegrity]) {
+        outcomeBase = cData.outcomes[caseIntegrity];
+    }
 
-    const combinedMetacognitive = executedOutcomes.length > 0
-        ? executedOutcomes.map(o => `• ${o.metacognitive}`).join("\n\n")
-        : primaryOutcomeMatch.metacognitive;
+    // Algoritmo de selección de microfeedback dinámico por acción (V3)
+    let selectedDynamicSentences = [];
+    if (cData.dynamicActionFeedback && Array.isArray(cData.dynamicActionFeedback)) {
+        // 1. Identificar eventos candidatos a partir de las 6 acciones evaluadas
+        const candidateEvents = [];
+        allActions.forEach(act => {
+            const isExec = idsArray.includes(act.id);
+            const when = isExec ? "done" : "not_done";
+            
+            // Buscar feedback configurado para esta acción y condición
+            const matchFb = cData.dynamicActionFeedback.find(fb => fb.actionId === act.id && fb.when === when);
+            if (matchFb) {
+                const weight = (matchFb.source === 'D' || matchFb.valueSource === 'D') ? (act.dValue || 2) : (act.nValue || 1);
+                candidateEvents.push({
+                    ...matchFb,
+                    weight: weight
+                });
+            }
+        });
+
+        // 2. Filtrar y ordenar según estado de integridad (Safe / Alert / Exposed)
+        if (caseIntegrity === 'safe') {
+            // SAFE: hasta 2 eventos positivos de mayor peso
+            const posEvents = candidateEvents.filter(e => e.polarity === 'positive').sort((a, b) => b.weight - a.weight);
+            selectedDynamicSentences = posEvents.slice(0, 2).map(e => e.text);
+        } else if (caseIntegrity === 'exposed') {
+            // EXPOSED: hasta 2 eventos negativos de mayor peso
+            const negEvents = candidateEvents.filter(e => e.polarity === 'negative').sort((a, b) => b.weight - a.weight);
+            selectedDynamicSentences = negEvents.slice(0, 2).map(e => e.text);
+        } else {
+            // ALERT: máximo 1 evento positivo + 1 evento negativo de mayor peso
+            const posEvents = candidateEvents.filter(e => e.polarity === 'positive').sort((a, b) => b.weight - a.weight);
+            const negEvents = candidateEvents.filter(e => e.polarity === 'negative').sort((a, b) => b.weight - a.weight);
+            if (posEvents.length > 0) selectedDynamicSentences.push(posEvents[0].text);
+            if (negEvents.length > 0) selectedDynamicSentences.push(negEvents[0].text);
+        }
+    }
+
+    // Construcción del texto narrativo enriquecido
+    let fullNarrativeHtml = outcomeBase.narrative;
+    if (selectedDynamicSentences.length > 0) {
+        const dynamicBullets = selectedDynamicSentences.map(s => `<li style="margin-bottom:4px;">“${s}”</li>`).join('');
+        fullNarrativeHtml = `
+            <div style="margin-bottom:10px;">${outcomeBase.narrative}</div>
+            <div style="background:rgba(0,0,0,0.3); border-left:3px solid var(--color-${outcomeBase.filterColor === 'green' ? 'agency-green' : (outcomeBase.filterColor === 'yellow' ? 'warning-amber' : 'alert-magenta')}); padding:8px 12px; border-radius:0 6px 6px 0; margin-top:8px;">
+                <strong style="color:var(--color-cyan); font-size:11px; font-family:var(--font-heading); display:block; margin-bottom:4px; letter-spacing:0.5px;">🔍 QUÉ INFLUYÓ EN TU RESULTADO:</strong>
+                <ul style="margin:0 0 0 16px; padding:0; font-size:12px; color:#e2f1ff; line-height:1.35;">
+                    ${dynamicBullets}
+                </ul>
+            </div>
+        `;
+    }
 
     const outcomeObj = {
         indicator: outcomeIndicator,
         type: outcomeIndicator === 1 ? "positive" : (outcomeIndicator === 3 ? "negative" : "neutral"),
-        filterColor: outcomeIndicator === 1 ? "green" : (outcomeIndicator === 3 ? "red" : "yellow"),
+        filterColor: outcomeBase.filterColor || (outcomeIndicator === 1 ? "green" : (outcomeIndicator === 3 ? "red" : "yellow")),
         routeTag: `Multiselección (${idsArray.length} acción${idsArray.length > 1 ? 'es' : ''} ejecutada${idsArray.length > 1 ? 's' : ''})`,
-        title: primaryOutcomeMatch.title || (outcomeIndicator === 1 ? "RESOLUCIÓN POSITIVA // SISTEMA SEGURO" : (outcomeIndicator === 2 ? "RESOLUCIÓN NEUTRA // SISTEMA EN ALERTA" : "RESOLUCIÓN NEGATIVA // SISTEMA EXPUESTO")),
-        outcomeBadge: outcomeIndicator === 1 ? "SISTEMA SEGURO" : (outcomeIndicator === 2 ? "SISTEMA EN ALERTA" : "SISTEMA EXPUESTO"),
-        narrative: combinedNarrative,
-        metacognitive: combinedMetacognitive,
-        faroTransition: primaryOutcomeMatch.faroTransition,
+        title: outcomeBase.outcomeBadge || (outcomeIndicator === 1 ? "RESOLUCIÓN POSITIVA // SISTEMA SEGURO" : (outcomeIndicator === 2 ? "RESOLUCIÓN NEUTRA // SISTEMA EN ALERTA" : "RESOLUCIÓN NEGATIVA // SISTEMA EXPUESTO")),
+        outcomeBadge: outcomeBase.outcomeBadge || (outcomeIndicator === 1 ? "SISTEMA SEGURO" : (outcomeIndicator === 2 ? "SISTEMA EN ALERTA" : "SISTEMA EXPUESTO")),
+        narrative: fullNarrativeHtml,
+        metacognitive: outcomeBase.metacognitive || "Observar el proceso de decisión permite construir mejores respuestas.",
+        faroTransition: outcomeBase.faroTransition,
         integrityResult: caseIntegrity,
         actionsCalibSum: actionsCalibSum,
         baseTimeCost: baseTimeCost,
@@ -5040,7 +5150,7 @@ function showNarrativeFeedbackScreen() {
         cardSubReactivity.innerText = `${reactLevelSign}${outcomeObj.finalReactivityLevel} unidades ($5K c/u)`;
     }
 
-    document.getElementById('fb-narrative-box').innerText = outcomeObj.narrative;
+    document.getElementById('fb-narrative-box').innerHTML = outcomeObj.narrative;
     document.getElementById('fb-metacognitive-text').innerText = outcomeObj.metacognitive;
     
     const isRecovered = gameStateV2.modulesState[cData.moduleKey];
