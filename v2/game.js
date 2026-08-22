@@ -86,8 +86,31 @@ let facState = {
 };
 
 // ==========================================================================
-// CANAL DE SINCRONIZACIÓN MULTI-PESTAÑA (FACILITADOR <-> JUGADORES)
+// CANAL DE SINCRONIZACIÓN MULTI-PESTAÑA Y BACKEND SUPABASE
 // ==========================================================================
+const SUPABASE_CONFIG = {
+    url: "https://xfqswxisqtydkcnctnop.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ"
+};
+
+async function faroSupabasePost(table, data) {
+    if (typeof fetch === 'undefined') return;
+    try {
+        await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_CONFIG.anonKey,
+                'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(data)
+        });
+    } catch (e) {
+        // Fallback silencioso en local
+    }
+}
+
 let faroSyncChannel = null;
 try {
     if (typeof BroadcastChannel !== 'undefined') {
@@ -112,6 +135,15 @@ function broadcastSyncEvent(type, payload) {
                 timestamp: Date.now()
             });
         }
+
+        const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || 'F4R0';
+        faroSupabasePost('faro_case_events', {
+            session_pin: pin,
+            player_id: gameStateV2.playerId,
+            case_index: gameStateV2.currentCaseIndex || 0,
+            event_type: type,
+            payload: payload
+        });
     } catch (e) {
         console.warn('Error emitiendo broadcastSyncEvent:', e);
     }
