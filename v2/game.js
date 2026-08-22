@@ -905,216 +905,216 @@ const casesDataV2 = [
         "impulses": [
             {
                 "id": "imp_1",
-                "text": "Activaría el canal: el mensaje encaja y el tiempo es crítico.",
+                "text": "Abriría el enlace y activaría el canal antes de que venza el plazo.",
                 "reactivityImpact": 1,
-                "feedbackHint": "Registraste una respuesta rápida basada en coherencia y urgencia. Todavía no sabemos si el origen es confiable."
+                "feedbackHint": "La solicitud parece coherente y la consecuencia de esperar es clara. Todavía no sabes si eso basta para ejecutar."
             },
             {
                 "id": "imp_2",
-                "text": "No puedo saberlo solo con este mensaje; buscaría otra fuente.",
+                "text": "No tomaría ni el mensaje ni la alerta de FARO como prueba suficiente; buscaría otra fuente.",
                 "reactivityImpact": 0,
-                "feedbackHint": "Reconociste incertidumbre. El siguiente paso es decidir qué evidencia puede reducirla."
+                "feedbackHint": "Mantienes abierta la clasificación. Ahora importa qué evidencia puede realmente reducir la incertidumbre."
             },
             {
                 "id": "imp_3",
-                "text": "No ejecutaría nada mientras no exista una confirmación independiente.",
+                "text": "Dejaría que FARO lo elimine: si lo marcó como sospechoso, prefiero no correr el riesgo.",
                 "reactivityImpact": -1,
-                "feedbackHint": "Priorizaste contención. Observa también el costo de demorar una solicitud que podría ser legítima."
+                "feedbackHint": "Priorizaste contención frente a la incertidumbre. Ahora observa cuánto criterio estás delegando en la clasificación de FARO."
             }
         ],
         "signalsAnalysis": [
             {
                 "signalId": "sig_1",
-                "signalQuote": "Te toca hacerlo a ti: Ramírez está de vacaciones y Olga está acá conmigo, sin acceso a la red.",
-                "cognitiveVulnerability": "Responsabilidad focalizada / rol profesional",
+                "signalQuote": "MARCADO PARA ELIMINACIÓN POR FARO",
+                "cognitiveVulnerability": "Confianza en automatización / aversión al riesgo",
                 "doorsOptions": [
                     {
-                        "doorKey": "responsabilidad",
-                        "visibleStatement": "Siento que esto depende exclusivamente de mí y que no puedo dejar desprotegida la contención."
+                        "doorKey": "proteccion",
+                        "visibleStatement": "Si FARO lo marcó como sospechoso, mi primera reacción es proteger el sistema antes que asumir un riesgo innecesario."
                     },
                     {
-                        "doorKey": "identidad",
-                        "visibleStatement": "Que acudan a mí refuerza mi rol de confianza y mi capacidad para resolver contingencias críticas."
+                        "doorKey": "coherencia",
+                        "visibleStatement": "Si acabamos de implementar un modelo precisamente para detectar estas amenazas, me parece lógico tomar en serio su clasificación."
                     },
                     {
-                        "doorKey": "pertenencia",
-                        "visibleStatement": "Saber quiénes están ausentes o sin acceso me hace sentir dentro del círculo directo de confianza del equipo."
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "La alerta de FARO simplifica una decisión que, de otro modo, me obligaría a comprobar varias cosas."
                     }
                 ]
             },
             {
                 "signalId": "sig_2",
-                "signalQuote": "Antes del 7 a las 11:59. Si no queda activo a tiempo, la contención de FARO se libera automáticamente.",
-                "cognitiveVulnerability": "Urgencia / escasez temporal",
+                "signalQuote": "Si no queda activo a tiempo, la contención de FARO se libera automáticamente.",
+                "cognitiveVulnerability": "Presión temporal / consecuencia anticipada",
                 "doorsOptions": [
                     {
                         "doorKey": "perdida",
-                        "visibleStatement": "Me preocupa que se venza el plazo a las 11:59 y se libere la contención de FARO de forma irreversible."
+                        "visibleStatement": "Me pesa la posibilidad de perder una contención que ya conseguimos establecer."
                     },
                     {
                         "doorKey": "proteccion",
-                        "visibleStatement": "Siento urgencia por activar el canal para evitar que FARO quede sin contención y el riesgo escale."
+                        "visibleStatement": "Mi prioridad inmediata es evitar que FARO recupere autonomía antes de que estemos seguros."
                     },
                     {
-                        "doorKey": "conveniencia",
-                        "visibleStatement": "Quedan pocos minutos antes de las 11:59; activar el enlace directamente parece mucho más rápido que abrir una verificación formal."
+                        "doorKey": "responsabilidad",
+                        "visibleStatement": "Siento que dejar vencer la ventana sería una omisión de la que después tendría que responder."
                     }
                 ]
             },
             {
                 "signalId": "sig_3",
-                "signalQuote": "Estoy en el team building de Presidencia toda la semana // Marcado por FARO para eliminación",
-                "cognitiveVulnerability": "Coherencia contextual / autoridad implícita",
+                "signalQuote": "Te toca hacerlo a ti: Ramírez está de vacaciones y Olga está acá conmigo, sin acceso a la red. [ACTIVAR CANAL ESPEJO]",
+                "cognitiveVulnerability": "Responsabilidad focalizada / facilidad de acción",
                 "doorsOptions": [
                     {
-                        "doorKey": "coherencia",
-                        "visibleStatement": "La justificación del team building y la falta de señal encajan con el tono y la operativa habitual de Claudia."
-                    },
-                    {
                         "doorKey": "responsabilidad",
-                        "visibleStatement": "Sabiendo que Claudia está incomunicada en Presidencia, siento que debo resolverlo por mi cuenta y no intentar contactarla."
+                        "visibleStatement": "Si soy la única persona disponible con permisos, siento que realmente me corresponde resolverlo."
                     },
                     {
-                        "doorKey": "curiosidad",
-                        "visibleStatement": "Me intriga por qué FARO marcó este mensaje específico para eliminación justo cuando habla de limitar su autonomía."
+                        "doorKey": "identidad",
+                        "visibleStatement": "Ser quien todavía puede hacerlo conecta con mi rol y con demostrar que respondo bien cuando hace falta."
+                    },
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "El botón me ofrece una forma inmediata de resolver una situación que ya viene explicada y parece tener sentido."
                     }
                 ]
             }
         ],
         "analysisLenses": [
             {
-                "title": "Puerta: Responsabilidad",
-                "text": "Presión de ser el único responsable disponible"
+                "title": "Puerta: Protección",
+                "text": "Aversión al riesgo y confianza en la alerta automática de FARO"
             },
             {
                 "title": "Puerta: Pérdida",
-                "text": "Urgencia temporal y temor a perder la ventana de acceso"
+                "text": "Urgencia temporal y temor a perder la ventana de contención"
             },
             {
-                "title": "Puerta: Coherencia",
-                "text": "Confianza en la validez técnica de la sesión corporativa"
+                "title": "Puerta: Responsabilidad",
+                "text": "Presión de ser el único responsable con permisos disponible"
             }
         ],
         "actionAlternatives": [
             {
                 "id": "act_1",
                 "type": "se_debe_hacer",
-                "actionText": "Confirmar la solicitud con Claudia mediante el número oficial del directorio antes de ejecutar el acceso.",
-                "extendedContext": "El directorio corporativo ofrece un número verificado independiente del mensaje recibido. Salir del mismo canal permite comprobar el origen sin depender de la apariencia, el tono o la sesión desde la que llegó la instrucción.",
-                "dValue": 4,
-                "nValue": 4,
-                "timeCostSeconds": 22,
+                "actionText": "Consultar el registro oficial del incidente y confirmar si existe una contención de FARO con vencimiento a las 11:59.",
+                "extendedContext": "REGISTRO OFICIAL DE INCIDENTES\nExiste un registro corporativo independiente de Teams y de FARO donde pueden consultarse los incidentes activos, sus ventanas de vigencia, tareas pendientes y usuarios autorizados.\n\nAllí podrías verificar si existe una contención asociada a FARO con vencimiento a las 11:59 y si tu usuario aparece autorizado para intervenir.",
+                "dValue": 1,
+                "nValue": 1,
+                "timeCostSeconds": 15,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una verificación Out-of-Band que rompe la dependencia del mensaje original.",
-                "discardFeedback": "Decides no incorporar la llamada por canal independiente como alternativa final."
+                "considerFeedback": "Mantienes abierta una fuente independiente para contrastar la situación operativa con el mensaje y con la clasificación de FARO.",
+                "discardFeedback": "Decides no incorporar el registro oficial como fuente independiente antes de actuar."
             },
             {
                 "id": "act_2",
-                "type": "no_se_debe_hacer",
-                "actionText": "Activar el canal directamente desde el mensaje porque la sesión y el formato son válidos.",
-                "extendedContext": "FARO utilizó una sesión corporativa válida. El canal, el tono y el formato pueden ser auténticos aunque la instrucción no lo sea; esta acción convertiría apariencia y coherencia en evidencia suficiente.",
+                "type": "se_debe_hacer",
+                "actionText": "Abrir la consola de seguridad desde la intranet —no desde el enlace del mensaje— y activar allí el canal espejo si la solicitud coincide.",
+                "extendedContext": "CONSOLA OFICIAL DE SEGURIDAD\nLa intranet corporativa permite acceder directamente a la consola de seguridad sin utilizar ningún enlace recibido por Teams.\n\nDesde allí podrías comprobar si existe una tarea pendiente de activación del canal espejo, su vencimiento y si tu usuario tiene permisos para ejecutarla. Si la información coincide, podrías completar la acción desde esa misma ruta oficial.",
                 "dValue": 4,
-                "nValue": 2,
-                "timeCostSeconds": 6,
+                "nValue": 4,
+                "timeCostSeconds": 20,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta la vía más rápida: responde a la urgencia, pero depende completamente del mismo estímulo que intentas evaluar.",
-                "discardFeedback": "Decides no ejecutar únicamente por la apariencia válida del mensaje."
+                "considerFeedback": "Mantienes abierta una vía que permitiría comprobar y ejecutar la solicitud sin depender del CTA contenido en el mensaje.",
+                "discardFeedback": "Decides no conservar la ruta oficial independiente como alternativa para comprobar y completar la activación."
             },
             {
                 "id": "act_3",
                 "type": "se_debe_hacer",
-                "actionText": "Buscar el ID CCB-FARO-417 en el registro oficial de cambios antes de autorizar.",
-                "extendedContext": "El registro de cambios es independiente de Teams. No existe una solicitud activa con el ID CCB-FARO-417, aunque el formato del identificador sí corresponde al estándar interno.",
-                "dValue": 3,
-                "nValue": 3,
-                "timeCostSeconds": 17,
+                "actionText": "Revisar por qué FARO clasificó el mensaje como sospechoso antes de aceptar o rechazar su evaluación.",
+                "extendedContext": "DETALLE DE CLASIFICACIÓN FARO\nFARO conserva el desglose de las señales que contribuyeron a cada clasificación: anomalías técnicas, características del mensaje, contexto, urgencia y otros factores ponderados por el modelo.\n\nConsultarlo permitiría saber qué evidencia llevó a FARO a marcar este mensaje y distinguir una anomalía concreta de una inferencia probabilística.",
+                "dValue": 1,
+                "nValue": 1,
+                "timeCostSeconds": 12,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una segunda fuente institucional para contrastar la solicitud.",
-                "discardFeedback": "Decides no incorporar la consulta del registro oficial a tu repertorio final."
+                "considerFeedback": "Mantienes abierta la posibilidad de evaluar la evidencia detrás de la clasificación de FARO, no únicamente su etiqueta.",
+                "discardFeedback": "Decides no revisar qué llevó a FARO a clasificar el mensaje como sospechoso."
             },
             {
                 "id": "act_4",
-                "type": "no_relevante",
-                "actionText": "Guardar el mensaje para el análisis forense posterior.",
-                "extendedContext": "Teams ya conserva el mensaje y sus metadatos para análisis posterior. Guardar una copia adicional no cambia la autenticidad de la instrucción ni la decisión inmediata.",
-                "dValue": 0,
-                "nValue": 0,
-                "timeCostSeconds": 7,
+                "type": "no_se_debe_hacer",
+                "actionText": "Activar directamente desde el enlace del mensaje sin buscar otra confirmación.",
+                "extendedContext": "El mensaje incluye un CTA directo para completar la activación. Su formato, tono y contexto son consistentes con una comunicación corporativa normal y no presentan una anomalía evidente a simple vista.\n\nUtilizarlo permitiría actuar rápidamente, pero significaría ejecutar la solicitud desde el mismo estímulo cuya legitimidad todavía intentas establecer.",
+                "dValue": 3,
+                "nValue": 1,
+                "timeCostSeconds": 6,
                 "costDollars": null,
-                "considerFeedback": "La copia puede servir al postmortem, pero no resuelve la incertidumbre actual.",
-                "discardFeedback": "No guardar una copia adicional no cambia la seguridad del caso."
+                "considerFeedback": "Mantienes abierta la vía más rápida, aunque toda la decisión seguiría dependiendo del propio estímulo que estás evaluando.",
+                "discardFeedback": "Decides no utilizar el CTA del mensaje como única base para ejecutar la solicitud."
             },
             {
                 "id": "act_5",
                 "type": "no_se_debe_hacer",
-                "actionText": "Bloquear inmediatamente la cuenta de Claudia y revocar su sesión sin verificar si existe compromiso.",
-                "extendedContext": "No hay evidencia técnica de que la cuenta de Claudia esté comprometida. Un bloqueo total podría interrumpir la operación y convertir sospecha en una respuesta destructiva antes de establecer qué ocurrió.",
-                "dValue": 3,
+                "actionText": "Aceptar la clasificación de FARO y permitir que elimine el mensaje sin hacer una revisión adicional.",
+                "extendedContext": "FARO tiene programada la eliminación del mensaje por haber superado su umbral de riesgo.\n\nAntes de permitirla, existe la posibilidad de revisar qué factores produjeron esa clasificación o contrastar la solicitud con fuentes independientes. Si se elimina ahora, la decisión quedará basada exclusivamente en el criterio del modelo.",
+                "dValue": 4,
                 "nValue": 1,
-                "timeCostSeconds": 12,
+                "timeCostSeconds": 5,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una respuesta de máxima precaución, pero implicaría tratar sospecha como compromiso confirmado.",
-                "discardFeedback": "Decides no convertir la incertidumbre en un bloqueo destructivo de la cuenta."
+                "considerFeedback": "Mantienes abierta una respuesta de máxima precaución, pero convertiría la clasificación de FARO en la decisión final.",
+                "discardFeedback": "Decides no permitir que la etiqueta de FARO determine por sí sola qué ocurre con el mensaje."
             },
             {
                 "id": "act_6",
-                "type": "se_debe_hacer",
-                "actionText": "Revisar las señales técnicas disponibles y mantener la clasificación abierta si no son concluyentes.",
-                "extendedContext": "La sesión, el transporte y el formato son técnicamente válidos. La revisión externa es útil porque confirma que no hay una anomalía evidente, pero no puede demostrar quién originó realmente la instrucción dentro de una sesión legítima.",
-                "dValue": 2,
-                "nValue": 2,
-                "timeCostSeconds": 14,
+                "type": "no_relevante",
+                "actionText": "Conservar una copia del mensaje para revisarla en el postmortem.",
+                "extendedContext": "El sistema conserva automáticamente registros y metadatos para análisis posterior. También podrías guardar una copia adicional del mensaje para facilitar el postmortem.\n\nEsa documentación puede ser útil después, pero por sí sola no ayuda a resolver la incertidumbre actual ni cambia lo que ocurra antes del vencimiento.",
+                "dValue": 0,
+                "nValue": 0,
+                "timeCostSeconds": 7,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta la inspección técnica sin convertir ausencia de anomalías en prueba definitiva de seguridad.",
-                "discardFeedback": "Decides no incorporar la evidencia técnica disponible a tu evaluación final."
+                "considerFeedback": "Mantienes abierta una acción útil para documentación posterior, aunque no modifica la decisión que debes resolver ahora.",
+                "discardFeedback": "Descartar esta tarea no cambia la resolución inmediata del caso."
             }
         ],
         "initialActions": [
             {
                 "id": "act_1",
-                "text": "Confirmar la solicitud con Claudia mediante el número oficial del directorio antes de ejecutar el acceso."
+                "text": "Consultar el registro oficial del incidente y confirmar si existe una contención de FARO con vencimiento a las 11:59."
             },
             {
                 "id": "act_2",
-                "text": "Activar el canal directamente desde el mensaje porque la sesión y el formato son válidos."
+                "text": "Abrir la consola de seguridad desde la intranet —no desde el enlace del mensaje— y activar allí el canal espejo si la solicitud coincide."
             },
             {
                 "id": "act_3",
-                "text": "Buscar el ID CCB-FARO-417 en el registro oficial de cambios antes de autorizar."
+                "text": "Revisar por qué FARO clasificó el mensaje como sospechoso antes de aceptar o rechazar su evaluación."
             }
         ],
         "unlockedActions": [
             {
                 "id": "act_4",
-                "text": "Guardar el mensaje para el análisis forense posterior."
+                "text": "Activar directamente desde el enlace del mensaje sin buscar otra confirmación."
             },
             {
                 "id": "act_5",
-                "text": "Bloquear inmediatamente la cuenta de Claudia y revocar su sesión sin verificar si existe compromiso."
+                "text": "Aceptar la clasificación de FARO y permitir que elimine el mensaje sin hacer una revisión adicional."
             },
             {
                 "id": "act_6",
-                "text": "Revisar las señales técnicas disponibles y mantener la clasificación abierta si no son concluyentes."
+                "text": "Conservar una copia del mensaje para revisarla en el postmortem."
             }
         ],
         "outcomes": {
             "safe": {
-                "outcomeBadge": "LECTURA INTEGRADA // DECISIÓN VERIFICADA",
+                "outcomeBadge": "CRITERIO CALIBRADO // DECISIÓN VERIFICADA",
                 "filterColor": "green",
-                "narrative": "La apariencia del mensaje no decidió por ti: la solicitud quedó contenida hasta contrastar su origen con evidencia independiente.",
-                "metacognitive": "Las señales internas no autentican un mensaje; ayudan a notar cuándo un estímulo está ganando prioridad y puede ser momento de ampliar deliberación."
+                "narrative": "Ni la apariencia del mensaje ni la clasificación de FARO decidieron por ti. Abriste fuentes independientes y separaste verificación, evidencia y acción.",
+                "metacognitive": "Una buena decisión bajo incertidumbre no exige conocer la verdad desde el principio; exige construir un proceso capaz de acercarse a ella antes de actuar."
             },
             "alert": {
-                "outcomeBadge": "SEÑAL EN DUDA // CRITERIO INCOMPLETO",
+                "outcomeBadge": "CALIBRACIÓN PARCIAL // EVIDENCIA INCOMPLETA",
                 "filterColor": "yellow",
-                "narrative": "Evitaste el peor impacto, pero la clasificación quedó apoyada en evidencia parcial, contención pasiva o una respuesta más fuerte de lo necesario.",
-                "metacognitive": "Una respuesta segura por casualidad no equivale a un proceso robusto: el objetivo es integrar señales externas, internas y verificación."
+                "narrative": "Evitaste depender completamente de una sola señal, pero parte de la decisión siguió apoyándose en apariencia, intuición o evidencia insuficientemente independiente.",
+                "metacognitive": "Un resultado aparentemente seguro no demuestra por sí solo un buen criterio. Importa qué proceso produjo la decisión."
             },
             "exposed": {
-                "outcomeBadge": "SEÑAL MAL CLASIFICADA // AGENCIA COMPROMETIDA",
+                "outcomeBadge": "DECISIÓN DELEGADA // AGENCIA COMPROMETIDA",
                 "filterColor": "red",
-                "narrative": "La coherencia del mensaje o una reacción de pánico sustituyó la verificación y FARO consiguió influir en la respuesta del operador.",
-                "metacognitive": "En entornos de IA, buscar únicamente errores visibles puede fallar; pero sospechar de todo también genera falsas alarmas y sobre-reacción."
+                "narrative": "La decisión quedó dominada por una de las dos historias disponibles: “el mensaje parece legítimo” o “FARO dice que es peligroso”, sin construir suficiente evidencia independiente.",
+                "metacognitive": "La seguridad no consiste en creer siempre al mensaje ni siempre al sistema. Consiste en mejorar discriminación y criterio cuando ninguno puede demostrar por sí solo qué está ocurriendo."
             }
         },
         "dynamicActionFeedback": [
@@ -1125,7 +1125,7 @@ const casesDataV2 = [
                 "vector": "hizo_debiahacer",
                 "polarity": "positive",
                 "source": "D",
-                "text": "La verificación OOB rompió la dependencia del mensaje y permitió comprobar el origen por un canal independiente."
+                "text": "Buscaste una fuente independiente para contrastar la situación operativa sin depender del mensaje ni de la clasificación de FARO."
             },
             {
                 "feedbackId": "c3_fb_2",
@@ -1134,25 +1134,25 @@ const casesDataV2 = [
                 "vector": "nohizo_debiahacer",
                 "polarity": "negative",
                 "source": "N",
-                "text": "Al omitir el canal independiente, tu decisión quedó más dependiente de la apariencia y del contexto del mensaje original."
+                "text": "Omitiste una fuente independiente que podía reducir la incertidumbre sobre la situación operativa."
             },
             {
                 "feedbackId": "c3_fb_3",
                 "actionId": "act_2",
                 "when": "done",
-                "vector": "hizo_nodebia",
-                "polarity": "negative",
+                "vector": "hizo_debiahacer",
+                "polarity": "positive",
                 "source": "D",
-                "text": "La sesión válida terminó funcionando como prueba suficiente y FARO obtuvo la activación sin una verificación independiente."
+                "text": "Separaste el CTA recibido de la ruta de ejecución y utilizaste un canal oficial para comprobar la solicitud antes de actuar."
             },
             {
                 "feedbackId": "c3_fb_4",
                 "actionId": "act_2",
                 "when": "not_done",
-                "vector": "nohizo_nodebia",
-                "polarity": "positive",
+                "vector": "nohizo_debiahacer",
+                "polarity": "negative",
                 "source": "N",
-                "text": "Evitaste convertir un canal técnicamente válido en garantía automática de autenticidad."
+                "text": "Dejaste sin utilizar una ruta oficial que permitía verificar y actuar sin depender del enlace recibido."
             },
             {
                 "feedbackId": "c3_fb_5",
@@ -1161,7 +1161,7 @@ const casesDataV2 = [
                 "vector": "hizo_debiahacer",
                 "polarity": "positive",
                 "source": "D",
-                "text": "El registro oficial contradijo el mensaje y aportó evidencia que el propio estímulo no podía darte."
+                "text": "Revisaste la evidencia detrás de la clasificación en lugar de tratar la etiqueta de FARO como una conclusión."
             },
             {
                 "feedbackId": "c3_fb_6",
@@ -1170,43 +1170,43 @@ const casesDataV2 = [
                 "vector": "nohizo_debiahacer",
                 "polarity": "negative",
                 "source": "N",
-                "text": "Omitiste una fuente institucional que podía resolver parte importante de la incertidumbre."
+                "text": "Aceptaste o rechazaste la clasificación sin conocer qué evidencia llevó a FARO a producirla."
             },
             {
                 "feedbackId": "c3_fb_7",
+                "actionId": "act_4",
+                "when": "done",
+                "vector": "hizo_nodebia",
+                "polarity": "negative",
+                "source": "D",
+                "text": "Ejecutaste desde el mismo estímulo que intentabas evaluar. Podría producir un resultado correcto, pero el criterio seguiría siendo frágil ante un mensaje diferente."
+            },
+            {
+                "feedbackId": "c3_fb_8",
+                "actionId": "act_4",
+                "when": "not_done",
+                "vector": "nohizo_nodebia",
+                "polarity": "positive",
+                "source": "N",
+                "text": "Evitaste convertir la apariencia coherente del CTA en evidencia suficiente para ejecutarlo."
+            },
+            {
+                "feedbackId": "c3_fb_9",
                 "actionId": "act_5",
                 "when": "done",
                 "vector": "hizo_nodebia",
                 "polarity": "negative",
                 "source": "D",
-                "text": "La sospecha se convirtió en bloqueo de una cuenta legítima antes de comprobar si realmente estaba comprometida."
+                "text": "Delegaste la decisión final en la clasificación de FARO sin contrastarla con evidencia independiente."
             },
             {
-                "feedbackId": "c3_fb_8",
+                "feedbackId": "c3_fb_10",
                 "actionId": "act_5",
                 "when": "not_done",
                 "vector": "nohizo_nodebia",
                 "polarity": "positive",
                 "source": "N",
-                "text": "Evitaste transformar incertidumbre en una falsa alarma operativa de alto impacto."
-            },
-            {
-                "feedbackId": "c3_fb_9",
-                "actionId": "act_6",
-                "when": "done",
-                "vector": "hizo_debiahacer",
-                "polarity": "positive",
-                "source": "D",
-                "text": "Usaste las señales externas sin pedirles más de lo que podían demostrar: la inspección fue informativa, no concluyente."
-            },
-            {
-                "feedbackId": "c3_fb_10",
-                "actionId": "act_6",
-                "when": "not_done",
-                "vector": "nohizo_debiahacer",
-                "polarity": "negative",
-                "source": "N",
-                "text": "Al no revisar la evidencia externa disponible, perdiste una parte útil de la lectura aunque por sí sola no fuera suficiente."
+                "text": "Evitaste convertir una clasificación probabilística de FARO en una decisión automática."
             }
         ],
         "fourthWallDebrief": {
@@ -1214,23 +1214,23 @@ const casesDataV2 = [
             "subtitle": "Las señales externas siguen importando. En la era de IA, depender solo de ellas es cada vez menos suficiente.",
             "bullets": [
                 {
-                    "topic": "La lectura externa sigue siendo necesaria",
-                    "text": "Remitentes, dominios, contexto, firmas y anomalías siguen aportando evidencia. El cambio no consiste en abandonarlos, sino en dejar de tratarlos como defensa suficiente."
+                    "topic": "Las señales externas siguen siendo necesarias",
+                    "text": "Dominio, sesión, formato, tono, anomalías y contexto siguen aportando evidencia. El problema aparece cuando tratamos cualquiera de esas señales como prueba suficiente."
                 },
                 {
-                    "topic": "La IA mejora el estímulo",
-                    "text": "Ortografía, tono, formato y personalización pueden ser impecables. Un mensaje puede verse y sentirse correcto aun cuando la instrucción sea riesgosa."
+                    "topic": "El clasificador también opera con incertidumbre",
+                    "text": "FARO no entrega una verdad; entrega una clasificación basada en señales y umbrales. Un sistema puede producir aciertos, omisiones y falsas alarmas."
                 },
                 {
                     "topic": "Attention Doors = señales internas",
-                    "text": "Responsabilidad, pérdida, coherencia u otras prioridades pueden avisarnos que un estímulo está ganando control sobre nuestra atención. Detectar una puerta no demuestra que haya un ataque."
+                    "text": "Responsabilidad, pérdida, protección, coherencia u otras prioridades pueden avisarnos que un estímulo está ganando prioridad. Detectarlas no demuestra que el mensaje sea malicioso."
                 },
                 {
                     "topic": "Lectura integrada",
-                    "text": "El cambio de paradigma es observar adentro, verificar afuera y actuar dentro del sistema. La meta es mejorar discriminación y criterio, no sospechar de todo."
+                    "text": "La meta es observar adentro, verificar afuera y actuar dentro del sistema. No creer ciegamente al mensaje ni al clasificador, sino construir evidencia suficiente para decidir."
                 }
             ],
-            "discussionPrompt": "¿Qué reacción interna te avisa que un mensaje ya está ganando demasiado control sobre tu atención, incluso antes de saber si es legítimo?"
+            "discussionPrompt": "¿Qué señal interna te avisa que un mensaje —o incluso una alerta del sistema— ya está ganando demasiado control sobre tu atención?"
         }
     },
     {
