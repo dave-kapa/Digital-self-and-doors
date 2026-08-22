@@ -969,14 +969,71 @@
                         <div class="faro-dialogue-content">
                             <span class="faro-name-tag" style="color: var(--color-warning-amber);">FARO // TRANSMISIÓN AUTÓNOMA</span>
                             <p class="faro-speech-text" id="faro-para-speech-text">
-                                “Este es P.A.R.A., el protocolo de aprendizaje para el desarrollo de agencia humana. Usarlo correctamente en cada caso será la clave para determinar quién debe seguir teniendo el control sobre el sistema de seguridad. Voltea cada tarjeta para descubrir cómo te ayudará cada componente.”
+                                “Este es P.A.R.A., el protocolo de aprendizaje para el desarrollo de agencia humana. Usarlo correctamente en cada caso será la clave para determinar quién debe seguir teniendo el control sobre el sistema de seguridad. ¿Deseas explorar y voltear tú mismo cada tarjeta, o prefieres que el Controlador lo haga por ti?”
                             </p>
                         </div>
                     </div>
 
+                    <!-- PANEL DE CONTROL Y TELEMETRÍA DEL FACILITADOR (SOLO VISIBLE PARA CONTROLADOR) -->
+                    <div class="fac-para-control-panel glass-panel" id="fac-para-control-panel" style="display:none; margin-bottom:18px;">
+                        <div class="fac-para-header">
+                            <span class="card-badge" style="background:rgba(255,181,71,0.15); border-color:var(--color-warning-amber); color:var(--color-warning-amber);">CONTROLADOR // SUPERVISIÓN DE AGENCIA P.A.R.A.</span>
+                            <span class="fac-para-counter" id="fac-para-decided-counter">0 / 0 Operadores han decidido</span>
+                        </div>
+                        <div class="fac-para-metrics-grid">
+                            <div class="fac-metric-box">
+                                <span class="fac-metric-label">🛡️ TOMAR EL CONTROL:</span>
+                                <span class="fac-metric-val" id="fac-para-take-metric" style="color:var(--color-agency-green); font-weight:700;">0% (0)</span>
+                            </div>
+                            <div class="fac-metric-box">
+                                <span class="fac-metric-label">🤖 CEDER EL CONTROL:</span>
+                                <span class="fac-metric-val" id="fac-para-surrender-metric" style="color:var(--color-warning-amber); font-weight:700;">0% (0)</span>
+                            </div>
+                        </div>
+                        <div class="fac-para-actions-row">
+                            <button class="fac-btn fac-btn-amber" id="btn-fac-force-para-surrender" onclick="facForceParaSurrender()">
+                                ⚡ FORZAR TOMA DE CONTROL (TODOS LOS PENDIENTES CEDEN EL CONTROL)
+                            </button>
+                        </div>
+                        <div class="fac-card-triggers-row">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-weight:600;">ACTIVACIÓN SINCRONIZADA DE TARJETAS:</span>
+                            <div class="fac-trigger-btns">
+                                <button class="fac-btn fac-trigger-p" onclick="facFlipParaCard('P')">VOLTEAR P</button>
+                                <button class="fac-btn fac-trigger-a1" onclick="facFlipParaCard('A1')">VOLTEAR A</button>
+                                <button class="fac-btn fac-trigger-r" onclick="facFlipParaCard('R')">VOLTEAR R</button>
+                                <button class="fac-btn fac-trigger-a2" onclick="facFlipParaCard('A2')">VOLTEAR A2</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAJA DE DECISIÓN DE AGENCIA HUMANA PARA JUGADORES (CEDER VS TOMAR EL CONTROL) -->
+                    <div class="para-agency-decision-container" id="para-agency-decision-container">
+                        <div class="agency-decision-prompt">
+                            <span class="agency-prompt-badge">ELECCIÓN DE AGENCIA</span>
+                            <h4 style="font-size:14px; margin:4px 0 10px 0; color:var(--color-cyan);">¿QUIÉN OPERA LA EXPLORACIÓN DEL PROTOCOLO?</h4>
+                        </div>
+                        <div class="para-agency-buttons-row" id="para-agency-buttons-row">
+                            <button class="para-choice-btn btn-take-agency" id="btn-para-take-control" onclick="handlePlayerParaChoice('take')">
+                                <span class="btn-choice-icon">🛡️</span>
+                                <div class="btn-choice-content">
+                                    <strong>TOMAR EL CONTROL</strong>
+                                    <span>Exploraré y voltearé cada tarjeta manualmente a mi ritmo.</span>
+                                </div>
+                            </button>
+                            <button class="para-choice-btn btn-surrender-agency" id="btn-para-surrender-control" onclick="handlePlayerParaChoice('surrender')">
+                                <span class="btn-choice-icon">🤖</span>
+                                <div class="btn-choice-content">
+                                    <strong>CEDER EL CONTROL</strong>
+                                    <span>Permitir que el Controlador active las tarjetas por mí.</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="para-agency-status-banner" id="para-agency-status-banner" style="display:none;"></div>
+                    </div>
+
                     <div class="para-grid-intro">
                         <!-- TARJETA P: PAUSAR -->
-                        <div class="para-card-wrapper p-theme" onclick="flipParaCard(this, 'P')">
+                        <div class="para-card-wrapper p-theme para-card-locked-agency" id="para-card-p" onclick="flipParaCard(this, 'P')">
                             <div class="para-card-inner">
                                 <!-- REVERSO -->
                                 <div class="para-card-face para-card-back">
@@ -994,7 +1051,7 @@
                         </div>
 
                         <!-- TARJETA A: ANALIZAR -->
-                        <div class="para-card-wrapper a-theme" onclick="flipParaCard(this, 'A1')">
+                        <div class="para-card-wrapper a-theme para-card-locked-agency" id="para-card-a1" onclick="flipParaCard(this, 'A1')">
                             <div class="para-card-inner">
                                 <!-- REVERSO -->
                                 <div class="para-card-face para-card-back">
@@ -1012,7 +1069,7 @@
                         </div>
 
                         <!-- TARJETA R: REVISAR -->
-                        <div class="para-card-wrapper r-theme" onclick="flipParaCard(this, 'R')">
+                        <div class="para-card-wrapper r-theme para-card-locked-agency" id="para-card-r" onclick="flipParaCard(this, 'R')">
                             <div class="para-card-inner">
                                 <!-- REVERSO -->
                                 <div class="para-card-face para-card-back">
@@ -1030,7 +1087,7 @@
                         </div>
 
                         <!-- TARJETA A: ACTUAR -->
-                        <div class="para-card-wrapper a2-theme" onclick="flipParaCard(this, 'A2')">
+                        <div class="para-card-wrapper a2-theme para-card-locked-agency" id="para-card-a2" onclick="flipParaCard(this, 'A2')">
                             <div class="para-card-inner">
                                 <!-- REVERSO -->
                                 <div class="para-card-face para-card-back">

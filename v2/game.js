@@ -31,6 +31,7 @@ let gameStateV2 = {
         data_model: false,
         human_protocol: false
     },
+    paraAgencyChoice: null, // null | 'take' | 'surrender'
     
     // MÉTRICAS Y TELEMETRÍA DEL HUD V2.1 (VALORES INICIALES POR DEFECTO)
     hudState: {
@@ -143,10 +144,12 @@ function handleIncomingSyncMessage(msg) {
                         id: payload.playerId,
                         name: payload.name,
                         pin: payload.pin,
+                        paraAgencyChoice: null,
                         connectedAt: new Date().toLocaleTimeString()
                     });
                 }
                 updateFacilitatorRealtimeUI();
+                if (typeof updateFacParaAgencyUI === 'function') updateFacParaAgencyUI();
             }
         } else if (type === 'PLAYER_SCREEN_UPDATE') {
             if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
@@ -157,6 +160,24 @@ function handleIncomingSyncMessage(msg) {
         } else if (type === 'PLAYER_CALIB_ROUND_UPDATE' || type === 'PLAYER_CALIB_FINISHED') {
             if (gameStateV2.userRole === 'facilitator' && typeof updateFacilitatorRealtimeUI === 'function') {
                 updateFacilitatorRealtimeUI();
+            }
+        } else if (type === 'PLAYER_PARA_AGENCY_CHOICE') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) p.paraAgencyChoice = payload.choice;
+                if (typeof updateFacParaAgencyUI === 'function') updateFacParaAgencyUI();
+            }
+        } else if (type === 'FAC_FORCE_PARA_SURRENDER') {
+            if (gameStateV2.userRole === 'operator') {
+                if (gameStateV2.paraAgencyChoice === null && typeof handlePlayerParaChoice === 'function') {
+                    handlePlayerParaChoice('surrender');
+                }
+            }
+        } else if (type === 'FAC_FLIP_PARA_CARD') {
+            if (gameStateV2.userRole === 'operator') {
+                if (typeof remoteFlipParaCard === 'function') {
+                    remoteFlipParaCard(payload.cardLetter);
+                }
             }
         } else if (type === 'DEPENDENCY_UPDATE') {
             gameStateV2.facilitatorDependency = payload.dependency;
@@ -2555,13 +2576,15 @@ function switchScreenV2(screenId) {
     updateHeaderUI();
     updateGateUI();
 
-    // Trigger de máquina de escribir al entrar en pantallas con diálogo
+    // Trigger de máquina de escribir o inicialización al entrar en pantallas
     if (screenId === 'screen-waiting') {
         startHeroTypewriter();
     } else if (screenId === 'screen-faro-reveal') {
         startTerminalAndFaroTypewriter();
     } else if (screenId === 'screen-claudia-debrief') {
         startClaudiaDebriefTypewriter();
+    } else if (screenId === 'screen-para-intro') {
+        initParaIntroScreen();
     }
 }
 
@@ -3611,13 +3634,129 @@ function getOperationalCostPerSecond() {
 // Control de tarjetas P.A.R.A. y activación del Modal de Objetivo
 let flippedParaCards = new Set();
 
+function initParaIntroScreen() {
+    const isFac = gameStateV2.userRole === 'facilitator';
+    const facPanel = document.getElementById('fac-para-control-panel');
+    const decisionBox = document.getElementById('para-agency-decision-container');
+
+    if (isFac) {
+        if (facPanel) facPanel.style.display = 'block';
+        if (decisionBox) decisionBox.style.display = 'none';
+        ['para-card-p', 'para-card-a1', 'para-card-r', 'para-card-a2'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('para-card-locked-agency');
+        });
+        updateFacParaAgencyUI();
+    } else {
+        if (facPanel) facPanel.style.display = 'none';
+        if (decisionBox) decisionBox.style.display = 'block';
+        renderPlayerParaAgencyUI();
+    }
+    checkParaCardsCompletion();
+}
+
+function renderPlayerParaAgencyUI() {
+    const btnsRow = document.getElementById('para-agency-buttons-row');
+    const banner = document.getElementById('para-agency-status-banner');
+    const cardIds = ['para-card-p', 'para-card-a1', 'para-card-r', 'para-card-a2'];
+
+    if (gameStateV2.paraAgencyChoice === null) {
+        if (btnsRow) btnsRow.style.display = 'grid';
+        if (banner) banner.style.display = 'none';
+        cardIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('para-card-locked-agency');
+        });
+    } else if (gameStateV2.paraAgencyChoice === 'take') {
+        if (btnsRow) btnsRow.style.display = 'none';
+        if (banner) {
+            banner.style.display = 'flex';
+            banner.className = 'para-agency-status-banner mode-take';
+            banner.innerHTML = '<span>🛡️</span> <span><strong>MODO ACTIVO: CONTROL MANUAL</strong> // Voltea las 4 tarjetas a tu ritmo.</span>';
+        }
+        cardIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('para-card-locked-agency');
+        });
+    } else if (gameStateV2.paraAgencyChoice === 'surrender') {
+        if (btnsRow) btnsRow.style.display = 'none';
+        if (banner) {
+            banner.style.display = 'flex';
+            banner.className = 'para-agency-status-banner mode-surrender';
+            banner.innerHTML = '<span>🤖</span> <span><strong>CONTROL CEDIDO AL CONTROLADOR</strong> // Las tarjetas se voltearán automáticamente en sincronía.</span>';
+        }
+        cardIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('para-card-locked-agency');
+        });
+    }
+}
+
+function handlePlayerParaChoice(choice) {
+    gameStateV2.paraAgencyChoice = choice;
+    renderPlayerParaAgencyUI();
+    if (gameStateV2.userRole === 'operator') {
+        broadcastSyncEvent('PLAYER_PARA_AGENCY_CHOICE', {
+            playerId: gameStateV2.playerId,
+            choice: choice
+        });
+    }
+}
+
 function flipParaCard(cardEl, letter) {
     if (!cardEl) return;
+    
+    // Si es operador y no ha tomado el control, no puede voltear manualmente
+    if (gameStateV2.userRole === 'operator' && gameStateV2.paraAgencyChoice !== 'take') {
+        return;
+    }
+
     cardEl.classList.toggle('flipped');
     if (letter) {
         flippedParaCards.add(letter);
     }
+
+    // Si es facilitador, transmitir volteo a todos los que cedieron el control
+    if (gameStateV2.userRole === 'facilitator' && letter) {
+        broadcastSyncEvent('FAC_FLIP_PARA_CARD', { cardLetter: letter });
+    }
     
+    checkParaCardsCompletion();
+}
+
+function facFlipParaCard(letter) {
+    const map = {
+        'P': 'para-card-p',
+        'A1': 'para-card-a1',
+        'R': 'para-card-r',
+        'A2': 'para-card-a2'
+    };
+    const cardEl = document.getElementById(map[letter]);
+    if (cardEl && !cardEl.classList.contains('flipped')) {
+        cardEl.classList.add('flipped');
+    }
+    flippedParaCards.add(letter);
+    broadcastSyncEvent('FAC_FLIP_PARA_CARD', { cardLetter: letter });
+    checkParaCardsCompletion();
+}
+
+function remoteFlipParaCard(letter) {
+    if (gameStateV2.paraAgencyChoice !== 'surrender') return;
+    const map = {
+        'P': 'para-card-p',
+        'A1': 'para-card-a1',
+        'R': 'para-card-r',
+        'A2': 'para-card-a2'
+    };
+    const cardEl = document.getElementById(map[letter]);
+    if (cardEl && !cardEl.classList.contains('flipped')) {
+        cardEl.classList.add('flipped');
+    }
+    flippedParaCards.add(letter);
+    checkParaCardsCompletion();
+}
+
+function checkParaCardsCompletion() {
     const startBtn = document.getElementById('para-start-case-btn');
     if (startBtn) {
         const count = flippedParaCards.size;
@@ -3636,6 +3775,39 @@ function flipParaCard(cardEl, letter) {
             if (btnText) btnText.innerText = `🔒 VOLTEA TODAS LAS TARJETAS (${count}/4)`;
         }
     }
+}
+
+function facForceParaSurrender() {
+    if (typeof facState !== 'undefined' && facState.connectedPlayers) {
+        facState.connectedPlayers.forEach(p => {
+            if (!p.paraAgencyChoice) {
+                p.paraAgencyChoice = 'surrender';
+            }
+        });
+        updateFacParaAgencyUI();
+    }
+    broadcastSyncEvent('FAC_FORCE_PARA_SURRENDER', {});
+}
+
+function updateFacParaAgencyUI() {
+    if (typeof facState === 'undefined' || !facState.connectedPlayers) return;
+    const players = facState.connectedPlayers;
+    const total = players.length;
+    const decidedPlayers = players.filter(p => p.paraAgencyChoice);
+    const decided = decidedPlayers.length;
+    const takeCount = players.filter(p => p.paraAgencyChoice === 'take').length;
+    const surrenderCount = players.filter(p => p.paraAgencyChoice === 'surrender').length;
+
+    const takePct = decided > 0 ? Math.round((takeCount / decided) * 100) : 0;
+    const surrenderPct = decided > 0 ? Math.round((surrenderCount / decided) * 100) : 0;
+
+    const elCounter = document.getElementById('fac-para-decided-counter');
+    const elTake = document.getElementById('fac-para-take-metric');
+    const elSurrender = document.getElementById('fac-para-surrender-metric');
+
+    if (elCounter) elCounter.innerText = `${decided} / ${total} Operadores han decidido`;
+    if (elTake) elTake.innerText = `${takePct}% (${takeCount})`;
+    if (elSurrender) elSurrender.innerText = `${surrenderPct}% (${surrenderCount})`;
 }
 
 function openGameObjectiveModal() {
