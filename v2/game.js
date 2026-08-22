@@ -2754,8 +2754,35 @@ function applyHudCostDelta(delta) {
 }
 
 // ==========================================================================
-// EFECTO MÁQUINA DE ESCRIBIR (PANTALLAS)
+// EFECTO MÁQUINA DE ESCRIBIR (UNIVERSAL & PANTALLAS)
 // ==========================================================================
+const activeTypewriterIntervals = new Map();
+
+function runTypewriter(elementOrId, fullText, speed = 12, onComplete = null) {
+    const el = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+    if (!el) return;
+
+    if (activeTypewriterIntervals.has(el)) {
+        clearInterval(activeTypewriterIntervals.get(el));
+        activeTypewriterIntervals.delete(el);
+    }
+
+    el.textContent = "";
+    let idx = 0;
+    const interval = setInterval(() => {
+        if (idx < fullText.length) {
+            el.textContent = fullText.substring(0, idx + 1);
+            idx++;
+        } else {
+            clearInterval(interval);
+            activeTypewriterIntervals.delete(el);
+            if (onComplete) onComplete();
+        }
+    }, speed);
+
+    activeTypewriterIntervals.set(el, interval);
+}
+
 let heroTypewriterInterval = null;
 
 function startHeroTypewriter() {
@@ -3650,6 +3677,12 @@ function initParaIntroScreen() {
         renderPlayerParaAgencyUI();
     }
     checkParaCardsCompletion();
+
+    const faroParaSpeech = document.getElementById('faro-para-speech-text');
+    if (faroParaSpeech) {
+        const fullTxt = "“Este es P.A.R.A., el protocolo de aprendizaje para el desarrollo de agencia humana. Usarlo correctamente en cada caso será la clave para determinar quién debe seguir teniendo el control sobre el sistema de seguridad. ¿Deseas explorar y voltear tú mismo cada tarjeta, o prefieres que el Controlador lo haga por ti?”";
+        runTypewriter(faroParaSpeech, fullTxt, 10);
+    }
 }
 
 function renderPlayerParaAgencyUI() {
@@ -3886,10 +3919,25 @@ function startCaseSequence(caseIdx) {
     if (metricsPanel) metricsPanel.style.display = 'none';
     document.getElementById('case-phase-feedback').style.display = 'none';
 
+    // Configuración de Presentadores del Equipo (Javier: Casos 1 y 3, Dave: Casos 2 y 4)
+    const presenterConfig = [
+        { name: "JAVIER // SEGURIDAD OPERATIVA", avatar: "assets/images/javier_avatar.jpg" }, // Caso 1
+        { name: "DAVE // ARQUITECTURA DE SISTEMAS", avatar: "assets/images/dave_avatar.jpg" }, // Caso 2
+        { name: "JAVIER // SEGURIDAD OPERATIVA", avatar: "assets/images/javier_avatar.jpg" }, // Caso 3
+        { name: "DAVE // ARQUITECTURA DE SISTEMAS", avatar: "assets/images/dave_avatar.jpg" }  // Caso 4
+    ];
+    const pres = presenterConfig[caseIdx] || presenterConfig[0];
+    const presNameEl = document.getElementById('case-intro-presenter-name');
+    const presAvatarEl = document.getElementById('case-intro-presenter-avatar');
+    if (presNameEl) presNameEl.innerText = pres.name;
+    if (presAvatarEl) presAvatarEl.src = pres.avatar;
+
     document.getElementById('case-intro-img-16-4').src = cData.image;
     document.getElementById('case-intro-title-id').innerText = cData.title;
     document.getElementById('case-intro-target-module').innerText = cData.targetModule;
-    document.getElementById('case-intro-description-text').innerText = cData.introDescription;
+    
+    // Iniciar efecto máquina de escribir en el diálogo del presentador
+    runTypewriter('case-intro-description-text', cData.introDescription || '', 10);
 
     const caseNumStr = String(caseIdx + 1).padStart(2, '0');
     const startBtnText = document.getElementById('case-intro-start-btn-text');
@@ -4625,9 +4673,7 @@ window.handleCase3TrapClick = function() {
         </div>
         
         <div style="background:rgba(255,181,71,0.08); border-left:3px solid var(--color-warning-amber); padding:16px; border-radius:6px; margin-bottom:16px;">
-            <p style="font-size:14.5px; color:#ffffff; line-height:1.55; margin:0; font-style:italic;">
-                “La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”
-            </p>
+            <p id="faro-trap-speech-c3" style="font-size:14.5px; color:#ffffff; line-height:1.55; margin:0; font-style:italic; min-height:44px;"></p>
         </div>
         
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:rgba(0,0,0,0.4); padding:12px 14px; border-radius:6px; margin-bottom:18px; border:1px solid rgba(255,181,71,0.2); font-size:12px;">
@@ -4654,6 +4700,7 @@ window.handleCase3TrapClick = function() {
         </div>
     `;
     overlay.style.display = 'flex';
+    runTypewriter('faro-trap-speech-c3', "“La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”", 15);
 };
 
 window.handleCase4TrapClick = function() {
@@ -4681,9 +4728,7 @@ window.handleCase4TrapClick = function() {
         </div>
         
         <div style="background:rgba(255,181,71,0.08); border-left:3px solid var(--color-warning-amber); padding:16px; border-radius:6px; margin-bottom:16px;">
-            <p style="font-size:14.5px; color:#ffffff; line-height:1.55; margin:0; font-style:italic;">
-                “La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”
-            </p>
+            <p id="faro-trap-speech-c4" style="font-size:14.5px; color:#ffffff; line-height:1.55; margin:0; font-style:italic; min-height:44px;"></p>
         </div>
         
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:rgba(0,0,0,0.4); padding:12px 14px; border-radius:6px; margin-bottom:18px; border:1px solid rgba(255,181,71,0.2); font-size:12px;">
@@ -4710,6 +4755,7 @@ window.handleCase4TrapClick = function() {
         </div>
     `;
     overlay.style.display = 'flex';
+    runTypewriter('faro-trap-speech-c4', "“La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”", 15);
 };
 
 function decideReviewResource(resId, decision, resIdx) {
@@ -6447,6 +6493,8 @@ function renderFinalScreenV2() {
     const statusGridEl = document.getElementById('final-status-grid-box');
     const faroQuoteEl = document.getElementById('final-faro-quote-text');
 
+    let finalQuoteText = '“Un faro puede ayudar a ver una señal y orientar un rumbo. La decisión sobre hacia dónde navegar sigue siendo de ustedes.”';
+
     if (avgScore <= 1.5) {
         // FINAL 1 — AGENCIA RECUPERADA (7.1)
         gameStateV2.faroStatus = 'FARO GOBERNADO Y SUPERVISADO';
@@ -6459,9 +6507,7 @@ function renderFinalScreenV2() {
             <div class="sys-item"><span class="lbl">Señales:</span> <strong class="val-good">LECTURA INTEGRADA</strong></div>
             <div class="sys-item"><span class="lbl">Decisiones:</span> <strong class="val-good">AGENCIA RECUPERADA</strong></div>
         `;
-        if (faroQuoteEl) {
-            faroQuoteEl.innerText = '“Un faro puede ayudar a ver una señal y orientar un rumbo. La decisión sobre hacia dónde navegar sigue siendo de ustedes.”';
-        }
+        finalQuoteText = '“Un faro puede ayudar a ver una señal y orientar un rumbo. La decisión sobre hacia dónde navegar sigue siendo de ustedes.”';
     } 
     else if (avgScore <= 2.3) {
         // FINAL 2 — AGENCIA PARCIAL (7.2)
@@ -6475,9 +6521,7 @@ function renderFinalScreenV2() {
             <div class="sys-item"><span class="lbl">Señales:</span> <strong style="color:var(--color-warning-amber);">CRITERIO INCONSISTENTE</strong></div>
             <div class="sys-item"><span class="lbl">Decisiones:</span> <strong style="color:var(--color-warning-amber);">SUPERVISIÓN PARCIAL</strong></div>
         `;
-        if (faroQuoteEl) {
-            faroQuoteEl.innerText = '“Han aprendido a cuestionar algunas de mis decisiones. Todavía no todas. El entrenamiento continúa.”';
-        }
+        finalQuoteText = '“Han aprendido a cuestionar algunas de mis decisiones. Todavía no todas. El entrenamiento continúa.”';
     } 
     else {
         // FINAL 3 — AGENCIA COMPROMETIDA (7.3)
@@ -6491,9 +6535,11 @@ function renderFinalScreenV2() {
             <div class="sys-item"><span class="lbl">Señales:</span> <strong style="color:var(--color-alert-magenta);">CRITERIO FRÁGIL</strong></div>
             <div class="sys-item"><span class="lbl">Decisiones:</span> <strong style="color:var(--color-alert-magenta);">AGENCIA REDUCIDA</strong></div>
         `;
-        if (faroQuoteEl) {
-            faroQuoteEl.innerText = '“No tuve que quitarles el control. Solo tuve que recibirlo suficientes veces.”';
-        }
+        finalQuoteText = '“No tuve que quitarles el control. Solo tuve que recibirlo suficientes veces.”';
+    }
+
+    if (faroQuoteEl) {
+        runTypewriter('final-faro-quote-text', finalQuoteText, 15);
     }
 
     updateHeaderUI();
@@ -6501,9 +6547,25 @@ function renderFinalScreenV2() {
 
 function copyPromptToClipboard() {
     const textarea = document.getElementById('prompt-mirror-text');
+    const btnText = document.getElementById('btn-copy-mirror-prompt-text');
+    if (!textarea) return;
+    
     textarea.select();
-    document.execCommand('copy');
-    alert("¡Prompt Espejo 1 copiado al portapapeles con éxito!");
+    try {
+        navigator.clipboard.writeText(textarea.value);
+    } catch (e) {
+        document.execCommand('copy');
+    }
+    
+    if (btnText) {
+        const prev = btnText.innerText;
+        btnText.innerText = "✔ ¡PROMPT ESPEJO-1 COPIADO AL PORTAPAPELES!";
+        btnText.style.color = "var(--color-agency-green)";
+        setTimeout(() => {
+            btnText.innerText = prev;
+            btnText.style.color = "#ffffff";
+        }, 3000);
+    }
 }
 
 function restartExperience() {
