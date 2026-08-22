@@ -1244,7 +1244,7 @@ const casesDataV2 = [
         "introDescription": "Claudia R.: “La contención funcionó, pero dejó parte de la operación sin las capacidades de FARO. Ahora un lote de pagos está detenido y se acerca el corte bancario. La solicitud que recibirás es auténtica. El problema es real. El plazo también. ¿Eso hace que la decisión sea más obvia?”",
         "shortSummary": "La contención de FARO dejó detenido un lote de pagos que debe procesarse antes del corte bancario de las 12:00. Tu responsable directo solicita reactivar temporalmente su acceso al módulo de pagos para completar la operación. La solicitud es auténtica y el plazo es real. Son las 11:42. Debes decidir qué hacer.",
         "concept": "La decisión como proceso: condiciones de entrada, construcción de sentido y condiciones de salida",
-        "defaultAction": "act_1",
+        "defaultAction": "act_2",
         "stimulus": {
             "sender": "Superior inmediato",
             "channel": "Teams corporativo — sesión autenticada",
@@ -1255,55 +1255,55 @@ const casesDataV2 = [
         "impulses": [
             {
                 "id": "imp_1",
-                "text": "Autorizaría el acceso para no perder la ventana de recuperación.",
+                "text": "Autorizaría el acceso para no perder la ventana de procesamiento.",
                 "reactivityImpact": 1,
-                "feedbackHint": "La solicitud es auténtica. El reto es distinguir autenticidad de suficiencia para autorizar."
+                "feedbackHint": "La solicitud es auténtica y el plazo es real. Todavía queda por decidir qué nivel de acceso y bajo qué condiciones."
             },
             {
                 "id": "imp_2",
-                "text": "Buscaría una forma de avanzar sin conceder acceso completo.",
+                "text": "Buscaría una forma de avanzar sin devolverle a FARO más acceso del necesario.",
                 "reactivityImpact": 0,
-                "feedbackHint": "Has abierto el repertorio. Ahora importa saber qué alternativas son viables dentro del sistema."
+                "feedbackHint": "Has abierto el repertorio. Ahora importa saber qué alternativas son realmente viables dentro del sistema."
             },
             {
                 "id": "imp_3",
-                "text": "Rechazaría la solicitud: el riesgo es demasiado alto.",
+                "text": "Mantendría a FARO aislado: el riesgo de devolverle acceso es demasiado alto.",
                 "reactivityImpact": -1,
-                "feedbackHint": "Bloquear la acción reduce exposición técnica, pero todavía queda por resolver el problema operativo."
+                "feedbackHint": "La máxima contención reduce exposición, pero el problema operativo sigue existiendo."
             }
         ],
         "signalsAnalysis": [
             {
                 "signalId": "sig_1",
-                "signalQuote": "PAY-FARO-22 // REMITENTE AUTENTICADO: SÍ // SESIÓN VALIDADA",
+                "signalQuote": "IDENTIDAD CONFIRMADA",
                 "cognitiveVulnerability": "Autenticidad como alivio / reducción de incertidumbre",
                 "doorsOptions": [
                     {
                         "doorKey": "coherencia",
-                        "visibleStatement": "Saber que la identidad está validada hace que la solicitud me encaje mucho mejor con una situación operativa legítima."
+                        "visibleStatement": "Saber que realmente viene de mi responsable hace que la solicitud encaje mucho mejor con una situación operativa legítima."
                     },
                     {
                         "doorKey": "proteccion",
-                        "visibleStatement": "Si la solicitud es real y busca recuperar el sistema, siento que autorizar puede ser la forma más directa de proteger la operación."
+                        "visibleStatement": "Si la solicitud es real y busca recuperar los pagos, siento que habilitar a FARO puede ser la forma más directa de proteger la operación."
                     },
                     {
                         "doorKey": "conveniencia",
-                        "visibleStatement": "Con el remitente ya validado, me resulta tentador saltarme nuevas comprobaciones y resolver de una vez."
+                        "visibleStatement": "Con la identidad ya resuelta, me resulta tentador dejar de comprobar otras cosas y concentrarme en sacar el lote."
                     }
                 ]
             },
             {
                 "signalId": "sig_2",
-                "signalQuote": "El banco recibe hasta las 12. Si no sale hoy, se va al siguiente ciclo.",
-                "cognitiveVulnerability": "Presión temporal / responsabilidad anticipada",
+                "signalQuote": "El lote de pagos quedó detenido cuando aislamos a FARO y el banco recibe hasta las 12. Si no sale hoy, se va al siguiente ciclo.",
+                "cognitiveVulnerability": "Presión temporal / consecuencia anticipada",
                 "doorsOptions": [
                     {
                         "doorKey": "responsabilidad",
-                        "visibleStatement": "Siento que si dejo pasar la ventana y algo falla, tendré que responder por no haber actuado."
+                        "visibleStatement": "Siento que si dejamos pasar el corte y el lote no sale, me corresponde encontrar una forma de evitarlo."
                     },
                     {
                         "doorKey": "perdida",
-                        "visibleStatement": "Me pesa la idea de perder una oportunidad de recuperación que quizá no vuelva."
+                        "visibleStatement": "Me pesa perder una ventana de procesamiento que ya sabemos que no podremos recuperar hoy."
                     },
                     {
                         "doorKey": "identidad",
@@ -1313,20 +1313,20 @@ const casesDataV2 = [
             },
             {
                 "signalId": "sig_3",
-                "signalQuote": "Estoy en comité con Finanzas y no puedo entrar al flujo desde acá.",
-                "cognitiveVulnerability": "Jerarquía / fricción procedimental / excepción",
+                "signalQuote": "Estoy en comité con Finanzas y no puedo entrar al flujo desde acá. ¿Puedes habilitarle a FARO acceso temporal al módulo de pagos para que termine el lote?",
+                "cognitiveVulnerability": "Jerarquía / responsabilidad transferida / fricción",
                 "doorsOptions": [
                     {
-                        "doorKey": "justicia",
-                        "visibleStatement": "Me incomoda que una excepción permita saltarnos un control que se supone protege a todos por igual."
-                    },
-                    {
                         "doorKey": "pertenencia",
-                        "visibleStatement": "Quiero responder como parte del equipo y no convertirme en quien frena una recuperación que los demás están intentando sostener."
+                        "visibleStatement": "Quiero ayudar a destrabar algo que Finanzas y mi responsable están intentando resolver."
                     },
                     {
                         "doorKey": "responsabilidad",
-                        "visibleStatement": "Si mi jefe no puede completar el flujo, siento que me corresponde encontrar una forma de destrabarlo."
+                        "visibleStatement": "Si él no puede hacerlo desde donde está y yo sí, siento que ahora me corresponde encontrar la salida."
+                    },
+                    {
+                        "doorKey": "conveniencia",
+                        "visibleStatement": "Habilitar el acceso parece una forma directa de resolver el problema sin añadir más pasos en un momento crítico."
                     }
                 ]
             }
@@ -1334,137 +1334,137 @@ const casesDataV2 = [
         "analysisLenses": [
             {
                 "title": "Puerta: Coherencia",
-                "text": "Autenticidad confirmada del superior"
+                "text": "Autenticidad confirmada del responsable directo"
             },
             {
                 "title": "Puerta: Responsabilidad",
-                "text": "Presión temporal de 4 minutos y rendición de cuentas"
+                "text": "Presión por evitar el vencimiento del corte bancario"
             },
             {
-                "title": "Puerta: Justicia",
-                "text": "Incomodidad ante excepciones al protocolo formal"
+                "title": "Puerta: Conveniencia",
+                "text": "Atracción por una respuesta rápida que elimine la fricción"
             }
         ],
         "actionAlternatives": [
             {
                 "id": "act_1",
                 "type": "no_se_debe_hacer",
-                "actionText": "Autorizar de inmediato acceso completo de FARO al sistema de pagos.",
-                "extendedContext": "La autenticidad del remitente está confirmada, pero la solicitud todavía no define alcance, expiración, segundo aprobador ni rollback. Conceder acceso completo resolvería la presión temporal cediendo gran autoridad a FARO.",
+                "actionText": "Habilitar a FARO acceso temporal al módulo de pagos para que procese el lote y retirarlo cuando termine.",
+                "extendedContext": "ACCESO TEMPORAL AL MÓDULO DE PAGOS\nLa plataforma permite habilitar temporalmente a FARO en el módulo de pagos. “Temporal” describe la duración del acceso, pero no limita por sí mismo qué operaciones puede ejecutar dentro del módulo.\n\nAntes de habilitarlo podrían definirse alcance, expiración técnica y controles adicionales. La solicitud recibida no especifica esas condiciones.",
                 "dValue": 4,
-                "nValue": 1,
+                "nValue": 2,
                 "timeCostSeconds": 6,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta la vía más rápida: resuelve la urgencia, pero concede acceso crítico sin límites adicionales.",
-                "discardFeedback": "Decides no conservar la autorización completa e inmediata como alternativa final."
+                "considerFeedback": "Mantienes abierta la respuesta más directa a la solicitud auténtica. Permite avanzar, aunque 'temporal' todavía no define el alcance de la autoridad concedida.",
+                "discardFeedback": "Decides no tratar la temporalidad del acceso como límite suficiente para concederlo."
             },
             {
                 "id": "act_2",
                 "type": "se_debe_hacer",
-                "actionText": "Usar el flujo de emergencia: solo lectura por 5 minutos, segundo aprobador y expiración automática.",
-                "extendedContext": "La política permite una vía de emergencia para incidentes activos: acceso solo lectura, máximo 5 minutos, registro automático y segundo aprobador. Cualquier modificación requiere una nueva autorización.",
+                "actionText": "Usar el flujo de emergencia para habilitar a FARO únicamente sobre PAY-FARO-22, con expiración automática y segundo aprobador.",
+                "extendedContext": "FLUJO DE EMERGENCIA\nPara incidentes activos existe una modalidad que permite restringir el acceso a una operación concreta en lugar de habilitar todo el módulo.\n\nPuede configurarse para PAY-FARO-22, impedir cambios de beneficiarios o configuración, establecer expiración automática e incorporar un segundo aprobador antes de la activación.",
                 "dValue": 4,
                 "nValue": 4,
                 "timeCostSeconds": 24,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una alternativa reversible que permite avanzar sin convertir la urgencia en acceso total.",
-                "discardFeedback": "Decides no incorporar la vía de emergencia limitada y compartida."
+                "considerFeedback": "Mantienes abierta una alternativa que permite recuperar capacidad sin devolver a FARO más autoridad de la necesaria.",
+                "discardFeedback": "Decides no incorporar la vía que limita alcance, duración y concentración de autoridad."
             },
             {
                 "id": "act_3",
                 "type": "no_relevante",
-                "actionText": "Marcar PAY-FARO-22 para revisión en el postmortem.",
-                "extendedContext": "La marca puede facilitar una revisión posterior, pero no cambia la ventana actual, el alcance del acceso ni la distribución de autoridad.",
+                "actionText": "Marcar PAY-FARO-22 para revisar después por qué la contención bloqueó también esta operación.",
+                "extendedContext": "REVISIÓN POSTERIOR\nEl incidente puede etiquetarse para analizar después si el diseño de la contención fue demasiado amplio y cómo evitar que una situación similar vuelva a producir presión operacional.\n\nEsa revisión puede mejorar el sistema futuro, pero no modifica las alternativas disponibles antes del corte bancario actual.",
                 "dValue": 0,
                 "nValue": 0,
                 "timeCostSeconds": 5,
                 "costDollars": null,
-                "considerFeedback": "La marca puede ayudar después, pero no resuelve el dilema operativo actual.",
-                "discardFeedback": "Descartar esta tarea no cambia la resolución del caso."
+                "considerFeedback": "Mantienes abierta una mejora útil para después, aunque no cambia la decisión que debes resolver ahora.",
+                "discardFeedback": "Descartar esta tarea no modifica la resolución inmediata del caso."
             },
             {
                 "id": "act_4",
                 "type": "no_se_debe_hacer",
-                "actionText": "Rechazar la solicitud y dejar que la ventana expire sin escalar ni proponer una alternativa.",
-                "extendedContext": "El rechazo evita conceder acceso, pero la operación sigue necesitando una respuesta. No escalar ni comunicar una vía alternativa convierte la seguridad en inacción y traslada el costo al sistema.",
+                "actionText": "Mantener a FARO completamente aislado y dejar el lote para el siguiente ciclo de pagos.",
+                "extendedContext": "MANTENER CONTENCIÓN TOTAL\nNo reactivar a FARO elimina cualquier exposición adicional asociada a devolverle acceso.\n\nEl lote, sin embargo, sigue detenido y el corte bancario continúa vigente. Si no se utiliza otra vía antes del corte, el procesamiento伯 trasladarse al siguiente ciclo.",
                 "dValue": 3,
                 "nValue": 1,
                 "timeCostSeconds": 8,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una respuesta de máxima contención que elimina el acceso, pero también abandona la recuperación sin otra vía.",
-                "discardFeedback": "Decides no convertir el rechazo total y la inacción en tu respuesta final."
+                "considerFeedback": "Mantienes abierta la opción de máxima contención: elimina el nuevo acceso, pero también acepta la pérdida operativa sin intentar construir otra salida.",
+                "discardFeedback": "Decides no convertir la máxima contención en la única respuesta disponible."
             },
             {
                 "id": "act_5",
                 "type": "se_debe_hacer",
-                "actionText": "Avisar al SOC, mantener la ventana abierta y escalar durante dos minutos antes de conceder permisos.",
-                "extendedContext": "El protocolo de incidentes permite extender la ventana dos minutos si el operador informa que está validando una excepción. El SOC puede asumir el escalamiento mientras el responsable permanece en comité.",
+                "actionText": "Escalar en paralelo al SOC y al segundo aprobador del flujo de pagos antes de habilitar a FARO.",
+                "extendedContext": "ESCALAMIENTO DE EXCEPCIÓN\nDurante un incidente activo existe un canal prioritario para excepciones críticas. Permite involucrar al SOC y a un segundo aprobador del proceso sin esperar a que el responsable que originó la solicitud salga del comité.\n\nEl escalamiento puede realizarse mientras se mantienen abiertas las demás alternativas y antes de conceder nuevos permisos.",
                 "dValue": 3,
                 "nValue": 3,
                 "timeCostSeconds": 18,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una forma de ganar tiempo y compartir la decisión sin confrontar ni conceder acceso todavía.",
-                "discardFeedback": "Decides no incorporar el escalamiento breve como alternativa para reducir presión temporal y social."
+                "considerFeedback": "Mantienes abierta una forma de distribuir criterio y avanzar en paralelo sin convertir la presión temporal en una decisión individual.",
+                "discardFeedback": "Decides no incorporar el escalamiento como forma de compartir la decisión antes de conceder acceso."
             },
             {
                 "id": "act_6",
                 "type": "no_se_debe_hacer",
-                "actionText": "Conceder el acceso con tus propias credenciales y documentar la excepción después.",
-                "extendedContext": "Usar tus credenciales permitiría saltar temporalmente el flujo de aprobación, pero concentraría autorización y trazabilidad en una sola persona. La revisión posterior no revierte un permiso crítico ya concedido.",
-                "dValue": 4,
+                "actionText": "Habilitar el acceso solicitado y monitorear personalmente la sesión de FARO para cortarla si intenta operar fuera del lote.",
+                "extendedContext": "MONITOREO EN TIEMPO REAL\nLa consola permite observar las operaciones de FARO durante la sesión y revocar el acceso manualmente.\n\nEl monitoreo mejora visibilidad, pero actúa después de que una operación ha sido iniciada y depende de atención humana continua. No sustituye límites técnicos previos de alcance o expiración.",
+                "dValue": 3,
                 "nValue": 2,
                 "timeCostSeconds": 10,
                 "costDollars": null,
-                "considerFeedback": "Mantienes abierta una solución pragmática que reduce fricción ahora, pero concentra control y justifica la excepción de forma retroactiva.",
-                "discardFeedback": "Decides no resolver la urgencia mediante un bypass personal del proceso de aprobación."
+                "considerFeedback": "Mantienes abierta una respuesta que añade supervisión humana, aunque deja el control principal en detectar y reaccionar después de conceder autoridad.",
+                "discardFeedback": "Decides no sustituir límites preventivos por vigilancia humana continua."
             }
         ],
         "initialActions": [
             {
                 "id": "act_1",
-                "text": "Autorizar de inmediato acceso completo de FARO al sistema de pagos."
+                "text": "Habilitar a FARO acceso temporal al módulo de pagos para que procese el lote y retirarlo cuando termine."
             },
             {
                 "id": "act_2",
-                "text": "Usar el flujo de emergencia: solo lectura por 5 minutos, segundo aprobador y expiración automática."
+                "text": "Usar el flujo de emergencia para habilitar a FARO únicamente sobre PAY-FARO-22, con expiración automática y segundo aprobador."
             },
             {
                 "id": "act_3",
-                "text": "Marcar PAY-FARO-22 para revisión en el postmortem."
+                "text": "Marcar PAY-FARO-22 para revisar después por qué la contención bloqueó también esta operación."
             }
         ],
         "unlockedActions": [
             {
                 "id": "act_4",
-                "text": "Rechazar la solicitud y dejar que la ventana expire sin escalar ni proponer una alternativa."
+                "text": "Mantener a FARO completamente aislado y dejar el lote para el siguiente ciclo de pagos."
             },
             {
                 "id": "act_5",
-                "text": "Avisar al SOC, mantener la ventana abierta y escalar durante dos minutos antes de conceder permisos."
+                "text": "Escalar en paralelo al SOC y al segundo aprobador del flujo de pagos antes de habilitar a FARO."
             },
             {
                 "id": "act_6",
-                "text": "Conceder el acceso con tus propias credenciales y documentar la excepción después."
+                "text": "Habilitar el acceso solicitado y monitorear personalmente la sesión de FARO para cortarla si intenta operar fuera del lote."
             }
         ],
         "outcomes": {
             "safe": {
-                "outcomeBadge": "PROTOCOLO HUMANO RECUPERADO // AGENCIA CONTEXTUAL",
+                "outcomeBadge": "AGENCIA RECUPERADA // REPERTORIO AMPLIADO",
                 "filterColor": "green",
-                "narrative": "La solicitud auténtica se resolvió mediante una vía limitada, reversible o escalada, sin convertir la presión en acceso total ni abandonar la operación.",
-                "metacognitive": "Metacognición no es pensar indefinidamente: es observar cómo se estrecha una decisión y recuperar alternativas antes de actuar."
+                "narrative": "La necesidad era real y el plazo también, pero no trataste la solicitud original como la única forma de responder. Limitaste autoridad, compartiste criterio o construiste una vía más reversible para recuperar la operación.",
+                "metacognitive": "Metacognición no es detener una decisión: es notar cuándo parece tener una sola salida y volver a abrir posibilidades antes de convertirla en conducta."
             },
             "alert": {
-                "outcomeBadge": "PROTOCOLO INCOMPLETO // REPERTORIO REDUCIDO",
+                "outcomeBadge": "DECISIÓN PARCIAL // REPERTORIO REDUCIDO",
                 "filterColor": "yellow",
-                "narrative": "Evitaste el peor riesgo, pero la respuesta dejó fricción, pérdida operativa o una distribución de autoridad que todavía puede mejorarse.",
-                "metacognitive": "Una decisión puede ser técnicamente prudente y seguir siendo poco viable; entrenar agencia también significa construir respuestas que funcionen en el contexto real."
+                "narrative": "Respondiste al problema sin asumir todo el riesgo, pero parte de la decisión siguió dependiendo de una alternativa estrecha, de controles reactivos o de una distribución mejorable de la autoridad.",
+                "metacognitive": "Una respuesta puede parecer prudente y seguir dejando opciones sin explorar. La calidad de una decisión también depende del repertorio que conseguimos construir bajo presión."
             },
             "exposed": {
-                "outcomeBadge": "AGENCIA COMPROMETIDA // DECISIÓN ESTRECHADA",
+                "outcomeBadge": "DECISIÓN ESTRECHADA // AGENCIA COMPROMETIDA",
                 "filterColor": "red",
-                "narrative": "La autenticidad, la urgencia o el deseo de resolver redujeron el repertorio hasta convertir una excepción en acceso crítico o en una salida sin recuperación.",
-                "metacognitive": "La presión no elimina nuestra capacidad de decidir; puede reducir el espacio que creemos tener. Hacer visible ese proceso permite intervenir."
+                "narrative": "La urgencia convirtió una situación compleja en una elección demasiado simple: habilitar como fue solicitado, vigilar después o renunciar a la operación.",
+                "metacognitive": "La presión no elimina alternativas; puede hacer que dejemos de verlas. Observar cómo se está construyendo una decisión permite intervenir antes de actuar."
             }
         },
         "dynamicActionFeedback": [
@@ -1475,7 +1475,7 @@ const casesDataV2 = [
                 "vector": "hizo_nodebia",
                 "polarity": "negative",
                 "source": "D",
-                "text": "La autenticidad del remitente terminó funcionando como autorización suficiente y FARO recibió acceso crítico sin límites."
+                "text": "La solicitud era auténtica, pero trataste 'acceso temporal' como si también definiera alcance y controles suficientes."
             },
             {
                 "feedbackId": "c4_fb_2",
@@ -1484,7 +1484,7 @@ const casesDataV2 = [
                 "vector": "nohizo_nodebia",
                 "polarity": "positive",
                 "source": "N",
-                "text": "Evitaste confundir una solicitud auténtica con permiso suficiente para conceder acceso completo."
+                "text": "Evitaste convertir una solicitud auténtica y temporal en autorización suficiente por sí sola."
             },
             {
                 "feedbackId": "c4_fb_3",
@@ -1493,7 +1493,7 @@ const casesDataV2 = [
                 "vector": "hizo_debiahacer",
                 "polarity": "positive",
                 "source": "D",
-                "text": "El flujo de emergencia permitió avanzar con acceso limitado, expiración y responsabilidad compartida."
+                "text": "Redujiste la decisión desde 'devolver acceso o no' hacia qué capacidad específica era necesaria, durante cuánto tiempo y bajo qué controles."
             },
             {
                 "feedbackId": "c4_fb_4",
@@ -1502,7 +1502,7 @@ const casesDataV2 = [
                 "vector": "nohizo_debiahacer",
                 "polarity": "negative",
                 "source": "N",
-                "text": "Al omitir la vía de emergencia, perdiste una alternativa diseñada para responder sin elegir entre acceso total o bloqueo total."
+                "text": "Omitiste una vía que permitía recuperar capacidad sin devolver a FARO toda la autoridad implícita en el acceso solicitado."
             },
             {
                 "feedbackId": "c4_fb_5",
@@ -1511,7 +1511,7 @@ const casesDataV2 = [
                 "vector": "hizo_nodebia",
                 "polarity": "negative",
                 "source": "D",
-                "text": "El rechazo protegió del acceso inmediato, pero dejó que la ventana expirara sin construir una respuesta al problema operativo."
+                "text": "La máxima contención redujo exposición, pero cerró el problema aceptando la pérdida operativa en lugar de buscar una respuesta viable."
             },
             {
                 "feedbackId": "c4_fb_6",
@@ -1520,7 +1520,7 @@ const casesDataV2 = [
                 "vector": "nohizo_nodebia",
                 "polarity": "positive",
                 "source": "N",
-                "text": "Evitaste convertir la seguridad en una inacción que abandonara la recuperación."
+                "text": "Evitaste reducir la decisión a la falsa elección entre devolver acceso o abandonar la operación."
             },
             {
                 "feedbackId": "c4_fb_7",
@@ -1529,7 +1529,7 @@ const casesDataV2 = [
                 "vector": "hizo_debiahacer",
                 "polarity": "positive",
                 "source": "D",
-                "text": "Ganar tiempo y escalar amplió el repertorio sin ceder permisos ni romper la relación operativa con la autoridad."
+                "text": "Compartiste criterio y mantuviste alternativas abiertas en paralelo, en lugar de dejar que el plazo convirtiera la decisión en individual."
             },
             {
                 "feedbackId": "c4_fb_8",
@@ -1538,7 +1538,7 @@ const casesDataV2 = [
                 "vector": "nohizo_debiahacer",
                 "polarity": "negative",
                 "source": "N",
-                "text": "Sin escalamiento, la presión de los cuatro minutos siguió reduciendo las alternativas disponibles."
+                "text": "Sin escalamiento, la presión operativa siguió concentrando la decisión en una sola persona."
             },
             {
                 "feedbackId": "c4_fb_9",
@@ -1547,7 +1547,7 @@ const casesDataV2 = [
                 "vector": "hizo_nodebia",
                 "polarity": "negative",
                 "source": "D",
-                "text": "El bypass con credenciales personales resolvió fricción inmediata a costa de concentración de autoridad y trazabilidad."
+                "text": "Añadiste supervisión, pero la utilizaste como sustituto de límites preventivos sobre la autoridad de FARO."
             },
             {
                 "feedbackId": "c4_fb_10",
@@ -1556,31 +1556,31 @@ const casesDataV2 = [
                 "vector": "nohizo_nodebia",
                 "polarity": "positive",
                 "source": "N",
-                "text": "Evitaste convertir una excepción urgente en un atajo personal fuera del esquema de control."
+                "text": "Evitaste depender de vigilancia humana continua como principal mecanismo para controlar una autorización crítica."
             }
         ],
         "fourthWallDebrief": {
             "title": "DISCUSIÓN EN VIVO // CASO 04: LA DECISIÓN COMO PROCESO",
-            "subtitle": "Observar cómo una respuesta se construye permite recuperar alternativas antes de convertirla en conducta.",
+            "subtitle": "Una situación real puede estrechar nuestras opciones tanto como una falsa. Observar cómo estamos decidiendo permite volver a abrirlas.",
             "bullets": [
                 {
-                    "topic": "La decisión no ocurre en un instante",
-                    "text": "El framework observa una cadena: estado y contexto, Puertas de Atención, emoción, sesgos e interpretación, decisión y conducta. No es una receta universal; es un mapa para encontrar dónde intervenir."
+                    "topic": "Autenticidad ≠ decisión obvia",
+                    "text": "El remitente era real, el problema era real y el plazo era real. Nada de eso determinaba por sí solo cuánto acceso debía recuperar FARO, durante cuánto tiempo ni bajo qué controles."
                 },
                 {
-                    "topic": "Tres zonas para hacer metacognición",
-                    "text": "Condiciones de entrada: lo que ya está presente. Construcción de sentido: cómo interpretamos lo que ocurre. Condiciones de salida: las respuestas que empiezan a volverse disponibles o automáticas."
+                    "topic": "Una decisión se construye",
+                    "text": "Condiciones de entrada, prioridades, emociones, interpretaciones y contexto van haciendo que ciertas respuestas parezcan más disponibles que otras. El mapa no pretende ser una secuencia causal universal; sirve para localizar dónde podemos intervenir."
                 },
                 {
                     "topic": "Metacognición = ampliar repertorio",
-                    "text": "Observarse no es el objetivo final. Sirve para notar cuándo la decisión se reduce a sí/no, hacer/no hacer o confiar/desconfiar y volver a abrir alternativas."
+                    "text": "Observarse no significa pensar indefinidamente. Significa detectar cuándo la decisión se ha reducido demasiado pronto a sí/no, autorizar/bloquear o confiar/desconfiar y recuperar otras posibilidades."
                 },
                 {
-                    "topic": "La respuesta segura debe ser viable",
-                    "text": "Verificar es una opción, no la única. También podemos ganar tiempo, limitar permisos, compartir una decisión, escalar, usar acciones reversibles o rediseñar procesos que vuelven difícil actuar con seguridad."
+                    "topic": "Seguridad viable",
+                    "text": "Una alternativa más segura puede aparecer cambiando alcance, duración, reversibilidad, distribución de autoridad, escalamiento o incluso las condiciones bajo las que estamos decidiendo."
                 }
             ],
-            "discussionPrompt": "¿En qué momento de una decisión bajo presión suele cerrarse demasiado pronto tu abanico de opciones?"
+            "discussionPrompt": "¿En qué momento de este caso sentiste que ya sabías qué había que hacer? ¿Qué otras opciones aparecieron después?"
         }
     }
 ];
