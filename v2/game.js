@@ -3019,7 +3019,7 @@ function acceptClaudiaMission() {
 let calibrationState = {
     currentRound: 1,
     clickedTrap: false,
-    timerSeconds: 45,
+    timerSeconds: 50,
     timerInterval: null,
     r4TrapInterval: null,
     
@@ -3143,7 +3143,7 @@ function updateRoundLEDs(roundNum, statusOverride) {
 function startCalibrationExperience() {
     calibrationState.currentRound = 1;
     calibrationState.clickedTrap = false;
-    calibrationState.timerSeconds = 45;
+    calibrationState.timerSeconds = 50;
     calibrationState.r1Count = 0;
     calibrationState.r2Count = 0;
     calibrationState.r3Count = 0;
@@ -3164,7 +3164,7 @@ function startCalibrationExperience() {
     document.getElementById('faro-prompt-nav-row').style.display = 'flex';
 
     // Reset del reloj digital e iniciar efecto máquina de escribir de diálogo FARO paginado
-    updateCalibrationClockUI(45);
+    updateCalibrationClockUI(50);
     renderFaroPromptPage(0);
 }
 
@@ -3505,8 +3505,8 @@ function startR2NextRepetition() {
         drainBar.style.width = '0%';
     }
 
-    // Tiempo de descarga progresivo (acelerando de 4s a 1s según la repetición)
-    const currentActionTime = Math.max(1.0, 4.0 - calibrationState.r2Count);
+    // Tiempo de descarga progresivo: Primer ítem con 6s (+2s), luego acelerando (3s, 2s, 1s)
+    const currentActionTime = calibrationState.r2Count === 0 ? 6.0 : Math.max(1.0, 4.0 - calibrationState.r2Count);
 
     // Tiempo de espera aleatorio antes de ponerse "¡LISTO!" (1.2s - 2.2s)
     const waitTime = Math.floor(Math.random() * 1000) + 1200;
