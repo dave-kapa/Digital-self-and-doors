@@ -2063,10 +2063,11 @@ const ASSETS_TO_PRELOAD = [
 ];
 
 let preloadedAssetsCount = 0;
-const COVER_PRELOAD_MIN_SECONDS = 10;
+const COVER_PRELOAD_MIN_SECONDS = 1.5;
 const DEFAULT_SESSION_PIN = "F4R0";
-const SYNC_LOADING_TOTAL_SECONDS = 10;
+const SYNC_LOADING_TOTAL_SECONDS = 2;
 let isPreloadingActive = false;
+let syncProgressInterval = null;
 
 function initAppPreload() {
     if (isPreloadingActive) return;
@@ -2230,8 +2231,9 @@ function handleFacilitatorLogin(event) {
     const badgeTag = document.getElementById('cover-badge-role-tag');
     if (badgeTag) badgeTag.innerText = "SISTEMA CIBERNÉTICO V2.0 // SALA DE CONTROLADOR";
 
-    switchScreenV2('screen-loading-sync');
-    startSyncLoadingScreen();
+    // El Controlador entra directo al panel de control y sala de espera
+    switchScreenV2('screen-waiting');
+    updateGateUI();
 }
 
 function handlePlayerLogin(event) {
@@ -2292,7 +2294,7 @@ function handlePlayerLogin(event) {
         pin: pin
     });
 
-    // Pasar de inmediato al espacio de juego con la pantalla de sincronización
+    // Pasar a la pantalla de sincronización con duración fluida
     switchScreenV2('screen-loading-sync');
     startSyncLoadingScreen();
 }
@@ -2324,15 +2326,16 @@ function startSyncLoadingScreen() {
     clearInterval(syncSlideshowInterval);
     syncSlideshowInterval = setInterval(() => {
         slides.forEach(s => s.classList.remove('active'));
-        currentSlide = (currentSlide + 1) % slides.length;
+        currentSlide = (currentSlide + 1) % Math.max(1, slides.length);
         if (slides[currentSlide]) slides[currentSlide].classList.add('active');
-    }, 2500);
+    }, 500);
 
     let elapsedMs = 0;
     const totalMs = SYNC_LOADING_TOTAL_SECONDS * 1000;
     const stepMs = 50;
 
-    const timer = setInterval(() => {
+    clearInterval(syncProgressInterval);
+    syncProgressInterval = setInterval(() => {
         elapsedMs += stepMs;
         const progress = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
 
@@ -2349,14 +2352,14 @@ function startSyncLoadingScreen() {
         }
 
         if (elapsedMs >= totalMs) {
-            clearInterval(timer);
+            clearInterval(syncProgressInterval);
             clearInterval(syncSlideshowInterval);
             if (fillEl) fillEl.style.width = '100%';
             if (termEl) termEl.innerText = "✔ Enlace establecido exitosamente. Iniciando sesión...";
             
             setTimeout(() => {
                 switchScreenV2('screen-waiting');
-            }, 500);
+            }, 250);
         }
     }, stepMs);
 }
