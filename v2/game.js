@@ -246,7 +246,7 @@ const casesDataV2 = [
                 "doorsOptions": [
                     {
                         "doorKey": "proteccion",
-                        "visibleStatement": "Mi primera reacción es contener todo antes de que la amenaza pueda extenderse."
+                        "visibleStatement": "Me despierta el afán por querer contener todo antes de que la amenaza pueda extenderse."
                     },
                     {
                         "doorKey": "responsabilidad",
