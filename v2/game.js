@@ -4453,9 +4453,10 @@ function decideReviewResource(resId, decision, resIdx) {
 
     const actionId = resObj.actionId || (resObj.unlocks && resObj.unlocks[0]);
     let actionText = resObj.actionText;
-    if (!actionText && actionId && cData.unlockedActions) {
-        const matchingAct = cData.unlockedActions.find(a => a.id === actionId);
-        if (matchingAct) actionText = matchingAct.text;
+    const poolForAction = gameStateV2.caseActiveHiddenActions || cData.unlockedActions || [];
+    if (!actionText && actionId && poolForAction.length > 0) {
+        const matchingAct = poolForAction.find(a => a.id === actionId);
+        if (matchingAct) actionText = matchingAct.actionText || matchingAct.text;
     }
 
     if (!gameStateV2.paraState.reviewsState) {
@@ -5146,8 +5147,9 @@ function processCaseOutcome(actionIds) {
     const reviewsDone = Math.max(unlockedCount, gameStateV2.paraState.rResourcesOpened ? gameStateV2.paraState.rResourcesOpened.length : 0);
     const rejectedCount = Math.max(0, reviewsDone - unlockedCount);
 
-    const necessaryUnlockedTotal = cData.unlockedActions.filter(a => getActionIdealCategory(cData.id, a.id) === "should_do").length;
-    const necessaryUnlockedExecuted = cData.unlockedActions.filter(a => getActionIdealCategory(cData.id, a.id) === "should_do" && idsArray.includes(a.id)).length;
+    const unlockedPool = gameStateV2.caseActiveHiddenActions || cData.unlockedActions || [];
+    const necessaryUnlockedTotal = unlockedPool.filter(a => getActionIdealCategory(cData.id, a.id) === "should_do").length;
+    const necessaryUnlockedExecuted = unlockedPool.filter(a => getActionIdealCategory(cData.id, a.id) === "should_do" && idsArray.includes(a.id)).length;
 
     // ==========================================================================
     // 5. REGISTRO INMUTABLE EN LA SESIÓN (PARA BASE DE DATOS Y FACILITADOR)
@@ -5285,7 +5287,8 @@ function processCaseOutcome(actionIds) {
     const elAnalysisReact = document.getElementById('m-analysis-impact-react');
     if (elAnalysisReact) elAnalysisReact.innerText = `⚡ Reactividad: -${totalReactLossFromAnalyses}`;
 
-    document.getElementById('m-review-badge').innerText = `${unlockedCount}/${cData.unlockedActions.length} DESBLOQUEADAS`;
+    const maxReviewUnlocked = unlockedPool.length || 3;
+    document.getElementById('m-review-badge').innerText = `${unlockedCount}/${maxReviewUnlocked} DESBLOQUEADAS`;
     document.getElementById('m-review-considered-count').innerText = `${unlockedCount} consideradas ✔`;
     document.getElementById('m-review-rejected-count').innerText = `${rejectedCount} descartadas ✖`;
     
