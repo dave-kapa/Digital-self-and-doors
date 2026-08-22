@@ -4275,7 +4275,9 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
         broadcastSyncEvent('PLAYER_PARA_ANALYSIS', { playerId: gameStateV2.playerId, caseIndex: gameStateV2.currentCaseIndex });
     }
 
+    const modal = document.getElementById('para-modal-card');
     const doorObj = (doorKey && ATTENTION_DOORS[doorKey]) ? ATTENTION_DOORS[doorKey] : { name: doorKey || 'Atención', icon: '🚪' };
+    if (!modal) return;
 
     modal.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
