@@ -4569,7 +4569,10 @@ function closeParaModalAndRenderDashboard() {
     renderParaDashboard();
 }
 
-function executeParaActua() {
+let emergencyDecisionTimer = null;
+let isEmergencyDecisionActive = false;
+
+function executeParaActua(isEmergency = false) {
     gameStateV2.paraState.activeTab = 'A2';
     renderParaDashboard();
 
@@ -4608,11 +4611,29 @@ function executeParaActua() {
         `).join('');
     }
 
+    clearInterval(emergencyDecisionTimer);
+    isEmergencyDecisionActive = !!isEmergency;
+
+    let emergencyBannerHtml = '';
+    if (isEmergency) {
+        emergencyBannerHtml = `
+            <div style="background:rgba(255,77,122,0.18); border:2px solid var(--color-alert-magenta); padding:10px 14px; border-radius:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 0 16px rgba(255,77,122,0.35);">
+                <div>
+                    <strong style="color:var(--color-alert-magenta); font-size:12px; font-family:var(--font-heading); display:block; letter-spacing:0.5px;">⚠️ TIEMPO PRINCIPAL AGOTADO // DECISIÓN DE EMERGENCIA</strong>
+                    <span style="font-size:11.5px; color:#ffc2d1;">Tienes 15s para elegir tus acciones. Si no seleccionas, el sistema decidirá aleatoriamente.</span>
+                </div>
+                <div style="font-family:var(--font-mono); font-size:24px; font-weight:800; color:var(--color-alert-magenta); background:rgba(0,0,0,0.4); padding:4px 10px; border-radius:4px; border:1px solid var(--color-alert-magenta);" id="emergency-act-countdown">15s</div>
+            </div>
+        `;
+    }
+
     modal.innerHTML = `
-        <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
-            <h3 style="color:var(--color-warning-amber); font-family:var(--font-heading); font-size:14px;">ACTUAR // SELECCIÓN DE ACCIONES (MULTISELECCIÓN)</h3>
-            <button class="fac-btn" onclick="closeParaModal()">✖</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
+            <h3 style="color:var(--color-warning-amber); font-family:var(--font-heading); font-size:14px; margin:0;">ACTUAR // SELECCIÓN DE ACCIONES (MULTISELECCIÓN)</h3>
+            ${!isEmergency ? '<button class="fac-btn" onclick="closeParaModal()">✖</button>' : '<span style="font-size:11px; color:var(--color-alert-magenta); font-weight:700;">⏱ DECISIÓN OBLIGATORIA</span>'}
         </div>
+
+        ${emergencyBannerHtml}
 
         <!-- REGISTRO DE PRIMERA REACCIÓN DEL JUGADOR PARA COMPARACIÓN -->
         <div style="background: rgba(0, 216, 255, 0.08); border: 1.5px solid var(--color-cyan); border-radius: 6px; padding: 9px 12px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;">
@@ -4642,6 +4663,58 @@ function executeParaActua() {
     `;
 
     overlay.style.display = 'flex';
+
+    if (isEmergency) {
+        let emergencySecs = 15;
+        emergencyDecisionTimer = setInterval(() => {
+            emergencySecs--;
+            const cntEl = document.getElementById('emergency-act-countdown');
+            if (cntEl) cntEl.innerText = `${emergencySecs}s`;
+
+            if (emergencySecs <= 0) {
+                clearInterval(emergencyDecisionTimer);
+                executeEmergencyRandomDecision();
+            }
+        }, 1000);
+    }
+}
+
+function executeEmergencyRandomDecision() {
+    clearInterval(emergencyDecisionTimer);
+    isEmergencyDecisionActive = false;
+
+    const checkedEls = document.querySelectorAll('.para-act-checkbox:checked');
+    let selectedIds = [];
+    let selectedTexts = [];
+
+    if (checkedEls.length > 0) {
+        selectedIds = Array.from(checkedEls).map(el => el.value);
+        selectedTexts = Array.from(checkedEls).map(el => el.getAttribute('data-text'));
+    } else {
+        // Seleccionar aleatoriamente entre las alternativas activas disponibles
+        const cData = casesDataV2[gameStateV2.currentCaseIndex];
+        const initialList = gameStateV2.caseActiveInitialActions || cData.initialActions || [];
+        const unlockedActionsList = gameStateV2.paraState.unlockedActions || [];
+        const allAvailable = [...initialList, ...unlockedActionsList];
+
+        if (allAvailable.length > 0) {
+            const randomChoice = allAvailable[Math.floor(Math.random() * allAvailable.length)];
+            selectedIds = [randomChoice.id];
+            selectedTexts = [randomChoice.actionText || randomChoice.text || "Decisión aleatoria del sistema"];
+        } else {
+            selectedIds = [cData.defaultAction];
+            selectedTexts = ["Decisión delegada por defecto"];
+        }
+    }
+
+    closeParaModal();
+    clearInterval(gameStateV2.timerInterval);
+
+    gameStateV2.paraState.finalActionId = selectedIds.join(', ');
+    gameStateV2.paraState.finalActionText = selectedTexts.join(' | ');
+    gameStateV2.paraState.routeTag = "Decisión de emergencia (Tiempo agotado)";
+
+    processCaseOutcome(selectedIds);
 }
 
 function submitSelectedActions() {
@@ -4654,7 +4727,10 @@ function submitSelectedActions() {
     const selectedIds = Array.from(checkedEls).map(el => el.value);
     const selectedTexts = Array.from(checkedEls).map(el => el.getAttribute('data-text'));
 
-    if (confirm(`¿Confirmas la ejecución de ${selectedIds.length} acción(es) seleccionada(s)? Esta decisión cerrará el caso de forma irreversible.`)) {
+    const shouldConfirm = !isEmergencyDecisionActive;
+    if (!shouldConfirm || confirm(`¿Confirmas la ejecución de ${selectedIds.length} acción(es) seleccionada(s)? Esta decisión cerrará el caso de forma irreversible.`)) {
+        clearInterval(emergencyDecisionTimer);
+        isEmergencyDecisionActive = false;
         closeParaModal();
         clearInterval(gameStateV2.timerInterval);
         
@@ -4666,6 +4742,8 @@ function submitSelectedActions() {
 }
 
 function confirmFinalAction(actionId, actionText) {
+    clearInterval(emergencyDecisionTimer);
+    isEmergencyDecisionActive = false;
     closeParaModal();
     clearInterval(gameStateV2.timerInterval);
     gameStateV2.paraState.finalActionId = actionId;
@@ -4674,15 +4752,15 @@ function confirmFinalAction(actionId, actionText) {
 }
 
 function closeParaModal() {
+    clearInterval(emergencyDecisionTimer);
+    isEmergencyDecisionActive = false;
     document.getElementById('para-modal-overlay').style.display = 'none';
 }
 
 function handleCaseTimeout() {
-    const cData = casesDataV2[gameStateV2.currentCaseIndex];
-    gameStateV2.paraState.finalActionId = cData.defaultAction;
-    gameStateV2.paraState.finalActionText = "Tiempo Agotado (Ejecutado por defecto)";
-    gameStateV2.paraState.routeTag = "Decisión delegada";
-    processCaseOutcome([cData.defaultAction]);
+    clearInterval(gameStateV2.timerInterval);
+    gameStateV2.isTimerPaused = true;
+    executeParaActua(true);
 }
 
 // ==========================================================================
