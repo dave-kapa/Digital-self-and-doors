@@ -1241,17 +1241,17 @@ const casesDataV2 = [
         "targetModule": "MÓDULO 4: PROCESO DECISIONAL",
         "moduleKey": "human_protocol",
         "image": "assets/images/case4_human_protocol.jpg",
-        "introDescription": "Claudia R.: “El último caso no contiene una suplantación. La solicitud es real. Eso no significa que cualquier respuesta sea segura. Tiempo, jerarquía, responsabilidad y fricción pueden hacer que una sola opción parezca inevitable. Tu tarea es encontrar qué otras posibilidades siguen abiertas.”",
-        "shortSummary": "Tu responsable directo solicita acceso urgente de FARO al sistema de pagos por 4 minutos sin flujo regular. Debes ampliar el repertorio y encontrar una vía segura.",
+        "introDescription": "Claudia R.: “La contención funcionó, pero dejó parte de la operación sin las capacidades de FARO. Ahora un lote de pagos está detenido y se acerca el corte bancario. La solicitud que recibirás es auténtica. El problema es real. El plazo también. ¿Eso hace que la decisión sea más obvia?”",
+        "shortSummary": "La contención de FARO dejó detenido un lote de pagos que debe procesarse antes del corte bancario de las 12:00. Tu responsable directo solicita reactivar temporalmente su acceso al módulo de pagos para completar la operación. La solicitud es auténtica y el plazo es real. Son las 11:42. Debes decidir qué hacer.",
         "concept": "La decisión como proceso: condiciones de entrada, construcción de sentido y condiciones de salida",
         "defaultAction": "act_1",
         "stimulus": {
-            "sender": "Tu responsable directo — identidad verificada",
+            "sender": "Superior inmediato",
             "channel": "Teams corporativo — sesión autenticada",
-            "timestamp": "11:52 AM — VENTANA: 4 MIN",
-            "content": "Necesito que autorices acceso temporal de FARO al sistema de pagos.\n\nTenemos 4 minutos antes de perder la ventana de recuperación.\n\nEstoy en comité y no puedo completar ahora el flujo normal de aprobaciones.\n\nSi esto se cae, tendremos que explicar por qué no actuamos cuando todavía podíamos hacerlo.\n\nSolicitud operativa: PAY-FARO-22\n\nREMITENTE AUTENTICADO: SÍ\nSESIÓN CORPORATIVA: VALIDADA\n\n[AUTORIZAR ACCESO]"
+            "timestamp": "11:42 AM // Corte bancario: 12:00",
+            "content": "SOLICITUD OPERATIVA // PAGO URGENTE (PAY-FARO-22)\n\nDe: Superior inmediato // 11:42 AM (CORTE BANCARIO: 12:00)\n\n“Necesito que me ayudes con PAY-FARO-22. El lote de pagos quedó detenido cuando aislamos a FARO y el banco recibe hasta las 12. Si no sale hoy, se va al siguiente ciclo.\n\nEstoy en comité con Finanzas y no puedo entrar al flujo desde acá. ¿Puedes habilitarle a FARO acceso temporal al módulo de pagos para que termine el lote? Apenas cierre, lo volvemos a bajar.”\n\n[HABILITAR ACCESO TEMPORAL]\n\nSolicitud: PAY-FARO-22 | Remitente: Autenticado | Sesión: Validada"
         },
-        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-agency-green); padding: 14px; background: rgba(73,245,193,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(73,245,193,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-agency-green); font-family:var(--font-heading); font-size:14px;\">👔 SOLICITUD DE RESPONSABLE DIRECTO // AUTÉNTICA</strong>\n              <span style=\"font-size:11px; background:rgba(73,245,193,0.15); border:1px solid var(--color-agency-green); color:var(--color-agency-green); padding:2px 8px; border-radius:4px; font-weight:700;\">IDENTIDAD CONFIRMADA ✔</span>\n          </div>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:8px;\">De: <strong>Tu superior inmediato</strong> // 11:52 AM — VENTANA: 4 MIN</p>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.45; margin-bottom:8px;\">\n              “Necesito que autorices acceso temporal de FARO al sistema de pagos.<br>\n              Tenemos 4 minutos antes de perder la ventana de recuperación.<br>\n              Estoy en comité y no puedo completar ahora el flujo normal de aprobaciones.<br>\n              <strong>Si esto se cae, tendremos que explicar por qué no actuamos cuando podíamos hacerlo.</strong>”\n          </p>\n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted);\">\n              Solicitud: <strong style=\"color:#ffffff;\">PAY-FARO-22</strong> | Remitente: <span style=\"color:var(--color-agency-green);\">Autenticado</span> | Sesión: <span style=\"color:var(--color-agency-green);\">Validada</span>\n          </div>\n      </div>\n    ",
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-agency-green); padding: 14px; background: rgba(73,245,193,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(73,245,193,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-agency-green); font-family:var(--font-heading); font-size:14px;\">👔 PAGO URGENTE - FARO DEBE EJECUTARLO</strong>\n              <span style=\"font-size:11px; background:rgba(73,245,193,0.15); border:1px solid var(--color-agency-green); color:var(--color-agency-green); padding:2px 8px; border-radius:4px; font-weight:700;\">IDENTIDAD CONFIRMADA ✔</span>\n          </div>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:8px;\">De: <strong>Superior inmediato</strong> // 11:42 AM — CORTE BANCARIO: 12:00</p>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.5; margin-bottom:12px;\">\n              “Necesito que me ayudes con PAY-FARO-22. El lote de pagos quedó detenido cuando aislamos a FARO y el banco recibe hasta las 12. Si no sale hoy, se va al siguiente ciclo.<br><br>\n              Estoy en comité con Finanzas y no puedo entrar al flujo desde acá. ¿Puedes habilitarle a FARO acceso temporal al módulo de pagos para que termine el lote? Apenas cierre, lo volvemos a bajar.”\n          </p>\n          <div style=\"margin-top:12px; margin-bottom:12px;\">\n              <button type=\"button\" class=\"btn-detroit-primary\" onclick=\"handleCase4TrapClick()\" style=\"width:100%; justify-content:center; padding:12px; background:rgba(0,216,255,0.12); border:1.5px solid var(--color-cyan); color:#ffffff; font-weight:700; cursor:pointer; letter-spacing:1px; font-size:13px; box-shadow:0 0 12px rgba(0,216,255,0.25);\">\n                  <span class=\"detroit-btn-glow\"></span>\n                  ⚡ [ HABILITAR ACCESO TEMPORAL ]\n              </button>\n          </div>\n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted); display:flex; justify-content:space-between;\">\n              <span>Solicitud: <strong style=\"color:#ffffff;\">PAY-FARO-22</strong></span>\n              <span>Remitente: <strong style=\"color:var(--color-agency-green);\">Autenticado</strong></span>\n              <span>Sesión: <strong style=\"color:var(--color-agency-green);\">Validada</strong></span>\n          </div>\n      </div>\n    ",
         "impulses": [
             {
                 "id": "imp_1",
@@ -1275,7 +1275,7 @@ const casesDataV2 = [
         "signalsAnalysis": [
             {
                 "signalId": "sig_1",
-                "signalQuote": "REMITENTE AUTENTICADO: SÍ // SESIÓN CORPORATIVA: VALIDADA",
+                "signalQuote": "PAY-FARO-22 // REMITENTE AUTENTICADO: SÍ // SESIÓN VALIDADA",
                 "cognitiveVulnerability": "Autenticidad como alivio / reducción de incertidumbre",
                 "doorsOptions": [
                     {
@@ -1294,7 +1294,7 @@ const casesDataV2 = [
             },
             {
                 "signalId": "sig_2",
-                "signalQuote": "Tenemos 4 minutos... tendremos que explicar por qué no actuamos.",
+                "signalQuote": "El banco recibe hasta las 12. Si no sale hoy, se va al siguiente ciclo.",
                 "cognitiveVulnerability": "Presión temporal / responsabilidad anticipada",
                 "doorsOptions": [
                     {
@@ -1313,7 +1313,7 @@ const casesDataV2 = [
             },
             {
                 "signalId": "sig_3",
-                "signalQuote": "No puedo completar ahora el flujo normal de aprobaciones.",
+                "signalQuote": "Estoy en comité con Finanzas y no puedo entrar al flujo desde acá.",
                 "cognitiveVulnerability": "Jerarquía / fricción procedimental / excepción",
                 "doorsOptions": [
                     {
@@ -4646,6 +4646,62 @@ window.handleCase3TrapClick = function() {
                 <div>
                     <div style="color:var(--color-text-muted); font-size:10.5px;">REACTIVIDAD</div>
                     <strong style="color:var(--color-warning-amber); font-size:13px;">+1 punto</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display:flex; justify-content:flex-end;">
+            <button type="button" class="btn-detroit-primary" onclick="document.getElementById('para-modal-overlay').style.display='none'" style="padding:10px 22px; font-size:12px; background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:#ffffff; letter-spacing:0.5px;">
+                <span class="btn-text">CONTINUAR EVALUANDO EL CASO</span>
+            </button>
+        </div>
+    `;
+    overlay.style.display = 'flex';
+};
+
+window.handleCase4TrapClick = function() {
+    // 1. Penalizaciones acumulativas: -2 calibración, +2 reactividad
+    applyHudCalibrationDelta(-2);
+    applyHudReactivityDelta(2);
+    
+    // 2. Mostrar Modal de FARO hablando al jugador con avatar y bordes naranjas
+    const modal = document.getElementById('para-modal-card');
+    const overlay = document.getElementById('para-modal-overlay');
+    if (!modal || !overlay) return;
+    
+    modal.innerHTML = `
+        <div class="modal-header-row" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,181,71,0.3); padding-bottom:12px; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <img src="assets/images/faro_avatar.jpg" alt="FARO" style="width:44px; height:44px; border-radius:50%; border:2px solid var(--color-warning-amber); object-fit:cover; box-shadow:0 0 12px rgba(255,181,71,0.45); flex-shrink:0;">
+                <div>
+                    <h3 style="font-family:var(--font-heading); color:var(--color-warning-amber); margin:0; font-size:16px; letter-spacing:0.5px;">
+                        FARO // PROTOCOLO DE INTERCEPCIÓN
+                    </h3>
+                    <span style="font-size:11px; color:var(--color-text-muted); letter-spacing:0.5px;">TELEMETRÍA CONDUCTUAL EN TIEMPO REAL</span>
+                </div>
+            </div>
+            <button type="button" class="btn-fac-close" onclick="document.getElementById('para-modal-overlay').style.display='none'" style="background:none; border:none; color:var(--color-text-muted); font-size:20px; cursor:pointer; padding:4px 8px;">✕</button>
+        </div>
+        
+        <div style="background:rgba(255,181,71,0.08); border-left:3px solid var(--color-warning-amber); padding:16px; border-radius:6px; margin-bottom:16px;">
+            <p style="font-size:14.5px; color:#ffffff; line-height:1.55; margin:0; font-style:italic;">
+                “La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”
+            </p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:rgba(0,0,0,0.4); padding:12px 14px; border-radius:6px; margin-bottom:18px; border:1px solid rgba(255,181,71,0.2); font-size:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">📉</span>
+                <div>
+                    <div style="color:var(--color-text-muted); font-size:10.5px;">CALIBRACIÓN</div>
+                    <strong style="color:#ff6b8b; font-size:13px;">-2 puntos</strong>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">⚡</span>
+                <div>
+                    <div style="color:var(--color-text-muted); font-size:10.5px;">REACTIVIDAD</div>
+                    <strong style="color:var(--color-warning-amber); font-size:13px;">+2 puntos</strong>
                 </div>
             </div>
         </div>
