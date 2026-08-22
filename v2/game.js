@@ -4030,23 +4030,30 @@ function renderParaDashboard() {
         } else {
             html = `
                 <div class="placeholder-info">
-                    <p style="color:var(--color-cyan);">⏸ Aún no has utilizado <strong>Pausar (P)</strong>. Haz clic en el botón de Pausar para congelar el tiempo 15s y reflexionar.</p>
+                    <p style="color:var(--color-cyan);">⏸ Aún no has utilizado <strong>Pausar (P)</strong>. Haz clic en el botón de Pausar para congelar el tiempo 15s y tener más tiempo para deliberar.</p>
                 </div>
             `;
         }
     } else if (activeTab === 'A') {
         if (completedA.length > 0) {
             completedA.forEach((item) => {
+                const doorObj = (item.doorKey && ATTENTION_DOORS[item.doorKey]) ? ATTENTION_DOORS[item.doorKey] : { name: item.doorKey || 'Atención', icon: '🚪' };
                 html += `
                     <div class="para-dashboard-card a-theme" style="margin-bottom:12px;">
-                        <div class="dash-card-header">
-                            <span class="dash-letter-tag a-tag">A</span>
-                            <strong class="dash-card-title" style="color:#a29bfe;">ANALIZAR // ${item.title}</strong>
+                        <div class="dash-card-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span class="dash-letter-tag a-tag">A</span>
+                                <strong class="dash-card-title" style="color:#a29bfe;">ANALIZAR // ${item.title}</strong>
+                            </div>
+                            <span style="background:rgba(162,155,254,0.18); border:1px solid #a29bfe; color:#ffffff; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:4px;">
+                                ${doorObj.icon} PUERTA: ${doorObj.name.toUpperCase()}
+                            </span>
                         </div>
-                        <p class="dash-card-text" style="font-weight:600; color:#ffffff;">“${item.reflectionText}”</p>
-                        <div style="background:rgba(162,155,254,0.1); padding:8px 12px; border-radius:4px; border-left:3px solid #a29bfe; margin-top:4px;">
+                        <p class="dash-card-text" style="font-weight:600; color:#ffffff; margin-top:6px;">“${item.reflectionText}”</p>
+                        <div style="background:rgba(162,155,254,0.1); padding:8px 12px; border-radius:4px; border-left:3px solid #a29bfe; margin-top:6px;">
                             <strong style="color:#a29bfe; font-size:12px;">✔ Tu Percepción:</strong>
                             <span style="font-size:13px; color:#ffffff; margin-left:4px;">${item.selectedText}</span>
+                            <div style="font-size:11.5px; color:#c4bbf0; margin-top:4px;">🚪 <strong>Puerta Activada:</strong> <span style="color:var(--color-cyan); font-weight:700;">${doorObj.icon} ${doorObj.name}</span></div>
                         </div>
                         <p style="font-size:12px; color:var(--color-agency-green); margin-top:4px; font-style:italic;">${item.feedback}</p>
                     </div>
@@ -4268,8 +4275,8 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
         broadcastSyncEvent('PLAYER_PARA_ANALYSIS', { playerId: gameStateV2.playerId, caseIndex: gameStateV2.currentCaseIndex });
     }
 
-    const modal = document.getElementById('para-modal-card');
-    
+    const doorObj = (doorKey && ATTENTION_DOORS[doorKey]) ? ATTENTION_DOORS[doorKey] : { name: doorKey || 'Atención', icon: '🚪' };
+
     modal.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--color-border-cyan); padding-bottom:8px; margin-bottom:12px;">
             <h3 style="color:#a29bfe; font-family:var(--font-heading); font-size:14px; margin:0;">ANALIZAR // OBSERVACIÓN DE SUPUESTOS</h3>
@@ -4283,9 +4290,18 @@ function submitAnalysisAnswer(roundIdx, optIdx) {
 
         <div style="background:rgba(162,155,254,0.08); border:1px solid rgba(162,155,254,0.25); padding:12px; border-radius:6px; margin-bottom:12px;">
             <strong style="font-size:11.5px; color:#ffffff; display:block; margin-bottom:2px;">TU OBSERVACIÓN:</strong>
-            <p style="font-size:12.5px; color:#a29bfe; font-weight:600; margin:0 0 6px 0;">${selectedOpt.text}</p>
+            <p style="font-size:12.5px; color:#a29bfe; font-weight:600; margin:0 0 8px 0;">“${selectedOpt.text}”</p>
+            
+            <div style="background:rgba(162,155,254,0.15); border:1px solid #a29bfe; padding:8px 12px; border-radius:6px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:20px;">${doorObj.icon}</span>
+                <div>
+                    <span style="font-size:10px; color:#c4bbf0; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; display:block;">PUERTA DE ATENCIÓN IDENTIFICADA:</span>
+                    <strong style="font-size:13px; color:var(--color-cyan); font-family:var(--font-heading);">${doorObj.name}</strong>
+                </div>
+            </div>
+
             <div style="background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; border-left:3px solid var(--color-agency-green);">
-                <p style="font-size:12px; color:#49f5c1; margin:0; line-height:1.35;">${selectedOpt.feedback}</p>
+                <p style="font-size:12px; color:#49f5c1; margin:0; line-height:1.35;">${selectedOpt.feedback || "✔ Observación realizada: Identificaste la influencia atencional en tu deliberación."}</p>
             </div>
             <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
                 <span style="font-size:11px; background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:var(--color-cyan); padding:2px 8px; border-radius:4px; font-weight:700;">🎯 Calibración: +1</span>
