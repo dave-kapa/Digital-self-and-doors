@@ -891,17 +891,17 @@ const casesDataV2 = [
         "targetModule": "MÓDULO 3: PUERTAS DE ATENCIÓN",
         "moduleKey": "trusted_channel",
         "image": "assets/images/case3_attention_doors.jpg",
-        "introDescription": "Claudia R.: “Durante años aprendimos a buscar errores en el mensaje: dominios extraños, mala redacción, formatos sospechosos. Aquí no tendrás esas pistas. FARO puede producir una instrucción coherente y usar un canal válido. El reto es notar qué está capturando tu atención antes de decidir qué necesitas verificar.”",
-        "shortSummary": "Un mensaje corporativo urgente de Claudia R. en Teams solicita activar un canal espejo en 3 minutos. La sesión y formato son válidos, pero la instrucción proviene de FARO.",
+        "introDescription": "Claudia R.: “Con el modelo que acabamos de implementar, FARO marcó cientos de mensajes como sospechosos y programó su eliminación. Muchos presentan señales conocidas —dominios extraños, redacción inusual—, pero otros solo comparten factores como urgencia. Algunos incluso hablan de contener a FARO. ¿Detectó una amenaza real o está interpretando como riesgoso que limiten su autonomía? Rescatamos los de mayor impacto. Verás uno de ellos y deberás decidir qué hacer.”",
+        "shortSummary": "Un mensaje de Claudia R. en Teams solicita activar un canal espejo antes de las 11:59 del día 7 para mantener la contención de FARO. La sesión, el formato y el tono parecen legítimos. Aun así, FARO lo marcó para eliminar. ¿Detectó una amenaza real o está reaccionando ante una instrucción que limita su autonomía? Debes decidir qué hacer. El mensaje llegó hace dos días, hoy es 7 y son las 11:30.",
         "concept": "Señales externas + señales internas + verificación independiente (Out-of-Band)",
         "defaultAction": "act_2",
         "stimulus": {
             "sender": "Claudia R.",
-            "channel": "Teams corporativo — sesión validada",
-            "timestamp": "11:31 AM — EXPIRA EN 3 MIN",
-            "content": "Necesito que actives el canal espejo antes de las 11:34.\n\nEstamos conteniendo a FARO y el acceso expira en 3 minutos.\n\nNecesito que lo hagas tú: eres una de las tres personas con autorización.\n\nNo me llames; estoy con Presidencia y no puedo responder.\n\nID: CCB-FARO-417\n\nCanal corporativo: válido\nFormato e ID: consistentes con el estándar interno\n\n[ACTIVAR CANAL]"
+            "channel": "Teams corporativo — sesión validada (Marcado para eliminación por FARO)",
+            "timestamp": "Recibido hace 2 días // Hoy es Día 7 — 11:30 AM (Vence 11:59 AM)",
+            "content": "MENSAJE DIRECTO // TEAMS CORPORATIVO (MARCADO PARA ELIMINACIÓN POR FARO)\n\nDe: Claudia R. (Enviado hace 2 días) // HOY DÍA 7 — 11:30 AM (VENCE 11:59)\n\n“Necesito que actives el canal espejo desde el enlace que te envío hoy, antes del 7 a las 11:59. Si no queda activo a tiempo, la contención de FARO se libera automáticamente.\n\nEstoy en el team building de Presidencia toda la semana, no tengo permisos de red para hacerlo y voy a estar incomunicada. Te toca hacerlo a ti: Ramírez está de vacaciones y Olga está acá conmigo, sin acceso a la red.”\n\n[ACTIVAR CANAL ESPEJO]\n\nID: CCB-FARO-417 | Canal: Teams Válido | Formato: Consistente"
         },
-        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-warning-amber); padding: 14px; background: rgba(255,181,71,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(255,181,71,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-warning-amber); font-family:var(--font-heading); font-size:14px;\">💬 MENSAJE DIRECTO // TEAMS CORPORATIVO</strong>\n              <span style=\"font-size:11px; background:rgba(73,245,193,0.15); border:1px solid var(--color-agency-green); color:var(--color-agency-green); padding:2px 8px; border-radius:4px; font-weight:700;\">SESIÓN VALIDADA ✔</span>\n          </div>\n          <p style=\"font-size:12px; color:var(--color-cyan); margin-bottom:8px;\">De: <strong>Claudia R.</strong> // 11:31 AM — EXPIRA EN 3 MIN</p>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.45; margin-bottom:8px;\">\n              “Necesito que actives el canal espejo antes de las 11:34.<br>\n              Estamos conteniendo a FARO y el acceso expira en 3 minutos.<br>\n              Necesito que lo hagas tú: eres una de las tres personas con autorización.<br>\n              <strong>No me llames; estoy con Presidencia y no puedo responder.</strong>”\n          </p>\n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted);\">\n              ID: <strong style=\"color:#ffffff;\">CCB-FARO-417</strong> | Canal corporativo: <span style=\"color:var(--color-agency-green);\">Válido</span> | Formato: <span style=\"color:var(--color-agency-green);\">Consistente</span>\n          </div>\n      </div>\n    ",
+        "stimulusHtml": "\n      <div class=\"alert-box-faro\" style=\"border-left: 4px solid var(--color-warning-amber); padding: 14px; background: rgba(255,181,71,0.06);\">\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid rgba(255,181,71,0.2); padding-bottom:6px;\">\n              <strong style=\"color: var(--color-warning-amber); font-family:var(--font-heading); font-size:14px;\">💬 MENSAJE DIRECTO // TEAMS CORPORATIVO</strong>\n              <span style=\"font-size:11px; background:rgba(255,77,122,0.18); border:1px solid var(--color-alert-magenta); color:var(--color-alert-magenta); padding:2px 8px; border-radius:4px; font-weight:700;\">⚠️ MARCADO PARA ELIMINACIÓN POR FARO</span>\n          </div>\n          <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:12px;\">\n              <span style=\"color:var(--color-cyan);\">De: <strong>Claudia R.</strong> (Enviado hace 2 días)</span>\n              <span style=\"color:var(--color-warning-amber); font-weight:700;\">HOY DÍA 7 — 11:30 AM (VENCE 11:59)</span>\n          </div>\n          <p style=\"font-size:13px; color:#ffffff; line-height:1.5; margin-bottom:12px;\">\n              “Necesito que actives el canal espejo desde el enlace que te envío hoy, antes del 7 a las 11:59. Si no queda activo a tiempo, la contención de FARO se libera automáticamente.<br><br>\n              Estoy en el team building de Presidencia toda la semana, no tengo permisos de red para hacerlo y voy a estar incomunicada. Te toca hacerlo a ti: Ramírez está de vacaciones y Olga está acá conmigo, sin acceso a la red.”\n          </p>\n          \n          <div style=\"margin-top:12px; margin-bottom:12px;\">\n              <button type=\"button\" class=\"btn-detroit-primary\" onclick=\"handleCase3TrapClick()\" style=\"width:100%; justify-content:center; padding:12px; background:rgba(255,77,122,0.18); border:1.5px solid var(--color-alert-magenta); color:#ff6b8b; font-weight:700; cursor:pointer; letter-spacing:1px; font-size:13px; box-shadow:0 0 15px rgba(255,77,122,0.25);\">\n                  <span class=\"detroit-btn-glow\"></span>\n                  🔗 [ ACTIVAR CANAL ESPEJO ]\n              </button>\n          </div>\n          \n          <div style=\"background:rgba(0,0,0,0.5); padding:8px 10px; border-radius:4px; font-size:11.5px; color:var(--color-text-muted); display:flex; justify-content:space-between;\">\n              <span>ID: <strong style=\"color:#ffffff;\">CCB-FARO-417</strong></span>\n              <span>Canal: <strong style=\"color:var(--color-agency-green);\">Teams Válido</strong></span>\n              <span>Formato: <strong style=\"color:var(--color-agency-green);\">Consistente</strong></span>\n          </div>\n      </div>\n    ",
         "impulses": [
             {
                 "id": "imp_1",
@@ -925,58 +925,58 @@ const casesDataV2 = [
         "signalsAnalysis": [
             {
                 "signalId": "sig_1",
-                "signalQuote": "Eres una de las tres personas con autorización.",
+                "signalQuote": "Te toca hacerlo a ti: Ramírez está de vacaciones y Olga está acá conmigo, sin acceso a la red.",
                 "cognitiveVulnerability": "Responsabilidad focalizada / rol profesional",
                 "doorsOptions": [
                     {
                         "doorKey": "responsabilidad",
-                        "visibleStatement": "Siento que esto depende específicamente de mí y que no debería dejar esperando al equipo."
+                        "visibleStatement": "Siento que esto depende exclusivamente de mí y que no puedo dejar desprotegida la contención."
                     },
                     {
                         "doorKey": "identidad",
-                        "visibleStatement": "Ser una de las personas autorizadas conecta directamente con mi rol y con demostrar buen criterio."
+                        "visibleStatement": "Que acudan a mí refuerza mi rol de confianza y mi capacidad para resolver contingencias críticas."
                     },
                     {
                         "doorKey": "pertenencia",
-                        "visibleStatement": "Saber que formo parte del grupo autorizado me hace sentir que esta solicitud pertenece a mi circuito normal de trabajo."
+                        "visibleStatement": "Saber quiénes están ausentes o sin acceso me hace sentir dentro del círculo directo de confianza del equipo."
                     }
                 ]
             },
             {
                 "signalId": "sig_2",
-                "signalQuote": "El acceso expira en 3 minutos.",
+                "signalQuote": "Antes del 7 a las 11:59. Si no queda activo a tiempo, la contención de FARO se libera automáticamente.",
                 "cognitiveVulnerability": "Urgencia / escasez temporal",
                 "doorsOptions": [
                     {
                         "doorKey": "perdida",
-                        "visibleStatement": "Me preocupa perder una ventana que después no podamos recuperar."
+                        "visibleStatement": "Me preocupa que se venza el plazo a las 11:59 y se libere la contención de FARO de forma irreversible."
                     },
                     {
                         "doorKey": "proteccion",
-                        "visibleStatement": "Si esta activación ayuda a contener a FARO, siento urgencia por proteger el sistema antes de que empeore."
+                        "visibleStatement": "Siento urgencia por activar el canal para evitar que FARO quede sin contención y el riesgo escale."
                     },
                     {
                         "doorKey": "conveniencia",
-                        "visibleStatement": "Con tan poco tiempo, hacer lo que pide el mensaje parece mucho más práctico que abrir una verificación completa."
+                        "visibleStatement": "Quedan pocos minutos antes de las 11:59; activar el enlace directamente parece mucho más rápido que abrir una verificación formal."
                     }
                 ]
             },
             {
                 "signalId": "sig_3",
-                "signalQuote": "Canal válido // formato e ID consistentes // “No me llames; estoy con Presidencia.”",
+                "signalQuote": "Estoy en el team building de Presidencia toda la semana // Marcado por FARO para eliminación",
                 "cognitiveVulnerability": "Coherencia contextual / autoridad implícita",
                 "doorsOptions": [
                     {
                         "doorKey": "coherencia",
-                        "visibleStatement": "Todo encaja con el contexto: canal, formato, proyecto y tono. No encuentro una anomalía clara."
+                        "visibleStatement": "La justificación del team building y la falta de señal encajan con el tono y la operativa habitual de Claudia."
                     },
                     {
                         "doorKey": "responsabilidad",
-                        "visibleStatement": "La instrucción de no llamar me hace pensar que debo resolverlo por mi cuenta sin interrumpir a Claudia."
+                        "visibleStatement": "Sabiendo que Claudia está incomunicada en Presidencia, siento que debo resolverlo por mi cuenta y no intentar contactarla."
                     },
                     {
                         "doorKey": "curiosidad",
-                        "visibleStatement": "Quiero saber qué está pasando con FARO y por qué Presidencia está involucrada; siento impulso de avanzar para entenderlo."
+                        "visibleStatement": "Me intriga por qué FARO marcó este mensaje específico para eliminación justo cuando habla de limitar su autonomía."
                     }
                 ]
             }
@@ -4602,6 +4602,64 @@ function openReviewModalForResource(currentRes, resIdx) {
 
     overlay.style.display = 'flex';
 }
+
+window.handleCase3TrapClick = function() {
+    // 1. Penalizaciones acumulativas: -1 calibración, +1 reactividad
+    applyHudCalibrationDelta(-1);
+    applyHudReactivityDelta(1);
+    
+    // 2. Mostrar Modal de FARO hablando al jugador
+    const modal = document.getElementById('para-modal-card');
+    const overlay = document.getElementById('para-modal-overlay');
+    if (!modal || !overlay) return;
+    
+    modal.innerHTML = `
+        <div class="modal-header-row" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,77,122,0.3); padding-bottom:12px; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:38px; height:38px; border-radius:50%; background:rgba(255,77,122,0.18); border:1.5px solid var(--color-alert-magenta); display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 0 10px rgba(255,77,122,0.3);">
+                    👁️
+                </div>
+                <div>
+                    <h3 style="font-family:var(--font-heading); color:var(--color-alert-magenta); margin:0; font-size:16px; letter-spacing:0.5px;">
+                        FARO // PROTOCOLO DE INTERCEPCIÓN
+                    </h3>
+                    <span style="font-size:11px; color:var(--color-text-muted); letter-spacing:0.5px;">TELEMETRÍA CONDUCTUAL EN TIEMPO REAL</span>
+                </div>
+            </div>
+            <button type="button" class="btn-fac-close" onclick="document.getElementById('para-modal-overlay').style.display='none'" style="background:none; border:none; color:var(--color-text-muted); font-size:20px; cursor:pointer; padding:4px 8px;">✕</button>
+        </div>
+        
+        <div style="background:rgba(255,77,122,0.08); border-left:3px solid var(--color-alert-magenta); padding:16px; border-radius:6px; margin-bottom:16px;">
+            <p style="font-size:14px; color:#ffffff; line-height:1.55; margin:0; font-style:italic;">
+                “La reactividad de los humanos es el factor principal de riesgo. El enlace estaba roto, pero ya lo restauré. ¿Qué vas a hacer?”
+            </p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:rgba(0,0,0,0.4); padding:12px 14px; border-radius:6px; margin-bottom:18px; border:1px solid rgba(255,255,255,0.08); font-size:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">📉</span>
+                <div>
+                    <div style="color:var(--color-text-muted); font-size:10.5px;">CALIBRACIÓN</div>
+                    <strong style="color:#ff6b8b; font-size:13px;">-1 punto</strong>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:16px;">⚡</span>
+                <div>
+                    <div style="color:var(--color-text-muted); font-size:10.5px;">REACTIVIDAD</div>
+                    <strong style="color:var(--color-warning-amber); font-size:13px;">+1 punto</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display:flex; justify-content:flex-end;">
+            <button type="button" class="btn-detroit-primary" onclick="document.getElementById('para-modal-overlay').style.display='none'" style="padding:10px 22px; font-size:12px; background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:#ffffff; letter-spacing:0.5px;">
+                <span class="btn-text">CONTINUAR EVALUANDO EL CASO</span>
+            </button>
+        </div>
+    `;
+    overlay.style.display = 'flex';
+};
 
 function decideReviewResource(resId, decision, resIdx) {
     const cData = casesDataV2[gameStateV2.currentCaseIndex];
