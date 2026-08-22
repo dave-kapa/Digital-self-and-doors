@@ -2660,17 +2660,24 @@ function updateHudUI() {
         }
     });
 
-    // 5. CALIBRACIÓN (-5 a +5, Rojo a Verde)
+    // 5. CALIBRACIÓN (-10 a +10, Rojo a Verde)
+    // Intervalos: Inaceptable [-10, -3], Medio [-2, 4], Aceptable [+5, +10]
     const calVal = document.getElementById('hud-calibration-val');
     const calNeedle = document.getElementById('cal-bipolar-needle');
     if (calVal) {
         const sign = displayCal > 0 ? '+' : '';
         calVal.innerText = `${sign}${displayCal}`;
-        calVal.className = 'hud-numeric-badge ' + (displayCal > 0 ? 'badge-pos' : (displayCal === 0 ? 'badge-zero' : 'badge-neg'));
+        if (displayCal >= 5) {
+            calVal.className = 'hud-numeric-badge badge-pos'; // Verde / Aceptable (Objetivo)
+        } else if (displayCal >= -2) {
+            calVal.className = 'hud-numeric-badge badge-zero'; // Amarillo / Medio
+        } else {
+            calVal.className = 'hud-numeric-badge badge-neg'; // Rojo / Inaceptable
+        }
     }
     if (calNeedle) {
-        // Mapeo de escala -5..+5 a 0%..100%
-        const calPct = Math.min(100, Math.max(0, ((displayCal - (-5)) / 10) * 100));
+        // Mapeo de escala -10..+10 a 0%..100%
+        const calPct = Math.min(100, Math.max(0, ((displayCal - (-10)) / 20) * 100));
         calNeedle.style.left = `${calPct}%`;
     }
 
@@ -2701,7 +2708,7 @@ function setHudCost(amount) {
 }
 
 function setHudCalibration(level) {
-    gameStateV2.hudState.calibration = Math.max(-5, Math.min(5, level));
+    gameStateV2.hudState.calibration = Math.max(-10, Math.min(10, level));
     updateHudUI();
 }
 
@@ -2711,7 +2718,7 @@ function setHudReactivity(level) {
 }
 
 function applyHudCalibrationDelta(delta) {
-    gameStateV2.hudState.calibration = Math.max(-5, Math.min(5, gameStateV2.hudState.calibration + delta));
+    gameStateV2.hudState.calibration = Math.max(-10, Math.min(10, gameStateV2.hudState.calibration + delta));
     updateHudUI();
 }
 
@@ -2915,7 +2922,7 @@ const claudiaMissionPages = [
     },
     {
         title: "JERARQUÍA DE OBJETIVOS // ALPHA Y BETA",
-        text: "“Para superar la misión y recuperar el control tenemos una jerarquía clara:\n\n• OBJETIVO ALPHA: Calibración de Agencia — Mantener supervisión crítica, precisión y confianza apropiada ante FARO sin delegar a ciegas ni bloquear por impulso.\n• OBJETIVOS BETA: Preservar la Integridad del Sistema en estado Seguro y contener el Costo Operativo.”"
+        text: "“Para superar la misión y recuperar el control tenemos una jerarquía clara:\n\n• OBJETIVO ALPHA: Calibración de Agencia — Mantener el nivel en rango ACEPTABLE (+5 a +10) mediante supervisión crítica, precisión y contención del impulso ante FARO sin delegar a ciegas ni bloquear por impulso.\n• OBJETIVOS BETA: Preservar la Integridad del Sistema en estado Seguro y contener el Costo Operativo.”"
     },
     {
         title: "PROPÓSITO // NO DERROTAR A FARO",
@@ -5864,10 +5871,11 @@ function getAllCasesCumulativeGroupResults() {
     const avgRealTime = Math.round(realTimeSum / Math.max(1, totalFinishedCount || 1));
     const avgCost = Math.round(costSum / Math.max(1, totalFinishedCount || 1));
 
-    // Promedio y distribuciones CGA
-    const cgaPos = allCalibrations.filter(v => v >= 2).length;
-    const cgaNeu = allCalibrations.filter(v => v >= -1 && v <= 1).length;
-    const cgaNeg = allCalibrations.filter(v => v <= -2).length;
+    // Promedio y distribuciones CGA (Calibración Global Acumulada)
+    // Intervalos: Aceptable [5, 10], Medio [-2, 4], Inaceptable [-10, -3]
+    const cgaPos = allCalibrations.filter(v => v >= 5).length;
+    const cgaNeu = allCalibrations.filter(v => v >= -2 && v <= 4).length;
+    const cgaNeg = allCalibrations.filter(v => v <= -3).length;
     const cgaTotal = Math.max(1, allCalibrations.length);
     const cgaPosPct = Math.round((cgaPos / cgaTotal) * 100);
     const cgaNeuPct = Math.round((cgaNeu / cgaTotal) * 100);
@@ -5917,7 +5925,7 @@ function renderFinalResultsPageX(cumData) {
     const verdictTitle = document.getElementById('final-verdict-title');
     const verdictDesc = document.getElementById('final-verdict-desc');
 
-    const isPassed = cumData.cgaAvgNum >= 0 && cumData.globalIntegrity !== 'exposed';
+    const isPassed = cumData.cgaAvgNum >= 5 && cumData.globalIntegrity !== 'exposed';
 
     if (verdictBox) {
         verdictBox.className = `final-mission-verdict-box ${isPassed ? 'verdict-passed' : 'verdict-failed'}`;
@@ -5931,8 +5939,8 @@ function renderFinalResultsPageX(cumData) {
     }
     if (verdictDesc) {
         verdictDesc.innerText = isPassed
-            ? `El grupo demostró calibración positiva (${cumData.cgaAvg}), contuvo respuestas impulsivas y mantuvo la integridad del sistema bajo control.`
-            : `El grupo cedió control de forma desproporcionada o acumuló calibración desajustada (${cumData.cgaAvg}), reduciendo la supervisión crítica frente a FARO.`;
+            ? `El grupo alcanzó un rango de calibración ACEPTABLE (${cumData.cgaAvg} >= +5), contuvo respuestas impulsivas y mantuvo la integridad del sistema bajo control.`
+            : `El grupo no alcanzó el rango aceptable de calibración (${cumData.cgaAvg} < +5) o expuso el sistema, reduciendo la supervisión crítica frente a FARO.`;
     }
 
     // 1. Integridad Global Acumulada

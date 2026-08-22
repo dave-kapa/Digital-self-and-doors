@@ -336,22 +336,22 @@
                     </div>
                 </div>
 
-                <!-- 3. CALIBRACIÓN (-5 a +5, Rojo a Verde) -->
-                <div class="hud-card hud-gauge-card hud-calibration-card" id="hud-card-calibration" title="Calibración de Agencia Humano–Máquina (-5 a +5)">
+                <!-- 3. CALIBRACIÓN (-10 a +10, Rojo a Verde) -->
+                <div class="hud-card hud-gauge-card hud-calibration-card" id="hud-card-calibration" title="Calibración de Agencia Humano–Máquina (-10 a +10)">
                     <div class="hud-card-header">
                         <span class="hud-card-label" id="hud-calibration-title-label">CALIBRACIÓN (AGENCIA)</span>
-                        <span class="hud-numeric-badge badge-pos" id="hud-calibration-val">+1</span>
+                        <span class="hud-numeric-badge badge-pos" id="hud-calibration-val">+0</span>
                     </div>
                     <div class="hud-bipolar-meter">
                         <div class="bipolar-track track-calibration" id="cal-bipolar-track">
-                            <div class="bipolar-needle" id="cal-bipolar-needle" style="left: 60%;"></div>
+                            <div class="bipolar-needle" id="cal-bipolar-needle" style="left: 50%;"></div>
                         </div>
                         <div class="bipolar-ticks">
-                            <span class="tick-label tick-neg">-5</span>
+                            <span class="tick-label tick-neg">-10</span>
                             <span class="tick-label">-3</span>
                             <span class="tick-label tick-zero">0</span>
-                            <span class="tick-label">+3</span>
-                            <span class="tick-label tick-pos">+5</span>
+                            <span class="tick-label" style="color:#00e676;">+5</span>
+                            <span class="tick-label tick-pos">+10</span>
                         </div>
                     </div>
                 </div>
@@ -1560,9 +1560,9 @@
                                 <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">5. CALIBRACIÓN GLOBAL (CGA)</span>
                                 <div class="gmetric-value val-cga" id="bc-cga-avg">+0.0</div>
                                 <div class="dist-mini-row">
-                                    <span class="dist-pos" title="Positiva (+2 a +5)">🟢 <strong id="bc-cga-pos-pct">0%</strong></span>
-                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="bc-cga-neu-pct">0%</strong></span>
-                                    <span class="dist-neg" title="Negativa (-5 a -2)">🔴 <strong id="bc-cga-neg-pct">0%</strong></span>
+                                    <span class="dist-pos" title="Aceptable (+5 a +10)">🟢 <strong id="bc-cga-pos-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Medio (-2 a +4)">🟡 <strong id="bc-cga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Inaceptable (-10 a -3)">🔴 <strong id="bc-cga-neg-pct">0%</strong></span>
                                 </div>
                                 <span class="gmetric-sub">Indicador crítico para pasar el juego</span>
                             </div>
@@ -1885,9 +1885,9 @@
                                 <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">1. CALIBRACIÓN GLOBAL (CGA) // OBJ. ALPHA</span>
                                 <div class="gmetric-value val-cga" id="final-cga-avg-val">+0.0</div>
                                 <div class="dist-mini-row">
-                                    <span class="dist-pos" title="Positiva (+2 a +5)">🟢 <strong id="final-cga-pos-pct">0%</strong></span>
-                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-cga-neu-pct">0%</strong></span>
-                                    <span class="dist-neg" title="Negativa (-5 a -2)">🔴 <strong id="final-cga-neg-pct">0%</strong></span>
+                                    <span class="dist-pos" title="Aceptable (+5 a +10)">🟢 <strong id="final-cga-pos-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Medio (-2 a +4)">🟡 <strong id="final-cga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Inaceptable (-10 a -3)">🔴 <strong id="final-cga-neg-pct">0%</strong></span>
                                 </div>
                                 <span class="gmetric-sub">Objetivo Principal: Supervisión crítica y agencia</span>
                             </div>
@@ -2210,24 +2210,24 @@ Recuérdame que tu representación puede ser incompleta o equivocada y que debo 
                     <div class="objective-pillar-card pillar-agency">
                         <div class="pillar-icon">🧠</div>
                         <h4 class="pillar-title">1. CALIBRAR LA AGENCIA // ALPHA</h4>
-                        <p class="pillar-desc">Supervisar la IA con sentido crítico, precisión y contención del impulso, evitando la confianza ciega y el bloqueo reactivo.</p>
+                        <p class="pillar-desc">Supervisar la IA con sentido crítico, precisión y contención del impulso para alcanzar el rango <strong>ACEPTABLE (+5 a +10)</strong>.</p>
                         
-                        <!-- Visualizador HUD Objetivo 1: Calibración (> 0 en Verde) -->
+                        <!-- Visualizador HUD Objetivo 1: Calibración (+5 a +10 en Verde) -->
                         <div class="pillar-hud-preview">
                             <div class="hud-card-header" style="margin-bottom:4px;">
                                 <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
-                                <span class="hud-numeric-badge badge-pos" style="font-size:9px;">&gt; 0 (ZONA POSITIVA)</span>
+                                <span class="hud-numeric-badge badge-pos" style="font-size:9px;">+5 A +10 (ACEPTABLE)</span>
                             </div>
                             <div class="hud-bipolar-meter">
                                 <div class="bipolar-track track-calibration">
-                                    <div class="bipolar-needle" style="left: 78%;"></div>
+                                    <div class="bipolar-needle" style="left: 80%;"></div>
                                 </div>
                                 <div class="bipolar-ticks" style="font-size:8px;">
-                                    <span class="tick-label tick-neg">-5</span>
+                                    <span class="tick-label tick-neg">-10</span>
                                     <span class="tick-label">-3</span>
                                     <span class="tick-label tick-zero">0</span>
-                                    <span class="tick-label" style="color:#00e676;">+3</span>
-                                    <span class="tick-label tick-pos" style="font-weight:bold;">+5</span>
+                                    <span class="tick-label" style="color:#ffd54f;">+4</span>
+                                    <span class="tick-label tick-pos" style="font-weight:bold; color:#00e676;">+5 a +10</span>
                                 </div>
                             </div>
                         </div>

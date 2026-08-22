@@ -2121,15 +2121,15 @@ body {
     height: 10px;
     border-radius: 50%;
     background-color: #0b1926;
-    border: 1px solid rgba(162, 155, 254, 0.4);
+    border: 1.5px solid #a29bfe;
     box-shadow: none;
     transition: all 0.3s ease;
 }
 
 .analizar-bulb.off {
-    background-color: #070d14;
-    border-color: rgba(255, 255, 255, 0.15);
-    opacity: 0.35;
+    background-color: rgba(162, 155, 254, 0.08);
+    border: 1.5px solid #a29bfe;
+    opacity: 0.9;
 }
 
 .analizar-bulb.active {
