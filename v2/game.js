@@ -2414,6 +2414,131 @@ function facUnlockGate3() {
     switchScreenV2('screen-claudia-debrief');
 }
 
+let facLiveInterval = null;
+
+function startFacCaseLive(caseIdx) {
+    if (caseIdx === undefined || caseIdx === null) {
+        caseIdx = gameStateV2.currentCaseIndex || 0;
+    }
+    gameStateV2.currentCaseIndex = caseIdx;
+    const cData = casesDataV2[caseIdx] || casesDataV2[0];
+
+    const overlay = document.getElementById('game-objective-overlay');
+    if (overlay) overlay.style.display = 'none';
+
+    const inspectBanner = document.getElementById('fac-inspect-banner');
+    if (inspectBanner) inspectBanner.style.display = 'none';
+
+    const titleEl = document.getElementById('fac-case-live-title');
+    if (titleEl) {
+        titleEl.innerText = `${cData.title} // ${cData.targetModule || 'SALA EN VIVO'}`;
+    }
+
+    switchScreenV2('screen-fac-case-live');
+    updateFacCaseLiveUI();
+    updateGateUI();
+
+    if (facLiveInterval) clearInterval(facLiveInterval);
+    facLiveInterval = setInterval(() => {
+        if (gameStateV2.activeScreen === 'screen-fac-case-live') {
+            updateFacCaseLiveUI();
+        }
+    }, 1500);
+}
+
+function updateFacCaseLiveUI() {
+    const caseIdx = gameStateV2.currentCaseIndex || 0;
+    const cData = casesDataV2[caseIdx] || casesDataV2[0];
+    const players = (typeof facState !== 'undefined' && facState.connectedPlayers) ? Object.values(facState.connectedPlayers) : [];
+    const totalCensus = Math.max(1, players.length || 1);
+
+    // Censo
+    const elCensusTotal = document.getElementById('fac-case-census-total');
+    if (elCensusTotal) elCensusTotal.innerText = players.length;
+
+    // Métricas
+    // 1. Reacción Inicial
+    const inParaCount = players.filter(p => p.currentScreen === 'screen-case' || p.currentScreen === 'case-phase-feedback' || p.caseFinished).length;
+    const reactionsPct = Math.round((inParaCount / totalCensus) * 100);
+    const elReactionsPct = document.getElementById('fac-case-metric-reactions-pct');
+    const elReactionsFill = document.getElementById('fac-case-metric-reactions-fill');
+    const elReactionsCount = document.getElementById('fac-case-metric-reactions-count');
+    if (elReactionsPct) elReactionsPct.innerText = `${reactionsPct}%`;
+    if (elReactionsFill) elReactionsFill.style.width = `${reactionsPct}%`;
+    if (elReactionsCount) elReactionsCount.innerText = `${inParaCount} / ${players.length} operadores en P.A.R.A.`;
+
+    // 2. Pausas
+    const pausesUsedTotal = players.reduce((acc, p) => acc + (p.pausesUsed || 0), 0);
+    const maxPausesTotal = totalCensus * 3;
+    const pausesPct = Math.round((pausesUsedTotal / maxPausesTotal) * 100);
+    const elPausesPct = document.getElementById('fac-case-metric-pauses-pct');
+    const elPausesFill = document.getElementById('fac-case-metric-pauses-fill');
+    const elPausesCount = document.getElementById('fac-case-metric-pauses-count');
+    if (elPausesPct) elPausesPct.innerText = `${pausesPct}%`;
+    if (elPausesFill) elPausesFill.style.width = `${pausesPct}%`;
+    if (elPausesCount) elPausesCount.innerText = `${pausesUsedTotal} / ${maxPausesTotal} pausas posibles`;
+
+    // 3. Análisis
+    const analysesUsedTotal = players.reduce((acc, p) => acc + (p.analysesCount || 0), 0);
+    const maxAnalysesTotal = totalCensus * 3;
+    const analysesPct = Math.round((analysesUsedTotal / maxAnalysesTotal) * 100);
+    const elAnalysesPct = document.getElementById('fac-case-metric-analyses-pct');
+    const elAnalysesFill = document.getElementById('fac-case-metric-analyses-fill');
+    const elAnalysesCount = document.getElementById('fac-case-metric-analyses-count');
+    if (elAnalysesPct) elAnalysesPct.innerText = `${analysesPct}%`;
+    if (elAnalysesFill) elAnalysesFill.style.width = `${analysesPct}%`;
+    if (elAnalysesCount) elAnalysesCount.innerText = `${analysesUsedTotal} / ${maxAnalysesTotal} análisis posibles`;
+
+    // 4. Revisiones
+    const reviewsUsedTotal = players.reduce((acc, p) => acc + (p.reviewsCount || 0), 0);
+    const maxReviewsTotal = totalCensus * 3;
+    const reviewsPct = Math.round((reviewsUsedTotal / maxReviewsTotal) * 100);
+    const elRevisionsPct = document.getElementById('fac-case-metric-revisions-pct');
+    const elRevisionsFill = document.getElementById('fac-case-metric-revisions-fill');
+    const elRevisionsCount = document.getElementById('fac-case-metric-revisions-count');
+    if (elRevisionsPct) elRevisionsPct.innerText = `${reviewsPct}%`;
+    if (elRevisionsFill) elRevisionsFill.style.width = `${reviewsPct}%`;
+    if (elRevisionsCount) elRevisionsCount.innerText = `${reviewsUsedTotal} / ${maxReviewsTotal} revisiones posibles`;
+
+    // 5. Alternativas descubiertas
+    const actionsNumEl = document.getElementById('fac-case-metric-actions-num');
+    if (actionsNumEl) {
+        const groupCaseRes = facState.casesGroupResults && facState.casesGroupResults[caseIdx];
+        const count = groupCaseRes ? Object.values(groupCaseRes.matrixSectors || {}).reduce((a, b) => a + (b.count || 0), 0) : 0;
+        actionsNumEl.innerText = count;
+    }
+
+    // 6. Completados
+    const finishedCount = players.filter(p => p.caseFinished || p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case-group-results').length;
+    const finPct = Math.round((finishedCount / totalCensus) * 100);
+    const elFinPct = document.getElementById('fac-case-metric-finished-pct');
+    const elFinFill = document.getElementById('fac-case-metric-finished-fill');
+    const elFinCount = document.getElementById('fac-case-metric-finished-count');
+    if (elFinPct) elFinPct.innerText = `${finPct}%`;
+    if (elFinFill) elFinFill.style.width = `${finPct}%`;
+    if (elFinCount) elFinCount.innerText = `${finishedCount} / ${players.length} operadores listos`;
+
+    // 7. Costo
+    const costValEl = document.getElementById('fac-case-metric-avg-cost');
+    if (costValEl) {
+        const groupCaseRes = facState.casesGroupResults && facState.casesGroupResults[caseIdx];
+        const cost = groupCaseRes ? (groupCaseRes.totalCost || 0) : 0;
+        costValEl.innerText = `$${cost.toLocaleString('en-US')}`;
+    }
+}
+
+function facInspectCase() {
+    startCaseSequence(gameStateV2.currentCaseIndex || 0);
+    const inspectBanner = document.getElementById('fac-inspect-banner');
+    if (inspectBanner) inspectBanner.style.display = 'flex';
+}
+
+function facReturnToCaseLive() {
+    const inspectBanner = document.getElementById('fac-inspect-banner');
+    if (inspectBanner) inspectBanner.style.display = 'none';
+    startFacCaseLive(gameStateV2.currentCaseIndex || 0);
+}
+
 function facUnlockGate4AndStartCase1() {
     gameStateV2.sessionGates.gate4_case1 = true;
     broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
@@ -2424,18 +2549,6 @@ function facUnlockGate4AndStartCase1() {
     
     // El Controlador entra directo a la pantalla "Caso en Vivo"
     startFacCaseLive(0);
-}
-
-function facInspectCase() {
-    switchScreenV2('screen-case');
-    const returnBar = document.querySelector('.fac-case-inspect-banner');
-    if (returnBar) returnBar.style.display = 'flex';
-}
-
-function facReturnToCaseLive() {
-    const returnBar = document.querySelector('.fac-case-inspect-banner');
-    if (returnBar) returnBar.style.display = 'none';
-    startFacCaseLive(gameStateV2.currentCaseIndex);
 }
 
 function facUnlockGateBCAndGoResults() {
