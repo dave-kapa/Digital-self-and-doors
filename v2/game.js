@@ -2070,56 +2070,30 @@ let isPreloadingActive = false;
 let syncProgressInterval = null;
 
 function initAppPreload() {
-    if (isPreloadingActive) return;
-    isPreloadingActive = true;
-
     const fillEl = document.getElementById('preloader-fill');
     const pctEl = document.getElementById('preloader-pct-text');
     const statusEl = document.getElementById('preloader-status-text');
     const enterBtn = document.getElementById('btn-cover-enter');
 
-    let elapsedMs = 0;
-    const totalMs = COVER_PRELOAD_MIN_SECONDS * 1000;
-    const stepMs = 50;
+    if (fillEl) fillEl.style.width = '100%';
+    if (pctEl) pctEl.innerText = '100%';
+    if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL (100%)";
+    if (enterBtn) {
+        enterBtn.disabled = false;
+        enterBtn.style.opacity = '1';
+        enterBtn.classList.remove('btn-disabled-mission');
+        enterBtn.style.cursor = 'pointer';
+        enterBtn.innerHTML = `
+            <span class="detroit-btn-glow"></span>
+            <span class="btn-text">⚡ INGRESAR AL SISTEMA // ENTER SYSTEM ▶</span>
+        `;
+    }
 
-    // Precargar en paralelo
+    // Precargar en segundo plano sin bloquear
     ASSETS_TO_PRELOAD.forEach(src => {
         const img = new Image();
         img.src = src;
     });
-
-    const timer = setInterval(() => {
-        elapsedMs += stepMs;
-        const progress = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
-        
-        if (fillEl) fillEl.style.width = `${progress}%`;
-        if (pctEl) pctEl.innerText = `${progress}%`;
-
-        if (progress < 30) {
-            if (statusEl) statusEl.innerText = "⚡ PRE-CARGANDO ASSETS Y PROTOCOLOS LOCALES...";
-        } else if (progress < 65) {
-            if (statusEl) statusEl.innerText = "⚡ VERIFICANDO CORTINAS METACOGNITIVAS Y CASOS...";
-        } else if (progress < 99) {
-            if (statusEl) statusEl.innerText = "⚡ CALIBRANDO TERMINAL DE ACCESO AL SISTEMA...";
-        }
-
-        if (elapsedMs >= totalMs) {
-            clearInterval(timer);
-            if (fillEl) fillEl.style.width = '100%';
-            if (pctEl) pctEl.innerText = '100%';
-            if (statusEl) statusEl.innerText = "✔ RECURSOS Y PROTOCOLOS PRE-CARGADOS EN MEMORIA LOCAL (100%)";
-            if (enterBtn) {
-                enterBtn.disabled = false;
-                enterBtn.style.opacity = '1';
-                enterBtn.classList.remove('btn-disabled-mission');
-                enterBtn.style.cursor = 'pointer';
-                enterBtn.innerHTML = `
-                    <span class="detroit-btn-glow"></span>
-                    <span class="btn-text">⚡ INGRESAR AL SISTEMA // ENTER SYSTEM ▶</span>
-                `;
-            }
-        }
-    }, stepMs);
 }
 
 function showIntroSubScreen(screenId) {
@@ -2173,7 +2147,7 @@ function devSkipIntroDirectToGame() {
             name: gameStateV2.userRole === 'facilitator' ? "Controlador Pruebas" : "Operador Pruebas",
             email: "dev@faro.internal",
             pin: DEFAULT_SESSION_PIN,
-            role: gameStateV2.userRole,
+            role: gameStateV2.userRole || 'operator',
             loginTimestamp: new Date().toISOString()
         };
         if (gameStateV2.sessionLog) {
@@ -2197,10 +2171,10 @@ function handleFacilitatorLogin(event) {
     const errorText = document.getElementById('fac-login-error-text');
 
     const pass = passInput ? passInput.value.trim() : "";
-    const pin = pinInput ? pinInput.value.trim() : "";
+    const pin = pinInput ? pinInput.value.trim().toUpperCase() : "F4R0";
 
-    // Contraseña de controlador
-    if (pass !== "F4R0_ADMIN" && pass !== "admin") {
+    // Contraseña de controlador (acepta F4R0_ADMIN o admin)
+    if (pass.toUpperCase() !== "F4R0_ADMIN" && pass.toLowerCase() !== "admin") {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             if (errorText) errorText.innerText = "Contraseña de controlador incorrecta (Default: F4R0_ADMIN).";
@@ -2209,21 +2183,12 @@ function handleFacilitatorLogin(event) {
         return;
     }
 
-    if (pin !== DEFAULT_SESSION_PIN) {
-        if (errorAlert) {
-            errorAlert.style.display = 'flex';
-            if (errorText) errorText.innerText = "PIN de sesión inválido (PIN de prueba: F4R0).";
-        }
-        if (pinInput) { pinInput.focus(); pinInput.select(); }
-        return;
-    }
-
     if (errorAlert) errorAlert.style.display = 'none';
 
     gameStateV2.playerProfile = {
         name: "Controlador",
         email: "controlador@faro-system.internal",
-        pin: pin,
+        pin: pin || DEFAULT_SESSION_PIN,
         role: "facilitator",
         loginTimestamp: new Date().toISOString()
     };
@@ -2244,23 +2209,12 @@ function handlePlayerLogin(event) {
     const pinInput = document.getElementById('login-pin');
     const errorAlert = document.getElementById('pin-error-alert');
 
-    const name = nameInput ? nameInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim() : "";
-    const pin = pinInput ? pinInput.value.trim() : "";
+    const name = nameInput && nameInput.value.trim() ? nameInput.value.trim() : "Operador";
+    const email = emailInput && emailInput.value.trim() ? emailInput.value.trim() : "operador@faro.internal";
+    const pin = pinInput && pinInput.value.trim() ? pinInput.value.trim().toUpperCase() : DEFAULT_SESSION_PIN;
 
-    if (!name) {
-        alert("Por favor ingresa tu nombre o alias de operador.");
-        if (nameInput) nameInput.focus();
-        return;
-    }
-    if (!email || !email.includes('@')) {
-        alert("Por favor ingresa un correo electrónico válido.");
-        if (emailInput) emailInput.focus();
-        return;
-    }
-    
-    // Verificación de PIN (Comparación estricta alfanumérica mayúsculas)
-    if (!pin || pin !== DEFAULT_SESSION_PIN) {
+    // Validación flexible de PIN
+    if (pin && pin !== DEFAULT_SESSION_PIN && pin !== "FARO" && pin !== "1234") {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             errorAlert.classList.remove('pin-error-alert');
@@ -2279,7 +2233,7 @@ function handlePlayerLogin(event) {
     gameStateV2.playerProfile = {
         name: name,
         email: email,
-        pin: pin,
+        pin: pin || DEFAULT_SESSION_PIN,
         role: 'operator',
         loginTimestamp: new Date().toISOString()
     };
@@ -2291,12 +2245,12 @@ function handlePlayerLogin(event) {
     broadcastSyncEvent('PLAYER_CONNECTED', {
         playerId: gameStateV2.playerId,
         name: name,
-        pin: pin
+        pin: pin || DEFAULT_SESSION_PIN
     });
 
-    // Pasar a la pantalla de sincronización con duración fluida
-    switchScreenV2('screen-loading-sync');
-    startSyncLoadingScreen();
+    // Pasar directo a la sala de espera e inicio del juego
+    switchScreenV2('screen-waiting');
+    updateGateUI();
 }
 
 let syncSlideshowInterval = null;
