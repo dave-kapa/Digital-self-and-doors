@@ -1739,7 +1739,6 @@ function renderGroupResultsPageZ(res, cData, cumData) {
             <div class="sector-bar-block">
                 <div class="sector-bar-info">
                     <span style="color:var(--color-cyan); font-weight:700;">Caso: ${casePct}% (${caseData.count})</span>
-                    <span class="bar-cost-tag">+$${caseData.cost.toLocaleString('en-US')}</span>
                 </div>
                 <div class="sector-bar-track">
                     <div class="bar-color-case" style="height:100%; width:${casePct}%; border-radius:4px;"></div>
@@ -1750,7 +1749,6 @@ function renderGroupResultsPageZ(res, cData, cumData) {
             <div class="sector-bar-block">
                 <div class="sector-bar-info">
                     <span style="color:#b388ff; font-weight:700;">Acum.: ${cumPct}% (${cumSecData.count})</span>
-                    <span class="bar-cost-tag">+$${cumSecData.cost.toLocaleString('en-US')}</span>
                 </div>
                 <div class="sector-bar-track">
                     <div class="bar-color-cumulative" style="height:100%; width:${cumPct}%; border-radius:4px;"></div>
@@ -2619,14 +2617,16 @@ function updateHudUI() {
     let displayCost = hud.costDollars;
     let displayCal = hud.calibration;
     let displayReact = hud.reactivity;
+    let costPct = Math.min(100, Math.max(0, (displayCost / 100000) * 100));
 
     if (isFac) {
-        // En el Facilitador, mostrar las métricas globales acumuladas consolidadas hasta el momento
+        // En el Facilitador, mostrar la suma bruta acumulada de todos los casos de todos los jugadores
         const cum = getAllCasesCumulativeGroupResults();
         displayIntegrity = cum.globalIntegrity || 'safe';
-        displayCost = cum.avgCost || 0;
+        displayCost = cum.totalCumulativeCost || 0;
         displayCal = Math.round(cum.cgaAvgNum || 0);
         displayReact = Math.round(cum.rgaAvgNum || 0);
+        costPct = cum.globalCostPct !== undefined ? cum.globalCostPct : 0;
     }
 
     // 3. INTEGRIDAD DEL SISTEMA (Semáforo Tri-State)
@@ -2661,14 +2661,12 @@ function updateHudUI() {
         }
     }
 
-    // 4. COSTO DE LA OPERACIÓN (Contador 6 cifras + 10 Segmentos + Aguja)
+    // 4. COSTO DE LA OPERACIÓN (Contador cifras + 10 Segmentos + Aguja)
     const costCounter = document.getElementById('hud-cost-counter');
     const costNeedle = document.getElementById('cost-meter-needle');
     if (costCounter) {
         costCounter.innerText = `$${displayCost.toLocaleString('en-US', { minimumIntegerDigits: 6, useGrouping: true })}`;
     }
-    // Calcular porcentaje de costo (escala base $100,000 = 100%)
-    const costPct = Math.min(100, Math.max(0, (displayCost / 100000) * 100));
     if (costNeedle) {
         costNeedle.style.left = `${costPct}%`;
     }
@@ -5656,8 +5654,15 @@ function showNarrativeFeedbackScreen() {
     // Llenar Balance Económico Total
     const costTotalEl = document.getElementById('fb-cost-total-display');
     if (costTotalEl) {
-        const sign = outcomeObj.caseTotalAddedCost >= 0 ? '+' : '-';
-        costTotalEl.innerText = `${sign}$${Math.abs(outcomeObj.caseTotalAddedCost).toLocaleString('en-US')}`;
+        if (gameStateV2.userRole === 'facilitator') {
+            const groupCaseRes = facState.casesGroupResults && facState.casesGroupResults[gameStateV2.currentCaseIndex];
+            const caseTotal = groupCaseRes ? (groupCaseRes.totalCost || 0) : outcomeObj.caseTotalAddedCost;
+            const sign = caseTotal >= 0 ? '+' : '-';
+            costTotalEl.innerText = `${sign}$${Math.abs(caseTotal).toLocaleString('en-US')}`;
+        } else {
+            const sign = outcomeObj.caseTotalAddedCost >= 0 ? '+' : '-';
+            costTotalEl.innerText = `${sign}$${Math.abs(outcomeObj.caseTotalAddedCost).toLocaleString('en-US')}`;
+        }
     }
 
     // Llenar Caja 1: Tiempo
@@ -6074,6 +6079,7 @@ function recordPlayerCaseResultForGroup(caseIdx, payload) {
         const totalCost = res.finishedPlayers.reduce((acc, p) => acc + (p.cost || 0), 0);
         res.avgRealTime = Math.round(totalRealTime / totalP);
         res.avgCost = Math.round(totalCost / totalP);
+        res.totalCost = totalCost;
     }
 }
 
@@ -6100,7 +6106,8 @@ function getAllCasesCumulativeGroupResults() {
     let alertSum = 0;
     let exposedSum = 0;
     let realTimeSum = 0;
-    let costSum = 0;
+    let totalCumulativeCost = 0;
+    let maxPlayersEver = 0;
     let allCalibrations = [];
     let allReactivities = [];
     const cumDoors = {};
@@ -6118,12 +6125,20 @@ function getAllCasesCumulativeGroupResults() {
         if (res) {
             const count = res.finishedPlayers ? res.finishedPlayers.length : 0;
             totalFinishedCount += count;
+            if (count > maxPlayersEver) {
+                maxPlayersEver = count;
+            }
             safeSum += (res.integrityCounts.safe || 0);
             alertSum += (res.integrityCounts.alert || 0);
             exposedSum += (res.integrityCounts.exposed || 0);
             
             realTimeSum += (res.avgRealTime || 45) * Math.max(1, count);
-            costSum += (res.avgCost || 0) * Math.max(1, count);
+            
+            // Sumar los costos brutos de cada caso de todos los jugadores que hayan terminado
+            const caseTotalCost = res.finishedPlayers 
+                ? res.finishedPlayers.reduce((acc, p) => acc + (p.cost || 0), 0)
+                : (res.totalCost || 0);
+            totalCumulativeCost += caseTotalCost;
 
             allCalibrations = allCalibrations.concat(res.calibrationList || []);
             allReactivities = allReactivities.concat(res.reactivityList || []);
@@ -6152,7 +6167,12 @@ function getAllCasesCumulativeGroupResults() {
     gameStateV2.hudState.integrity = globalIntegrity;
 
     const avgRealTime = Math.round(realTimeSum / Math.max(1, totalFinishedCount || 1));
-    const avgCost = Math.round(costSum / Math.max(1, totalFinishedCount || 1));
+    const avgCost = Math.round(totalCumulativeCost / Math.max(1, totalFinishedCount || 1));
+
+    // Base del 100% escalable para Facilitador:
+    // maxPlayersEver * 100,000. Si un caso posterior tiene más jugadores, se expande la base.
+    const maxGlobalCostBasis = Math.max(1, maxPlayersEver || 1) * 100000;
+    const globalCostPct = Math.min(100, Math.max(0, (totalCumulativeCost / maxGlobalCostBasis) * 100));
 
     // Promedio y distribuciones CGA (Calibración Global Acumulada)
     // Intervalos: Aceptable [5, 10], Medio [-2, 4], Inaceptable [-10, -3]
@@ -6184,7 +6204,8 @@ function getAllCasesCumulativeGroupResults() {
     return {
         resolvedCases: resolved,
         safePct, alertPct, exposedPct, globalIntegrity,
-        avgRealTime, avgCost,
+        avgRealTime, avgCost, totalCumulativeCost,
+        maxPlayersEver, maxGlobalCostBasis, globalCostPct,
         cgaPosPct, cgaNeuPct, cgaNegPct, cgaAvg, cgaAvgNum,
         rgaLowPct, rgaNeuPct, rgaHighPct, rgaAvg,
         cumDoors, cumMatrix
@@ -6253,7 +6274,7 @@ function renderFinalResultsPageX(cumData) {
 
     // 3. CG: Costo Global
     const cgEl = document.getElementById('final-metric-cg-val');
-    if (cgEl) cgEl.innerText = `$${cumData.avgCost.toLocaleString('en-US')}`;
+    if (cgEl) cgEl.innerText = `$${(cumData.totalCumulativeCost || 0).toLocaleString('en-US')}`;
 
     // 4. CGA: Calibración Global
     const cgaAvgEl = document.getElementById('final-cga-avg-val');
@@ -6387,7 +6408,6 @@ function renderFinalResultsPageZ(cumData) {
             <div class="sector-bar-block">
                 <div class="sector-bar-info">
                     <span style="color:#b388ff; font-weight:700;">Acum.: ${cumPct}% (${cumSecData.count})</span>
-                    <span class="bar-cost-tag">+$${cumSecData.cost.toLocaleString('en-US')}</span>
                 </div>
                 <div class="sector-bar-track">
                     <div class="bar-color-cumulative" style="height:100%; width:${cumPct}%; border-radius:4px;"></div>
