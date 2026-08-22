@@ -3625,10 +3625,9 @@ function getMaxTotalGameSeconds() {
     return getMaxCaseDurationSeconds() * TOTAL_CASES_COUNT;
 }
 
-// Índice de costo por segundo dinámico = K / Tiempo Máximo Total (100,000 / 1380 ≈ $72.46377 / seg)
+// Tarifa fija de costo por segundo = $100 / seg
 function getOperationalCostPerSecond() {
-    const totalSecs = getMaxTotalGameSeconds();
-    return totalSecs > 0 ? (COST_MAX_K / totalSecs) : 72.46377;
+    return 100;
 }
 
 // Control de tarjetas P.A.R.A. y activación del Modal de Objetivo
@@ -5259,27 +5258,27 @@ function processCaseOutcome(actionIds) {
 
     // ==========================================================================
     // 2. DETERMINACIÓN DE INTEGRIDAD Y RESOLUCIÓN SEGÚN REGLAS V3
-    // REGLAS V3:
-    // • Suma >= +2 => SEGURO (Bono -$10k | Módulo Recuperado)
-    // • Suma entre -1 y +1 => ALERTA (Ajuste +$5k | Módulo Recuperado / Mitigación Parcial)
-    // • Suma <= -2 => EXPUESTO (Penalización +$15k | Módulo Comprometido)
+    // REGLAS V3 (RECALIBRADAS):
+    // • Suma >= +2 => SEGURO (Bono -$2k | Módulo Recuperado)
+    // • Suma entre -1 y +1 => ALERTA (Ajuste +$1k | Módulo Recuperado / Mitigación Parcial)
+    // • Suma <= -2 => EXPUESTO (Penalización +$3k | Módulo Comprometido)
     // ==========================================================================
     let caseIntegrity = 'safe';
     let outcomeIndicator = 1;
-    let outcomeCostAdjustment = -10000;
+    let outcomeCostAdjustment = -2000;
 
     if (actionsCalibSum >= 2) {
         caseIntegrity = 'safe';
         outcomeIndicator = 1;
-        outcomeCostAdjustment = -10000;
+        outcomeCostAdjustment = -2000;
     } else if (actionsCalibSum >= -1 && actionsCalibSum <= 1) {
         caseIntegrity = 'alert';
         outcomeIndicator = 2;
-        outcomeCostAdjustment = 5000;
+        outcomeCostAdjustment = 1000;
     } else {
         caseIntegrity = 'exposed';
         outcomeIndicator = 3;
-        outcomeCostAdjustment = 15000;
+        outcomeCostAdjustment = 3000;
     }
 
     gameStateV2.hudState.integrity = caseIntegrity;
@@ -5328,9 +5327,9 @@ function processCaseOutcome(actionIds) {
     // Bonus por acierto/error en Calibración: siempre +1 si Seguro, -1 si Expuesto, 0 si Alerta/Neutro
     const calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
 
-    // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso -> $5,000
+    // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso -> $1,000
     const finalReactivityLevel = Math.max(-5, Math.min(5, gameStateV2.hudState.reactivity + reactivityDelta));
-    const reactivityCostAdjustment = finalReactivityLevel * 5000;
+    const reactivityCostAdjustment = finalReactivityLevel * 1000;
 
     // FÓRMULA DE COSTO OPERATIVO: Costo Base por Tiempo + Ajuste por Integridad + Ajuste por Reactividad
     const costPerSec = getOperationalCostPerSecond();
@@ -5675,7 +5674,7 @@ function showNarrativeFeedbackScreen() {
         cardValIntegrity.innerText = `${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')}`;
     }
     if (cardSubIntegrity) {
-        const statusLabel = outcomeObj.integrityResult === 'safe' ? 'SEGURO (-$10K)' : (outcomeObj.integrityResult === 'alert' ? 'ALERTA (+$5K)' : 'EXPUESTO (+$15K)');
+        const statusLabel = outcomeObj.integrityResult === 'safe' ? 'SEGURO (-$2K)' : (outcomeObj.integrityResult === 'alert' ? 'ALERTA (+$1K)' : 'EXPUESTO (+$3K)');
         cardSubIntegrity.innerText = `Estado: ${statusLabel}`;
     }
 
@@ -5688,7 +5687,7 @@ function showNarrativeFeedbackScreen() {
     }
     if (cardSubReactivity) {
         const reactLevelSign = outcomeObj.finalReactivityLevel >= 0 ? '+' : '';
-        cardSubReactivity.innerText = `${reactLevelSign}${outcomeObj.finalReactivityLevel} unidades ($5K c/u)`;
+        cardSubReactivity.innerText = `${reactLevelSign}${outcomeObj.finalReactivityLevel} unidades ($1K c/u)`;
     }
 
     document.getElementById('fb-narrative-box').innerHTML = outcomeObj.narrative;
