@@ -677,6 +677,14 @@
                         </div>
                     </div>
 
+                    <!-- Roster de Operadores en Sala -->
+                    <div class="fac-connected-players-box" id="fac-calib-players-roster" style="margin-top:16px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                        <strong style="font-size:11px; color:var(--color-text-muted); display:block; margin-bottom:6px;">OPERADORES REGISTRADOS EN SALA:</strong>
+                        <div class="fac-players-chips-wrap" id="fac-calib-players-chips" style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando conexiones de operadores...</span>
+                        </div>
+                    </div>
+
                     <div class="fac-action-row" style="margin-top:20px;">
                         <button class="btn-detroit-primary btn-fac-main" onclick="facGoToCalibResults()">
                             <span class="detroit-btn-glow"></span>
@@ -750,6 +758,14 @@
                                 <span class="census-timer-icon">⏱</span>
                                 <span class="census-timer-text" id="fac-case-census-status">Censo inicial activo (Recálculo definitivo en: <strong id="fac-case-census-countdown">60s</strong>)</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Roster de Operadores en Vivo en este Caso -->
+                    <div class="fac-connected-players-box" id="fac-case-players-roster" style="margin-bottom:16px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                        <strong style="font-size:11px; color:var(--color-text-muted); display:block; margin-bottom:6px;">ROSTER DE OPERADORES EN SALA:</strong>
+                        <div class="fac-players-chips-wrap" id="fac-case-players-chips" style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando operadores en este caso...</span>
                         </div>
                     </div>
 

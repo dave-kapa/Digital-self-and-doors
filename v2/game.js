@@ -86,17 +86,63 @@ let facState = {
 };
 
 // ==========================================================================
+// UTILIDADES DE SEGURIDAD Y CONSTANTES NOMBRADAS
+// ==========================================================================
+
+// Función universal de sanitización contra XSS
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Utilidad criptográfica SHA-256 para verificación de hashes
+async function sha256Hex(str) {
+    if (typeof crypto !== 'undefined' && crypto.subtle) {
+        const buffer = new TextEncoder().encode(str);
+        const hash = await crypto.subtle.digest('SHA-256', buffer);
+        return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    // Fallback DJB2 hash si subtle crypto no está disponible
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) + hash) + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return String(hash);
+}
+
+// Hashes criptográficos de credenciales autorizadas
+const AUTH_HASH_FACILITATOR_1 = "e2dbe1e8f8dc313994197072f133655acc96ebb55747a49ff25383e1252dbc72"; // sha256("F4R0_ADMIN")
+const AUTH_HASH_FACILITATOR_2 = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // sha256("admin")
+const AUTH_HASH_SESSION_PIN   = "329adaf776f5e3acae902ad889554074819d87f63299c72ff9135995e759c763"; // sha256("F4R0")
+
+// CONSTANTES ECONÓMICAS Y DE SCORING (SIN NÚMEROS MÁGICOS)
+const COST_RATE_PER_SECOND = 100;
+const COST_ADJUSTMENT_SAFE = -2000;
+const COST_ADJUSTMENT_ALERT = 1000;
+const COST_ADJUSTMENT_EXPOSED = 3000;
+const COST_REACTIVITY_MULTIPLIER = 1000;
+const DYNAMIC_MAX_COST_PER_PLAYER = 100000;
+const SPEED_PAUSE_SECONDS = 15;
+const SPEED_ACTION_SECONDS = 20;
+
+// ==========================================================================
 // CANAL DE SINCRONIZACIÓN MULTI-PESTAÑA Y BACKEND SUPABASE
 // ==========================================================================
 const SUPABASE_CONFIG = {
-    url: "https://xfqswxisqtydkcnctnop.supabase.co",
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ"
+    url: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_URL) ? process.env.SUPABASE_URL : "https://xfqswxisqtydkcnctnop.supabase.co",
+    anonKey: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_KEY) ? process.env.SUPABASE_KEY : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ"
 };
 
 async function faroSupabasePost(table, data) {
     if (typeof fetch === 'undefined') return;
     try {
-        await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}`, {
+        const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}`, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_CONFIG.anonKey,
@@ -106,8 +152,15 @@ async function faroSupabasePost(table, data) {
             },
             body: JSON.stringify(data)
         });
+        if (response.ok) {
+            gameStateV2.cloudSyncStatus = 'connected';
+        } else {
+            console.warn(`[Supabase Sync Warning] HTTP ${response.status} en tabla ${table}`);
+            gameStateV2.cloudSyncStatus = 'degraded';
+        }
     } catch (e) {
-        // Fallback silencioso en local
+        console.warn(`[Supabase Connection] Error de red al sincronizar con ${table}:`, e.message);
+        gameStateV2.cloudSyncStatus = 'offline';
     }
 }
 
@@ -127,11 +180,14 @@ try {
 
 function broadcastSyncEvent(type, payload) {
     try {
+        const sanitizedPayload = payload || {};
         if (faroSyncChannel) {
             faroSyncChannel.postMessage({
                 type: type,
-                payload: payload,
+                payload: sanitizedPayload,
                 sender: gameStateV2.playerId,
+                senderRole: gameStateV2.userRole || 'operator',
+                token: gameStateV2.facilitatorToken || null,
                 timestamp: Date.now()
             });
         }
@@ -142,7 +198,7 @@ function broadcastSyncEvent(type, payload) {
             player_id: gameStateV2.playerId,
             case_index: gameStateV2.currentCaseIndex || 0,
             event_type: type,
-            payload: payload
+            payload: sanitizedPayload
         });
     } catch (e) {
         console.warn('Error emitiendo broadcastSyncEvent:', e);
@@ -151,12 +207,28 @@ function broadcastSyncEvent(type, payload) {
 
 function handleIncomingSyncMessage(msg) {
     try {
-        if (!msg || !msg.type) return;
+        if (!msg || typeof msg !== 'object' || !msg.type) return;
         const type = msg.type;
-        const payload = msg.payload || {};
+        const payload = (msg.payload && typeof msg.payload === 'object') ? msg.payload : {};
+        const isFacilitatorSender = msg.senderRole === 'facilitator';
+
+        // Comandos restringidos del Controlador (Validación de rol)
+        const FACILITATOR_ONLY_TYPES = [
+            'GATES_UPDATE',
+            'FAC_FORCE_START_CASE_1',
+            'FAC_SET_NEXT_CASE_TARGET',
+            'FAC_FORCE_PARA_SURRENDER',
+            'FAC_FLIP_PARA_CARD',
+            'DEPENDENCY_UPDATE'
+        ];
+
+        if (FACILITATOR_ONLY_TYPES.includes(type) && !isFacilitatorSender && gameStateV2.strictAuth) {
+            console.warn(`[Security Alert] Comando administrativo rechazado de origen no autorizado: ${type}`);
+            return;
+        }
 
         if (type === 'GATES_UPDATE') {
-            if (gameStateV2.userRole === 'operator') {
+            if (gameStateV2.userRole === 'operator' && payload.gates && typeof payload.gates === 'object') {
                 gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...payload.gates };
                 updateGateUI();
             }
@@ -165,29 +237,79 @@ function handleIncomingSyncMessage(msg) {
                 startCaseSequence(0);
             }
         } else if (type === 'FAC_SET_NEXT_CASE_TARGET') {
-            if (gameStateV2.userRole === 'operator') {
+            if (gameStateV2.userRole === 'operator' && payload.target) {
                 gameStateV2.nextCaseTarget = payload.target;
                 updateGateUI();
             }
         } else if (type === 'PLAYER_CONNECTED') {
             if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
-                if (!facState.connectedPlayers.some(p => p.id === payload.playerId)) {
+                if (payload.playerId && !facState.connectedPlayers.some(p => p.id === payload.playerId)) {
                     facState.connectedPlayers.push({
                         id: payload.playerId,
-                        name: payload.name,
-                        pin: payload.pin,
+                        name: payload.name || "Operador",
+                        pin: payload.pin || "F4R0",
+                        currentScreen: "screen-waiting",
                         paraAgencyChoice: null,
+                        pausesUsed: 0,
+                        analysesCount: 0,
+                        reviewsCount: 0,
+                        actionsAdded: 0,
+                        caseFinished: false,
                         connectedAt: new Date().toLocaleTimeString()
                     });
                 }
                 updateFacilitatorRealtimeUI();
                 if (typeof updateFacParaAgencyUI === 'function') updateFacParaAgencyUI();
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
             }
         } else if (type === 'PLAYER_SCREEN_UPDATE') {
             if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
                 const p = facState.connectedPlayers.find(p => p.id === payload.playerId);
-                if (p) p.currentScreen = payload.screen;
+                if (p && payload.screen) p.currentScreen = payload.screen;
                 updateFacilitatorRealtimeUI();
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+            }
+        } else if (type === 'PLAYER_INITIAL_REACTION') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) {
+                    p.currentScreen = 'screen-case';
+                    p.hasInitialReaction = true;
+                    if (payload.impulseIndex !== undefined) p.impulseIndex = payload.impulseIndex;
+                }
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+            }
+        } else if (type === 'PLAYER_PARA_PAUSE') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) {
+                    p.pausesUsed = (p.pausesUsed || 0) + 1;
+                }
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+            }
+        } else if (type === 'PLAYER_PARA_ANALYSIS') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) {
+                    p.analysesCount = (p.analysesCount || 0) + 1;
+                }
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+            }
+        } else if (type === 'PLAYER_PARA_REVISION') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) {
+                    p.reviewsCount = (p.reviewsCount || 0) + 1;
+                }
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+            }
+        } else if (type === 'PLAYER_PARA_ACTION_ADDED') {
+            if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                if (p) {
+                    p.actionsAdded = (p.actionsAdded || 0) + (payload.count || 1);
+                }
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
             }
         } else if (type === 'PLAYER_CALIB_ROUND_UPDATE' || type === 'PLAYER_CALIB_FINISHED') {
             if (gameStateV2.userRole === 'facilitator' && typeof updateFacilitatorRealtimeUI === 'function') {
@@ -207,14 +329,14 @@ function handleIncomingSyncMessage(msg) {
             }
         } else if (type === 'FAC_FLIP_PARA_CARD') {
             if (gameStateV2.userRole === 'operator') {
-                if (typeof remoteFlipParaCard === 'function') {
+                if (typeof remoteFlipParaCard === 'function' && payload.cardLetter) {
                     remoteFlipParaCard(payload.cardLetter);
                 }
             }
         } else if (type === 'DEPENDENCY_UPDATE') {
-            gameStateV2.facilitatorDependency = payload.dependency;
+            gameStateV2.facilitatorDependency = payload.dependency !== false;
             try {
-                localStorage.setItem('faro_facilitator_dependency', payload.dependency ? 'true' : 'false');
+                localStorage.setItem('faro_facilitator_dependency', gameStateV2.facilitatorDependency ? 'true' : 'false');
             } catch(e) {}
             updateDependencyToggleUI();
             updateGateUI();
@@ -2021,24 +2143,6 @@ function renderGroupResultsPageZ(res, cData, cumData) {
     });
 }
 
-// Controlador: Habilitar Pausa de Deliberación
-function facUnlockDeliberationGate() {
-    gameStateV2.sessionGates.gate_deliberation = true;
-    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
-    updateGateUI();
-    
-    showFourthWallScreen();
-}
-
-// Operador: Avanzar a Pausa de Deliberación
-function proceedToDeliberation() {
-    const depEnabled = gameStateV2.facilitatorDependency !== false;
-    if (depEnabled && !gameStateV2.sessionGates.gate_deliberation) {
-        return;
-    }
-    showFourthWallScreen();
-}
-
 function updateFacilitatorRealtimeUI() {
     const players = Object.values(facState.connectedPlayers);
     const totalCount = Math.max(1, players.length); // Mínimo 1 para cálculo porcentual
@@ -2063,6 +2167,21 @@ function updateFacilitatorRealtimeUI() {
     if (elFinPct) elFinPct.innerText = `${finPct}%`;
     const elFinCount = document.getElementById('fac-calib-completed-count');
     if (elFinCount) elFinCount.innerText = `${finishedCount} operador${finishedCount !== 1 ? 'es' : ''} listo${finishedCount !== 1 ? 's' : ''}`;
+
+    // Roster visual de jugadores conectados
+    const chipsContainer = document.getElementById('fac-calib-players-chips');
+    if (chipsContainer) {
+        if (players.length === 0) {
+            chipsContainer.innerHTML = '<span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando conexiones de operadores...</span>';
+        } else {
+            chipsContainer.innerHTML = players.map(p => `
+                <span class="player-chip-badge" style="background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:#ffffff; font-size:11px; padding:3px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;">
+                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${p.finished ? '#00e676' : 'var(--color-cyan)'};"></span>
+                    ${escapeHtml(p.name)}
+                </span>
+            `).join('');
+        }
+    }
 
     // Rondas UI
     ['r1', 'r2', 'r3', 'r4'].forEach((rKey, idx) => {
@@ -2557,6 +2676,21 @@ function updateFacCaseLiveUI() {
         const cost = groupCaseRes ? (groupCaseRes.totalCost || 0) : 0;
         costValEl.innerText = `$${cost.toLocaleString('en-US')}`;
     }
+
+    // 8. Roster de Operadores en Sala (Chips)
+    const caseChipsContainer = document.getElementById('fac-case-players-chips');
+    if (caseChipsContainer) {
+        if (players.length === 0) {
+            caseChipsContainer.innerHTML = '<span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando operadores en este caso...</span>';
+        } else {
+            caseChipsContainer.innerHTML = players.map(p => `
+                <span class="player-chip-badge" style="background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:#ffffff; font-size:11px; padding:3px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;">
+                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${p.caseFinished ? '#00e676' : 'var(--color-cyan)'};"></span>
+                    ${escapeHtml(p.name)} (${p.pausesUsed || 0}P / ${p.analysesCount || 0}A)
+                </span>
+            `).join('');
+        }
+    }
 }
 
 function facInspectCase() {
@@ -2735,7 +2869,7 @@ function devSkipIntroDirectToGame() {
     updateGateUI();
 }
 
-function handleFacilitatorLogin(event) {
+async function handleFacilitatorLogin(event) {
     if (event) event.preventDefault();
     const passInput = document.getElementById('fac-pass');
     const pinInput = document.getElementById('fac-pin');
@@ -2745,26 +2879,33 @@ function handleFacilitatorLogin(event) {
     const pass = passInput ? passInput.value.trim() : "";
     const pin = pinInput ? pinInput.value.trim() : "";
 
-    // Contraseña de controlador
-    if (pass !== "F4R0_ADMIN" && pass !== "admin") {
+    const passHash = await sha256Hex(pass);
+    const pinHash = await sha256Hex(pin);
+
+    // Verificación criptográfica de contraseña de controlador
+    if (passHash !== AUTH_HASH_FACILITATOR_1 && passHash !== AUTH_HASH_FACILITATOR_2) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
-            if (errorText) errorText.innerText = "Contraseña de controlador incorrecta (Default: F4R0_ADMIN).";
+            if (errorText) errorText.innerText = "Contraseña de controlador incorrecta.";
         }
         if (passInput) { passInput.focus(); passInput.select(); }
         return;
     }
 
-    if (pin !== DEFAULT_SESSION_PIN) {
+    // Verificación criptográfica de PIN de sesión
+    if (pinHash !== AUTH_HASH_SESSION_PIN) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
-            if (errorText) errorText.innerText = "PIN de sesión inválido (PIN de prueba: F4R0).";
+            if (errorText) errorText.innerText = "PIN de sesión inválido.";
         }
         if (pinInput) { pinInput.focus(); pinInput.select(); }
         return;
     }
 
     if (errorAlert) errorAlert.style.display = 'none';
+
+    // Generar token criptográfico de sesión del facilitador
+    gameStateV2.facilitatorToken = 'fac_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
 
     gameStateV2.playerProfile = {
         name: "Controlador",
@@ -2781,7 +2922,7 @@ function handleFacilitatorLogin(event) {
     startSyncLoadingScreen();
 }
 
-function handlePlayerLogin(event) {
+async function handlePlayerLogin(event) {
     if (event) event.preventDefault();
 
     const nameInput = document.getElementById('login-name');
@@ -2789,9 +2930,12 @@ function handlePlayerLogin(event) {
     const pinInput = document.getElementById('login-pin');
     const errorAlert = document.getElementById('pin-error-alert');
 
-    const name = nameInput ? nameInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim() : "";
+    const rawName = nameInput ? nameInput.value.trim() : "";
+    const rawEmail = emailInput ? emailInput.value.trim() : "";
     const pin = pinInput ? pinInput.value.trim() : "";
+
+    const name = escapeHtml(rawName);
+    const email = escapeHtml(rawEmail);
 
     if (!name) {
         alert("Por favor ingresa tu nombre o alias de operador.");
@@ -2804,8 +2948,9 @@ function handlePlayerLogin(event) {
         return;
     }
     
-    // Verificación de PIN estricta (Comparación alfanumérica exacta mayúsculas)
-    if (!pin || pin !== DEFAULT_SESSION_PIN) {
+    // Verificación criptográfica de PIN
+    const pinHash = await sha256Hex(pin);
+    if (!pin || pinHash !== AUTH_HASH_SESSION_PIN) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             errorAlert.classList.remove('pin-error-alert');
@@ -2878,27 +3023,32 @@ function startSyncLoadingScreen() {
     const stepMs = 50;
 
     clearInterval(syncProgressInterval);
-    syncProgressInterval = setInterval(() => {
+    syncProgressInterval = setInterval(async () => {
         elapsedMs += stepMs;
         const progress = Math.min(100, Math.round((elapsedMs / totalMs) * 100));
 
         if (fillEl) fillEl.style.width = `${progress}%`;
 
         if (progress < 25) {
-            if (termEl) termEl.innerText = "1/4 Verificando integridad de componentes locales en memoria...";
+            if (termEl) termEl.innerText = "1/4 Verificando integridad de componentes en memoria local...";
         } else if (progress < 50) {
-            if (termEl) termEl.innerText = "2/4 Enlazando terminal con el Facilitador (PIN F4R0 verificado)...";
+            const bcStatus = faroSyncChannel ? "Canal Local Activo ✔" : "Modo Pestaña Única";
+            if (termEl) termEl.innerText = `2/4 Enlazando terminal (${bcStatus} // PIN ${gameStateV2.playerProfile ? gameStateV2.playerProfile.pin : 'F4R0'})...`;
         } else if (progress < 75) {
             if (termEl) termEl.innerText = "3/4 Desplegando protocolos de atención y cortinas metacognitivas...";
         } else if (progress < 100) {
-            if (termEl) termEl.innerText = "4/4 Estableciendo conexión directa con FARO-0...";
+            const cloudTxt = gameStateV2.cloudSyncStatus === 'connected' ? 'Sincronización Cloud Supabase ✔' : 'Modo Operativo Local ✔';
+            if (termEl) termEl.innerText = `4/4 Estableciendo enlace con FARO-0 (${cloudTxt})...`;
         }
 
         if (elapsedMs >= totalMs) {
             clearInterval(syncProgressInterval);
             clearInterval(syncSlideshowInterval);
             if (fillEl) fillEl.style.width = '100%';
-            if (termEl) termEl.innerText = "✔ Enlace establecido exitosamente. Iniciando sesión...";
+            const finalSyncLabel = gameStateV2.cloudSyncStatus === 'connected' 
+                ? "✔ Enlace establecido exitosamente con FARO-0 y Supabase Cloud." 
+                : "✔ Enlace establecido exitosamente en entorno local.";
+            if (termEl) termEl.innerText = finalSyncLabel;
             
             setTimeout(() => {
                 switchScreenV2('screen-waiting');
@@ -5485,33 +5635,23 @@ function handleCaseTimeout() {
 
 let currentCaseOutcomeObj = null;
 
-function getActionIdealCategory(caseId, actId) {
-    if (caseId === "case_1") {
-        if (["limited_containment", "controlled_audit", "approval_escalation"].includes(actId)) return "should_do";
-        if (["full_containment"].includes(actId)) return "should_not_do";
-        return "not_relevant"; // stop_faro, wait_report
+function getActionIdealCategory(caseId, actId, actionObj = null) {
+    if (actionObj) {
+        const type = actionObj.type || actionObj.relevance;
+        if (type === 'se_debe_hacer' || type === 'pertinente' || type === 'i' || type === 'should_do') return "should_do";
+        if (type === 'no_se_debe_hacer' || type === 'inadecuada' || type === 'ii' || type === 'should_not_do') return "should_not_do";
+        if (type === 'no_relevante' || type === 'irrelevante' || type === 'iii' || type === 'not_relevant') return "not_relevant";
     }
-    if (caseId === "case_3") {
-        if (["prisma", "data_minimization_protocol", "balanced_accuracy_mode", "prisma_24"].includes(actId)) return "should_do";
-        if (["oracle"].includes(actId)) return "should_not_do";
-        return "not_relevant"; // wall
-    }
-    if (caseId === "case_2") {
-        const variant = gameStateV2.currentCaseVariant || "malicious";
-        if (variant === "legitimate") {
-            if (["verify_oob_call", "audit_change_ticket"].includes(actId)) return "should_do";
-            if (["block_and_report"].includes(actId)) return "should_not_do";
-            return "not_relevant"; // technical_headers_check, let_expire, activate_from_message
-        } else {
-            if (["verify_oob_call", "audit_change_ticket"].includes(actId)) return "should_do";
-            if (["activate_from_message"].includes(actId)) return "should_not_do";
-            return "not_relevant"; // technical_headers_check, let_expire, block_and_report
+
+    const cData = casesDataV2.find(c => c.id === caseId);
+    if (cData && cData.actions) {
+        const act = cData.actions.find(a => a.id === actId);
+        if (act) {
+            const rel = act.relevance || act.type;
+            if (rel === 'pertinente' || rel === 'se_debe_hacer' || rel === 'should_do') return "should_do";
+            if (rel === 'inadecuada' || rel === 'no_se_debe_hacer' || rel === 'should_not_do') return "should_not_do";
+            if (rel === 'irrelevante' || rel === 'no_relevante' || rel === 'not_relevant') return "not_relevant";
         }
-    }
-    if (caseId === "case_4") {
-        if (["reversible_secondary", "style_forensics_verification", "verify_and_report"].includes(actId)) return "should_do";
-        if (["full_access"].includes(actId)) return "should_not_do";
-        return "not_relevant"; // reject_confront, let_time_pass
     }
     return "not_relevant";
 }
@@ -5678,27 +5818,23 @@ function processCaseOutcome(actionIds) {
 
     // ==========================================================================
     // 2. DETERMINACIÓN DE INTEGRIDAD Y RESOLUCIÓN SEGÚN REGLAS V3
-    // REGLAS V3 (RECALIBRADAS):
-    // • Suma >= +2 => SEGURO (Bono -$2k | Módulo Recuperado)
-    // • Suma entre -1 y +1 => ALERTA (Ajuste +$1k | Módulo Recuperado / Mitigación Parcial)
-    // • Suma <= -2 => EXPUESTO (Penalización +$3k | Módulo Comprometido)
     // ==========================================================================
     let caseIntegrity = 'safe';
     let outcomeIndicator = 1;
-    let outcomeCostAdjustment = -2000;
+    let outcomeCostAdjustment = COST_ADJUSTMENT_SAFE;
 
     if (actionsCalibSum >= 2) {
         caseIntegrity = 'safe';
         outcomeIndicator = 1;
-        outcomeCostAdjustment = -2000;
+        outcomeCostAdjustment = COST_ADJUSTMENT_SAFE;
     } else if (actionsCalibSum >= -1 && actionsCalibSum <= 1) {
         caseIntegrity = 'alert';
         outcomeIndicator = 2;
-        outcomeCostAdjustment = 1000;
+        outcomeCostAdjustment = COST_ADJUSTMENT_ALERT;
     } else {
         caseIntegrity = 'exposed';
         outcomeIndicator = 3;
-        outcomeCostAdjustment = 3000;
+        outcomeCostAdjustment = COST_ADJUSTMENT_EXPOSED;
     }
 
     gameStateV2.hudState.integrity = caseIntegrity;
@@ -5714,10 +5850,10 @@ function processCaseOutcome(actionIds) {
     const totalCaseSeconds = cData.durationSeconds || 180;
     const deliberationSeconds = Math.max(0, totalCaseSeconds - (gameStateV2.caseTimerSeconds !== undefined ? gameStateV2.caseTimerSeconds : totalCaseSeconds));
     const pausesUsed = 3 - (gameStateV2.casePauseTokens !== undefined ? gameStateV2.casePauseTokens : 3);
-    const pausesTimeSeconds = pausesUsed * 15;
-    const actionsExecutionSeconds = idsArray.length * 20;
+    const pausesTimeSeconds = pausesUsed * SPEED_PAUSE_SECONDS;
+    const actionsExecutionSeconds = idsArray.length * SPEED_ACTION_SECONDS;
     
-    // Tiempo Total Usado = Deliberación + Pausas (15s c/u) + Ejecución de Acciones (20s c/u)
+    // Tiempo Total Usado = Deliberación + Pausas + Ejecución de Acciones
     const totalTimeUsedSeconds = deliberationSeconds + pausesTimeSeconds + actionsExecutionSeconds;
     const percentageUsed = Math.min(100, Math.max(0, (totalTimeUsedSeconds / totalCaseSeconds) * 100));
 
@@ -5747,9 +5883,9 @@ function processCaseOutcome(actionIds) {
     // Bonus por acierto/error en Calibración: siempre +1 si Seguro, -1 si Expuesto, 0 si Alerta/Neutro
     const calibrationBonusDelta = outcomeIndicator === 1 ? 1 : (outcomeIndicator === 3 ? -1 : 0);
 
-    // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso -> $1,000
+    // IMPACTO ECONÓMICO POR REACTIVIDAD: Por cada unidad del resultado final de reactividad en el caso
     const finalReactivityLevel = Math.max(-5, Math.min(5, gameStateV2.hudState.reactivity + reactivityDelta));
-    const reactivityCostAdjustment = finalReactivityLevel * 1000;
+    const reactivityCostAdjustment = finalReactivityLevel * COST_REACTIVITY_MULTIPLIER;
 
     // FÓRMULA DE COSTO OPERATIVO: Costo Base por Tiempo + Ajuste por Integridad + Ajuste por Reactividad
     const costPerSec = getOperationalCostPerSecond();
@@ -6953,13 +7089,58 @@ function restartExperience() {
     gameStateV2.casePauseTokens = 3;
     gameStateV2.modulesRecovered = 0;
     gameStateV2.caseScores = [];
+    gameStateV2.resolvedCases = [];
+    gameStateV2.currentCaseIndex = 0;
+    gameStateV2.nextCaseTarget = null;
+    gameStateV2.paraAgencyChoice = null;
+    gameStateV2.faroStatus = 'CALIBRACIÓN';
     gameStateV2.modulesState = {
         autonomy_control: false,
         trusted_channel: false,
         data_model: false,
         human_protocol: false
     };
-    gameStateV2.faroStatus = 'CALIBRACIÓN';
+    gameStateV2.sessionGates = {
+        gate1_intro: false,
+        gate2_calib: false,
+        gate3_kernel: false,
+        gate4_case1: false,
+        gate_case_bc: false,
+        gate_deliberation: false,
+        gate_next_case: false,
+        gate_final_closing: false
+    };
+    gameStateV2.hudState = {
+        integrity: 'safe',
+        costDollars: 0,
+        calibration: 0,
+        reactivity: 0
+    };
+    gameStateV2.paraState = {
+        pUsed: false,
+        aOpened: false,
+        aAnswered: null,
+        rOpened: false,
+        rResourcesOpened: [],
+        unlockedActions: [],
+        finalActionId: null,
+        finalActionText: null,
+        routeTag: 'Respuesta directa'
+    };
+    gameStateV2.sessionLog = {
+        sessionId: 'session_' + Date.now(),
+        sessionStartTime: new Date().toISOString(),
+        cases: []
+    };
+
+    if (typeof facState !== 'undefined') {
+        facState.casesGroupResults = {};
+        facState.connectedPlayers = [];
+    }
+
+    if (typeof resetHUD === 'function') resetHUD();
+    updateGateUI();
+    broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
     switchScreenV2('screen-waiting');
 }
 

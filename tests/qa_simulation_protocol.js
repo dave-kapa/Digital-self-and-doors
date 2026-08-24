@@ -7,13 +7,15 @@
 const fs = require('fs');
 const https = require('https');
 
-// Configuración de Supabase
-const SUPABASE_URL = "https://xfqswxisqtydkcnctnop.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ";
+const path = require('path');
 
-function supabaseRequest(path, method = 'GET', body = null) {
+// Configuración de Supabase (Soporta variables de entorno o fallback)
+const SUPABASE_URL = process.env.SUPABASE_URL || "https://xfqswxisqtydkcnctnop.supabase.co";
+const SUPABASE_KEY = process.env.SUPABASE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ";
+
+function supabaseRequest(pathParam, method = 'GET', body = null) {
     return new Promise((resolve, reject) => {
-        const url = new URL(`${SUPABASE_URL}/rest/v1/${path}`);
+        const url = new URL(`${SUPABASE_URL}/rest/v1/${pathParam}`);
         const data = body ? JSON.stringify(body) : null;
         
         const req = https.request(url, {
@@ -43,8 +45,9 @@ function supabaseRequest(path, method = 'GET', body = null) {
     });
 }
 
-// Cargar casos de datos del juego
-const gameJsContent = fs.readFileSync('d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v2/game.js', 'utf8');
+// Cargar casos de datos del juego usando ruta relativa portable
+const gameJsPath = path.join(__dirname, '../v2/game.js');
+const gameJsContent = fs.readFileSync(gameJsPath, 'utf8');
 
 // Extraer casesDataV2 del código
 function extractCasesData() {
