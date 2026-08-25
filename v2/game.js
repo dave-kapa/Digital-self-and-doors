@@ -429,8 +429,20 @@ function handleIncomingSyncMessage(msg) {
                 if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
             }
         } else if (type === 'PLAYER_CALIB_ROUND_UPDATE' || type === 'PLAYER_CALIB_FINISHED') {
-            if (gameStateV2.userRole === 'facilitator' && typeof updateFacilitatorRealtimeUI === 'function') {
-                updateFacilitatorRealtimeUI();
+            if (gameStateV2.userRole === 'facilitator') {
+                if (type === 'PLAYER_CALIB_FINISHED' && typeof facState !== 'undefined' && facState.connectedPlayers) {
+                    // Sin esto, el % de "agencia cedida" del facilitador queda siempre en 0:
+                    // updateFacilitatorRealtimeUI() cuenta players.filter(p => p.finished &&
+                    // p.surrendered), pero nada marcaba estos campos en el jugador conectado.
+                    const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
+                    if (p) {
+                        p.finished = true;
+                        p.surrendered = !!payload.surrendered;
+                    }
+                }
+                if (typeof updateFacilitatorRealtimeUI === 'function') {
+                    updateFacilitatorRealtimeUI();
+                }
             }
         } else if (type === 'PLAYER_PARA_AGENCY_CHOICE') {
             if (gameStateV2.userRole === 'facilitator' && typeof facState !== 'undefined' && facState.connectedPlayers) {
