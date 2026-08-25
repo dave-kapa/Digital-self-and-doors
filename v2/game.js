@@ -7606,12 +7606,28 @@ async function initAppV2() {
                     role: "facilitator"
                 };
                 gameStateV2.sessionGates = s.session_gates || gameStateV2.sessionGates;
-                gameStateV2.currentCaseIndex = s.current_case_index || 0;
+                gameStateV2.currentCaseIndex = (s.current_case_index !== undefined && s.current_case_index !== null) ? s.current_case_index : 0;
                 gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
 
                 if (facSessionData.players && Array.isArray(facSessionData.players)) {
                     facState.connectedPlayers = facSessionData.players;
                 }
+
+                // FASE 4: Repoblar facState.casesGroupResults desde Supabase para que el HUD global y resultados no queden en cero
+                if (facSessionData.cases_group_results && typeof facSessionData.cases_group_results === 'object') {
+                    facState.casesGroupResults = facSessionData.cases_group_results;
+                } else {
+                    try {
+                        const caseResults = await faroSupabaseRpc('faro_get_session_case_results', { p_pin: savedFacPin });
+                        if (caseResults && typeof caseResults === 'object') {
+                            facState.casesGroupResults = caseResults;
+                        }
+                    } catch(e) {
+                        console.warn('[Facilitator Case Results Fetch Error]:', e);
+                    }
+                }
+
+                getAllCasesCumulativeGroupResults();
 
                 document.body.classList.add('facilitator-theme');
                 const targetScreen = s.active_screen && s.active_screen !== 'screen-role-select' ? s.active_screen : 'screen-fac-calib-realtime';
@@ -7626,8 +7642,7 @@ async function initAppV2() {
         }
     }
 
-    // 2. REANUDACIÓN DE OPERADOR / JUGADOR (solo si hay token Y pin de sesión guardados;
-    // ver getStoredPlayerIdentity() para por qué se prioriza sessionStorage sobre localStorage)
+    // 2. REANUDACIÓN DE OPERADOR / JUGADOR (FASES 2 & 3: El operador se ubica según la sesión, no según su propia fila)
     const storedPlayerIdentity = getStoredPlayerIdentity();
     const savedPlayerToken = storedPlayerIdentity.token;
     const savedPlayerPin = storedPlayerIdentity.pin;
@@ -7654,6 +7669,7 @@ async function initAppV2() {
                     token: p.token || p.id
                 };
 
+                // Individual: HUD propio inmutable frente a lo grupal
                 if (p.hud_state) {
                     gameStateV2.hudState = p.hud_state;
                 } else {
@@ -7665,29 +7681,73 @@ async function initAppV2() {
                     };
                 }
 
-                if (p.para_state && Object.keys(p.para_state).length > 0) {
-                    gameStateV2.paraState = p.para_state;
-                }
+                // Individual: Historial de casos resueltos y módulos recuperados
                 if (p.resolved_cases) {
                     gameStateV2.resolvedCases = p.resolved_cases;
-                }
-                if (p.current_case_index !== undefined && p.current_case_index !== null) {
-                    gameStateV2.currentCaseIndex = p.current_case_index;
-                }
-                if (p.session_gates && Object.keys(p.session_gates).length > 0) {
-                    gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...p.session_gates };
-                } else if (s.session_gates) {
-                    gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...s.session_gates };
                 }
                 if (p.modules_state) {
                     gameStateV2.modulesState = p.modules_state;
                     gameStateV2.modulesRecovered = Object.values(p.modules_state).filter(Boolean).length;
                 }
-                if (p.para_agency_choice) {
-                    gameStateV2.paraAgencyChoice = p.para_agency_choice;
+
+                // Global: session_gates y dependencia del facilitador SIEMPRE salen de la sesión
+                gameStateV2.sessionGates = s.session_gates || gameStateV2.sessionGates;
+                gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
+
+                // FASE 2: Regla de reconciliación de Caso y progreso P.A.R.A.
+                const sessionCaseIndex = (s.current_case_index !== undefined && s.current_case_index !== null) ? s.current_case_index : 0;
+                const playerSavedCaseIndex = (p.current_case_index !== undefined && p.current_case_index !== null) ? p.current_case_index : 0;
+
+                if (playerSavedCaseIndex === sessionCaseIndex) {
+                    // El caso guardado coincide con la sesión: recupera su progreso P.A.R.A. individual normalmente
+                    gameStateV2.currentCaseIndex = sessionCaseIndex;
+                    if (p.para_state && Object.keys(p.para_state).length > 0) {
+                        gameStateV2.paraState = p.para_state;
+                    }
+                    if (p.para_agency_choice) {
+                        gameStateV2.paraAgencyChoice = p.para_agency_choice;
+                    }
+                    if (p.pauses_used !== undefined) {
+                        gameStateV2.casePauseTokens = Math.max(0, 3 - p.pauses_used);
+                    }
+                } else {
+                    // El facilitador avanzó el grupo: llevar directo al caso actual de la sesión, descartando progreso a medias del caso anterior
+                    gameStateV2.currentCaseIndex = sessionCaseIndex;
+                    gameStateV2.paraState = {
+                        pUsed: false,
+                        aOpened: false,
+                        aAnswered: null,
+                        rOpened: false,
+                        rResourcesOpened: [],
+                        unlockedActions: [],
+                        finalActionId: null,
+                        finalActionText: null,
+                        routeTag: 'Respuesta directa'
+                    };
+                    gameStateV2.casePauseTokens = 3;
+                    gameStateV2.paraAgencyChoice = null;
                 }
-                if (p.pauses_used !== undefined) {
-                    gameStateV2.casePauseTokens = Math.max(0, 3 - p.pauses_used);
+
+                // FASE 2: La pantalla de destino sale de la sesión (active_screen)
+                let sessionActiveScreen = s.active_screen || 'screen-waiting';
+                let targetScreen = sessionActiveScreen;
+
+                if (sessionActiveScreen === 'screen-fac-case-live' || sessionActiveScreen === 'screen-case' || (gameStateV2.sessionGates.gate4_case1 && sessionActiveScreen.includes('case'))) {
+                    targetScreen = 'screen-case';
+                } else if (sessionActiveScreen === 'screen-fac-calib-realtime') {
+                    if (gameStateV2.sessionGates.gate3_kernel) {
+                        targetScreen = 'screen-claudia-debrief';
+                    } else if (gameStateV2.sessionGates.gate2_calib) {
+                        targetScreen = 'screen-faro-reveal';
+                    } else if (gameStateV2.sessionGates.gate1_intro) {
+                        targetScreen = 'screen-calibration';
+                    } else {
+                        targetScreen = 'screen-waiting';
+                    }
+                } else if (sessionActiveScreen === 'screen-fac-results') {
+                    targetScreen = 'screen-case-results-group';
+                } else if (sessionActiveScreen === 'screen-fac-deliberation') {
+                    targetScreen = 'screen-deliberation';
                 }
 
                 document.body.classList.remove('facilitator-theme');
@@ -7700,11 +7760,10 @@ async function initAppV2() {
                     pin: gameStateV2.playerProfile.pin
                 });
 
-                const restoredScreen = p.current_screen || 'screen-waiting';
-                if (restoredScreen === 'screen-case') {
+                if (targetScreen === 'screen-case') {
                     startCaseSequence(gameStateV2.currentCaseIndex);
                 } else {
-                    switchScreenV2(restoredScreen);
+                    switchScreenV2(targetScreen);
                 }
                 return;
             }

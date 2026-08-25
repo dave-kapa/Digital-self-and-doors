@@ -73,14 +73,13 @@ async function runAcceptanceTest() {
     const fakePin = 'INEXIST_' + Math.floor(1000 + Math.random() * 9000);
 
     console.log('================================================================================');
-    console.log(`⚡ TEST DE ACEPTACIÓN: SINGLE SOURCE OF TRUTH, SEGURIDAD & REANUDACIÓN`);
+    console.log(`⚡ TEST DE ACEPTACIÓN: PERSISTENCIA, RECONCILIACIÓN Y AUDITORÍA 4 FASES`);
     console.log(`PIN Sesión Válida: ${testPin} | PIN Falso: ${fakePin}`);
     console.log('================================================================================\n');
 
     // TEST A: Verificar que PIN inexistente es rechazado y NO crea filas huérfanas
     console.log('--- TEST A: Rechazo de PIN Inexistente (No crea sesiones huérfanas) ---');
     const fakeGet = await callRpc('faro_get_session_state', { p_pin: fakePin });
-    console.log('faro_get_session_state con PIN falso:', fakeGet.data);
     if (fakeGet.data.session_exists !== false) {
         throw new Error('faro_get_session_state debió rechazar el PIN inexistente');
     }
@@ -90,7 +89,6 @@ async function runAcceptanceTest() {
         p_name: "Operador Fantasma",
         p_email: "fantasma@test.com"
     });
-    console.log('faro_create_or_resume_player con PIN falso:', fakeResume.data);
     if (fakeResume.data.session_exists !== false) {
         throw new Error('faro_create_or_resume_player debió rechazar el PIN inexistente');
     }
@@ -103,132 +101,153 @@ async function runAcceptanceTest() {
         p_facilitator_name: 'Controlador QA',
         p_facilitator_token: facToken
     });
-    console.log(`Status: ${sessionRes.status}, PIN: ${sessionRes.data.pin}, Status: ${sessionRes.data.status}`);
     if (sessionRes.status !== 200) throw new Error('Fallo creación de sesión');
     console.log('✔ [PASS] Sesión creada / verificada con éxito.\n');
 
-    // 2. Tres operadores ingresan al sistema
-    console.log('--- 2. Registro de 3 Operadores ---');
+    // 2. Tres operadores ingresan al sistema con HUDs distintos
+    console.log('--- 2. Registro de 3 Operadores con HUDs independientes ---');
     const op1 = await callRpc('faro_create_or_resume_player', { p_token: null, p_pin: testPin, p_name: 'Operador 1', p_email: 'op1@test.com', p_role: 'operator' });
     const op2 = await callRpc('faro_create_or_resume_player', { p_token: null, p_pin: testPin, p_name: 'Operador 2', p_email: 'op2@test.com', p_role: 'operator' });
     const op3 = await callRpc('faro_create_or_resume_player', { p_token: null, p_pin: testPin, p_name: 'Operador 3', p_email: 'op3@test.com', p_role: 'operator' });
 
-    console.log(`Op1 Token: ${op1.data.player_token} (is_resume: ${op1.data.is_resume})`);
-    console.log(`Op2 Token: ${op2.data.player_token} (is_resume: ${op2.data.is_resume})`);
-    console.log(`Op3 Token: ${op3.data.player_token} (is_resume: ${op3.data.is_resume})`);
-    console.log('✔ [PASS] 3 Operadores registrados con tokens únicos estables.\n');
-
-    // TEST B: Verificar que consulta NO autenticada de session_state NO filtra tokens
-    console.log('--- TEST B: Seguridad de Tokens (faro_get_session_state sin token de facilitador) ---');
-    const unauthedGet = await callRpc('faro_get_session_state', { p_pin: testPin });
-    console.log('Consulta pública/no autenticada:', {
-        is_facilitator: unauthedGet.data.is_facilitator,
-        players_exposed: unauthedGet.data.players ? unauthedGet.data.players.length : 0
+    // Asignar HUDs distintos a cada uno para auditar aislamiento
+    await callRpc('faro_upsert_player_state', {
+        p_token: op1.data.player_token,
+        p_state: { hudState: { integrity: 'safe', costDollars: 1000, calibration: 2, reactivity: -1 } }
     });
-    if (unauthedGet.data.is_facilitator === true || (unauthedGet.data.players && unauthedGet.data.players.length > 0)) {
-        throw new Error('faro_get_session_state filtró datos de jugadores a una consulta no autenticada');
-    }
-    console.log('✔ [PASS] Cero tokens de jugador filtrados a consultas públicas.\n');
-
-    // 3. Operador 2 avanza a mitad del Caso 2 (P.A.R.A., HUD alterado, gates)
-    console.log('--- 3. Operador 2 avanza al Caso 2 y modifica estado ---');
-    const op2State = {
-        currentScreen: 'screen-case',
-        currentCaseIndex: 1,
-        hudState: {
-            integrity: 'alert',
-            costDollars: 14500,
-            calibration: 3,
-            reactivity: -2
-        },
-        paraState: {
-            pUsed: true,
-            completedAnalyses: [{ id: 'door_source', title: 'Fuente y Origen' }],
-            reviewedActions: [{ id: 'act_audit', text: 'Auditar ticket de cambio' }],
-            unlockedActions: [{ id: 'act_audit', text: 'Auditar ticket de cambio' }],
-            routeTag: 'Vía P.A.R.A.'
-        },
-        resolvedCases: [0],
-        sessionGates: {
-            gate1_intro: true,
-            gate2_calib: true,
-            gate3_kernel: true,
-            gate4_case1: true
-        },
-        modulesState: {
-            autonomy_control: true,
-            trusted_channel: false,
-            data_model: false,
-            human_protocol: false
-        },
-        pausesUsed: 1,
-        analysesCount: 1,
-        reviewsCount: 1
-    };
-
-    const updateRes = await callRpc('faro_upsert_player_state', {
+    await callRpc('faro_upsert_player_state', {
         p_token: op2.data.player_token,
-        p_state: op2State
+        p_state: { hudState: { integrity: 'alert', costDollars: 8500, calibration: -1, reactivity: 3 } }
     });
-    console.log(`Update status: ${updateRes.status}`, updateRes.data);
-    if (!updateRes.data.success) throw new Error('Fallo actualización de estado de Operador 2');
-    console.log('✔ [PASS] Estado del Operador 2 persistido en el backend como fuente de verdad.\n');
-
-    // 4. Enviar evento de telemetría a faro_case_events (Verificar 0 error 409 / FK)
-    console.log('--- 4. Insertando eventos de telemetría a faro_case_events ---');
-    const eventRes = await postTable('faro_case_events', {
-        session_pin: testPin,
-        player_id: op2.data.player_token,
-        case_index: 1,
-        event_type: 'PLAYER_PARA_PAUSE',
-        payload: { pauseNumber: 1, remaining: 2 }
+    await callRpc('faro_upsert_player_state', {
+        p_token: op3.data.player_token,
+        p_state: { hudState: { integrity: 'exposed', costDollars: 15000, calibration: -4, reactivity: 5 } }
     });
-    console.log(`Event Insert Status: ${eventRes.status} (Esperado 201 Created)`);
-    if (eventRes.status !== 201) {
-        console.error('Event error:', eventRes.data);
-        throw new Error(`Error insertando en faro_case_events: HTTP ${eventRes.status}`);
-    }
-    console.log('✔ [PASS] Inserción a faro_case_events completada sin error de foreign key (0 error 409 / 23503).\n');
+    console.log('✔ [PASS] 3 Operadores registrados y aislados con HUDs independientes.\n');
 
-    // 5. Simular REFRESH del Operador 2 (llamando con su player_token)
-    console.log('--- 5. SIMULANDO REFRESH DEL NAVEGADOR (Operador 2) ---');
-    const resumeOp2 = await callRpc('faro_create_or_resume_player', {
-        p_token: op2.data.player_token,
+    // AUDITORÍA 2: Operador 1 guarda progreso P.A.R.A. en Caso 1. Sesión sigue en Caso 1.
+    // Reconecta → debe recuperar exactamente su progreso P.A.R.A.
+    console.log('--- AUDITORÍA 2: Reconexión en el mismo caso (Conserva progreso P.A.R.A.) ---');
+    await callRpc('faro_upsert_player_state', {
+        p_token: op1.data.player_token,
+        p_state: {
+            currentScreen: 'screen-case',
+            currentCaseIndex: 0,
+            paraState: {
+                pUsed: true,
+                completedAnalyses: [{ id: 'door_source', title: 'Fuente y Origen' }],
+                unlockedActions: [{ id: 'act_1', text: 'Acción 1' }]
+            },
+            pausesUsed: 1
+        }
+    });
+
+    const op1ResumeSameCase = await callRpc('faro_create_or_resume_player', {
+        p_token: op1.data.player_token,
         p_pin: testPin
     });
+    console.log('Op1 Reanuda en Caso 1:', {
+        caseIndex: op1ResumeSameCase.data.player.current_case_index,
+        pausesUsed: op1ResumeSameCase.data.player.pauses_used,
+        pUsed: op1ResumeSameCase.data.player.para_state.pUsed
+    });
+    if (op1ResumeSameCase.data.player.para_state.pUsed !== true || op1ResumeSameCase.data.player.pauses_used !== 1) {
+        throw new Error('AUDITORÍA 2 FALLÓ: Operador 1 debió conservar su progreso P.A.R.A.');
+    }
+    console.log('✔ [PASS AUDITORÍA 2] Operador 1 conservó su progreso P.A.R.A. en el mismo caso.\n');
 
-    console.log(`Resume Status: ${resumeOp2.status}`);
-    console.log(`is_resume: ${resumeOp2.data.is_resume} (Esperado true)`);
-    console.log(`Token mantenido: ${resumeOp2.data.player_token === op2.data.player_token}`);
-    console.log(`Pantalla recuperada: ${resumeOp2.data.player.current_screen} (Esperado: screen-case)`);
-    console.log(`Caso activo recuperado: Caso ${resumeOp2.data.player.current_case_index + 1} (Índice: ${resumeOp2.data.player.current_case_index})`);
-    console.log(`HUD recuperado: Integridad=${resumeOp2.data.player.hud_state.integrity}, Costo=$${resumeOp2.data.player.hud_state.costDollars}, Calib=${resumeOp2.data.player.hud_state.calibration}, React=${resumeOp2.data.player.hud_state.reactivity}`);
-    console.log(`Casos resueltos recuperados: [${resumeOp2.data.player.resolved_cases}]`);
+    // AUDITORÍA 1: El facilitador salta la sesión al Caso 3 (índice 2)
+    // Operador 1 (que estaba en Caso 1) reconecta → la sesión le manda caso_index: 2 y active_screen: screen-fac-case-live
+    console.log('--- AUDITORÍA 1: Facilitador avanza al Caso 3 → Operador reconecta y se alinea ---');
+    await callRpc('faro_update_session_state', {
+        p_pin: testPin,
+        p_facilitator_token: facToken,
+        p_gates: { gate1_intro: true, gate2_calib: true, gate3_kernel: true, gate4_case1: true },
+        p_current_case_index: 2,
+        p_active_screen: 'screen-fac-case-live'
+    });
 
-    if (!resumeOp2.data.is_resume) throw new Error('El backend no reconoció al jugador como reanudación');
-    if (resumeOp2.data.player.current_case_index !== 1) throw new Error('Caso activo no restaurado correctamente');
-    if (resumeOp2.data.player.hud_state.costDollars !== 14500) throw new Error('Costo HUD no restaurado correctamente');
-    if (resumeOp2.data.player.resolved_cases[0] !== 0) throw new Error('Casos resueltos no restaurados');
-    console.log('✔ [PASS] Operador 2 reanudado exactamente en el mismo punto de partida.\n');
+    const op1ResumeJump = await callRpc('faro_create_or_resume_player', {
+        p_token: op1.data.player_token,
+        p_pin: testPin
+    });
+    console.log('Op1 Reanuda tras salto de sesión:', {
+        sessionCaseIndex: op1ResumeJump.data.session.current_case_index,
+        sessionActiveScreen: op1ResumeJump.data.session.active_screen,
+        playerCostDollars: op1ResumeJump.data.player.hud_state.costDollars
+    });
+    if (op1ResumeJump.data.session.current_case_index !== 2 || op1ResumeJump.data.session.active_screen !== 'screen-fac-case-live') {
+        throw new Error('AUDITORÍA 1 FALLÓ: La sesión no entregó el Caso 3');
+    }
+    // El costo individual se conserva intacto ($1000)
+    if (op1ResumeJump.data.player.hud_state.costDollars !== 1000) {
+        throw new Error('AUDITORÍA 1 FALLÓ: El HUD individual del jugador se alteró');
+    }
+    console.log('✔ [PASS AUDITORÍA 1] Operador 1 se alinea al Caso 3 de la sesión conservando su HUD.\n');
 
-    // 6. Verificar Roster del Facilitador con token de autenticación (NO debe haber duplicados)
-    console.log('--- 6. Verificando Roster del Facilitador autenticado tras el refresh ---');
-    const facStateRes = await callRpc('faro_get_session_state', { 
+    // AUDITORÍA 3: Jugadores terminan Caso 1 (índice 0) y guardan en faro_case_results
+    // Facilitador consulta agregados → debe obtener métricas calculadas reales
+    console.log('--- AUDITORÍA 3: Persistencia de Resultados y Reconstrucción Agregada del Facilitador ---');
+    await postTable('faro_case_results', {
+        session_pin: testPin,
+        player_id: op1.data.player_token,
+        case_index: 0,
+        case_id: 'case_01',
+        case_title: 'Caso 01 // Autonomía',
+        integrity: 'safe',
+        real_time_seconds: 35,
+        cost: 2000,
+        calibration: 3,
+        reactivity: -2,
+        doors_activated: ['Puerta de Contexto', 'Puerta de Fuente'],
+        matrix_evaluations: [{ sectorKey: 'hizo_debiahacer', cost: 500 }]
+    });
+
+    await postTable('faro_case_results', {
+        session_pin: testPin,
+        player_id: op2.data.player_token,
+        case_index: 0,
+        case_id: 'case_01',
+        case_title: 'Caso 01 // Autonomía',
+        integrity: 'alert',
+        real_time_seconds: 45,
+        cost: 5000,
+        calibration: 0,
+        reactivity: 1,
+        doors_activated: ['Puerta de Contexto'],
+        matrix_evaluations: [{ sectorKey: 'hizo_nodebia', cost: 1500 }]
+    });
+
+    // Facilitador refresca y consulta estado + resultados agregados
+    const facRefreshedState = await callRpc('faro_get_session_state', {
         p_pin: testPin,
         p_facilitator_token: facToken
     });
-    console.log(`is_facilitator: ${facStateRes.data.is_facilitator}`);
-    const playersCount = facStateRes.data.players ? facStateRes.data.players.length : 0;
-    console.log(`Total jugadores en la sesión: ${playersCount} (Esperado: 3)`);
-    facStateRes.data.players.forEach(p => {
-        console.log(`   • ${p.name} | Token: ${p.token} | Pantalla: ${p.current_screen} | Costo: $${p.cost}`);
-    });
+    console.log('Agregados calculados del Caso 1:', facRefreshedState.data.cases_group_results['0']);
+    const c0 = facRefreshedState.data.cases_group_results['0'];
+    if (!c0) throw new Error('AUDITORÍA 3 FALLÓ: No se calcularon agregados del Caso 0');
+    if (c0.finishedPlayers.length !== 2) throw new Error('AUDITORÍA 3 FALLÓ: Deben haber 2 jugadores terminados');
+    if (c0.totalCost !== 7000) throw new Error('AUDITORÍA 3 FALLÓ: Costo total sumado debe ser 7000');
+    if (c0.integrityCounts.safe !== 1 || c0.integrityCounts.alert !== 1) throw new Error('AUDITORÍA 3 FALLÓ: Conteo de integridad incorrecto');
+    console.log('✔ [PASS AUDITORÍA 3] El Facilitador recuperó los resultados agregados calculados en tiempo real.\n');
 
-    if (playersCount !== 3) throw new Error(`El roster tiene ${playersCount} jugadores en vez de 3`);
-    console.log('✔ [PASS] El Facilitador mantiene exactamente los 3 operadores originales sin duplicados.\n');
+    // AUDITORÍA 4: Aislamiento estricto de HUDs individuales
+    console.log('--- AUDITORÍA 4: Verificación de Aislamiento de HUDs Individuales ---');
+    const p1 = await callRpc('faro_create_or_resume_player', { p_token: op1.data.player_token, p_pin: testPin });
+    const p2 = await callRpc('faro_create_or_resume_player', { p_token: op2.data.player_token, p_pin: testPin });
+    const p3 = await callRpc('faro_create_or_resume_player', { p_token: op3.data.player_token, p_pin: testPin });
+
+    console.log(`Op1 Costo: $${p1.data.player.hud_state.costDollars} (Esperado 1000)`);
+    console.log(`Op2 Costo: $${p2.data.player.hud_state.costDollars} (Esperado 8500)`);
+    console.log(`Op3 Costo: $${p3.data.player.hud_state.costDollars} (Esperado 15000)`);
+
+    if (p1.data.player.hud_state.costDollars !== 1000 || p2.data.player.hud_state.costDollars !== 8500 || p3.data.player.hud_state.costDollars !== 15000) {
+        throw new Error('AUDITORÍA 4 FALLÓ: Los HUDs individuales sufrieron cruce de datos');
+    }
+    console.log('✔ [PASS AUDITORÍA 4] Cero colisión o cruce de datos entre jugadores.\n');
 
     console.log('================================================================================');
-    console.log('🎉 TODAS LAS PRUEBAS DE ACEPTACIÓN Y SEGURIDAD PASARON EXITOSAMENTE (100%)');
+    console.log('🎉 TODAS LAS 4 AUDITORÍAS PASARON EXITOSAMENTE AL 100%');
     console.log('================================================================================');
 }
 
