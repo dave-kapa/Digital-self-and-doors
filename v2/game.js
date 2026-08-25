@@ -366,7 +366,8 @@ function startCloudHeartbeat(pin) {
 function broadcastSyncEvent(type, payload) {
     try {
         const sanitizedPayload = payload || {};
-        const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || 'F4R0';
+        const rawPin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || 'F4R0';
+        const pin = String(rawPin).toUpperCase().trim();
         const msgData = {
             type: type,
             payload: sanitizedPayload,
@@ -421,8 +422,9 @@ function handleIncomingSyncMessage(msg) {
         // sesión conocido y no coinciden, el mensaje es de otro webinar: se ignora por
         // completo. Antes del login (sin PIN propio todavía) se deja pasar, para no romper
         // flujos previos a la autenticación (ej. el toggle de dependencia en modo desarrollo).
-        const localSessionPin = gameStateV2.playerProfile && gameStateV2.playerProfile.pin;
-        if (localSessionPin && msg.sessionPin && msg.sessionPin !== localSessionPin) {
+        const localSessionPin = gameStateV2.playerProfile && gameStateV2.playerProfile.pin ? String(gameStateV2.playerProfile.pin).toUpperCase().trim() : null;
+        const msgPin = msg.sessionPin ? String(msg.sessionPin).toUpperCase().trim() : null;
+        if (localSessionPin && msgPin && msgPin !== localSessionPin) {
             return;
         }
 
@@ -3170,27 +3172,41 @@ function clearStoredPlayerIdentity() {
     try { localStorage.removeItem('faro_player_token'); localStorage.removeItem('faro_player_pin'); } catch (e) {}
 }
 
+function isModalVisible(element) {
+    if (!element) return false;
+    try {
+        const style = window.getComputedStyle ? window.getComputedStyle(element) : element.style;
+        return style && style.display !== 'none' && style.visibility !== 'hidden' && (element.offsetWidth > 0 || element.offsetHeight > 0 || element.style.display === 'flex' || element.style.display === 'block');
+    } catch (e) {
+        return element.style && element.style.display !== 'none' && element.style.display !== '';
+    }
+}
+
 function handleEscKey() {
-    // 1. Si hay un modal abierto (P.A.R.A. o de objetivos), cerrarlo primero sin cerrar sesión
+    // 1. Si hay un modal abierto (P.A.R.A., objetivos, o selección de caso), cerrarlo primero sin cerrar sesión
     const paraModal = document.getElementById('para-modal-overlay');
-    if (paraModal && paraModal.style.display !== 'none' && paraModal.style.display !== '') {
+    if (isModalVisible(paraModal)) {
         paraModal.style.display = 'none';
         return;
     }
     const objOverlay = document.getElementById('game-objective-overlay');
-    if (objOverlay && objOverlay.style.display !== 'none' && objOverlay.style.display !== '') {
+    if (isModalVisible(objOverlay)) {
         objOverlay.style.display = 'none';
         return;
     }
+    const nextCaseModal = document.getElementById('modal-select-next-case');
+    if (isModalVisible(nextCaseModal)) {
+        nextCaseModal.style.display = 'none';
+        return;
+    }
     const resultsModal = document.getElementById('fac-matrix-detail-modal');
-    if (resultsModal && resultsModal.style.display !== 'none' && resultsModal.style.display !== '') {
+    if (isModalVisible(resultsModal)) {
         resultsModal.style.display = 'none';
         return;
     }
 
     // 2. Si no hay modal abierto, ejecutar el flujo de Logout para ambos modos
     const isFacilitator = gameStateV2.userRole === 'facilitator';
-    const isOperator = gameStateV2.userRole === 'operator';
     const roleName = isFacilitator ? "Controlador" : "Operador";
 
     // Si aún está en la portada inicial sin autenticar, no hace falta confirmar
@@ -3220,14 +3236,25 @@ function performFullLogout(isFacilitator) {
     // 1. Detener intervalos activos
     if (typeof faroCloudHeartbeatInterval !== 'undefined' && faroCloudHeartbeatInterval) {
         clearInterval(faroCloudHeartbeatInterval);
+        faroCloudHeartbeatInterval = null;
     }
     if (typeof facLiveInterval !== 'undefined' && facLiveInterval) {
         clearInterval(facLiveInterval);
+        facLiveInterval = null;
+    }
+    if (typeof syncProgressInterval !== 'undefined' && syncProgressInterval) {
+        clearInterval(syncProgressInterval);
+        syncProgressInterval = null;
+    }
+    if (typeof syncSlideshowInterval !== 'undefined' && syncSlideshowInterval) {
+        clearInterval(syncSlideshowInterval);
+        syncSlideshowInterval = null;
     }
 
     // 2. Desconectar canal Realtime de Supabase
     if (typeof faroSupabaseClient !== 'undefined' && faroSupabaseClient && faroSupabaseRealtimeChannel) {
         try { faroSupabaseClient.removeChannel(faroSupabaseRealtimeChannel); } catch(e) {}
+        faroSupabaseRealtimeChannel = null;
     }
 
     // 3. Limpiar almacenamiento local y credenciales
@@ -3235,6 +3262,7 @@ function performFullLogout(isFacilitator) {
     try {
         localStorage.removeItem('faro_facilitator_pin');
         localStorage.removeItem('faro_facilitator_token');
+        sessionStorage.clear();
     } catch(e) {}
 
     // 4. Redirigir limpiamente según el rol
@@ -3243,6 +3271,17 @@ function performFullLogout(isFacilitator) {
     } else {
         window.location.href = window.location.pathname;
     }
+}
+
+// Atajos globales de teclado (registrados inmediatamente para estar activos en login, reanudación y cambio de pantallas)
+if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            handleEscKey();
+        } else if (e.ctrlKey && e.altKey && (e.key === 'f' || e.key === 'F')) {
+            selectUserRole('facilitator');
+        }
+    });
 }
 
 // Genera un PIN de sesión nuevo (6 caracteres alfanuméricos) y lo coloca en el campo de
@@ -3270,7 +3309,8 @@ async function handleFacilitatorLogin(event) {
     const errorText = document.getElementById('fac-login-error-text');
 
     const pass = passInput ? passInput.value.trim() : "";
-    const pin = pinInput ? pinInput.value.trim() : "";
+    const rawPin = pinInput ? pinInput.value.trim() : "";
+    const pin = rawPin.toUpperCase();
 
     const passHash = await sha256Hex(pass);
 
@@ -3314,6 +3354,9 @@ async function handleFacilitatorLogin(event) {
         localStorage.setItem('faro_facilitator_token', gameStateV2.facilitatorToken);
     } catch(e) {}
 
+    // Inicializar canal Realtime y Heartbeat para el Facilitador inmediatamente
+    initSupabaseRealtime(pin);
+
     // Upsert sesión en Supabase — si el PIN ya existía, esto NO la reinicia, devuelve su
     // estado real (candados, pantalla activa, caso en curso).
     await faroSupabaseRpc('faro_create_or_get_session', {
@@ -3354,7 +3397,8 @@ async function handlePlayerLogin(event) {
 
     const rawName = nameInput ? nameInput.value.trim() : "";
     const rawEmail = emailInput ? emailInput.value.trim() : "";
-    const pin = pinInput ? pinInput.value.trim() : "";
+    const rawPin = pinInput ? pinInput.value.trim() : "";
+    const pin = rawPin.toUpperCase();
 
     const name = escapeHtml(rawName);
     const email = escapeHtml(rawEmail);
@@ -8085,17 +8129,6 @@ async function initAppV2() {
     // 3. Flujo Inicial si no hay sesión para reanudar:
     // Si viene con ?role=facilitator entra a Controlador; de lo contrario entra 100% a Operador
     checkUrlRoleParam();
-
-    // Atajos de teclado globales:
-    // 1. Tecla Escape (ESC): Cierra modales abiertos o realiza logout seguro
-    // 2. Ctrl + Alt + F: Acceso secreto a sala de Controlador
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' || e.key === 'Esc') {
-            handleEscKey();
-        } else if (e.ctrlKey && e.altKey && (e.key === 'f' || e.key === 'F')) {
-            selectUserRole('facilitator');
-        }
-    });
 }
 
 if (document.readyState === 'loading') {
