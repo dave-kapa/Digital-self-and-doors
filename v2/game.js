@@ -258,24 +258,142 @@ try {
     console.warn('BroadcastChannel no soportado:', e);
 }
 
+// ==========================================================================
+// SINCRONIZACIÓN EN TIEMPO REAL MULTI-DISPOSITIVO (SUPABASE WEBSOCKETS + HEARTBEAT)
+// ==========================================================================
+let faroSupabaseClient = null;
+let faroSupabaseRealtimeChannel = null;
+let faroCloudHeartbeatInterval = null;
+
+function initSupabaseRealtime(pin) {
+    if (!pin) return;
+    const cleanPin = String(pin).toUpperCase().trim();
+    
+    // Iniciar polling de respaldo (Heartbeat en la nube cada 2.5s)
+    startCloudHeartbeat(cleanPin);
+
+    try {
+        if (typeof window !== 'undefined' && window.supabase && window.supabase.createClient) {
+            if (!faroSupabaseClient) {
+                faroSupabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            }
+            if (faroSupabaseRealtimeChannel) {
+                try { faroSupabaseClient.removeChannel(faroSupabaseRealtimeChannel); } catch(e) {}
+            }
+            const channelName = 'faro_realtime_' + cleanPin;
+            faroSupabaseRealtimeChannel = faroSupabaseClient.channel(channelName, {
+                config: { broadcast: { self: false } }
+            });
+            faroSupabaseRealtimeChannel.on('broadcast', { event: 'faro_sync' }, (message) => {
+                if (message && message.payload) {
+                    handleIncomingSyncMessage(message.payload);
+                }
+            });
+            faroSupabaseRealtimeChannel.subscribe((status) => {
+                console.log(`[Supabase Realtime] Canal ${channelName} conectado (status: ${status})`);
+            });
+        }
+    } catch (e) {
+        console.warn('[Supabase Realtime Init Warning]:', e);
+    }
+}
+
+function startCloudHeartbeat(pin) {
+    if (faroCloudHeartbeatInterval) clearInterval(faroCloudHeartbeatInterval);
+    const targetPin = pin || (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin'));
+    if (!targetPin) return;
+
+    faroCloudHeartbeatInterval = setInterval(async () => {
+        const currentPin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || targetPin;
+        if (!currentPin) return;
+
+        try {
+            if (gameStateV2.userRole === 'operator') {
+                const sessionRes = await faroSupabaseRpc('faro_get_session_state', { p_pin: currentPin });
+                if (sessionRes && sessionRes.session) {
+                    const s = sessionRes.session;
+                    
+                    // 1. Candados sincronizados con la sesión
+                    if (s.session_gates && typeof s.session_gates === 'object') {
+                        const prevGates = JSON.stringify(gameStateV2.sessionGates);
+                        const newGates = JSON.stringify(s.session_gates);
+                        if (prevGates !== newGates) {
+                            gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...s.session_gates };
+                            updateGateUI();
+                        }
+                    }
+
+                    // 2. Dependencia del facilitador
+                    if (s.facilitator_dependency !== undefined && gameStateV2.facilitatorDependency !== (s.facilitator_dependency !== false)) {
+                        gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
+                        updateDependencyToggleUI();
+                        updateGateUI();
+                    }
+
+                    // 3. Salto forzado de sección / caso
+                    if (s.current_case_index !== undefined && s.current_case_index !== null && s.current_case_index !== gameStateV2.currentCaseIndex) {
+                        if (s.active_screen === 'screen-fac-case-live' || s.active_screen === 'screen-case') {
+                            gameStateV2.currentCaseIndex = s.current_case_index;
+                            startCaseSequence(s.current_case_index);
+                        }
+                    }
+                }
+            } else if (gameStateV2.userRole === 'facilitator') {
+                const facToken = gameStateV2.facilitatorToken || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_token'));
+                const facSessionData = await faroSupabaseRpc('faro_get_session_state', {
+                    p_pin: currentPin,
+                    p_facilitator_token: facToken
+                });
+                if (facSessionData && facSessionData.success) {
+                    if (facSessionData.players && Array.isArray(facSessionData.players)) {
+                        facState.connectedPlayers = facSessionData.players;
+                    }
+                    if (facSessionData.cases_group_results && typeof facSessionData.cases_group_results === 'object') {
+                        facState.casesGroupResults = facSessionData.cases_group_results;
+                        getAllCasesCumulativeGroupResults();
+                    }
+                    updateFacilitatorRealtimeUI();
+                    if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+                    updateGateUI();
+                }
+            }
+        } catch(e) {
+            console.warn('[Cloud Heartbeat Sync Error]:', e);
+        }
+    }, 2500);
+}
+
 function broadcastSyncEvent(type, payload) {
     try {
         const sanitizedPayload = payload || {};
+        const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || 'F4R0';
+        const msgData = {
+            type: type,
+            payload: sanitizedPayload,
+            sender: gameStateV2.playerId,
+            senderRole: gameStateV2.userRole || 'operator',
+            token: gameStateV2.facilitatorToken || null,
+            sessionPin: pin,
+            timestamp: Date.now()
+        };
+
+        // 1. Emisión local en el navegador (BroadcastChannel)
         if (faroSyncChannel) {
-            faroSyncChannel.postMessage({
-                type: type,
-                payload: sanitizedPayload,
-                sender: gameStateV2.playerId,
-                senderRole: gameStateV2.userRole || 'operator',
-                token: gameStateV2.facilitatorToken || null,
-                // PIN de la sesión propia: permite que dos webinars simultáneos en el mismo
-                // navegador/BroadcastChannel no se mezclen (ver handleIncomingSyncMessage).
-                sessionPin: (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || null,
-                timestamp: Date.now()
-            });
+            try { faroSyncChannel.postMessage(msgData); } catch(e) {}
         }
 
-        const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || 'F4R0';
+        // 2. Emisión global a través de Supabase Realtime (WebSockets multi-dispositivo)
+        if (faroSupabaseRealtimeChannel) {
+            try {
+                faroSupabaseRealtimeChannel.send({
+                    type: 'broadcast',
+                    event: 'faro_sync',
+                    payload: msgData
+                });
+            } catch(e) {}
+        }
+
+        // 3. Telemetría de persistencia en base de datos
         faroSupabasePost('faro_case_events', {
             session_pin: pin,
             player_id: gameStateV2.playerId,
@@ -3257,6 +3375,9 @@ async function handlePlayerLogin(event) {
     if (gameStateV2.sessionLog) {
         gameStateV2.sessionLog.player = { ...gameStateV2.playerProfile };
     }
+
+    // Inicializar canal Realtime y Heartbeat para el Operador
+    initSupabaseRealtime(pin);
 
     broadcastSyncEvent('PLAYER_CONNECTED', {
         playerId: gameStateV2.playerId,
@@ -7693,6 +7814,9 @@ async function applyFacilitatorSessionData(facSessionData, pin, token) {
 
     getAllCasesCumulativeGroupResults();
 
+    // Inicializar conexión WebSocket Realtime y Heartbeat para el Facilitador
+    initSupabaseRealtime(s.pin || pin);
+
     document.body.classList.add('facilitator-theme');
     // Pantallas transitorias/de autenticación: nunca son un destino válido de reanudación.
     // Si la sesión quedó con una de estas guardada como active_screen (ej. el facilitador
@@ -7861,6 +7985,9 @@ async function initAppV2() {
                 document.body.classList.remove('facilitator-theme');
                 updateHeaderUI();
                 updateGateUI();
+
+                // Conectar canal Realtime y Heartbeat en reanudación
+                initSupabaseRealtime(savedPlayerPin);
 
                 broadcastSyncEvent('PLAYER_CONNECTED', {
                     playerId: gameStateV2.playerId,
