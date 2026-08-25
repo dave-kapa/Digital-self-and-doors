@@ -3170,6 +3170,70 @@ function clearStoredPlayerIdentity() {
     try { localStorage.removeItem('faro_player_token'); localStorage.removeItem('faro_player_pin'); } catch (e) {}
 }
 
+function handleEscKey() {
+    // 1. Si hay un modal abierto (P.A.R.A. o de objetivos), cerrarlo primero sin cerrar sesión
+    const paraModal = document.getElementById('para-modal-overlay');
+    if (paraModal && paraModal.style.display !== 'none' && paraModal.style.display !== '') {
+        paraModal.style.display = 'none';
+        return;
+    }
+    const objOverlay = document.getElementById('game-objective-overlay');
+    if (objOverlay && objOverlay.style.display !== 'none' && objOverlay.style.display !== '') {
+        objOverlay.style.display = 'none';
+        return;
+    }
+    const resultsModal = document.getElementById('fac-matrix-detail-modal');
+    if (resultsModal && resultsModal.style.display !== 'none' && resultsModal.style.display !== '') {
+        resultsModal.style.display = 'none';
+        return;
+    }
+
+    // 2. Si no hay modal abierto, ejecutar el flujo de Logout para ambos modos
+    const isFacilitator = gameStateV2.userRole === 'facilitator';
+    const isOperator = gameStateV2.userRole === 'operator';
+    const roleName = isFacilitator ? "Controlador" : "Operador";
+
+    // Si aún está en la portada inicial sin autenticar, no hace falta confirmar
+    const isIntro = ['screen-role-select', 'screen-cover', 'screen-login', 'screen-login-facilitator'].includes(gameStateV2.activeScreen);
+    if (isIntro && !gameStateV2.playerProfile) {
+        return;
+    }
+
+    const confirmed = confirm(`¿Deseas cerrar sesión de ${roleName} y desconectar tu terminal?`);
+    if (!confirmed) return;
+
+    performFullLogout(isFacilitator);
+}
+
+function performFullLogout(isFacilitator) {
+    // 1. Detener intervalos activos
+    if (typeof faroCloudHeartbeatInterval !== 'undefined' && faroCloudHeartbeatInterval) {
+        clearInterval(faroCloudHeartbeatInterval);
+    }
+    if (typeof facLiveInterval !== 'undefined' && facLiveInterval) {
+        clearInterval(facLiveInterval);
+    }
+
+    // 2. Desconectar canal Realtime de Supabase
+    if (typeof faroSupabaseClient !== 'undefined' && faroSupabaseClient && faroSupabaseRealtimeChannel) {
+        try { faroSupabaseClient.removeChannel(faroSupabaseRealtimeChannel); } catch(e) {}
+    }
+
+    // 3. Limpiar almacenamiento local y credenciales
+    clearStoredPlayerIdentity();
+    try {
+        localStorage.removeItem('faro_facilitator_pin');
+        localStorage.removeItem('faro_facilitator_token');
+    } catch(e) {}
+
+    // 4. Redirigir limpiamente según el rol
+    if (isFacilitator) {
+        window.location.href = window.location.pathname + '?role=facilitator';
+    } else {
+        window.location.href = window.location.pathname;
+    }
+}
+
 // Genera un PIN de sesión nuevo (6 caracteres alfanuméricos) y lo coloca en el campo de
 // PIN del formulario de Controlador. Único requisito: 6+ caracteres (ver validación en
 // handleFacilitatorLogin).
@@ -8011,9 +8075,13 @@ async function initAppV2() {
     // Si viene con ?role=facilitator entra a Controlador; de lo contrario entra 100% a Operador
     checkUrlRoleParam();
 
-    // Atajo secreto de teclado para el Facilitador (Ctrl + Alt + F)
+    // Atajos de teclado globales:
+    // 1. Tecla Escape (ESC): Cierra modales abiertos o realiza logout seguro
+    // 2. Ctrl + Alt + F: Acceso secreto a sala de Controlador
     window.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.altKey && (e.key === 'f' || e.key === 'F')) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            handleEscKey();
+        } else if (e.ctrlKey && e.altKey && (e.key === 'f' || e.key === 'F')) {
             selectUserRole('facilitator');
         }
     });
