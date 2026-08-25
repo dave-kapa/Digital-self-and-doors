@@ -7732,6 +7732,16 @@ async function initAppV2() {
                 let sessionActiveScreen = s.active_screen || 'screen-waiting';
                 let targetScreen = sessionActiveScreen;
 
+                // Traduce las pantallas EXCLUSIVAS del facilitador (screen-fac-*) a su
+                // equivalente del lado del operador. Las 3 que existen hoy en el HTML son
+                // screen-fac-case-live, screen-fac-calib-realtime y screen-fac-calib-results
+                // (ver index.html) — las tres deben quedar cubiertas aquí, porque si una
+                // sesión guarda active_screen con cualquiera de ellas y un operador reanuda
+                // sin traducción, switchScreenV2 intentaría mostrarle una pantalla de control
+                // que no le pertenece. El resto de las pantallas (screen-case-group-results,
+                // screen-fourth-wall, screen-game-final-results, etc.) ya son compartidas
+                // entre ambos roles con el mismo id, así que no necesitan traducción: el valor
+                // por defecto (sin cambios) ya es correcto para el operador.
                 if (sessionActiveScreen === 'screen-fac-case-live' || sessionActiveScreen === 'screen-case' || (gameStateV2.sessionGates.gate4_case1 && sessionActiveScreen.includes('case'))) {
                     targetScreen = 'screen-case';
                 } else if (sessionActiveScreen === 'screen-fac-calib-realtime') {
@@ -7744,10 +7754,8 @@ async function initAppV2() {
                     } else {
                         targetScreen = 'screen-waiting';
                     }
-                } else if (sessionActiveScreen === 'screen-fac-results') {
-                    targetScreen = 'screen-case-results-group';
-                } else if (sessionActiveScreen === 'screen-fac-deliberation') {
-                    targetScreen = 'screen-deliberation';
+                } else if (sessionActiveScreen === 'screen-fac-calib-results') {
+                    targetScreen = 'screen-faro-reveal';
                 }
 
                 document.body.classList.remove('facilitator-theme');
