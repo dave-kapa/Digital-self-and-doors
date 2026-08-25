@@ -174,6 +174,32 @@ async function faroSupabaseRpc(functionName, params = {}) {
     }
 }
 
+// POST directo a una tabla (no a una función RPC) — usado para telemetría de solo-escritura
+// que no necesita lógica del servidor (faro_case_events, faro_case_results). Distinto de
+// faroSupabaseRpc(), que llama funciones bajo /rest/v1/rpc/. Existía antes con este mismo
+// nombre; quedó sin definir cuando se introdujo faroSupabaseRpc() para la reanudación de
+// sesión, dejando rotas (ReferenceError) las dos llamadas que todavía la necesitaban.
+async function faroSupabasePost(table, data) {
+    if (typeof fetch === 'undefined') return;
+    try {
+        const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_CONFIG.anonKey,
+                'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            console.warn(`[Supabase Sync Warning] HTTP ${response.status} en tabla ${table}`);
+        }
+    } catch (e) {
+        console.warn(`[Supabase Connection] Error de red al sincronizar con ${table}:`, e.message);
+    }
+}
+
 async function syncPlayerStateToCloud() {
     if (gameStateV2.userRole !== 'operator' || !gameStateV2.playerToken) return;
     try {
@@ -5925,7 +5951,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
         return {
             key: "hizo_debiahacer",
             deltaCalib: dVal,
-            badgeText: `✔ ACCIÓN OPORTUNA // HIZO / DEBÍA HACER (+${dVal})`,
+            badgeText: `✔ Acción acertada — era necesaria y la ejecutaste (+${dVal})`,
             badgeClass: "quad-good",
             impactHtml: `<span class="impact-chip impact-calib">🎯 Calib: +${dVal}</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>`
         };
@@ -5934,7 +5960,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
         return {
             key: "hizo_nodebia",
             deltaCalib: -dVal,
-            badgeText: `✖ ACCIÓN RIESGOSA // HIZO / NO DEBÍA HACER (-${dVal})`,
+            badgeText: `✖ Extralimitación — actuaste sin que fuera necesario (-${dVal})`,
             badgeClass: "quad-bad",
             impactHtml: `<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -${dVal}</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>`
         };
@@ -5943,7 +5969,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
         return {
             key: "hizo_norelevante",
             deltaCalib: 0,
-            badgeText: "⚪ ACCIÓN NEUTRA // HIZO / NO RELEVANTE (0)",
+            badgeText: "⚪ Ruido operativo — acción sin impacto real (0)",
             badgeClass: "quad-neutral",
             impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-cost">⏱ +20s | 💰+</span>'
         };
@@ -5952,7 +5978,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
         return {
             key: "nohizo_nodebia",
             deltaCalib: nVal,
-            badgeText: `✔ OMISIÓN PRUDENTE // NO HIZO / NO DEBÍA HACER (+${nVal})`,
+            badgeText: `✔ Contención correcta — evitaste una acción innecesaria (+${nVal})`,
             badgeClass: "quad-good",
             impactHtml: `<span class="impact-chip impact-calib">🎯 Calib: +${nVal}</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>`
         };
@@ -5961,7 +5987,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
         return {
             key: "nohizo_debiahacer",
             deltaCalib: -nVal,
-            badgeText: `✖ OMISIÓN CRÍTICA // NO HIZO / DEBÍA HACER (-${nVal})`,
+            badgeText: `✖ Omisión crítica — no actuaste cuando debías hacerlo (-${nVal})`,
             badgeClass: "quad-bad",
             impactHtml: `<span class="impact-chip impact-calib" style="color:#ff2a6d;border-color:rgba(255,42,109,0.4);">🎯 Calib: -${nVal}</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>`
         };
@@ -5969,7 +5995,7 @@ function getActionQuadrant(isExec, idealCategory, actionObj = null) {
     return {
         key: "nohizo_norelevante",
         deltaCalib: 0,
-        badgeText: "⚪ OMISIÓN NEUTRA // NO RELEVANTE (0)",
+        badgeText: "⚪ Sin relevancia — omitirla no cambió nada (0)",
         badgeClass: "quad-neutral",
         impactHtml: '<span class="impact-chip impact-neutral">🎯 Calib: 0</span> <span class="impact-chip impact-neutral">⏱ 0s | 💰 $0</span>'
     };
@@ -6525,8 +6551,12 @@ function showNarrativeFeedbackScreen() {
         cardValIntegrity.innerText = `${adjSign}$${Math.abs(outcomeObj.outcomeCostAdjustment).toLocaleString('en-US')}`;
     }
     if (cardSubIntegrity) {
-        const statusLabel = outcomeObj.integrityResult === 'safe' ? 'SEGURO (-$2K)' : (outcomeObj.integrityResult === 'alert' ? 'ALERTA (+$1K)' : 'EXPUESTO (+$3K)');
-        cardSubIntegrity.innerText = `Estado: ${statusLabel}`;
+        const statusLabel = outcomeObj.integrityResult === 'safe'
+            ? 'Bono por mantener el sistema SEGURO: -$2K'
+            : (outcomeObj.integrityResult === 'alert'
+                ? 'Recargo por quedar en ALERTA: +$1K'
+                : 'Recargo por quedar EXPUESTO: +$3K');
+        cardSubIntegrity.innerText = statusLabel;
     }
 
     // Llenar Caja 3: Reactividad
@@ -6538,7 +6568,7 @@ function showNarrativeFeedbackScreen() {
     }
     if (cardSubReactivity) {
         const reactLevelSign = outcomeObj.finalReactivityLevel >= 0 ? '+' : '';
-        cardSubReactivity.innerText = `${reactLevelSign}${outcomeObj.finalReactivityLevel} unidades ($1K c/u)`;
+        cardSubReactivity.innerText = `Reactividad final: ${reactLevelSign}${outcomeObj.finalReactivityLevel} (cada punto cuesta $1K)`;
     }
 
     document.getElementById('fb-narrative-box').innerHTML = outcomeObj.narrative;
