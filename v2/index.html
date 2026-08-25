@@ -14,8 +14,8 @@
     <!-- CONTENEDOR 100% FULLSCREEN DE ENTRADA Y PRE-CARGA -->
     <div id="intro-flow-container" class="intro-flow-fullscreen">
         
-        <!-- PANTALLA 0: SELECTOR DE ROL (CONTROLADOR VS OPERADOR) -->
-        <section class="intro-view-sub active" id="screen-role-select">
+        <!-- PANTALLA 0: SELECTOR DE ROL (OCULTO POR DEFECTO PARA ENTRADA DIRECTA DE JUGADOR) -->
+        <section class="intro-view-sub" id="screen-role-select" style="display:none;">
             <div class="cover-fullscreen-bg">
                 <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image">
                 <div class="cover-bg-vignette"></div>
@@ -60,7 +60,7 @@
         </section>
 
         <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN 100% FULLSCREEN / PRELOADER 10s) -->
-        <section class="intro-view-sub" id="screen-cover" style="display:none;">
+        <section class="intro-view-sub active" id="screen-cover">
             <div class="cover-fullscreen-bg">
                 <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-bg-image">
                 <div class="cover-bg-vignette"></div>
@@ -71,7 +71,7 @@
                 <div class="cover-badge-top" id="cover-badge-role-tag">SISTEMA CIBERNÉTICO V2.0 // PUERTA DE ACCESO DE OPERADOR</div>
                 
                 <div class="cover-title-group">
-                    <h1 class="cover-glitch-title">FARO</h1>
+                    <h1 class="cover-glitch-title" onclick="handleFaroSecretClick()">FARO</h1>
                     <h2 class="cover-subtitle">DIGITAL SELF & ATTENTION DOORS</h2>
                     <p class="cover-tagline">EXPERIMENTO DE AGENCIA HUMANO–IA // PROTOCOLO DE DECISIÓN Y GOBERNANZA</p>
                 </div>

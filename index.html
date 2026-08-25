@@ -1,17 +1,21 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=v2/index.html">
-    <title>FARO V2.0 â€” Redirigiendo...</title>
+    <title>FARO V2.0 — Redirigiendo...</title>
     <script>
-        window.location.replace("v2/index.html");
+        const target = "v2/index.html" + window.location.search + window.location.hash;
+        window.location.replace(target);
     </script>
 </head>
 <body style="background:#02060c; color:#00d8ff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
     <div style="text-align:center;">
-        <h2>FARO // REDIRIGIENDO A VERSIÃ“N 2.0...</h2>
-        <p><a href="v2/index.html" style="color:#49f5c1;">Haz clic aquÃ­ si no redirige automÃ¡ticamente</a></p>
+        <h2>FARO // CARGANDO PROTOCOLO...</h2>
+        <p><a id="fallback-link" href="v2/index.html" style="color:#49f5c1;">Haz clic aquí si no redirige automáticamente</a></p>
     </div>
+    <script>
+        const link = document.getElementById('fallback-link');
+        if (link) link.href = "v2/index.html" + window.location.search + window.location.hash;
+    </script>
 </body>
 </html>

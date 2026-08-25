@@ -2648,13 +2648,31 @@ function updateGateUI() {
     updateDependencyToggleUI();
 }
 
+let faroSecretClickCount = 0;
+let faroSecretClickTimer = null;
+function handleFaroSecretClick() {
+    faroSecretClickCount++;
+    clearTimeout(faroSecretClickTimer);
+    faroSecretClickTimer = setTimeout(() => {
+        faroSecretClickCount = 0;
+    }, 2000);
+    if (faroSecretClickCount >= 3) {
+        faroSecretClickCount = 0;
+        selectUserRole('facilitator');
+    }
+}
+
 function checkUrlRoleParam() {
     const params = new URLSearchParams(window.location.search);
     const roleParam = params.get('role');
-    if (roleParam === 'facilitator') {
+    const isFacilitator = (roleParam === 'facilitator' || params.has('admin') || params.has('fac') || params.has('controlador'));
+    if (isFacilitator) {
         selectUserRole('facilitator');
-    } else if (roleParam === 'operator') {
+        return 'facilitator';
+    } else {
+        // Por defecto, cualquier acceso a la URL base entra 100% directo a modo Operador / Jugador
         selectUserRole('operator');
+        return 'operator';
     }
 }
 
@@ -7862,11 +7880,16 @@ async function initAppV2() {
         }
     }
 
-    // 3. Flujo Inicial si no hay sesión para reanudar
+    // 3. Flujo Inicial si no hay sesión para reanudar:
+    // Si viene con ?role=facilitator entra a Controlador; de lo contrario entra 100% a Operador
     checkUrlRoleParam();
-    if (!roleParam) {
-        showIntroSubScreen('screen-role-select');
-    }
+
+    // Atajo secreto de teclado para el Facilitador (Ctrl + Alt + F)
+    window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.altKey && (e.key === 'f' || e.key === 'F')) {
+            selectUserRole('facilitator');
+        }
+    });
 }
 
 if (document.readyState === 'loading') {
