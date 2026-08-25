@@ -346,7 +346,27 @@ function startCloudHeartbeat(pin) {
                 });
                 if (facSessionData && facSessionData.success) {
                     if (facSessionData.players && Array.isArray(facSessionData.players)) {
-                        facState.connectedPlayers = facSessionData.players;
+                        const existingMap = new Map((facState.connectedPlayers || []).map(p => [p.id, p]));
+                        facState.connectedPlayers = facSessionData.players.map(sp => {
+                            const ep = existingMap.get(sp.id) || existingMap.get(sp.token) || {};
+                            return {
+                                ...sp,
+                                round: ep.round || sp.round || 1,
+                                currentScreen: ep.currentScreen || sp.currentScreen || "screen-waiting",
+                                pausesUsed: ep.pausesUsed !== undefined ? ep.pausesUsed : (sp.pausesUsed || 0),
+                                analysesCount: ep.analysesCount !== undefined ? ep.analysesCount : (sp.analysesCount || 0),
+                                reviewsCount: ep.reviewsCount !== undefined ? ep.reviewsCount : (sp.reviewsCount || 0),
+                                actionsAdded: ep.actionsAdded !== undefined ? ep.actionsAdded : (sp.actionsAdded || 0),
+                                hasInitialReaction: ep.hasInitialReaction || sp.hasInitialReaction || false,
+                                impulseIndex: ep.impulseIndex !== undefined ? ep.impulseIndex : sp.impulseIndex,
+                                paraAgencyChoice: ep.paraAgencyChoice || sp.paraAgencyChoice || null,
+                                finished: ep.finished || sp.finished || false,
+                                calibFinished: ep.calibFinished || sp.calibFinished || false,
+                                surrendered: ep.surrendered !== undefined ? ep.surrendered : (sp.surrendered || false),
+                                caseFinished: ep.caseFinished || sp.caseFinished || false,
+                                connectedAt: ep.connectedAt || sp.connectedAt || new Date().toLocaleTimeString()
+                            };
+                        });
                     }
                     if (facSessionData.cases_group_results && typeof facSessionData.cases_group_results === 'object') {
                         facState.casesGroupResults = facSessionData.cases_group_results;
@@ -550,18 +570,24 @@ function handleIncomingSyncMessage(msg) {
             }
         } else if (type === 'PLAYER_CALIB_ROUND_UPDATE' || type === 'PLAYER_CALIB_FINISHED') {
             if (gameStateV2.userRole === 'facilitator') {
-                if (type === 'PLAYER_CALIB_FINISHED' && typeof facState !== 'undefined' && facState.connectedPlayers) {
-                    // Sin esto, el % de "agencia cedida" del facilitador queda siempre en 0:
-                    // updateFacilitatorRealtimeUI() cuenta players.filter(p => p.finished &&
-                    // p.surrendered), pero nada marcaba estos campos en el jugador conectado.
+                if (typeof facState !== 'undefined' && facState.connectedPlayers) {
                     const p = facState.connectedPlayers.find(pl => pl.id === payload.playerId);
                     if (p) {
-                        p.finished = true;
-                        p.surrendered = !!payload.surrendered;
+                        if (type === 'PLAYER_CALIB_ROUND_UPDATE') {
+                            if (payload.round !== undefined) p.round = payload.round;
+                        } else if (type === 'PLAYER_CALIB_FINISHED') {
+                            p.finished = true;
+                            p.calibFinished = true;
+                            p.round = 4;
+                            p.surrendered = !!payload.surrendered;
+                        }
                     }
                 }
                 if (typeof updateFacilitatorRealtimeUI === 'function') {
                     updateFacilitatorRealtimeUI();
+                }
+                if (typeof updateGatePlayerCounts === 'function') {
+                    updateGatePlayerCounts();
                 }
             }
         } else if (type === 'PLAYER_PARA_AGENCY_CHOICE') {
@@ -592,6 +618,17 @@ function handleIncomingSyncMessage(msg) {
         } else if (type === 'PLAYER_CASE_FINISHED') {
             if (gameStateV2.userRole === 'facilitator' && typeof handleFacilitatorPlayerFinishedCase === 'function') {
                 handleFacilitatorPlayerFinishedCase(payload);
+            }
+        } else if (type === 'GROUP_RESULTS_SYNC') {
+            if (payload.groupResults && payload.caseIndex !== undefined) {
+                if (!facState.casesGroupResults) facState.casesGroupResults = {};
+                facState.casesGroupResults[payload.caseIndex] = payload.groupResults;
+            }
+            if (payload.allResults && typeof payload.allResults === 'object') {
+                facState.casesGroupResults = { ...facState.casesGroupResults, ...payload.allResults };
+            }
+            if (gameStateV2.activeScreen === 'screen-case-group-results') {
+                showGroupResultsScreen(gameStateV2.currentCaseIndex);
             }
         }
     } catch (e) {
@@ -2471,16 +2508,16 @@ function updateGatePlayerCounts() {
     if (elGate1Count) elGate1Count.innerText = totalCount;
 
     const elGate2Count = document.getElementById('fac-gate-2-player-count');
-    if (elGate2Count) elGate2Count.innerText = players.filter(p => p.currentScreen === 'screen-calibration').length;
+    if (elGate2Count) elGate2Count.innerText = players.filter(p => p.currentScreen === 'screen-calibration' || p.currentScreen === 'screen-waiting').length;
 
     const elGate3Count = document.getElementById('fac-gate-3-player-count');
-    if (elGate3Count) elGate3Count.innerText = players.filter(p => p.currentScreen === 'screen-calibration-processing' || p.calibFinished).length;
+    if (elGate3Count) elGate3Count.innerText = players.filter(p => p.currentScreen === 'screen-faro-reveal' || p.currentScreen === 'screen-calibration-processing' || p.calibFinished || p.finished).length;
 
     const elGate4Count = document.getElementById('fac-gate-4-player-count');
-    if (elGate4Count) elGate4Count.innerText = players.filter(p => p.currentScreen === 'game-objective-overlay' || p.currentScreen === 'screen-claudia-debrief').length;
+    if (elGate4Count) elGate4Count.innerText = players.filter(p => p.currentScreen === 'game-objective-overlay' || p.currentScreen === 'screen-claudia-debrief' || p.currentScreen === 'screen-faro-reveal').length;
 
     const elGateBCCount = document.getElementById('fac-gate-bc-player-count');
-    if (elGateBCCount) elGateBCCount.innerText = players.filter(p => p.caseFinished || p.currentScreen === 'case-phase-feedback').length;
+    if (elGateBCCount) elGateBCCount.innerText = players.filter(p => p.caseFinished || p.currentScreen === 'case-phase-feedback' || p.currentScreen === 'screen-case').length;
 
     const elGateDelibCount = document.getElementById('fac-gate-delib-player-count');
     if (elGateDelibCount) elGateDelibCount.innerText = players.filter(p => p.currentScreen === 'screen-case-group-results').length;
@@ -2877,14 +2914,15 @@ function updateFacCaseLiveUI() {
 
     // Métricas
     // 1. Reacción Inicial
+    const reactedCount = players.filter(p => p.hasInitialReaction || p.caseFinished || p.currentScreen === 'case-phase-feedback').length;
     const inParaCount = players.filter(p => p.currentScreen === 'screen-case' || p.currentScreen === 'case-phase-feedback' || p.caseFinished).length;
-    const reactionsPct = Math.round((inParaCount / totalCensus) * 100);
+    const reactionsPct = Math.round((reactedCount / totalCensus) * 100);
     const elReactionsPct = document.getElementById('fac-case-metric-reactions-pct');
     const elReactionsFill = document.getElementById('fac-case-metric-reactions-fill');
     const elReactionsCount = document.getElementById('fac-case-metric-reactions-count');
     if (elReactionsPct) elReactionsPct.innerText = `${reactionsPct}%`;
     if (elReactionsFill) elReactionsFill.style.width = `${reactionsPct}%`;
-    if (elReactionsCount) elReactionsCount.innerText = `${inParaCount} / ${players.length} operadores en P.A.R.A.`;
+    if (elReactionsCount) elReactionsCount.innerText = `${reactedCount} / ${players.length} operadores reaccionaron`;
 
     // 2. Pausas
     const pausesUsedTotal = players.reduce((acc, p) => acc + (p.pausesUsed || 0), 0);
@@ -2922,9 +2960,10 @@ function updateFacCaseLiveUI() {
     // 5. Alternativas descubiertas
     const actionsNumEl = document.getElementById('fac-case-metric-actions-num');
     if (actionsNumEl) {
+        const liveActionsCount = players.reduce((acc, p) => acc + (p.actionsAdded || 0), 0);
         const groupCaseRes = facState.casesGroupResults && facState.casesGroupResults[caseIdx];
-        const count = groupCaseRes ? Object.values(groupCaseRes.matrixSectors || {}).reduce((a, b) => a + (b.count || 0), 0) : 0;
-        actionsNumEl.innerText = count;
+        const finishedActionsCount = groupCaseRes ? Object.values(groupCaseRes.matrixSectors || {}).reduce((a, b) => a + (b.count || 0), 0) : 0;
+        actionsNumEl.innerText = Math.max(liveActionsCount, finishedActionsCount);
     }
 
     // 6. Completados
@@ -2953,8 +2992,8 @@ function updateFacCaseLiveUI() {
         } else {
             caseChipsContainer.innerHTML = players.map(p => `
                 <span class="player-chip-badge" style="background:rgba(0,216,255,0.12); border:1px solid var(--color-cyan); color:#ffffff; font-size:11px; padding:3px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;">
-                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${p.caseFinished ? '#00e676' : 'var(--color-cyan)'};"></span>
-                    ${escapeHtml(p.name)} (${p.pausesUsed || 0}P / ${p.analysesCount || 0}A)
+                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${p.caseFinished ? '#00e676' : (p.hasInitialReaction ? '#00d8ff' : '#ffaa00')};"></span>
+                    ${escapeHtml(p.name)} (${p.pausesUsed || 0}P / ${p.analysesCount || 0}A${p.caseFinished ? ' ✔' : ''})
                 </span>
             `).join('');
         }
@@ -2988,6 +3027,14 @@ function facUnlockGate4AndStartCase1() {
 function facUnlockGateBCAndGoResults() {
     gameStateV2.sessionGates.gate_case_bc = true;
     broadcastSyncEvent('GATES_UPDATE', { gates: gameStateV2.sessionGates });
+    const caseIdx = gameStateV2.currentCaseIndex || 0;
+    if (facState.casesGroupResults && facState.casesGroupResults[caseIdx]) {
+        broadcastSyncEvent('GROUP_RESULTS_SYNC', {
+            caseIndex: caseIdx,
+            groupResults: facState.casesGroupResults[caseIdx],
+            allResults: facState.casesGroupResults
+        });
+    }
     updateGateUI();
     showGroupResultsScreen(gameStateV2.currentCaseIndex);
 }
@@ -7263,6 +7310,13 @@ function handleFacilitatorPlayerFinishedCase(payload) {
             p.caseFinished = true;
             p.currentScreen = 'case-phase-feedback';
         }
+    }
+    if (facState.casesGroupResults && facState.casesGroupResults[payload.caseIndex]) {
+        broadcastSyncEvent('GROUP_RESULTS_SYNC', {
+            caseIndex: payload.caseIndex,
+            groupResults: facState.casesGroupResults[payload.caseIndex],
+            allResults: facState.casesGroupResults
+        });
     }
     if (typeof updateGatePlayerCounts === 'function') updateGatePlayerCounts();
     if (typeof updateFacilitatorRealtimeUI === 'function') updateFacilitatorRealtimeUI();
