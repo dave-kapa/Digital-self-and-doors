@@ -293,7 +293,8 @@ function handleIncomingSyncMessage(msg) {
             'FAC_SET_NEXT_CASE_TARGET',
             'FAC_FORCE_PARA_SURRENDER',
             'FAC_FLIP_PARA_CARD',
-            'DEPENDENCY_UPDATE'
+            'DEPENDENCY_UPDATE',
+            'FAC_FORCE_JUMP_SECTION'
         ];
 
         if (FACILITATOR_ONLY_TYPES.includes(type) && !isFacilitatorSender && gameStateV2.strictAuth) {
@@ -309,6 +310,22 @@ function handleIncomingSyncMessage(msg) {
         } else if (type === 'FAC_FORCE_START_CASE_1') {
             if (gameStateV2.userRole === 'operator') {
                 startCaseSequence(0);
+            }
+        } else if (type === 'FAC_FORCE_JUMP_SECTION') {
+            // Salto de sección forzado por el Controlador (botones "SECCIONES"): lleva a
+            // TODOS los operadores conectados a la sección indicada de inmediato, sin
+            // esperar a que terminen lo que estén haciendo. Pensado como override de
+            // emergencia (ej. se acaba el tiempo del webinar), no como flujo normal.
+            if (gameStateV2.userRole === 'operator') {
+                if (payload.gates && typeof payload.gates === 'object') {
+                    gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...payload.gates };
+                }
+                if (typeof payload.caseIndex === 'number') {
+                    startCaseSequence(payload.caseIndex);
+                } else if (payload.screen) {
+                    switchScreenV2(payload.screen);
+                }
+                updateGateUI();
             }
         } else if (type === 'FAC_SET_NEXT_CASE_TARGET') {
             if (gameStateV2.userRole === 'operator' && payload.target) {
@@ -2271,10 +2288,7 @@ function updateFacilitatorRealtimeUI() {
     const totalFinished = Math.max(1, finishedCount);
     const surrenderedCount = players.filter(p => p.finished && p.surrendered).length;
     
-    // NOTA: El % de jugadores que han cedido la agencia comienza con una base de +2% sumada al resultado real
-    const baseOffset = 2;
-    const realCededPct = Math.round((surrenderedCount / totalFinished) * 100);
-    const cededPct = Math.min(100, realCededPct + baseOffset);
+    const cededPct = Math.round((surrenderedCount / totalFinished) * 100);
     const controlledPct = Math.max(0, 100 - cededPct);
 
     const elCededPct = document.getElementById('fac-res-ceded-pct');
@@ -2364,6 +2378,10 @@ function updateGateUI() {
     const isFac = gameStateV2.userRole === 'facilitator';
     const depEnabled = gameStateV2.facilitatorDependency !== false;
     const gates = gameStateV2.sessionGates;
+
+    // Mantener "encendido" el botón de SECCIONES de la etapa activa, se haya llegado ahí
+    // por un salto forzado del Controlador o por el avance normal de candados/caso.
+    if (isFac && typeof updateSectionsNavHighlight === 'function') updateSectionsNavHighlight();
 
     // Si la dependencia está apagada (modo desarrollo/pruebas), todos los candados se consideran abiertos para el operador
     const effectiveGates = depEnabled ? gates : {
@@ -3315,11 +3333,36 @@ function updateHeaderUI() {
     const statusEl = document.getElementById('faro-status-text');
     if (statusEl) statusEl.innerText = gameStateV2.faroStatus;
     updateHudUI();
+    updateDevToolbarAccess();
+}
+
+// La barra de navegación/pruebas de desarrollo (SECCIONES, PROBAR HUD, CANDADOS SESIÓN)
+// nunca debe llegar a un operador real: solo existe para el Controlador, o para cualquier
+// rol cuando se agrega ?test=true a la URL (uso interno de pruebas).
+function updateDevToolbarAccess() {
+    const testMode = new URLSearchParams(window.location.search).get('test') === 'true';
+    const allowed = testMode || gameStateV2.userRole === 'facilitator';
+    const devBar = document.getElementById('facilitator-bar');
+    const devToggleBtn = document.getElementById('btn-toggle-fac');
+    if (devBar) devBar.classList.toggle('dev-toolbar-disabled', !allowed);
+    if (devToggleBtn) devToggleBtn.classList.toggle('dev-toolbar-disabled', !allowed);
 }
 
 // ==========================================================================
 // RENDERIZADOR Y CONTROLADOR VISUAL DEL HUD DE TELEMETRÍA (4 MÉTRICAS)
 // ==========================================================================
+// Re-dispara la animación de destello de una tarjeta del HUD (ver .hud-value-flash en
+// styles.css) para que un cambio de valor sea visible incluso sin pasar el mouse por
+// encima — importante para quien mira una grabación o al facilitador viendo pasivamente.
+function flashHudCard(cardEl) {
+    if (!cardEl) return;
+    cardEl.classList.remove('hud-value-flash');
+    void cardEl.offsetWidth; // fuerza reflow para poder reiniciar la animación
+    cardEl.classList.add('hud-value-flash');
+}
+
+let lastHudDisplaySnapshot = null;
+
 function updateHudUI() {
     const hud = gameStateV2.hudState;
     if (!hud) return;
@@ -3440,6 +3483,17 @@ function updateHudUI() {
         const reactPct = Math.min(100, Math.max(0, ((displayReact - (-5)) / 10) * 100));
         reactNeedle.style.left = `${reactPct}%`;
     }
+
+    // 7. DESTELLO DE CAMBIO: si algún valor cambió desde el último render, resalta esa
+    // tarjeta específica un instante para que el cambio se note (no solo la posición de
+    // la aguja, que ya animaba antes de este fix).
+    if (lastHudDisplaySnapshot) {
+        if (lastHudDisplaySnapshot.integrity !== displayIntegrity) flashHudCard(document.getElementById('hud-card-integrity'));
+        if (lastHudDisplaySnapshot.cost !== displayCost) flashHudCard(document.getElementById('hud-card-cost'));
+        if (lastHudDisplaySnapshot.cal !== displayCal) flashHudCard(document.getElementById('hud-card-calibration'));
+        if (lastHudDisplaySnapshot.react !== displayReact) flashHudCard(document.getElementById('hud-card-reactivity'));
+    }
+    lastHudDisplaySnapshot = { integrity: displayIntegrity, cost: displayCost, cal: displayCal, react: displayReact };
 }
 
 // Helpers para testing de HUD
@@ -6426,6 +6480,15 @@ function showNarrativeFeedbackScreen() {
     document.getElementById('fb-outcome-badge').innerText = outcomeObj.outcomeBadge;
     document.getElementById('fb-title').innerText = outcomeObj.title;
 
+    // RECORRIDO: PRIMER IMPULSO vs. DECISIÓN FINAL — el dato ya se captura desde que el
+    // jugador reacciona al caso (recordInitialImpulse) y desde que ejecuta su acción final
+    // (paraState.finalActionText); antes de este fix nunca se le volvía a mostrar junto al
+    // resultado, perdiendo el arco pedagógico completo del protocolo P.A.R.A.
+    const impulseInitialEl = document.getElementById('fb-impulse-initial-text');
+    const impulseFinalEl = document.getElementById('fb-impulse-final-text');
+    if (impulseInitialEl) impulseInitialEl.innerText = gameStateV2.initialImpulse || 'Sin reacción inicial registrada.';
+    if (impulseFinalEl) impulseFinalEl.innerText = gameStateV2.paraState.finalActionText || 'Sin acción final registrada.';
+
     // Llenar Píldora de Integridad
     const pillEl = document.getElementById('fb-integrity-pill');
     const textEl = document.getElementById('fb-integrity-text');
@@ -7375,17 +7438,95 @@ function restartExperience() {
     switchScreenV2('screen-waiting');
 }
 
-// JUMP CONTROLS DE FACILITATOR PARA TESTING
+// ==========================================================================
+// CONTROL DE SALTO DE SECCIÓN DEL CONTROLADOR (barra "SECCIONES")
+// ==========================================================================
+// Vista previa SOLO local del facilitador — no mueve a los operadores. Se usa
+// exclusivamente para "Portada" y "Login": forzar a operadores ya conectados de vuelta a
+// esas pantallas pre-login se vería como una desconexión/crash para ellos, así que se dejan
+// como una vista previa del facilitador, no como un salto forzado real.
 function facJumpTo(screenId) {
     switchScreenV2(screenId);
 }
 
+// Orden de las etapas reales del webinar. Cada una declara qué candados deben quedar
+// desbloqueados al saltar ahí (de forma acumulativa), para que el resto de los controles
+// del facilitador (y el propio operador) queden consistentes tras un salto hacia adelante
+// o hacia atrás.
+const FACILITATOR_SECTION_STAGES = [
+    { key: 'waiting', screen: 'screen-waiting', gatesThrough: ['gate1_intro'] },
+    { key: 'calibration', screen: 'screen-calibration', gatesThrough: ['gate1_intro', 'gate2_calib'] },
+    { key: 'faro-reveal', screen: 'screen-faro-reveal', gatesThrough: ['gate1_intro', 'gate2_calib'] },
+    { key: 'claudia', screen: 'screen-claudia-debrief', gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel'] },
+    { key: 'case-0', caseIndex: 0, gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel', 'gate4_case1'] },
+    { key: 'case-1', caseIndex: 1, gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel', 'gate4_case1'] },
+    { key: 'case-2', caseIndex: 2, gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel', 'gate4_case1'] },
+    { key: 'case-3', caseIndex: 3, gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel', 'gate4_case1'] },
+    { key: 'closing', screen: 'screen-closing', gatesThrough: ['gate1_intro', 'gate2_calib', 'gate3_kernel', 'gate4_case1', 'gate_case_bc', 'gate_deliberation', 'gate_next_case', 'gate_final_closing'] }
+];
+
+// Salto de sección REAL: mueve a TODOS los operadores conectados a la sección indicada de
+// inmediato (override de emergencia, ej. se acaba el tiempo del webinar), no solo la vista
+// del facilitador. Reemplaza a facJumpTo/facJumpToCase para las etapas del juego en sí.
+function facForceJumpSection(sectionKey) {
+    if (gameStateV2.userRole !== 'facilitator') return;
+    const stage = FACILITATOR_SECTION_STAGES.find(s => s.key === sectionKey);
+    if (!stage) return;
+
+    (stage.gatesThrough || []).forEach(g => { gameStateV2.sessionGates[g] = true; });
+
+    const payload = { gates: gameStateV2.sessionGates };
+    if (typeof stage.caseIndex === 'number') {
+        payload.caseIndex = stage.caseIndex;
+        gameStateV2.currentCaseIndex = stage.caseIndex;
+    } else {
+        payload.screen = stage.screen;
+    }
+
+    broadcastSyncEvent('FAC_FORCE_JUMP_SECTION', payload);
+
+    // Reflejar el salto también en la propia vista del facilitador
+    if (typeof stage.caseIndex === 'number') {
+        startFacCaseLive(stage.caseIndex);
+    } else {
+        switchScreenV2(stage.screen);
+    }
+
+    updateGateUI();
+    updateSectionsNavHighlight(sectionKey);
+}
+
 function facJumpToCase(idx) {
     if (gameStateV2.userRole === 'facilitator') {
-        startFacCaseLive(idx);
+        facForceJumpSection('case-' + idx);
     } else {
         startCaseSequence(idx);
     }
+}
+
+// Ilumina en la barra "SECCIONES" el botón de la etapa activa — sea porque el facilitador
+// saltó manualmente ahí, o porque el juego avanzó por su cuenta (candados/caso cambiaron).
+function updateSectionsNavHighlight(forcedKey) {
+    const buttons = document.querySelectorAll('.fac-nav-row .fac-btn[data-section-key]');
+    if (!buttons.length) return;
+
+    let activeKey = forcedKey;
+    if (!activeKey) {
+        const g = gameStateV2.sessionGates || {};
+        if (gameStateV2.activeScreen === 'screen-case' || gameStateV2.activeScreen === 'screen-fac-case-live' || g.gate4_case1) {
+            activeKey = 'case-' + (gameStateV2.currentCaseIndex || 0);
+        } else if (g.gate3_kernel) {
+            activeKey = 'claudia';
+        } else if (g.gate2_calib) {
+            activeKey = (gameStateV2.activeScreen === 'screen-faro-reveal') ? 'faro-reveal' : 'calibration';
+        } else {
+            activeKey = 'waiting';
+        }
+    }
+
+    buttons.forEach(btn => {
+        btn.classList.toggle('fac-btn-active-section', btn.dataset.sectionKey === activeKey);
+    });
 }
 
 function demoCycleIntegrity() {

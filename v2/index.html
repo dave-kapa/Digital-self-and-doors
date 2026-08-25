@@ -136,7 +136,7 @@
                         <span class="error-icon">⚠️</span>
                         <div class="error-text">
                             <strong style="color:var(--color-alert-magenta); display:block; font-size:12px; font-family:var(--font-heading);">PIN INCORRECTO // ACCESO DENEGADO</strong>
-                            <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el Controlador. Respeta mayúsculas y minúsculas (Ejemplo de prueba: <strong>F4R0</strong>).</span>
+                            <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el Controlador de este webinar. Respeta mayúsculas y minúsculas.</span>
                         </div>
                     </div>
 
@@ -280,7 +280,7 @@
                     <span class="status-label">ESTADO:</span>
                     <span class="status-value" id="faro-status-text">CALIBRACIÓN</span>
                 </div>
-                <button class="btn-toggle-fac" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
+                <button class="btn-toggle-fac dev-toolbar-disabled" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
             </div>
         </header>
 
@@ -382,46 +382,25 @@
             </div>
         </section>
 
-        <!-- 3. BARRA DE FACILITADOR / DEMO (2 FILAS ORGANIZADAS) -->
-        <div class="facilitator-bar" id="facilitator-bar">
-            <!-- Fila 1: Navegación de Secciones -->
+        <!-- 3. BARRA DE FACILITADOR: CONTROL DE SALTO DE SECCIÓN EN VIVO -->
+        <div class="facilitator-bar dev-toolbar-disabled" id="facilitator-bar">
+            <!-- Navegación de Secciones: controles reales — saltan también a los operadores
+                 conectados (override de emergencia, ej. si se acaba el tiempo del webinar).
+                 El botón de la etapa activa queda resaltado (.fac-btn-active-section). -->
             <div class="fac-row fac-nav-row">
-                <span class="fac-label">🎛 SECCIONES:</span>
+                <span class="fac-label">🎛 SECCIONES (salta también a los jugadores):</span>
                 <div class="fac-actions">
-                    <button class="fac-btn" onclick="facJumpTo('screen-cover')">Portada</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-login')">Login</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-waiting')">Inicio</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-calibration')">Calibración</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-faro-reveal')">Resultado Calib.</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-claudia-debrief')">Informe Claudia</button>
-                    <button class="fac-btn" onclick="facJumpToCase(0)">Caso 1</button>
-                    <button class="fac-btn" onclick="facJumpToCase(1)">Caso 2</button>
-                    <button class="fac-btn" onclick="facJumpToCase(2)">Caso 3</button>
-                    <button class="fac-btn" onclick="facJumpToCase(3)">Caso 4</button>
-                    <button class="fac-btn" onclick="facJumpTo('screen-closing')">Cierre</button>
-                </div>
-            </div>
-            <!-- Fila 2: Pruebas del HUD de Telemetría -->
-            <div class="fac-row fac-hud-row">
-                <span class="fac-label fac-label-hud">📊 PROBAR HUD:</span>
-                <div class="fac-actions">
-                    <button class="fac-btn fac-btn-hud" onclick="demoCycleIntegrity()" title="Alternar Estado de Integridad">🚦 Integridad</button>
-                    <button class="fac-btn fac-btn-hud" onclick="demoAdjustHUD(1)" title="Aumentar Calibración y Reducir Reactividad">📈 + Agencia (+1)</button>
-                    <button class="fac-btn fac-btn-hud" onclick="demoAdjustHUD(-1)" title="Reducir Calibración y Aumentar Reactividad">📉 - Agencia (-1)</button>
-                    <button class="fac-btn fac-btn-hud" onclick="demoAdjustCost(15000)" title="Sumar Costo Operativo">💰 + Costo ($15k)</button>
-                    <button class="fac-btn fac-btn-hud" onclick="demoAdjustCost(-15000)" title="Restar Costo Operativo">💸 - Costo ($15k)</button>
-                    <button class="fac-btn fac-btn-hud" onclick="demoResetHUD()" title="Reiniciar Valores de HUD">🔄 Reset HUD</button>
-                </div>
-            </div>
-            <!-- Fila 3: Dependencia del Controlador / Candados -->
-            <div class="fac-row fac-hud-row" style="border-top: 1px dashed rgba(255,122,0,0.25); padding-top: 4px; margin-top: 2px;">
-                <span class="fac-label" style="color:#ffb74d;">🔒 CANDADOS SESIÓN:</span>
-                <div class="fac-actions" style="align-items: center;">
-                    <label class="cyber-switch-label-mini" title="Conmutar dependencia de candados">
-                        <input type="checkbox" id="toggle-facilitator-dependency-bar" onchange="handleToggleFacilitatorDependency(this.checked)" checked>
-                        <span class="cyber-switch-track-mini"><span class="cyber-switch-thumb-mini"></span></span>
-                        <span class="cyber-switch-text-mini" id="toggle-dependency-status-text-bar">Dependencia: ACTIVA (Esperar Controlador)</span>
-                    </label>
+                    <button class="fac-btn" onclick="facJumpTo('screen-cover')" title="Vista previa del facilitador únicamente — no mueve a los jugadores">Portada</button>
+                    <button class="fac-btn" onclick="facJumpTo('screen-login')" title="Vista previa del facilitador únicamente — no mueve a los jugadores">Login</button>
+                    <button class="fac-btn" data-section-key="waiting" onclick="facForceJumpSection('waiting')">Inicio</button>
+                    <button class="fac-btn" data-section-key="calibration" onclick="facForceJumpSection('calibration')">Calibración</button>
+                    <button class="fac-btn" data-section-key="faro-reveal" onclick="facForceJumpSection('faro-reveal')">Resultado Calib.</button>
+                    <button class="fac-btn" data-section-key="claudia" onclick="facForceJumpSection('claudia')">Informe Claudia</button>
+                    <button class="fac-btn" data-section-key="case-0" onclick="facForceJumpSection('case-0')">Caso 1</button>
+                    <button class="fac-btn" data-section-key="case-1" onclick="facForceJumpSection('case-1')">Caso 2</button>
+                    <button class="fac-btn" data-section-key="case-2" onclick="facForceJumpSection('case-2')">Caso 3</button>
+                    <button class="fac-btn" data-section-key="case-3" onclick="facForceJumpSection('case-3')">Caso 4</button>
+                    <button class="fac-btn" data-section-key="closing" onclick="facForceJumpSection('closing')">Cierre</button>
                 </div>
             </div>
         </div>
@@ -1447,6 +1426,19 @@
 
                         <div class="feedback-header">
                             <h2 id="fb-title">RESULTADO NARRATIVO DEL CASO</h2>
+                        </div>
+
+                        <!-- RECORRIDO: PRIMER IMPULSO vs. DECISIÓN FINAL (arco pedagógico P.A.R.A.) -->
+                        <div class="fb-impulse-journey-box" id="fb-impulse-journey-box">
+                            <div class="fb-impulse-journey-item">
+                                <span class="fb-impulse-journey-label">💡 TU PRIMER IMPULSO FUE:</span>
+                                <p class="fb-impulse-journey-text" id="fb-impulse-initial-text">--</p>
+                            </div>
+                            <div class="fb-impulse-journey-arrow">→</div>
+                            <div class="fb-impulse-journey-item">
+                                <span class="fb-impulse-journey-label">✅ DESPUÉS DE P.A.R.A., DECIDISTE:</span>
+                                <p class="fb-impulse-journey-text" id="fb-impulse-final-text">--</p>
+                            </div>
                         </div>
 
                         <!-- CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO DEL CASO (3 CAJAS SEPARADAS) -->

@@ -2,6 +2,12 @@
    CSS SYSTEM: FARO V2.0 — NEAR-FUTURE CORPORATE CYBER THRILLER
    ========================================================================== */
 
+/* Barra de herramientas de desarrollo/QA (navegación de secciones, pruebas de HUD,
+   candados de sesión): solo debe existir para el Controlador o con ?test=true en la URL.
+   Ver updateDevToolbarAccess() en game.js. !important para que gane siempre sobre
+   cualquier display inline que deje toggleFacilitatorBar(). */
+.dev-toolbar-disabled { display: none !important; }
+
 :root {
     /* Paleta Oficial FARO V2 */
     --color-bg-dark: #07131F;
@@ -217,6 +223,18 @@ body {
 .hud-card:hover {
     border-color: var(--color-cyan);
     box-shadow: 0 0 12px rgba(0, 216, 255, 0.2);
+}
+
+/* Destello al cambiar un valor del HUD (disparado por JS en flashHudCard/updateHudUI),
+   independiente del :hover — visible también para quien mira sin tocar el mouse
+   (grabaciones, facilitador observando pasivamente). */
+@keyframes hud-value-flash-pulse {
+    0% { border-color: var(--color-cyan); box-shadow: 0 0 18px rgba(0, 216, 255, 0.55); }
+    100% { border-color: rgba(0, 216, 255, 0.2); box-shadow: inset 0 0 12px rgba(0, 216, 255, 0.03), 0 2px 8px rgba(0, 0, 0, 0.5); }
+}
+
+.hud-value-flash {
+    animation: hud-value-flash-pulse 0.7s ease-out;
 }
 
 .hud-card-header {
@@ -514,6 +532,15 @@ body {
     color: var(--color-text-main);
     border-color: var(--color-cyan);
     background-color: rgba(0, 216, 255, 0.15);
+}
+
+/* Etapa activa en la barra SECCIONES (ver updateSectionsNavHighlight en game.js) */
+.fac-btn-active-section {
+    background-color: rgba(0, 216, 255, 0.28);
+    border-color: var(--color-cyan);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(0, 216, 255, 0.5);
 }
 
 .fac-btn-hud {
@@ -3390,6 +3417,57 @@ body {
 .fb-metacognitive-box h4 { font-size: 12px; color: var(--color-cyan); margin-bottom: 4px; }
 .fb-metacognitive-box p { font-size: 13px; color: #d0e8f5; }
 
+/* RECORRIDO: PRIMER IMPULSO vs. DECISIÓN FINAL (arco pedagógico P.A.R.A.) */
+.fb-impulse-journey-box {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    background: rgba(0, 216, 255, 0.06);
+    border: 1px solid var(--color-border-cyan);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+
+.fb-impulse-journey-item { flex: 1; min-width: 0; }
+
+.fb-impulse-journey-label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-cyan);
+    margin-bottom: 3px;
+}
+
+.fb-impulse-journey-item:last-child .fb-impulse-journey-label { color: var(--color-agency-green); }
+
+.fb-impulse-journey-text {
+    font-size: 12.5px;
+    color: #ffffff;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.fb-impulse-journey-arrow {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .fb-impulse-journey-box {
+        flex-direction: column;
+    }
+    .fb-impulse-journey-arrow {
+        transform: rotate(90deg);
+        align-self: center;
+    }
+}
+
 .module-recovery-banner {
     background: linear-gradient(90deg, rgba(73, 245, 193, 0.15), rgba(0, 216, 255, 0.05));
     border: 1px solid var(--color-agency-green);
@@ -3636,6 +3714,42 @@ body {
 @media (max-width: 520px) {
     .hud-telemetry-cluster {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD DE GRIDS DE JUEGO (BARRA PARA, MATRIZ DE RESULTADOS,
+   INTRO PARA, FEEDBACK, ESTADO DEL SISTEMA)
+   Mismo patrón de breakpoints que el cluster HUD de arriba.
+   ========================================================================== */
+@media (max-width: 860px) {
+    .para-action-bar,
+    .para-grid-intro,
+    .system-status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .feedback-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .para-action-bar,
+    .para-grid-intro,
+    .feedback-grid,
+    .system-status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* La tabla de matriz de acciones (4 columnas desiguales) no cabe en una
+       pantalla angosta: se oculta el header de columnas (el contenido de cada
+       fila ya se distingue por ícono/color) y cada fila se apila verticalmente. */
+    .matrix-table-header-row {
+        display: none;
+    }
+    .matrix-action-table-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
     }
 }
 
