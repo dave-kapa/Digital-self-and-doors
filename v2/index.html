@@ -280,13 +280,17 @@
                 <span class="badge-webinar">WEBINAR INTERACTIVO // DEMO DE AGENCIA</span>
             </div>
 
-            <!-- Controles a la Derecha: Estado de FARO y Toggle Controlador -->
+            <!-- Controles a la Derecha: Estado de FARO y Salir -->
             <div class="header-right-controls">
                 <div class="header-status-badge">
                     <span class="status-label">ESTADO:</span>
                     <span class="status-value" id="faro-status-text">CALIBRACIÓN</span>
                 </div>
                 <button class="btn-toggle-fac dev-toolbar-disabled" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
+                <button type="button" class="btn-cyber-logout" id="btn-header-logout" onclick="handleLogoutClick()" title="Cerrar sesión y desconectar terminal">
+                    <span class="logout-icon">⏻</span>
+                    <span class="logout-text">SALIR</span>
+                </button>
             </div>
         </header>
 
@@ -407,6 +411,7 @@
                     <button class="fac-btn" data-section-key="case-2" onclick="facForceJumpSection('case-2')">Caso 3</button>
                     <button class="fac-btn" data-section-key="case-3" onclick="facForceJumpSection('case-3')">Caso 4</button>
                     <button class="fac-btn" data-section-key="closing" onclick="facForceJumpSection('closing')">Cierre</button>
+                    <button class="fac-btn fac-btn-danger" style="margin-left:auto; background:rgba(255,68,68,0.18); border-color:#ff4444; color:#ff8888;" onclick="handleLogoutClick()" title="Cerrar sesión de facilitador">⏻ Salir</button>
                 </div>
             </div>
         </div>

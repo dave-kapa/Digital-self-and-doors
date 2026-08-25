@@ -3205,6 +3205,17 @@ function handleEscKey() {
     performFullLogout(isFacilitator);
 }
 
+function handleLogoutClick() {
+    const isFacilitator = gameStateV2.userRole === 'facilitator' || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_token') !== null);
+    const roleName = isFacilitator ? "Controlador" : "Operador";
+
+    const confirmed = confirm(`¿Deseas cerrar sesión de ${roleName} y desconectar tu terminal?`);
+    if (!confirmed) return;
+
+    performFullLogout(isFacilitator);
+}
+window.handleLogoutClick = handleLogoutClick;
+
 function performFullLogout(isFacilitator) {
     // 1. Detener intervalos activos
     if (typeof faroCloudHeartbeatInterval !== 'undefined' && faroCloudHeartbeatInterval) {
