@@ -2180,6 +2180,14 @@ function switchGroupResultsTab(tabLetter) {
             if (page) page.style.display = 'none';
         }
     });
+
+    const caseIdx = gameStateV2.currentCaseIndex || 0;
+    const cData = casesDataV2[caseIdx] || casesDataV2[0];
+    const res = getCaseGroupResults(caseIdx);
+    const cumData = getAllCasesCumulativeGroupResults();
+    if (tabLetter === 'X') renderGroupResultsPageX(res, cData, cumData);
+    else if (tabLetter === 'Y') renderGroupResultsPageY(res, cData, cumData);
+    else if (tabLetter === 'Z') renderGroupResultsPageZ(res, cData, cumData);
 }
 
 // PÁGINA X: RESULTADOS GLOBALES DEL CASO
@@ -2301,29 +2309,70 @@ function renderGroupResultsPageY(res, cData, cumData) {
 
     // Obtener las puertas exploradas en este caso desde analysisLenses
     const caseLenses = cData.analysisLenses || [];
-    const doorsList = caseLenses.map(l => {
-        const key = getStandardDoorKey(l.title);
+    const doorsList = caseLenses.map((l, idx) => {
+        const key = getStandardDoorKey(l.title) || getStandardDoorKey(l.text) || (l.doorKey || '');
         const master = MASTER_ATTENTION_DOORS.find(m => m.key === key);
         return {
             title: l.title,
             displayTitle: master ? `${master.icon} ${master.title}` : `🚪 ${l.title}`,
             desc: master ? master.label : (l.text || ''),
-            key: key || l.title
+            key: key || l.title,
+            index: idx
         };
     });
+
+    function resolveDoorCount(d, countsObj) {
+        if (!countsObj || typeof countsObj !== 'object') return 0;
+        const targetKey = (d.key || '').toLowerCase();
+        const targetTitle = (d.title || '').toLowerCase();
+        let total = 0;
+
+        for (const [k, count] of Object.entries(countsObj)) {
+            const rawK = String(k).toLowerCase();
+            const stdK = getStandardDoorKey(rawK);
+            
+            // Coincidencia directa de key o estándar
+            if (targetKey && (rawK === targetKey || stdK === targetKey)) {
+                total += count;
+            }
+            // Coincidencia por título de lente
+            else if (targetTitle && rawK.includes(targetTitle)) {
+                total += count;
+            }
+            // Coincidencia por "SEÑAL 1", "SEÑAL 2", "SEÑAL 3" según el índice
+            else if (rawK.includes(`señal ${d.index + 1}`) || rawK.includes(`senal ${d.index + 1}`)) {
+                total += count;
+            }
+        }
+
+        // Si no encontró en countsObj, buscar en finishedPlayers directamente
+        if (total === 0 && res && res.finishedPlayers && Array.isArray(res.finishedPlayers)) {
+            res.finishedPlayers.forEach(p => {
+                const pDoors = p.doorsActivated || p.doors_activated || [];
+                const hasMatch = pDoors.some(pd => {
+                    const pdStr = String(pd).toLowerCase();
+                    const pdKey = getStandardDoorKey(pdStr) || pdStr;
+                    return pdKey === targetKey || pdStr.includes(targetTitle) || pdStr.includes(`señal ${d.index + 1}`) || pdStr.includes(`senal ${d.index + 1}`);
+                });
+                if (hasMatch) total++;
+            });
+        }
+
+        return total;
+    }
 
     // Encontrar el valor máximo para escalar barras
     let maxVal = 1;
     doorsList.forEach(d => {
-        const cCount = res.doorsCounts[d.title] || (d.key && res.doorsCounts[d.key]) || 0;
-        const cumCount = cumData.cumDoors[d.title] || (d.key && cumData.cumDoors[d.key]) || cCount;
+        const cCount = resolveDoorCount(d, res.doorsCounts);
+        const cumCount = resolveDoorCount(d, cumData.cumDoors) || cCount;
         if (cumCount > maxVal) maxVal = cumCount;
         if (cCount > maxVal) maxVal = cCount;
     });
 
     container.innerHTML = doorsList.map(d => {
-        const caseCount = res.doorsCounts[d.title] || (d.key && res.doorsCounts[d.key]) || 0;
-        const cumCount = cumData.cumDoors[d.title] || (d.key && cumData.cumDoors[d.key]) || caseCount;
+        const caseCount = resolveDoorCount(d, res.doorsCounts);
+        const cumCount = resolveDoorCount(d, cumData.cumDoors) || caseCount;
         const casePct = Math.min(100, Math.round((caseCount / maxVal) * 100));
         const cumPct = Math.min(100, Math.round((cumCount / maxVal) * 100));
 
@@ -6724,7 +6773,9 @@ function processCaseOutcome(actionIds) {
         cost: caseTotalAddedCost,
         calibration: gameStateV2.hudState.calibration,
         reactivity: gameStateV2.hudState.reactivity,
-        doorsActivated: (gameStateV2.paraState.completedAnalyses || []).map(a => a.title),
+        doorsActivated: (gameStateV2.paraState.doorsActivated && gameStateV2.paraState.doorsActivated.length > 0)
+            ? gameStateV2.paraState.doorsActivated
+            : (gameStateV2.paraState.completedAnalyses || []).map(a => a.doorKey || getStandardDoorKey(a.title) || a.title).filter(Boolean),
         matrixEvaluations: matrixEvals
     };
 
@@ -7283,7 +7334,11 @@ function recordPlayerCaseResultForGroup(caseIdx, payload) {
         }
 
         (payload.doorsActivated || []).forEach(d => {
-            res.doorsCounts[d] = (res.doorsCounts[d] || 0) + 1;
+            const k = getStandardDoorKey(d) || d;
+            res.doorsCounts[k] = (res.doorsCounts[k] || 0) + 1;
+            if (k !== d) {
+                res.doorsCounts[d] = (res.doorsCounts[d] || 0) + 1;
+            }
         });
 
         (payload.matrixEvaluations || []).forEach(m => {
