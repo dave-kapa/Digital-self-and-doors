@@ -76,7 +76,12 @@ let gameStateV2 = {
     // Temporizador principal de Caso (180s)
     caseTimerSeconds: 180,
     timerInterval: null,
-    isTimerPaused: false
+    isTimerPaused: false,
+
+    // Validación de rol en mensajes de BroadcastChannel: rechaza comandos administrativos
+    // (GATES_UPDATE, FAC_FORCE_START_CASE_1, etc.) que no vengan de un facilitador autenticado.
+    strictAuth: true,
+    facilitatorToken: null
 };
 
 // ESTADO GLOBAL DEL FACILITADOR / CONTROLADOR (TIEMPO REAL)
@@ -119,7 +124,8 @@ async function sha256Hex(str) {
 // Hashes criptográficos de credenciales autorizadas
 const AUTH_HASH_FACILITATOR_1 = "e2dbe1e8f8dc313994197072f133655acc96ebb55747a49ff25383e1252dbc72"; // sha256("F4R0_ADMIN")
 const AUTH_HASH_FACILITATOR_2 = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // sha256("admin")
-const AUTH_HASH_SESSION_PIN   = "329adaf776f5e3acae902ad889554074819d87f63299c72ff9135995e759c763"; // sha256("F4R0")
+// (El PIN de sesión ya no es un valor fijo por webinar: se genera/valida contra Supabase,
+// ver generateNewSessionPin() y handlePlayerLogin/handleFacilitatorLogin.)
 
 // CONSTANTES ECONÓMICAS Y DE SCORING (SIN NÚMEROS MÁGICOS)
 const COST_RATE_PER_SECOND = 100;
@@ -234,6 +240,9 @@ function broadcastSyncEvent(type, payload) {
                 sender: gameStateV2.playerId,
                 senderRole: gameStateV2.userRole || 'operator',
                 token: gameStateV2.facilitatorToken || null,
+                // PIN de la sesión propia: permite que dos webinars simultáneos en el mismo
+                // navegador/BroadcastChannel no se mezclen (ver handleIncomingSyncMessage).
+                sessionPin: (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || null,
                 timestamp: Date.now()
             });
         }
@@ -260,6 +269,17 @@ function broadcastSyncEvent(type, payload) {
 function handleIncomingSyncMessage(msg) {
     try {
         if (!msg || typeof msg !== 'object' || !msg.type) return;
+
+        // Aislamiento entre sesiones/webinars simultáneos que comparten el mismo
+        // BroadcastChannel (mismo navegador/origen). Si ambos lados ya tienen un PIN de
+        // sesión conocido y no coinciden, el mensaje es de otro webinar: se ignora por
+        // completo. Antes del login (sin PIN propio todavía) se deja pasar, para no romper
+        // flujos previos a la autenticación (ej. el toggle de dependencia en modo desarrollo).
+        const localSessionPin = gameStateV2.playerProfile && gameStateV2.playerProfile.pin;
+        if (localSessionPin && msg.sessionPin && msg.sessionPin !== localSessionPin) {
+            return;
+        }
+
         const type = msg.type;
         const payload = (msg.payload && typeof msg.payload === 'object') ? msg.payload : {};
         const isFacilitatorSender = msg.senderRole === 'facilitator';
@@ -2921,6 +2941,58 @@ function devSkipIntroDirectToGame() {
     updateGateUI();
 }
 
+// ==========================================================================
+// IDENTIDAD DEL OPERADOR: sessionStorage primero, localStorage como respaldo
+// ==========================================================================
+// BUG CORREGIDO: localStorage se comparte entre TODAS las pestañas del mismo origen/
+// navegador. Si dos operadores distintos inician sesión casi al mismo tiempo desde dos
+// pestañas del mismo navegador (ej. probando la app, o un facilitador demostrando varios
+// roles), el segundo login leía el token que el primero acababa de guardar y ambos
+// terminaban compartiendo la MISMA fila de jugador en el backend (mismo progreso, mismo
+// HUD). sessionStorage es exclusivo de cada pestaña, así que se usa como fuente primaria;
+// localStorage solo sirve de respaldo para reanudar tras cerrar y reabrir el navegador
+// (cuando sessionStorage ya no existe).
+function getStoredPlayerIdentity() {
+    try {
+        const sToken = sessionStorage.getItem('faro_player_token');
+        const sPin = sessionStorage.getItem('faro_player_pin');
+        if (sToken && sPin) return { token: sToken, pin: sPin };
+    } catch (e) {}
+    try {
+        const lToken = localStorage.getItem('faro_player_token');
+        const lPin = localStorage.getItem('faro_player_pin');
+        if (lToken && lPin) return { token: lToken, pin: lPin };
+    } catch (e) {}
+    return { token: null, pin: null };
+}
+
+function setStoredPlayerIdentity(token, pin) {
+    try { sessionStorage.setItem('faro_player_token', token); sessionStorage.setItem('faro_player_pin', pin); } catch (e) {}
+    try { localStorage.setItem('faro_player_token', token); localStorage.setItem('faro_player_pin', pin); } catch (e) {}
+}
+
+function clearStoredPlayerIdentity() {
+    try { sessionStorage.removeItem('faro_player_token'); sessionStorage.removeItem('faro_player_pin'); } catch (e) {}
+    try { localStorage.removeItem('faro_player_token'); localStorage.removeItem('faro_player_pin'); } catch (e) {}
+}
+
+// Genera un PIN de sesión nuevo (6 caracteres alfanuméricos) y lo coloca en el campo de
+// PIN del formulario de Controlador. Único requisito: 6+ caracteres (ver validación en
+// handleFacilitatorLogin).
+function generateNewSessionPin() {
+    const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let pin = '';
+    for (let i = 0; i < 6; i++) {
+        pin += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+    }
+    const pinInput = document.getElementById('fac-pin');
+    if (pinInput) {
+        pinInput.value = pin;
+        pinInput.focus();
+    }
+    return pin;
+}
+
 async function handleFacilitatorLogin(event) {
     if (event) event.preventDefault();
     const passInput = document.getElementById('fac-pass');
@@ -2932,7 +3004,6 @@ async function handleFacilitatorLogin(event) {
     const pin = pinInput ? pinInput.value.trim() : "";
 
     const passHash = await sha256Hex(pass);
-    const pinHash = await sha256Hex(pin);
 
     // Verificación criptográfica de contraseña de controlador
     if (passHash !== AUTH_HASH_FACILITATOR_1 && passHash !== AUTH_HASH_FACILITATOR_2) {
@@ -2944,11 +3015,13 @@ async function handleFacilitatorLogin(event) {
         return;
     }
 
-    // Verificación criptográfica de PIN de sesión
-    if (pinHash !== AUTH_HASH_SESSION_PIN) {
+    // El PIN de sesión ya no es un valor fijo: cada webinar usa uno propio (generado con el
+    // botón "GENERAR PIN NUEVO" o escrito a mano para reconectarse a una sesión existente).
+    // Solo se valida el formato aquí; la sesión se crea/reutiliza en Supabase más abajo.
+    if (!pin || pin.length < 6) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
-            if (errorText) errorText.innerText = "PIN de sesión inválido.";
+            if (errorText) errorText.innerText = "El PIN de sesión debe tener al menos 6 caracteres. Usa 'GENERAR PIN NUEVO' para crear uno.";
         }
         if (pinInput) { pinInput.focus(); pinInput.select(); }
         return;
@@ -3016,9 +3089,19 @@ async function handlePlayerLogin(event) {
         return;
     }
     
-    // Verificación criptográfica de PIN
-    const pinHash = await sha256Hex(pin);
-    if (!pin || pinHash !== AUTH_HASH_SESSION_PIN) {
+    // Verificación de PIN contra el backend: cada webinar tiene su propio PIN (ya no hay uno
+    // fijo). NOTA: faro_get_session_state crea una sesión "huérfana" si el PIN no existe en
+    // vez de rechazarlo (ver prompt de seguimiento al ingeniero de Supabase), así que se usa
+    // facilitator_token como señal de que un Controlador realmente inició esa sesión.
+    let sessionCheck = null;
+    try {
+        sessionCheck = await faroSupabaseRpc('faro_get_session_state', { p_pin: pin });
+    } catch (e) {
+        console.warn('[Player Login PIN Check Error]:', e);
+    }
+    const sessionIsReal = !!(sessionCheck && sessionCheck.session && sessionCheck.session.facilitator_token);
+
+    if (!pin || pin.length < 6 || !sessionIsReal) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             errorAlert.classList.remove('pin-error-alert');
@@ -3037,7 +3120,19 @@ async function handlePlayerLogin(event) {
     // Registrar o reanudar jugador en Supabase (Backend como fuente de verdad)
     let playerToken = null;
     try {
-        const storedToken = localStorage.getItem('faro_player_token');
+        // IMPORTANTE: aquí se lee ÚNICAMENTE sessionStorage (exclusivo de esta pestaña), NUNCA
+        // el respaldo en localStorage. Este es un envío EXPLÍCITO del formulario de login — si
+        // se usara el respaldo de localStorage (compartido entre pestañas), un segundo operador
+        // que abre una pestaña nueva y llena SU PROPIO nombre terminaría reanudando la sesión
+        // del primer operador con solo cambiarle el nombre. El respaldo en localStorage solo se
+        // usa para la reanudación silenciosa al cargar la página (ver initAppV2), donde no hay
+        // ningún dato de un "otro usuario" con el que pueda confundirse.
+        let sessionOnlyToken = null, sessionOnlyPin = null;
+        try {
+            sessionOnlyToken = sessionStorage.getItem('faro_player_token');
+            sessionOnlyPin = sessionStorage.getItem('faro_player_pin');
+        } catch (e) {}
+        const storedToken = (sessionOnlyPin === pin) ? sessionOnlyToken : null;
         const playerRes = await faroSupabaseRpc('faro_create_or_resume_player', {
             p_token: storedToken || null,
             p_pin: pin,
@@ -3050,8 +3145,7 @@ async function handlePlayerLogin(event) {
             playerToken = playerRes.player_token;
             gameStateV2.playerToken = playerToken;
             gameStateV2.playerId = playerToken;
-            localStorage.setItem('faro_player_token', playerToken);
-            localStorage.setItem('faro_player_pin', pin);
+            setStoredPlayerIdentity(playerToken, pin);
 
             if (playerRes.session && playerRes.session.session_gates) {
                 gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...playerRes.session.session_gates };
@@ -7218,9 +7312,8 @@ function copyPromptToClipboard() {
 }
 
 function restartExperience() {
+    clearStoredPlayerIdentity();
     try {
-        localStorage.removeItem('faro_player_token');
-        localStorage.removeItem('faro_player_pin');
         localStorage.removeItem('faro_facilitator_pin');
         localStorage.removeItem('faro_facilitator_token');
     } catch(e) {}
@@ -7351,11 +7444,12 @@ async function initAppV2() {
     const params = new URLSearchParams(window.location.search);
     const roleParam = params.get('role');
 
-    // 1. REANUDACIÓN DE FACILITADOR (Si tiene sesión guardada o parámetro de rol)
-    const savedFacPin = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || (roleParam === 'facilitator' ? 'F4R0' : null);
+    // 1. REANUDACIÓN DE FACILITADOR (solo si hay PIN+token de una sesión propia guardados;
+    // ya no existe un PIN por defecto al que caer si no hay nada guardado localmente).
+    const savedFacPin = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin'));
     const savedFacToken = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_token'));
 
-    if (savedFacPin && (savedFacToken || roleParam === 'facilitator')) {
+    if (savedFacPin && savedFacToken) {
         try {
             const facSessionData = await faroSupabaseRpc('faro_get_session_state', { p_pin: savedFacPin });
             if (facSessionData && facSessionData.session) {
@@ -7389,11 +7483,13 @@ async function initAppV2() {
         }
     }
 
-    // 2. REANUDACIÓN DE OPERADOR / JUGADOR (Si tiene token guardado en localStorage)
-    const savedPlayerToken = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_player_token'));
-    const savedPlayerPin = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_player_pin')) || 'F4R0';
+    // 2. REANUDACIÓN DE OPERADOR / JUGADOR (solo si hay token Y pin de sesión guardados;
+    // ver getStoredPlayerIdentity() para por qué se prioriza sessionStorage sobre localStorage)
+    const storedPlayerIdentity = getStoredPlayerIdentity();
+    const savedPlayerToken = storedPlayerIdentity.token;
+    const savedPlayerPin = storedPlayerIdentity.pin;
 
-    if (savedPlayerToken) {
+    if (savedPlayerToken && savedPlayerPin) {
         try {
             const resumeRes = await faroSupabaseRpc('faro_create_or_resume_player', {
                 p_token: savedPlayerToken,

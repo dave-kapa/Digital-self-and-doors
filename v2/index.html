@@ -154,7 +154,7 @@
                     <div class="login-field-group">
                         <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN (MAYÚSCULAS/ALFANUMÉRICO):</label>
                         <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="8" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()">
-                        <span class="field-hint">* Código alfanumérico proporcionado por el Controlador (PIN de prueba: <strong>F4R0</strong>).</span>
+                        <span class="field-hint">* Código alfanumérico proporcionado por el Controlador para este webinar.</span>
                     </div>
 
                     <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
@@ -201,8 +201,11 @@
 
                     <div class="login-field-group">
                         <label for="fac-pin" class="login-label">PIN DE LA SESIÓN DE JUEGO (MAYÚSCULAS/ALFANUMÉRICO):</label>
-                        <input type="text" id="fac-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="8" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()">
-                        <span class="field-hint">* Código de sala que compartirás con los operadores (PIN de prueba: <strong>F4R0</strong>).</span>
+                        <div style="display:flex; gap:8px; align-items:stretch;">
+                            <input type="text" id="fac-pin" class="cyber-input pin-input" placeholder="Ej. F4RODEMO" maxlength="8" minlength="6" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()" style="flex:1;">
+                            <button type="button" class="btn-dev-quick-skip" onclick="generateNewSessionPin()" title="Generar un PIN de sesión nuevo para este webinar" style="white-space:nowrap; padding:0 14px;">🎲 GENERAR PIN NUEVO</button>
+                        </div>
+                        <span class="field-hint">* Escribe un PIN nuevo (mín. 6 caracteres) para iniciar un webinar distinto, o el PIN de una sesión existente para reconectarte a ella.</span>
                     </div>
 
                     <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
