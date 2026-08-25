@@ -139,28 +139,74 @@ const SUPABASE_CONFIG = {
     anonKey: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_KEY) ? process.env.SUPABASE_KEY : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmcXN3eGlzcXR5ZGtjbmN0bm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTYwNjEsImV4cCI6MjEwMjYzMjA2MX0.Aes9e_Iv3ao9gi6EaYudX0iKcrsw0stAWSUV6kIm4dQ"
 };
 
-async function faroSupabasePost(table, data) {
-    if (typeof fetch === 'undefined') return;
+async function faroSupabaseRpc(functionName, params = {}) {
+    if (typeof fetch === 'undefined') return null;
     try {
-        const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${table}`, {
+        const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/rpc/${functionName}`, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_CONFIG.anonKey,
                 'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
                 'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
+                'Prefer': 'return=representation'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(params)
         });
         if (response.ok) {
             gameStateV2.cloudSyncStatus = 'connected';
+            const data = await response.json();
+            return data;
         } else {
-            console.warn(`[Supabase Sync Warning] HTTP ${response.status} en tabla ${table}`);
+            console.warn(`[Supabase RPC Warning] HTTP ${response.status} en rpc/${functionName}`);
             gameStateV2.cloudSyncStatus = 'degraded';
+            return null;
         }
     } catch (e) {
-        console.warn(`[Supabase Connection] Error de red al sincronizar con ${table}:`, e.message);
+        console.warn(`[Supabase RPC] Error de red al invocar rpc/${functionName}:`, e.message);
         gameStateV2.cloudSyncStatus = 'offline';
+        return null;
+    }
+}
+
+async function syncPlayerStateToCloud() {
+    if (gameStateV2.userRole !== 'operator' || !gameStateV2.playerToken) return;
+    try {
+        const snapshot = {
+            currentScreen: gameStateV2.activeScreen,
+            currentCaseIndex: gameStateV2.currentCaseIndex || 0,
+            hudState: gameStateV2.hudState,
+            paraState: gameStateV2.paraState,
+            resolvedCases: gameStateV2.resolvedCases || [],
+            sessionGates: gameStateV2.sessionGates,
+            modulesState: gameStateV2.modulesState,
+            paraAgencyChoice: gameStateV2.paraAgencyChoice,
+            pausesUsed: (3 - (gameStateV2.casePauseTokens !== undefined ? gameStateV2.casePauseTokens : 3)),
+            analysesCount: (gameStateV2.paraState && gameStateV2.paraState.completedAnalyses ? gameStateV2.paraState.completedAnalyses.length : (gameStateV2.paraState && gameStateV2.paraState.aOpened ? 1 : 0)),
+            reviewsCount: (gameStateV2.paraState && gameStateV2.paraState.reviewedActions ? gameStateV2.paraState.reviewedActions.length : (gameStateV2.paraState && gameStateV2.paraState.rOpened ? 1 : 0)),
+            caseFinished: (gameStateV2.resolvedCases || []).includes(gameStateV2.currentCaseIndex)
+        };
+        await faroSupabaseRpc('faro_upsert_player_state', {
+            p_token: gameStateV2.playerToken,
+            p_state: snapshot
+        });
+    } catch (e) {
+        console.warn('[Cloud State Sync Error]:', e);
+    }
+}
+
+async function syncFacilitatorStateToCloud() {
+    if (gameStateV2.userRole !== 'facilitator') return;
+    try {
+        const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || 'F4R0';
+        await faroSupabaseRpc('faro_update_session_state', {
+            p_pin: pin,
+            p_gates: gameStateV2.sessionGates,
+            p_current_case_index: gameStateV2.currentCaseIndex || 0,
+            p_active_screen: gameStateV2.activeScreen,
+            p_dependency: gameStateV2.facilitatorDependency
+        });
+    } catch (e) {
+        console.warn('[Facilitator Cloud Sync Error]:', e);
     }
 }
 
@@ -200,6 +246,12 @@ function broadcastSyncEvent(type, payload) {
             event_type: type,
             payload: sanitizedPayload
         });
+
+        if (gameStateV2.userRole === 'operator') {
+            syncPlayerStateToCloud();
+        } else if (gameStateV2.userRole === 'facilitator') {
+            syncFacilitatorStateToCloud();
+        }
     } catch (e) {
         console.warn('Error emitiendo broadcastSyncEvent:', e);
     }
@@ -2915,6 +2967,22 @@ async function handleFacilitatorLogin(event) {
         loginTimestamp: new Date().toISOString()
     };
 
+    try {
+        localStorage.setItem('faro_facilitator_pin', pin);
+        localStorage.setItem('faro_facilitator_token', gameStateV2.facilitatorToken);
+    } catch(e) {}
+
+    // Upsert sesión en Supabase
+    const sessionRes = await faroSupabaseRpc('faro_create_or_get_session', {
+        p_pin: pin,
+        p_facilitator_name: "Controlador Principal",
+        p_facilitator_token: gameStateV2.facilitatorToken
+    });
+
+    if (sessionRes && sessionRes.session_gates) {
+        gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...sessionRes.session_gates };
+    }
+
     const badgeTag = document.getElementById('cover-badge-role-tag');
     if (badgeTag) badgeTag.innerText = "SISTEMA CIBERNÉTICO V2.0 // SALA DE CONTROLADOR";
 
@@ -2966,11 +3034,44 @@ async function handlePlayerLogin(event) {
 
     if (errorAlert) errorAlert.style.display = 'none';
 
+    // Registrar o reanudar jugador en Supabase (Backend como fuente de verdad)
+    let playerToken = null;
+    try {
+        const storedToken = localStorage.getItem('faro_player_token');
+        const playerRes = await faroSupabaseRpc('faro_create_or_resume_player', {
+            p_token: storedToken || null,
+            p_pin: pin,
+            p_name: name,
+            p_email: email,
+            p_role: 'operator'
+        });
+
+        if (playerRes && playerRes.player_token) {
+            playerToken = playerRes.player_token;
+            gameStateV2.playerToken = playerToken;
+            gameStateV2.playerId = playerToken;
+            localStorage.setItem('faro_player_token', playerToken);
+            localStorage.setItem('faro_player_pin', pin);
+
+            if (playerRes.session && playerRes.session.session_gates) {
+                gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...playerRes.session.session_gates };
+            }
+        }
+    } catch(e) {
+        console.warn('[Player Login Cloud Sync Error]:', e);
+    }
+
+    if (!gameStateV2.playerToken) {
+        gameStateV2.playerToken = 'op_' + Math.random().toString(36).substring(2, 9);
+        gameStateV2.playerId = gameStateV2.playerToken;
+    }
+
     gameStateV2.playerProfile = {
         name: name,
         email: email,
         pin: pin,
         role: 'operator',
+        token: gameStateV2.playerToken,
         loginTimestamp: new Date().toISOString()
     };
 
@@ -2983,6 +3084,8 @@ async function handlePlayerLogin(event) {
         name: name,
         pin: pin
     });
+
+    await syncPlayerStateToCloud();
 
     // Pasar a la pantalla de sincronización con carrusel y carga
     switchScreenV2('screen-loading-sync');
@@ -3095,6 +3198,9 @@ function switchScreenV2(screenId) {
 
     if (gameStateV2.userRole === 'operator') {
         broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: screenId });
+        syncPlayerStateToCloud();
+    } else if (gameStateV2.userRole === 'facilitator') {
+        syncFacilitatorStateToCloud();
     }
 
     updateHeaderUI();
@@ -5842,6 +5948,10 @@ function processCaseOutcome(actionIds) {
     gameStateV2.modulesState[cData.moduleKey] = isRecovered;
     gameStateV2.modulesRecovered = Object.values(gameStateV2.modulesState).filter(Boolean).length;
     gameStateV2.caseScores.push(outcomeIndicator);
+    if (!gameStateV2.resolvedCases) gameStateV2.resolvedCases = [];
+    if (!gameStateV2.resolvedCases.includes(gameStateV2.currentCaseIndex)) {
+        gameStateV2.resolvedCases.push(gameStateV2.currentCaseIndex);
+    }
     updateHeaderUI();
 
     // ==========================================================================
@@ -6109,6 +6219,28 @@ function processCaseOutcome(actionIds) {
 
     // Registrar en el estado grupal local
     recordPlayerCaseResultForGroup(gameStateV2.currentCaseIndex, finishedPayload);
+
+    // Persistir resultado individual en Supabase faro_case_results
+    const caseResPin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || 'F4R0';
+    faroSupabasePost('faro_case_results', {
+        session_pin: caseResPin,
+        player_id: gameStateV2.playerId,
+        case_index: gameStateV2.currentCaseIndex,
+        case_id: cData.id,
+        case_title: cData.title,
+        integrity: caseIntegrity,
+        real_time_seconds: Math.round(deliberationSeconds),
+        cost: caseTotalAddedCost,
+        calibration: gameStateV2.hudState.calibration,
+        reactivity: gameStateV2.hudState.reactivity,
+        impulse_index: impulseIndex,
+        doors_activated: finishedPayload.doorsActivated,
+        matrix_evaluations: finishedPayload.matrixEvaluations,
+        feedback: {
+            outcomeIndicator: outcomeIndicator,
+            selectedDynamicSentences: selectedDynamicSentences
+        }
+    });
 
     if (gameStateV2.userRole === 'operator') {
         broadcastSyncEvent('PLAYER_CASE_FINISHED', finishedPayload);
@@ -7086,6 +7218,13 @@ function copyPromptToClipboard() {
 }
 
 function restartExperience() {
+    try {
+        localStorage.removeItem('faro_player_token');
+        localStorage.removeItem('faro_player_pin');
+        localStorage.removeItem('faro_facilitator_pin');
+        localStorage.removeItem('faro_facilitator_token');
+    } catch(e) {}
+
     gameStateV2.casePauseTokens = 3;
     gameStateV2.modulesRecovered = 0;
     gameStateV2.caseScores = [];
@@ -7196,16 +7335,148 @@ function toggleFacilitatorBar() {
     }
 }
 
-// Inicialización de ventana
-function initAppV2() {
+// ==========================================================================
+// INICIALIZACIÓN DE VENTANA Y REANUDACIÓN AUTOMÁTICA DESDE SUPABASE
+// ==========================================================================
+let isAppInitialized = false;
+
+async function initAppV2() {
+    if (isAppInitialized) return;
+    isAppInitialized = true;
+
     updateHeaderUI();
-    checkUrlRoleParam();
     updateGateUI();
     updateFacilitatorRealtimeUI();
     
-    // Si no hay parámetro de rol en la URL, mostrar la pantalla de selección de rol
     const params = new URLSearchParams(window.location.search);
-    if (!params.get('role')) {
+    const roleParam = params.get('role');
+
+    // 1. REANUDACIÓN DE FACILITADOR (Si tiene sesión guardada o parámetro de rol)
+    const savedFacPin = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || (roleParam === 'facilitator' ? 'F4R0' : null);
+    const savedFacToken = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_token'));
+
+    if (savedFacPin && (savedFacToken || roleParam === 'facilitator')) {
+        try {
+            const facSessionData = await faroSupabaseRpc('faro_get_session_state', { p_pin: savedFacPin });
+            if (facSessionData && facSessionData.session) {
+                const s = facSessionData.session;
+                gameStateV2.userRole = 'facilitator';
+                gameStateV2.facilitatorToken = savedFacToken || s.facilitator_token || 'fac_resumed';
+                gameStateV2.playerProfile = {
+                    name: s.facilitator_name || "Controlador",
+                    email: "controlador@faro-system.internal",
+                    pin: s.pin,
+                    role: "facilitator"
+                };
+                gameStateV2.sessionGates = s.session_gates || gameStateV2.sessionGates;
+                gameStateV2.currentCaseIndex = s.current_case_index || 0;
+                gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
+
+                if (facSessionData.players && Array.isArray(facSessionData.players)) {
+                    facState.connectedPlayers = facSessionData.players;
+                }
+
+                document.body.classList.add('facilitator-theme');
+                const targetScreen = s.active_screen && s.active_screen !== 'screen-role-select' ? s.active_screen : 'screen-fac-calib-realtime';
+                switchScreenV2(targetScreen);
+                updateGateUI();
+                updateFacilitatorRealtimeUI();
+                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+                return;
+            }
+        } catch(e) {
+            console.warn('[Facilitator Resume Cloud Warning]:', e);
+        }
+    }
+
+    // 2. REANUDACIÓN DE OPERADOR / JUGADOR (Si tiene token guardado en localStorage)
+    const savedPlayerToken = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_player_token'));
+    const savedPlayerPin = (typeof localStorage !== 'undefined' && localStorage.getItem('faro_player_pin')) || 'F4R0';
+
+    if (savedPlayerToken) {
+        try {
+            const resumeRes = await faroSupabaseRpc('faro_create_or_resume_player', {
+                p_token: savedPlayerToken,
+                p_pin: savedPlayerPin
+            });
+
+            if (resumeRes && resumeRes.is_resume && resumeRes.player) {
+                const p = resumeRes.player;
+                const s = resumeRes.session || {};
+
+                gameStateV2.userRole = 'operator';
+                gameStateV2.playerId = p.token || p.id;
+                gameStateV2.playerToken = p.token || p.id;
+                gameStateV2.playerProfile = {
+                    name: p.name,
+                    email: p.email,
+                    pin: p.session_pin,
+                    role: 'operator',
+                    token: p.token || p.id
+                };
+
+                if (p.hud_state) {
+                    gameStateV2.hudState = p.hud_state;
+                } else {
+                    gameStateV2.hudState = {
+                        integrity: p.integrity || 'safe',
+                        costDollars: p.cost || 0,
+                        calibration: p.calibration || 0,
+                        reactivity: p.reactivity || 0
+                    };
+                }
+
+                if (p.para_state && Object.keys(p.para_state).length > 0) {
+                    gameStateV2.paraState = p.para_state;
+                }
+                if (p.resolved_cases) {
+                    gameStateV2.resolvedCases = p.resolved_cases;
+                }
+                if (p.current_case_index !== undefined && p.current_case_index !== null) {
+                    gameStateV2.currentCaseIndex = p.current_case_index;
+                }
+                if (p.session_gates && Object.keys(p.session_gates).length > 0) {
+                    gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...p.session_gates };
+                } else if (s.session_gates) {
+                    gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...s.session_gates };
+                }
+                if (p.modules_state) {
+                    gameStateV2.modulesState = p.modules_state;
+                    gameStateV2.modulesRecovered = Object.values(p.modules_state).filter(Boolean).length;
+                }
+                if (p.para_agency_choice) {
+                    gameStateV2.paraAgencyChoice = p.para_agency_choice;
+                }
+                if (p.pauses_used !== undefined) {
+                    gameStateV2.casePauseTokens = Math.max(0, 3 - p.pauses_used);
+                }
+
+                document.body.classList.remove('facilitator-theme');
+                updateHeaderUI();
+                updateGateUI();
+
+                broadcastSyncEvent('PLAYER_CONNECTED', {
+                    playerId: gameStateV2.playerId,
+                    name: gameStateV2.playerProfile.name,
+                    pin: gameStateV2.playerProfile.pin
+                });
+
+                const restoredScreen = p.current_screen || 'screen-waiting';
+                if (restoredScreen === 'screen-case') {
+                    startCaseSequence(gameStateV2.currentCaseIndex);
+                } else {
+                    switchScreenV2(restoredScreen);
+                }
+                return;
+            }
+        } catch (e) {
+            console.warn('[Player Resume Cloud Warning]:', e);
+        }
+    }
+
+    // 3. Flujo Inicial si no hay sesión para reanudar
+    checkUrlRoleParam();
+    if (!roleParam) {
         showIntroSubScreen('screen-role-select');
     }
 }
@@ -7215,5 +7486,3 @@ if (document.readyState === 'loading') {
 } else {
     initAppV2();
 }
-
-window.onload = initAppV2;
