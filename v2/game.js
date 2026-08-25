@@ -204,8 +204,10 @@ async function syncFacilitatorStateToCloud() {
     if (gameStateV2.userRole !== 'facilitator') return;
     try {
         const pin = (gameStateV2.playerProfile && gameStateV2.playerProfile.pin) || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_pin')) || 'F4R0';
+        const token = gameStateV2.facilitatorToken || (typeof localStorage !== 'undefined' && localStorage.getItem('faro_facilitator_token'));
         await faroSupabaseRpc('faro_update_session_state', {
             p_pin: pin,
+            p_facilitator_token: token || null,
             p_gates: gameStateV2.sessionGates,
             p_current_case_index: gameStateV2.currentCaseIndex || 0,
             p_active_screen: gameStateV2.activeScreen,
@@ -3089,19 +3091,43 @@ async function handlePlayerLogin(event) {
         return;
     }
     
-    // Verificación de PIN contra el backend: cada webinar tiene su propio PIN (ya no hay uno
-    // fijo). NOTA: faro_get_session_state crea una sesión "huérfana" si el PIN no existe en
-    // vez de rechazarlo (ver prompt de seguimiento al ingeniero de Supabase), así que se usa
-    // facilitator_token como señal de que un Controlador realmente inició esa sesión.
-    let sessionCheck = null;
-    try {
-        sessionCheck = await faroSupabaseRpc('faro_get_session_state', { p_pin: pin });
-    } catch (e) {
-        console.warn('[Player Login PIN Check Error]:', e);
+    if (!pin || pin.length < 6) {
+        if (errorAlert) {
+            errorAlert.style.display = 'flex';
+            errorAlert.classList.remove('pin-error-alert');
+            void errorAlert.offsetWidth;
+            errorAlert.classList.add('pin-error-alert');
+        }
+        if (pinInput) {
+            pinInput.focus();
+            pinInput.select();
+        }
+        return;
     }
-    const sessionIsReal = !!(sessionCheck && sessionCheck.session && sessionCheck.session.facilitator_token);
 
-    if (!pin || pin.length < 6 || !sessionIsReal) {
+    // Registrar o reanudar jugador en Supabase (Backend como fuente de verdad)
+    let playerToken = null;
+    let playerRes = null;
+    try {
+        let sessionOnlyToken = null, sessionOnlyPin = null;
+        try {
+            sessionOnlyToken = sessionStorage.getItem('faro_player_token');
+            sessionOnlyPin = sessionStorage.getItem('faro_player_pin');
+        } catch (e) {}
+        const storedToken = (sessionOnlyPin === pin) ? sessionOnlyToken : null;
+        playerRes = await faroSupabaseRpc('faro_create_or_resume_player', {
+            p_token: storedToken || null,
+            p_pin: pin,
+            p_name: name,
+            p_email: email,
+            p_role: 'operator'
+        });
+    } catch(e) {
+        console.warn('[Player Login Cloud Sync Error]:', e);
+    }
+
+    // Si el PIN no existe en faro_sessions o falló la creación
+    if (!playerRes || !playerRes.success || playerRes.session_exists === false) {
         if (errorAlert) {
             errorAlert.style.display = 'flex';
             errorAlert.classList.remove('pin-error-alert');
@@ -3117,42 +3143,15 @@ async function handlePlayerLogin(event) {
 
     if (errorAlert) errorAlert.style.display = 'none';
 
-    // Registrar o reanudar jugador en Supabase (Backend como fuente de verdad)
-    let playerToken = null;
-    try {
-        // IMPORTANTE: aquí se lee ÚNICAMENTE sessionStorage (exclusivo de esta pestaña), NUNCA
-        // el respaldo en localStorage. Este es un envío EXPLÍCITO del formulario de login — si
-        // se usara el respaldo de localStorage (compartido entre pestañas), un segundo operador
-        // que abre una pestaña nueva y llena SU PROPIO nombre terminaría reanudando la sesión
-        // del primer operador con solo cambiarle el nombre. El respaldo en localStorage solo se
-        // usa para la reanudación silenciosa al cargar la página (ver initAppV2), donde no hay
-        // ningún dato de un "otro usuario" con el que pueda confundirse.
-        let sessionOnlyToken = null, sessionOnlyPin = null;
-        try {
-            sessionOnlyToken = sessionStorage.getItem('faro_player_token');
-            sessionOnlyPin = sessionStorage.getItem('faro_player_pin');
-        } catch (e) {}
-        const storedToken = (sessionOnlyPin === pin) ? sessionOnlyToken : null;
-        const playerRes = await faroSupabaseRpc('faro_create_or_resume_player', {
-            p_token: storedToken || null,
-            p_pin: pin,
-            p_name: name,
-            p_email: email,
-            p_role: 'operator'
-        });
+    if (playerRes && playerRes.player_token) {
+        playerToken = playerRes.player_token;
+        gameStateV2.playerToken = playerToken;
+        gameStateV2.playerId = playerToken;
+        setStoredPlayerIdentity(playerToken, pin);
 
-        if (playerRes && playerRes.player_token) {
-            playerToken = playerRes.player_token;
-            gameStateV2.playerToken = playerToken;
-            gameStateV2.playerId = playerToken;
-            setStoredPlayerIdentity(playerToken, pin);
-
-            if (playerRes.session && playerRes.session.session_gates) {
-                gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...playerRes.session.session_gates };
-            }
+        if (playerRes.session && playerRes.session.session_gates) {
+            gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...playerRes.session.session_gates };
         }
-    } catch(e) {
-        console.warn('[Player Login Cloud Sync Error]:', e);
     }
 
     if (!gameStateV2.playerToken) {
@@ -7451,8 +7450,11 @@ async function initAppV2() {
 
     if (savedFacPin && savedFacToken) {
         try {
-            const facSessionData = await faroSupabaseRpc('faro_get_session_state', { p_pin: savedFacPin });
-            if (facSessionData && facSessionData.session) {
+            const facSessionData = await faroSupabaseRpc('faro_get_session_state', { 
+                p_pin: savedFacPin,
+                p_facilitator_token: savedFacToken 
+            });
+            if (facSessionData && facSessionData.session && (facSessionData.is_facilitator || facSessionData.success)) {
                 const s = facSessionData.session;
                 gameStateV2.userRole = 'facilitator';
                 gameStateV2.facilitatorToken = savedFacToken || s.facilitator_token || 'fac_resumed';

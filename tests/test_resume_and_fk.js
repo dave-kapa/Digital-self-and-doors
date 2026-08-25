@@ -69,20 +69,43 @@ function postTable(tableName, payload) {
 
 async function runAcceptanceTest() {
     const testPin = 'TEST_' + Math.floor(1000 + Math.random() * 9000);
+    const facToken = 'fac_tok_' + testPin;
+    const fakePin = 'INEXIST_' + Math.floor(1000 + Math.random() * 9000);
+
     console.log('================================================================================');
-    console.log(`⚡ TEST DE ACEPTACIÓN: SINGLE SOURCE OF TRUTH & REANUDACIÓN (PIN: ${testPin})`);
+    console.log(`⚡ TEST DE ACEPTACIÓN: SINGLE SOURCE OF TRUTH, SEGURIDAD & REANUDACIÓN`);
+    console.log(`PIN Sesión Válida: ${testPin} | PIN Falso: ${fakePin}`);
     console.log('================================================================================\n');
 
-    // 1. Facilitador crea sesión
+    // TEST A: Verificar que PIN inexistente es rechazado y NO crea filas huérfanas
+    console.log('--- TEST A: Rechazo de PIN Inexistente (No crea sesiones huérfanas) ---');
+    const fakeGet = await callRpc('faro_get_session_state', { p_pin: fakePin });
+    console.log('faro_get_session_state con PIN falso:', fakeGet.data);
+    if (fakeGet.data.session_exists !== false) {
+        throw new Error('faro_get_session_state debió rechazar el PIN inexistente');
+    }
+
+    const fakeResume = await callRpc('faro_create_or_resume_player', {
+        p_pin: fakePin,
+        p_name: "Operador Fantasma",
+        p_email: "fantasma@test.com"
+    });
+    console.log('faro_create_or_resume_player con PIN falso:', fakeResume.data);
+    if (fakeResume.data.session_exists !== false) {
+        throw new Error('faro_create_or_resume_player debió rechazar el PIN inexistente');
+    }
+    console.log('✔ [PASS] PIN inexistente rechazado exitosamente sin crear sesiones.\n');
+
+    // 1. Facilitador crea sesión real
     console.log('--- 1. Facilitador inicia sesión (upsert session) ---');
     const sessionRes = await callRpc('faro_create_or_get_session', {
         p_pin: testPin,
         p_facilitator_name: 'Controlador QA',
-        p_facilitator_token: 'fac_tok_' + testPin
+        p_facilitator_token: facToken
     });
     console.log(`Status: ${sessionRes.status}, PIN: ${sessionRes.data.pin}, Status: ${sessionRes.data.status}`);
     if (sessionRes.status !== 200) throw new Error('Fallo creación de sesión');
-    console.log('✜ [PASS] Sesión creada / verificada con éxito.\n');
+    console.log('✔ [PASS] Sesión creada / verificada con éxito.\n');
 
     // 2. Tres operadores ingresan al sistema
     console.log('--- 2. Registro de 3 Operadores ---');
@@ -93,7 +116,19 @@ async function runAcceptanceTest() {
     console.log(`Op1 Token: ${op1.data.player_token} (is_resume: ${op1.data.is_resume})`);
     console.log(`Op2 Token: ${op2.data.player_token} (is_resume: ${op2.data.is_resume})`);
     console.log(`Op3 Token: ${op3.data.player_token} (is_resume: ${op3.data.is_resume})`);
-    console.log('✜ [PASS] 3 Operadores registrados con tokens únicos estables.\n');
+    console.log('✔ [PASS] 3 Operadores registrados con tokens únicos estables.\n');
+
+    // TEST B: Verificar que consulta NO autenticada de session_state NO filtra tokens
+    console.log('--- TEST B: Seguridad de Tokens (faro_get_session_state sin token de facilitador) ---');
+    const unauthedGet = await callRpc('faro_get_session_state', { p_pin: testPin });
+    console.log('Consulta pública/no autenticada:', {
+        is_facilitator: unauthedGet.data.is_facilitator,
+        players_exposed: unauthedGet.data.players ? unauthedGet.data.players.length : 0
+    });
+    if (unauthedGet.data.is_facilitator === true || (unauthedGet.data.players && unauthedGet.data.players.length > 0)) {
+        throw new Error('faro_get_session_state filtró datos de jugadores a una consulta no autenticada');
+    }
+    console.log('✔ [PASS] Cero tokens de jugador filtrados a consultas públicas.\n');
 
     // 3. Operador 2 avanza a mitad del Caso 2 (P.A.R.A., HUD alterado, gates)
     console.log('--- 3. Operador 2 avanza al Caso 2 y modifica estado ---');
@@ -137,7 +172,7 @@ async function runAcceptanceTest() {
     });
     console.log(`Update status: ${updateRes.status}`, updateRes.data);
     if (!updateRes.data.success) throw new Error('Fallo actualización de estado de Operador 2');
-    console.log('✜ [PASS] Estado del Operador 2 persistido en el backend como fuente de verdad.\n');
+    console.log('✔ [PASS] Estado del Operador 2 persistido en el backend como fuente de verdad.\n');
 
     // 4. Enviar evento de telemetría a faro_case_events (Verificar 0 error 409 / FK)
     console.log('--- 4. Insertando eventos de telemetría a faro_case_events ---');
@@ -153,7 +188,7 @@ async function runAcceptanceTest() {
         console.error('Event error:', eventRes.data);
         throw new Error(`Error insertando en faro_case_events: HTTP ${eventRes.status}`);
     }
-    console.log('== [PASS] Inserción a faro_case_events completada sin error de foreign key (0 error 409 / 23503).\n');
+    console.log('✔ [PASS] Inserción a faro_case_events completada sin error de foreign key (0 error 409 / 23503).\n');
 
     // 5. Simular REFRESH del Operador 2 (llamando con su player_token)
     console.log('--- 5. SIMULANDO REFRESH DEL NAVEGADOR (Operador 2) ---');
@@ -167,33 +202,37 @@ async function runAcceptanceTest() {
     console.log(`Token mantenido: ${resumeOp2.data.player_token === op2.data.player_token}`);
     console.log(`Pantalla recuperada: ${resumeOp2.data.player.current_screen} (Esperado: screen-case)`);
     console.log(`Caso activo recuperado: Caso ${resumeOp2.data.player.current_case_index + 1} (Índice: ${resumeOp2.data.player.current_case_index})`);
-    console.log(`HUD recuperado: Integridad=${resumeOp2.data.player.hud_state.integrity}, Costo=$d{resumeOp2.data.player.hud_state.costDollars}, Calib=${resumeOp2.data.player.hud_state.calibration}, React=${resumeOp2.data.player.hud_state.reactivity}`);
+    console.log(`HUD recuperado: Integridad=${resumeOp2.data.player.hud_state.integrity}, Costo=$${resumeOp2.data.player.hud_state.costDollars}, Calib=${resumeOp2.data.player.hud_state.calibration}, React=${resumeOp2.data.player.hud_state.reactivity}`);
     console.log(`Casos resueltos recuperados: [${resumeOp2.data.player.resolved_cases}]`);
 
     if (!resumeOp2.data.is_resume) throw new Error('El backend no reconoció al jugador como reanudación');
     if (resumeOp2.data.player.current_case_index !== 1) throw new Error('Caso activo no restaurado correctamente');
     if (resumeOp2.data.player.hud_state.costDollars !== 14500) throw new Error('Costo HUD no restaurado correctamente');
     if (resumeOp2.data.player.resolved_cases[0] !== 0) throw new Error('Casos resueltos no restaurados');
-    console.log('✜ [PASS] Operador 2 reanudado exactamente en el mismo punto de partida.\n');
+    console.log('✔ [PASS] Operador 2 reanudado exactamente en el mismo punto de partida.\n');
 
-    // 6. Verificar Roster del Facilitador (NO debe haber duplicados)
-    console.log('--- 6. Verificando Roster del Facilitador tras el refresh ---');
-    const facStateRes = await callRpc('faro_get_session_state', { p_pin: testPin });
-    const playersCount = facStateRes.data.players.length;
+    // 6. Verificar Roster del Facilitador con token de autenticación (NO debe haber duplicados)
+    console.log('--- 6. Verificando Roster del Facilitador autenticado tras el refresh ---');
+    const facStateRes = await callRpc('faro_get_session_state', { 
+        p_pin: testPin,
+        p_facilitator_token: facToken
+    });
+    console.log(`is_facilitator: ${facStateRes.data.is_facilitator}`);
+    const playersCount = facStateRes.data.players ? facStateRes.data.players.length : 0;
     console.log(`Total jugadores en la sesión: ${playersCount} (Esperado: 3)`);
     facStateRes.data.players.forEach(p => {
-        console.log(`   • ${p.name} | Token: ${p.token} | Pantalla: ${p.current_screen} | Costo: $${p.cost}`);
+        console.log(`   • ${p.name} | Token: ${p.token} | Pantalla: ${p.current_screen} | Costo: $${p.cost}`);
     });
 
     if (playersCount !== 3) throw new Error(`El roster tiene ${playersCount} jugadores en vez de 3`);
-    console.log('== [PASS] El Facilitador mantiene exactamente los 3 operadores originales sin duplicados.\n');
+    console.log('✔ [PASS] El Facilitador mantiene exactamente los 3 operadores originales sin duplicados.\n');
 
     console.log('================================================================================');
-    console.log('🎉 TODAS LAS PRUEBAS DE ACEPTACIÓN PASARON EXITOSAMENTE (100%)');
+    console.log('🎉 TODAS LAS PRUEBAS DE ACEPTACIÓN Y SEGURIDAD PASARON EXITOSAMENTE (100%)');
     console.log('================================================================================');
 }
 
 runAcceptanceTest().catch(err => {
-    console.error('❏ ERROR EN TEST DE ACEPTACIÓN:', err);
+    console.error('❌ ERROR EN TEST DE ACEPTACIÓN:', err);
     process.exit(1);
 });
