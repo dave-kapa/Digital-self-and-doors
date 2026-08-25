@@ -3008,7 +3008,7 @@ const ASSETS_TO_PRELOAD = [
 ];
 
 let preloadedAssetsCount = 0;
-const COVER_PRELOAD_MIN_SECONDS = 10;
+const COVER_PRELOAD_MIN_SECONDS = 2;
 const DEFAULT_SESSION_PIN = "F4R0";
 const SYNC_LOADING_TOTAL_SECONDS = 10;
 let isPreloadingActive = false;
