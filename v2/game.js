@@ -3103,22 +3103,34 @@ async function handleFacilitatorLogin(event) {
         localStorage.setItem('faro_facilitator_token', gameStateV2.facilitatorToken);
     } catch(e) {}
 
-    // Upsert sesión en Supabase
-    const sessionRes = await faroSupabaseRpc('faro_create_or_get_session', {
+    // Upsert sesión en Supabase — si el PIN ya existía, esto NO la reinicia, devuelve su
+    // estado real (candados, pantalla activa, caso en curso).
+    await faroSupabaseRpc('faro_create_or_get_session', {
         p_pin: pin,
         p_facilitator_name: "Controlador Principal",
         p_facilitator_token: gameStateV2.facilitatorToken
     });
 
-    if (sessionRes && sessionRes.session_gates) {
-        gameStateV2.sessionGates = { ...gameStateV2.sessionGates, ...sessionRes.session_gates };
-    }
-
     const badgeTag = document.getElementById('cover-badge-role-tag');
     if (badgeTag) badgeTag.innerText = "SISTEMA CIBERNÉTICO V2.0 // SALA DE CONTROLADOR";
 
     switchScreenV2('screen-loading-sync');
-    startSyncLoadingScreen();
+    startSyncLoadingScreen(async () => {
+        // Traer el estado completo (roster y resultados agregados incluidos, no solo
+        // candados) para que reingresar con un PIN ya usado retome el webinar donde iba,
+        // en vez de mandar siempre al facilitador a la pantalla inicial.
+        try {
+            const facSessionData = await faroSupabaseRpc('faro_get_session_state', {
+                p_pin: pin,
+                p_facilitator_token: gameStateV2.facilitatorToken
+            });
+            const applied = await applyFacilitatorSessionData(facSessionData, pin, gameStateV2.facilitatorToken);
+            if (!applied) switchScreenV2('screen-waiting');
+        } catch (e) {
+            console.warn('[Facilitator Login State Fetch Error]:', e);
+            switchScreenV2('screen-waiting');
+        }
+    });
 }
 
 async function handlePlayerLogin(event) {
@@ -3241,7 +3253,7 @@ async function handlePlayerLogin(event) {
     startSyncLoadingScreen();
 }
 
-function startSyncLoadingScreen() {
+function startSyncLoadingScreen(onComplete) {
     const tagEl = document.getElementById('sync-player-tag');
     if (tagEl && gameStateV2.playerProfile) {
         tagEl.innerText = `OPERADOR: ${gameStateV2.playerProfile.name.toUpperCase()} // PIN: ${gameStateV2.playerProfile.pin}`;
@@ -3303,7 +3315,11 @@ function startSyncLoadingScreen() {
             if (termEl) termEl.innerText = finalSyncLabel;
             
             setTimeout(() => {
-                switchScreenV2('screen-waiting');
+                if (typeof onComplete === 'function') {
+                    onComplete();
+                } else {
+                    switchScreenV2('screen-waiting');
+                }
             }, 500);
         }
     }, stepMs);
@@ -3345,11 +3361,16 @@ function switchScreenV2(screenId) {
         gameStateV2.activeScreen = screenId;
     }
 
-    if (gameStateV2.userRole === 'operator') {
-        broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: screenId });
-        syncPlayerStateToCloud();
-    } else if (gameStateV2.userRole === 'facilitator') {
-        syncFacilitatorStateToCloud();
+    // screen-loading-sync es una animación transitoria (login/sync), no un estado real de la
+    // sesión — persistirla como active_screen dejaría a quien reanude atascado ahí en un
+    // bucle (ver applyFacilitatorSessionData).
+    if (screenId !== 'screen-loading-sync') {
+        if (gameStateV2.userRole === 'operator') {
+            broadcastSyncEvent('PLAYER_SCREEN_UPDATE', { playerId: gameStateV2.playerId, screen: screenId });
+            syncPlayerStateToCloud();
+        } else if (gameStateV2.userRole === 'facilitator') {
+            syncFacilitatorStateToCloud();
+        }
     }
 
     updateHeaderUI();
@@ -7610,6 +7631,65 @@ function toggleFacilitatorBar() {
     }
 }
 
+// Aplica el estado completo de una sesión (candados, pantalla, caso activo, roster,
+// resultados agregados) al facilitador actual — sin importar si llegó aquí por reanudación
+// automática al recargar la página, o por haber escrito su PIN de nuevo en el formulario de
+// login (mismo webinar, dispositivo nuevo o sesión perdida). Antes, solo la reanudación
+// automática restauraba todo esto; reingresar por PIN solo aplicaba los candados y siempre
+// mandaba al facilitador a la pantalla inicial, aunque el webinar ya llevara varios casos.
+async function applyFacilitatorSessionData(facSessionData, pin, token) {
+    if (!facSessionData || !facSessionData.session || !(facSessionData.is_facilitator || facSessionData.success)) {
+        return false;
+    }
+    const s = facSessionData.session;
+    gameStateV2.userRole = 'facilitator';
+    gameStateV2.facilitatorToken = token || s.facilitator_token || 'fac_resumed';
+    gameStateV2.playerProfile = {
+        name: s.facilitator_name || "Controlador",
+        email: "controlador@faro-system.internal",
+        pin: s.pin || pin,
+        role: "facilitator"
+    };
+    gameStateV2.sessionGates = s.session_gates || gameStateV2.sessionGates;
+    gameStateV2.currentCaseIndex = (s.current_case_index !== undefined && s.current_case_index !== null) ? s.current_case_index : 0;
+    gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
+
+    if (facSessionData.players && Array.isArray(facSessionData.players)) {
+        facState.connectedPlayers = facSessionData.players;
+    }
+
+    // Repoblar facState.casesGroupResults desde Supabase para que el HUD global y las
+    // pantallas de resultados no aparezcan vacías/en cero.
+    if (facSessionData.cases_group_results && typeof facSessionData.cases_group_results === 'object') {
+        facState.casesGroupResults = facSessionData.cases_group_results;
+    } else {
+        try {
+            const caseResults = await faroSupabaseRpc('faro_get_session_case_results', { p_pin: pin });
+            if (caseResults && typeof caseResults === 'object') {
+                facState.casesGroupResults = caseResults;
+            }
+        } catch(e) {
+            console.warn('[Facilitator Case Results Fetch Error]:', e);
+        }
+    }
+
+    getAllCasesCumulativeGroupResults();
+
+    document.body.classList.add('facilitator-theme');
+    // Pantallas transitorias/de autenticación: nunca son un destino válido de reanudación.
+    // Si la sesión quedó con una de estas guardada como active_screen (ej. el facilitador
+    // cerró la pestaña a mitad de la animación de sincronización, o el navegador se cayó
+    // antes de terminar el login), reingresar no debe quedarse atascado ahí — se usa el
+    // mismo destino por defecto que una sesión recién creada.
+    const NON_RESUMABLE_SCREENS = ['screen-role-select', 'screen-cover', 'screen-login', 'screen-login-facilitator', 'screen-loading-sync'];
+    const targetScreen = (s.active_screen && !NON_RESUMABLE_SCREENS.includes(s.active_screen)) ? s.active_screen : 'screen-fac-calib-realtime';
+    switchScreenV2(targetScreen);
+    updateGateUI();
+    updateFacilitatorRealtimeUI();
+    if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
+    return true;
+}
+
 // ==========================================================================
 // INICIALIZACIÓN DE VENTANA Y REANUDACIÓN AUTOMÁTICA DESDE SUPABASE
 // ==========================================================================
@@ -7633,52 +7713,12 @@ async function initAppV2() {
 
     if (savedFacPin && savedFacToken) {
         try {
-            const facSessionData = await faroSupabaseRpc('faro_get_session_state', { 
+            const facSessionData = await faroSupabaseRpc('faro_get_session_state', {
                 p_pin: savedFacPin,
-                p_facilitator_token: savedFacToken 
+                p_facilitator_token: savedFacToken
             });
-            if (facSessionData && facSessionData.session && (facSessionData.is_facilitator || facSessionData.success)) {
-                const s = facSessionData.session;
-                gameStateV2.userRole = 'facilitator';
-                gameStateV2.facilitatorToken = savedFacToken || s.facilitator_token || 'fac_resumed';
-                gameStateV2.playerProfile = {
-                    name: s.facilitator_name || "Controlador",
-                    email: "controlador@faro-system.internal",
-                    pin: s.pin,
-                    role: "facilitator"
-                };
-                gameStateV2.sessionGates = s.session_gates || gameStateV2.sessionGates;
-                gameStateV2.currentCaseIndex = (s.current_case_index !== undefined && s.current_case_index !== null) ? s.current_case_index : 0;
-                gameStateV2.facilitatorDependency = s.facilitator_dependency !== false;
-
-                if (facSessionData.players && Array.isArray(facSessionData.players)) {
-                    facState.connectedPlayers = facSessionData.players;
-                }
-
-                // FASE 4: Repoblar facState.casesGroupResults desde Supabase para que el HUD global y resultados no queden en cero
-                if (facSessionData.cases_group_results && typeof facSessionData.cases_group_results === 'object') {
-                    facState.casesGroupResults = facSessionData.cases_group_results;
-                } else {
-                    try {
-                        const caseResults = await faroSupabaseRpc('faro_get_session_case_results', { p_pin: savedFacPin });
-                        if (caseResults && typeof caseResults === 'object') {
-                            facState.casesGroupResults = caseResults;
-                        }
-                    } catch(e) {
-                        console.warn('[Facilitator Case Results Fetch Error]:', e);
-                    }
-                }
-
-                getAllCasesCumulativeGroupResults();
-
-                document.body.classList.add('facilitator-theme');
-                const targetScreen = s.active_screen && s.active_screen !== 'screen-role-select' ? s.active_screen : 'screen-fac-calib-realtime';
-                switchScreenV2(targetScreen);
-                updateGateUI();
-                updateFacilitatorRealtimeUI();
-                if (typeof updateFacCaseLiveUI === 'function') updateFacCaseLiveUI();
-                return;
-            }
+            const applied = await applyFacilitatorSessionData(facSessionData, savedFacPin, savedFacToken);
+            if (applied) return;
         } catch(e) {
             console.warn('[Facilitator Resume Cloud Warning]:', e);
         }
