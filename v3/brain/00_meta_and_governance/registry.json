@@ -1,0 +1,594 @@
+{
+  "DEC-001": {
+    "id": "DEC-001",
+    "title": "El humano como agente, no como eslabón más débil",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-001_factor_humano_agencia.md"
+  },
+  "DEC-002": {
+    "id": "DEC-002",
+    "title": "Catálogo oficial de nueve Attention Doors",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-002_nueve_attention_doors.md"
+  },
+  "DEC-003": {
+    "id": "DEC-003",
+    "title": "Exclusión de Jerarquía y Validación como Attention Doors",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-003_exclusion_jerarquia_validacion.md"
+  },
+  "DEC-005": {
+    "id": "DEC-005",
+    "title": "Transición de MIRA a FARO como agente protector sociotécnico",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-005_transicion_mira_a_faro.md"
+  },
+  "DEC-006": {
+    "id": "DEC-006",
+    "title": "Caso 3 sin revelación del ground truth",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-006_caso_3_sin_ground_truth.md"
+  },
+  "DEC-008": {
+    "id": "DEC-008",
+    "title": "Adopción del scoring dinámico Debía/No debía",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-008_scoring_dinamico_DN.md"
+  },
+  "DEC-010": {
+    "id": "DEC-010",
+    "title": "Caso 4: autenticidad no equivale a decisión obvia",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-010_caso_4_autenticidad_no_obvia.md"
+  },
+  "DEC-011": {
+    "id": "DEC-011",
+    "title": "Tres roles pedagógicos de la IA aliada",
+    "type": "decision",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "00_meta_and_governance/decision_log/DEC-011_ia_espejo_sparring_asistente.md"
+  },
+  "CLM-MATRIX-ATT-DEC": {
+    "id": "CLM-MATRIX-ATT-DEC",
+    "title": "Claims matrix: Attention and Decision",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_attention_decision.md"
+  },
+  "CLM-MATRIX-GAMES": {
+    "id": "CLM-MATRIX-GAMES",
+    "title": "Claims matrix: Games and Gamification",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_games_gamification.md"
+  },
+  "CLM-MATRIX-GENAI-SE": {
+    "id": "CLM-MATRIX-GENAI-SE",
+    "title": "Claims matrix: Generative AI and Social Engineering",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_genai_social_engineering.md"
+  },
+  "CLM-MATRIX-HUMAN-AI": {
+    "id": "CLM-MATRIX-HUMAN-AI",
+    "title": "Claims matrix: Human–AI Interaction",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_human_ai.md"
+  },
+  "CLM-MATRIX-HF": {
+    "id": "CLM-MATRIX-HF",
+    "title": "Claims matrix: Human Factor and Sociotechnical Security",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_human_factor.md"
+  },
+  "CLM-MATRIX-TRAINING": {
+    "id": "CLM-MATRIX-TRAINING",
+    "title": "Claims matrix: Training and Learning",
+    "type": "claim_matrix",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "01_research_and_lenses/claims/claims_training_learning.md"
+  },
+  "LIB-RESEARCH-GAPS": {
+    "id": "LIB-RESEARCH-GAPS",
+    "title": "Registro inicial de vacíos de investigación",
+    "type": "research_gap_register",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "01_research_and_lenses/librarian/RESEARCH_GAPS.md"
+  },
+  "SRC-KAHNEMAN-2011": {
+    "id": "SRC-KAHNEMAN-2011",
+    "title": "Thinking, Fast and Slow",
+    "type": "source",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "01_research_and_lenses/sources/SRC-KAHNEMAN-2011.md"
+  },
+  "SRC-ROGERS-1975": {
+    "id": "SRC-ROGERS-1975",
+    "title": "A Protection Motivation Theory of Fear Appeals and Attitude Change",
+    "type": "source",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "01_research_and_lenses/sources/SRC-ROGERS-1975.md"
+  },
+  "SRC-VAFA-2026": {
+    "id": "SRC-VAFA-2026",
+    "title": "Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data",
+    "type": "source",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "01_research_and_lenses/sources/SRC-VAFA-2026.md"
+  },
+  "SRC-VERIZON-DBIR-2026": {
+    "id": "SRC-VERIZON-DBIR-2026",
+    "title": "2026 Data Breach Investigations Report",
+    "type": "source",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "01_research_and_lenses/sources/SRC-VERIZON-DBIR-2026.md"
+  },
+  "SRC-WOOD-NEAL-2007": {
+    "id": "SRC-WOOD-NEAL-2007",
+    "title": "A New Look at Habits and the Habit-Goal Interface",
+    "type": "source",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "01_research_and_lenses/sources/SRC-WOOD-NEAL-2007.md"
+  },
+  "THEORY-COG-OFFLOAD": {
+    "id": "THEORY-COG-OFFLOAD",
+    "title": "Cognitive Entrenchment and Cognitive Offloading",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/cognitive_entrenchment_offloading.md"
+  },
+  "THEORY-JUDGE-ADVISOR": {
+    "id": "THEORY-JUDGE-ADVISOR",
+    "title": "Judge–Advisor Systems and Advice Taking",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/judge_advisor_advice_taking.md"
+  },
+  "THEORY-PMT": {
+    "id": "THEORY-PMT",
+    "title": "Protection Motivation Theory",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/protection_motivation_theory.md"
+  },
+  "THEORY-SDT-AUTONOMY": {
+    "id": "THEORY-SDT-AUTONOMY",
+    "title": "Self-Determination Theory and Autonomy",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/self_determination_autonomy.md"
+  },
+  "THEORY-SDT": {
+    "id": "THEORY-SDT",
+    "title": "Signal Detection Theory",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/signal_detection_theory.md"
+  },
+  "THEORY-TRA-TPB": {
+    "id": "THEORY-TRA-TPB",
+    "title": "Theory of Reasoned Action and Theory of Planned Behavior",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/tra_tpb_behavioral_intent.md"
+  },
+  "THEORY-TRUST-AUTO": {
+    "id": "THEORY-TRUST-AUTO",
+    "title": "Trust in Automation and Appropriate Reliance",
+    "type": "theory_lens",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "01_research_and_lenses/theoretical_lenses/trust_in_automation_reliance.md"
+  },
+  "CON-AI-ROLES": {
+    "id": "CON-AI-ROLES",
+    "title": "Roles pedagógicos de la IA aliada",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/AI_roles.md"
+  },
+  "DOOR-001": {
+    "id": "DOOR-001",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/01_identity.md"
+  },
+  "DOOR-002": {
+    "id": "DOOR-002",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/02_curiosity.md"
+  },
+  "DOOR-003": {
+    "id": "DOOR-003",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/03_responsibility.md"
+  },
+  "DOOR-004": {
+    "id": "DOOR-004",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/04_justice.md"
+  },
+  "DOOR-005": {
+    "id": "DOOR-005",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/05_coherence.md"
+  },
+  "DOOR-006": {
+    "id": "DOOR-006",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/06_belonging.md"
+  },
+  "DOOR-007": {
+    "id": "DOOR-007",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/07_protection.md"
+  },
+  "DOOR-008": {
+    "id": "DOOR-008",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/08_loss.md"
+  },
+  "DOOR-009": {
+    "id": "DOOR-009",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/09_convenience_routine.md"
+  },
+  "DOOR-RELATIONS": {
+    "id": "DOOR-RELATIONS",
+    "title": "",
+    "type": "door",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors/relationships_and_overlaps.md"
+  },
+  "CON-ATTENTION-DOORS": {
+    "id": "CON-ATTENTION-DOORS",
+    "title": "Modelo de Attention Doors",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/attention_doors_model.md"
+  },
+  "CON-DECISION-PROCESS": {
+    "id": "CON-DECISION-PROCESS",
+    "title": "Proceso decisional",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/decision_process.md"
+  },
+  "CON-DIGITAL-FOOTPRINT": {
+    "id": "CON-DIGITAL-FOOTPRINT",
+    "title": "Digital Footprint",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "02_framework_canon/digital_footprint.md"
+  },
+  "CON-DIGITAL-SELF": {
+    "id": "CON-DIGITAL-SELF",
+    "title": "Digital Self",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/digital_self.md"
+  },
+  "CON-EPISTEMIC-BOUNDARIES": {
+    "id": "CON-EPISTEMIC-BOUNDARIES",
+    "title": "Límites epistemológicos del framework",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "02_framework_canon/epistemic_boundaries.md"
+  },
+  "CON-FRAMEWORK-ETHICS": {
+    "id": "CON-FRAMEWORK-ETHICS",
+    "title": "Principios éticos del framework",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "02_framework_canon/framework_ethics.md"
+  },
+  "CON-HUMAN-AGENCY": {
+    "id": "CON-HUMAN-AGENCY",
+    "title": "Agencia humana",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "02_framework_canon/human_agency.md"
+  },
+  "CON-INTERNAL-STORY": {
+    "id": "CON-INTERNAL-STORY",
+    "title": "Historia interna",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/internal_story.md"
+  },
+  "CON-METACOGNITION": {
+    "id": "CON-METACOGNITION",
+    "title": "Metacognición aplicada",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "02_framework_canon/metacognition.md"
+  },
+  "CON-PARA": {
+    "id": "CON-PARA",
+    "title": "PARA: Pausar, Analizar, Revisar, Actuar",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/PARA.md"
+  },
+  "CON-SOCIOTECHNICAL": {
+    "id": "CON-SOCIOTECHNICAL",
+    "title": "Sistema sociotécnico de seguridad",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "02_framework_canon/sociotechnical_system.md"
+  },
+  "CON-THESIS": {
+    "id": "CON-THESIS",
+    "title": "Tesis de agencia frente al avance de la inteligencia artificial",
+    "type": "concept",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "02_framework_canon/thesis.md"
+  },
+  "MET-COMPETENCIES": {
+    "id": "MET-COMPETENCIES",
+    "title": "Inventario de competencias de criterio y agencia",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "03_methodology_and_learning/competencies_inventory.md"
+  },
+  "MET-DELIBERATE-PRACTICE": {
+    "id": "MET-DELIBERATE-PRACTICE",
+    "title": "Práctica deliberada y situada",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "03_methodology_and_learning/deliberate_practice.md"
+  },
+  "MET-FACILITATION": {
+    "id": "MET-FACILITATION",
+    "title": "Principios maestros de facilitación",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "03_methodology_and_learning/facilitation_principles.md"
+  },
+  "MET-PHILOSOPHY": {
+    "id": "MET-PHILOSOPHY",
+    "title": "Filosofía de aprendizaje",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "03_methodology_and_learning/learning_philosophy.md"
+  },
+  "MET-SAFE-DECEPTION": {
+    "id": "MET-SAFE-DECEPTION",
+    "title": "Protocolo de engaño pedagógico seguro",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "established",
+    "path": "03_methodology_and_learning/safe_deception_protocol.md"
+  },
+  "MET-TELEMETRY": {
+    "id": "MET-TELEMETRY",
+    "title": "Telemetría y analítica formativa",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "03_methodology_and_learning/telemetry_and_analytics.md"
+  },
+  "MET-TRAIN-VS-INTERV": {
+    "id": "MET-TRAIN-VS-INTERV",
+    "title": "Training versus Intervention",
+    "type": "methodology",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "03_methodology_and_learning/training_vs_intervention.md"
+  },
+  "CASE-FARO-01": {
+    "id": "CASE-FARO-01",
+    "title": "Caso 1: Autonomía y Confianza Calibrada",
+    "type": "case",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "04_product_system/reusable_components/games/faro_v3plus/cases/case_01_autonomia.md"
+  },
+  "CASE-FARO-02": {
+    "id": "CASE-FARO-02",
+    "title": "Caso 2: Digital Self e Hiperpersonalización",
+    "type": "case",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "04_product_system/reusable_components/games/faro_v3plus/cases/case_02_digital_self.md"
+  },
+  "CASE-FARO-03": {
+    "id": "CASE-FARO-03",
+    "title": "Caso 3: Señales Internas sin Ground Truth",
+    "type": "case",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "04_product_system/reusable_components/games/faro_v3plus/cases/case_03_senales_internas.md"
+  },
+  "CASE-FARO-04": {
+    "id": "CASE-FARO-04",
+    "title": "Caso 4: Autenticidad No Obvia y Repertorio",
+    "type": "case",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "04_product_system/reusable_components/games/faro_v3plus/cases/case_04_decision_abierta.md"
+  },
+  "GAME-FARO-SIMULATION-V3PLUS": {
+    "id": "GAME-FARO-SIMULATION-V3PLUS",
+    "title": "FARO V3+ Interactive Simulation Engine",
+    "type": "game",
+    "status": "canonical",
+    "epistemic_status": "not_applicable",
+    "path": "04_product_system/reusable_components/games/faro_v3plus/GAME_SPEC.md"
+  },
+  "PROD-WEBINAR-V1": {
+    "id": "PROD-WEBINAR-V1",
+    "title": "Webinar Interactivo: Factor Humano e IA en Ciberseguridad",
+    "type": "product",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "05_products_catalog/webinars/webinar_v1/PRODUCT_SPEC.md"
+  },
+  "EVD-ATTENTION-DOORS": {
+    "id": "EVD-ATTENTION-DOORS",
+    "title": "Estrategia de validación de Attention Doors",
+    "type": "evidence_plan",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "06_evidence_and_validation/attention_doors_validation.md"
+  },
+  "EVD-FRAMEWORK-HYPOTHESES": {
+    "id": "EVD-FRAMEWORK-HYPOTHESES",
+    "title": "Hipótesis del framework",
+    "type": "evidence_plan",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "06_evidence_and_validation/framework_hypotheses.md"
+  },
+  "EVD-WEBINAR-V1": {
+    "id": "EVD-WEBINAR-V1",
+    "title": "Auditoría de evidencia — Webinar V1",
+    "type": "evidence_record",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "06_evidence_and_validation/product_evidence/webinar_v1_evidence.md"
+  },
+  "EVD-VALIDATION-ROADMAP": {
+    "id": "EVD-VALIDATION-ROADMAP",
+    "title": "Hoja de ruta de validación empírica",
+    "type": "evidence_plan",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "06_evidence_and_validation/validation_roadmap.md"
+  },
+  "COM-AUDIENCES": {
+    "id": "COM-AUDIENCES",
+    "title": "Audiencias y compradores",
+    "type": "commercial_strategy",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/audiences_and_buyers.md"
+  },
+  "COM-EVIDENCE-SALES": {
+    "id": "COM-EVIDENCE-SALES",
+    "title": "Evidencia y claims aprobados para ventas",
+    "type": "commercial_claim_bank",
+    "status": "canonical",
+    "epistemic_status": "mixed",
+    "path": "07_commercial_and_gotomarket/evidence_for_sales.md"
+  },
+  "COM-OFFER-ARCHITECTURE": {
+    "id": "COM-OFFER-ARCHITECTURE",
+    "title": "Arquitectura de oferta",
+    "type": "commercial_strategy",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/offer_architecture.md"
+  },
+  "COM-POSITIONING": {
+    "id": "COM-POSITIONING",
+    "title": "Posicionamiento de mercado",
+    "type": "commercial_strategy",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/positioning.md"
+  },
+  "COM-PROBLEM-SPACE": {
+    "id": "COM-PROBLEM-SPACE",
+    "title": "Espacio del problema",
+    "type": "commercial_strategy",
+    "status": "canonical",
+    "epistemic_status": "supported",
+    "path": "07_commercial_and_gotomarket/problem_space.md"
+  },
+  "COM-SALES-DECK": {
+    "id": "COM-SALES-DECK",
+    "title": "Guion comercial para reunión ejecutiva",
+    "type": "commercial_asset",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/sales_deck_script.md"
+  },
+  "COM-VALUE-PROP": {
+    "id": "COM-VALUE-PROP",
+    "title": "Propuesta de valor",
+    "type": "commercial_strategy",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/value_proposition.md"
+  }
+}

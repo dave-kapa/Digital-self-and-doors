@@ -1,0 +1,46 @@
+---
+sources:
+  - source_id: SRC-DOC-MAESTRO-DS-AD
+    name: "Digital Self Attention Doors Documento Maestro v1"
+    location: "v3/brain/99_archive_and_history/raw_sources/Digital_Self_Attention_Doors_Documento_Maestro_v1.md"
+    sha256: "d4feb541fc1551254737489eb0a98faa3386a076f17109c15f21f58ae4f6f292"
+    source_type: document
+    source_role: canonical_seed
+    priority: critical
+    migration_status: ready_for_ingestion
+
+  - source_id: SRC-DOC-MAESTRO-WEBINAR
+    name: "Documento Maestro Producción Ejecución Webinar"
+    location: "v3/brain/99_archive_and_history/raw_sources/investigacion_webinar_factor_humano_ia_ciberseguridad.md"
+    sha256: "dfde64f43b31adc4a9751e9100c56d615e5db345dd3d99fa7db8fb301bb903af"
+    source_type: document
+    source_role: design_source
+    priority: high
+    migration_status: ready_for_ingestion
+
+  - source_id: SRC-FRAMEWORK-PUERTAS-V01
+    name: "Las Puertas de Atención Framework v0.1"
+    location: "v3/brain/99_archive_and_history/raw_sources/Las_Puertas_de_Atencion_Framework_v0.1.md"
+    sha256: "0421b7b7858b2239eb116ac6a2f94d6e144256631e5861fea57abb3d5b774e36"
+    source_type: document
+    source_role: historical_source
+    priority: medium
+    migration_status: ready_for_ingestion
+
+  - source_id: SRC-ESPEJO-DIGITAL
+    name: "Framework El Espejo Digital"
+    location: "v3/brain/99_archive_and_history/raw_sources/Framework_El_Espejo_Digital.md"
+    sha256: "84433f2d39fbc89fae867bdcf6189c434ee3514b5f0fc2e637f99f91c67e4665"
+    source_type: document
+    source_role: historical_source
+    priority: medium
+    migration_status: ready_for_ingestion
+
+  - source_id: SRC-MASTER-BLUEPRINT
+    name: "Master Content Blueprint"
+    location: "v3/brain/99_archive_and_history/raw_sources/master_content_blueprint.md"
+    sha256: "97f27121f62105aef75769113dfee2223360d42f941a45523e7316f8a5ad3eb4"
+    source_type: specification
+    source_role: product_seed
+    priority: critical
+    migration_status: ready_for_ingestion

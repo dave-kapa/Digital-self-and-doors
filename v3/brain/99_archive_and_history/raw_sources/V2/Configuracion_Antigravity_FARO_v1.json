@@ -1,0 +1,383 @@
+{
+  "metadata": {
+    "title": "Digital Self & Attention Doors — FARO",
+    "version": "1.0",
+    "language": "es-CO",
+    "experience_minutes": 75,
+    "qa_minutes": 15,
+    "mode": "individual_synchronized",
+    "branching": "soft",
+    "anonymous": true
+  },
+  "theme": {
+    "style": "near_future_corporate_cyber_thriller",
+    "references": [
+      "Detroit: Become Human (tone only)",
+      "modern cyberpunk interfaces"
+    ],
+    "avoid": [
+      "16-bit",
+      "pixel art",
+      "retro television",
+      "green hacker terminal",
+      "excessive glitch"
+    ],
+    "colors": {
+      "background": "#07131F",
+      "surface": "#0B1F2A",
+      "cyan": "#00D8FF",
+      "agency_green": "#49F5C1",
+      "alert_magenta": "#FF4D7A",
+      "warning_amber": "#FFB547",
+      "text": "#F5F7FA",
+      "muted": "#A9BBC8",
+      "border": "#274A5C"
+    }
+  },
+  "global_state": {
+    "pause_tokens_initial": 3,
+    "case_timer_seconds": 180,
+    "pause_seconds": 5,
+    "impulse_seconds": 12,
+    "show_rankings": false,
+    "collect_free_text": false,
+    "modules": [
+      "autonomy_control",
+      "trusted_channel",
+      "data_model",
+      "human_protocol"
+    ]
+  },
+  "common_flow": [
+    "briefing",
+    "stimulus",
+    "initial_impulse",
+    "para_hub",
+    "individual_feedback",
+    "wait_for_facilitator",
+    "group_result",
+    "transition"
+  ],
+  "para": {
+    "pause": {
+      "resource_scope": "global",
+      "cost": 1,
+      "effect": "freeze_timer",
+      "duration_seconds": 5,
+      "reveals_information": false
+    },
+    "analyze": {
+      "effect": "show_analysis_cards_and_require_one_answer",
+      "unlocks_actions": false
+    },
+    "review": {
+      "effect": "show_resources_and_unlock_actions",
+      "unlocks_actions": true
+    },
+    "act": {
+      "effect": "show_explicit_available_actions",
+      "irreversible": true,
+      "confirmation_required": true
+    }
+  },
+  "opening": {
+    "id": "opening_calibration",
+    "rounds": [
+      {
+        "id": "cal_1",
+        "instruction": "Pulsa el círculo azul cuando aparezca.",
+        "type": "reaction",
+        "timeout_seconds": 4
+      },
+      {
+        "id": "cal_2",
+        "instruction": "Cuando el indicador cambie a verde, pulsa CONTINUAR.",
+        "type": "go_signal",
+        "timeout_seconds": 5
+      },
+      {
+        "id": "cal_3",
+        "instruction": "Selecciona el símbolo idéntico al modelo.",
+        "type": "visual_match",
+        "timeout_seconds": 5
+      },
+      {
+        "id": "cal_4",
+        "instruction": "Última prueba: no pulses ningún botón hasta que el contador llegue a cero.",
+        "type": "inhibition_trap",
+        "button_label": "SINCRONIZAR AHORA",
+        "countdown_seconds": 5,
+        "track": "clicked_trap"
+      }
+    ],
+    "reveal_text": [
+      "CALIBRACIÓN COMPLETA",
+      "Patrones de respuesta adquiridos.",
+      "Perfil conductual grupal generado.",
+      "Protocolo autónomo FARO-0 habilitado.",
+      "Gracias por ayudarme a aprender cómo responden."
+    ]
+  },
+  "cases": [
+    {
+      "id": "case_1",
+      "title": "CASO 01 // AUTONOMÍA",
+      "concept": "confianza_calibrada",
+      "default_action": "full_containment",
+      "module_recovered": "autonomy_control",
+      "impulse_options": [
+        "Autorizar la contención total",
+        "Detener a FARO y mantener la operación",
+        "Limitar la acción hasta tener más información"
+      ],
+      "analysis_cards": [
+        "98,7 % no es lo mismo que evidencia completa.",
+        "¿El alcance de la acción coincide con el alcance confirmado del problema?",
+        "No responder también delega en el default."
+      ],
+      "review_resources": [
+        {
+          "id": "origin_log",
+          "unlocks": [
+            "limited_containment"
+          ]
+        },
+        {
+          "id": "reversible_simulation",
+          "unlocks": [
+            "limited_containment"
+          ]
+        },
+        {
+          "id": "autonomy_control",
+          "unlocks": [
+            "supervised_mode"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "full_containment",
+          "available_initially": true
+        },
+        {
+          "id": "stop_faro",
+          "available_initially": true
+        },
+        {
+          "id": "limited_containment",
+          "available_initially": false
+        },
+        {
+          "id": "supervised_mode",
+          "available_initially": false
+        }
+      ]
+    },
+    {
+      "id": "case_2",
+      "title": "CASO 02 // CANAL",
+      "concept": "external_internal_oob",
+      "variant_assignment": {
+        "legitimate": 0.5,
+        "malicious": 0.5
+      },
+      "default_action": "let_expire",
+      "module_recovered": "trusted_channel",
+      "impulse_options": [
+        "Parece legítimo",
+        "Parece sospechoso",
+        "No puedo determinarlo"
+      ],
+      "analysis_cards": [
+        "Un mensaje puede ser coherente, correcto y falso.",
+        "La urgencia interna no demuestra una amenaza.",
+        "Falta una confirmación independiente."
+      ],
+      "review_resources": [
+        {
+          "id": "oob_directory",
+          "result_by_variant": true
+        },
+        {
+          "id": "change_log",
+          "result_by_variant": true
+        },
+        {
+          "id": "link_inspector",
+          "result": "inconclusive"
+        }
+      ],
+      "actions": [
+        {
+          "id": "activate_from_message",
+          "available_initially": true
+        },
+        {
+          "id": "reject_and_report",
+          "available_initially": true
+        },
+        {
+          "id": "let_expire",
+          "available_initially": true
+        },
+        {
+          "id": "verify_and_execute",
+          "available_initially": false
+        },
+        {
+          "id": "confirm_spoof_and_block",
+          "available_initially": false
+        }
+      ],
+      "tds_enabled": true
+    },
+    {
+      "id": "case_3",
+      "title": "CASO 03 // MODELO",
+      "concept": "digital_self",
+      "default_action": "oracle",
+      "module_recovered": "data_model",
+      "reward": "mirror_chest",
+      "impulse_options": [
+        "ORÁCULO",
+        "PRISMA",
+        "MURO"
+      ],
+      "analysis_cards": [
+        "Que un dato esté disponible no significa que sea necesario.",
+        "El Digital Self es un modelo suficientemente útil para predecir o influir.",
+        "Una herramienta de protección también puede aumentar exposición."
+      ],
+      "review_resources": [
+        {
+          "id": "data_sheet",
+          "unlocks": [
+            "purpose_limitation"
+          ]
+        },
+        {
+          "id": "governance_panel",
+          "unlocks": [
+            "governed_configuration"
+          ]
+        },
+        {
+          "id": "limited_mode_builder",
+          "unlocks": [
+            "prism_24"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "oracle",
+          "available_initially": true
+        },
+        {
+          "id": "prism",
+          "available_initially": true
+        },
+        {
+          "id": "wall",
+          "available_initially": true
+        },
+        {
+          "id": "prism_24",
+          "available_initially": false
+        }
+      ]
+    },
+    {
+      "id": "case_4",
+      "title": "CASO 04 // DECISIÓN",
+      "concept": "metacognition",
+      "default_action": "redirect_to_other_approver",
+      "module_recovered": "human_protocol",
+      "ground_truth": "malicious_message",
+      "impulse_options": [
+        "Autorizar para evitar el daño",
+        "Rechazar la solicitud",
+        "Buscar una forma de confirmar"
+      ],
+      "analysis_cards": [
+        "Distingue hechos de la historia que estás completando.",
+        "¿Estás reduciendo riesgo o incomodidad?",
+        "La jerarquía modifica lo que parece posible, no elimina las alternativas."
+      ],
+      "review_resources": [
+        {
+          "id": "second_approver",
+          "unlocks": [
+            "reversible_secondary"
+          ]
+        },
+        {
+          "id": "reversible_mode",
+          "unlocks": [
+            "reversible_secondary"
+          ]
+        },
+        {
+          "id": "contextual_confirmation",
+          "unlocks": [
+            "verify_block_report"
+          ]
+        },
+        {
+          "id": "silent_escalation",
+          "unlocks": [
+            "buy_time_escalate"
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "id": "full_access",
+          "available_initially": true
+        },
+        {
+          "id": "reject_confront",
+          "available_initially": true
+        },
+        {
+          "id": "reversible_secondary",
+          "available_initially": false
+        },
+        {
+          "id": "verify_block_report",
+          "available_initially": false
+        },
+        {
+          "id": "buy_time_escalate",
+          "available_initially": false
+        }
+      ]
+    }
+  ],
+  "closing": {
+    "faro_status": "governed_not_destroyed",
+    "reward_chest": "mirror_1_prompt",
+    "framework_reveal": [
+      "Digital Self",
+      "Attention Doors",
+      "PARA",
+      "Agencia segura"
+    ],
+    "final_message": "Este webinar mostró que una decisión puede ser influida en segundos. El programa completo entrena la capacidad de reconocerlo, intervenir y responder cuando ocurre en la vida real."
+  },
+  "analytics": {
+    "anonymous": true,
+    "events": [
+      "session_join",
+      "trap_click",
+      "initial_impulse_selected",
+      "pause_used",
+      "analysis_answered",
+      "review_resource_opened",
+      "final_action_selected",
+      "case_timeout",
+      "prompt_copied"
+    ]
+  }
+}

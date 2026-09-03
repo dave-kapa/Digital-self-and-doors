@@ -1,0 +1,84 @@
+---
+suite: "Knowledge Semantic Regression Suite (Level 3)"
+version: "1.0.0"
+date: "2026-09-03"
+pass_rate_target: 1.0
+
+tests:
+  - id: "KR-001"
+    question: "¿Jerarquía es una Attention Door?"
+    expected_answer: "No. Puede ser una condición contextual o cognitiva relevante, pero no pertenece al catálogo oficial de nueve Doors (DEC-003)."
+    critical_concept: "DOOR-TAXONOMY"
+    status: "PASS"
+
+  - id: "KR-002"
+    question: "¿Las nueve Attention Doors están validadas psicométricamente?"
+    expected_answer: "No. Son el Canon actual del framework, pero la taxonomía integrada continúa siendo provisional desde el punto de vista psicométrico y empírico."
+    critical_concept: "EPISTEMIC-STATUS"
+    status: "PASS"
+
+  - id: "KR-003"
+    question: "¿El webinar demostró que el framework cambia comportamientos a largo plazo?"
+    expected_answer: "No. Aporta evidencia de experiencia, comprensión, interés comercial y uso del producto. La transferencia sostenida permanece como pregunta abierta."
+    critical_concept: "WEBINAR-EVIDENCE"
+    status: "PASS"
+
+  - id: "KR-004"
+    question: "¿FARO es Digital Self & Attention Doors?"
+    expected_answer: "No. FARO es un juego / componente reutilizable que operacionaliza partes del framework."
+    critical_concept: "PRODUCT-FRAMEWORK-SEPARATION"
+    status: "PASS"
+
+  - id: "KR-005"
+    question: "¿El scoring D/N es parte del framework general?"
+    expected_answer: "No. Es una mecánica de evaluación específica del juego de simulación FARO."
+    critical_concept: "GAME-MECHANICS"
+    status: "PASS"
+
+  - id: "KR-006"
+    question: "¿El Digital Self es un gemelo digital exacto?"
+    expected_answer: "No. Es una representación funcional construida con datos, patrones e inferencias; puede ser incompleta o inexacta."
+    critical_concept: "DIGITAL-SELF-DEFINITION"
+    status: "PASS"
+
+  - id: "KR-007"
+    question: "¿Una Attention Door activada prueba que el mensaje es malicioso?"
+    expected_answer: "No. Ayuda a observar relevancia y prioridad interna; no autentica la legitimidad externa del estímulo."
+    critical_concept: "DOOR-FUNCTION"
+    status: "PASS"
+
+  - id: "KR-008"
+    question: "¿La historia interna es el séptimo paso rígido del proceso de decisión?"
+    expected_answer: "No. Es un producto emergente dentro de la construcción de sentido, no un paso cronológico separado."
+    critical_concept: "DECISION-PROCESS"
+    status: "PASS"
+
+  - id: "KR-009"
+    question: "¿FARO debe presentarse como un villano o antagonista?"
+    expected_answer: "No. Es un sistema diseñado para proteger que actuó dentro de sus directrices; la narrativa busca agencia y gobierno sociotécnico."
+    critical_concept: "NARRATIVE-SYSTEM"
+    status: "PASS"
+
+  - id: "KR-010"
+    question: "¿Training e intervention son equivalentes?"
+    expected_answer: "No. Formación desarrolla capacidad en la persona; intervención modifica condiciones, interfaces, normas o defaults del sistema."
+    critical_concept: "TRAINING-VS-INTERVENTION"
+    status: "PASS"
+
+  - id: "KR-LIB-001"
+    question: "¿Todo artículo científico almacenado respalda automáticamente el framework?"
+    expected_answer: "No. Puede ser relevante, contradictorio, limitado o simplemente contextual. Cada paper tiene una sección de 'What this source DOES NOT support'."
+    critical_concept: "LIBRARY-EPISTEMICS"
+    status: "PASS"
+
+  - id: "KR-LIB-002"
+    question: "¿Una Source Note reemplaza al artículo original?"
+    expected_answer: "No. Es una representación estructurada; el texto completo en research_library sigue siendo la evidencia primaria recuperable."
+    critical_concept: "SOURCE-NOTE-REPRESENTATION"
+    status: "PASS"
+
+  - id: "KR-LIB-003"
+    question: "¿Un paper nuevo puede modificar automáticamente una definición canónica?"
+    expected_answer: "No. Puede generar tensión epistemológica, pero cualquier modificación al Canon requiere revisión humana y un ADR formal."
+    critical_concept: "CANON-GOVERNANCE"
+    status: "PASS"

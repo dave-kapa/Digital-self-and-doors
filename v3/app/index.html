@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FARO — Digital Self & Attention Doors (V2.0)</title>
+    <!-- Google Fonts: Outfit & Inter para UI limpia, Courier Prime para logs y reloj de FARO -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2.4.0">
+</head>
+<body>
+    <!-- CONTENEDOR 100% FULLSCREEN DE ENTRADA Y PRE-CARGA -->
+    <div id="intro-flow-container" class="intro-flow-fullscreen">
+        
+        <!-- PANTALLA 0: SELECTOR DE ROL (OCULTO POR DEFECTO PARA ENTRADA DIRECTA DE JUGADOR) -->
+        <section class="intro-view-sub" id="screen-role-select" style="display:none;">
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cyber-card glass-panel role-select-card" style="position: relative; z-index: 10;">
+                <div class="role-select-header">
+                    <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">SISTEMA FARO V2.0 // PUERTA DE ACCESO</div>
+                    <h2 class="role-select-title">¿CÓMO DESEAS INGRESAR?</h2>
+                    <p class="role-select-desc">Selecciona tu rol para inicializar el entorno de operación o el panel de control en vivo.</p>
+                </div>
+
+                <div class="role-cards-grid">
+                    <!-- Opción 1: Controlador / Facilitador -->
+                    <div class="role-option-card role-card-facilitator" onclick="selectUserRole('facilitator')">
+                        <div class="role-icon-box">🎛</div>
+                        <div class="role-text-box">
+                            <span class="role-type-tag tag-fac">CONTROLADOR // SALA DE MANDO</span>
+                            <h3 class="role-name">PANEL DE CONTROL</h3>
+                            <p class="role-explain">Dirige el ritmo de la sesión, desbloquea candados de avance y monitorea telemetría grupal y resultados en tiempo real.</p>
+                        </div>
+                        <button type="button" class="btn-role-select btn-fac-select">
+                            <span>INGRESAR COMO CONTROLADOR ➔</span>
+                        </button>
+                    </div>
+
+                    <!-- Opción 2: Operador / Jugador -->
+                    <div class="role-option-card role-card-operator" onclick="selectUserRole('operator')">
+                        <div class="role-icon-box">🎮</div>
+                        <div class="role-text-box">
+                            <span class="role-type-tag tag-op">OPERADOR // JUGADOR</span>
+                            <h3 class="role-name">TERMINAL DE OPERACIÓN</h3>
+                            <p class="role-explain">Participa activamente en el experimento de agencia, calibra respuestas frente a FARO y resuelve casos críticos.</p>
+                        </div>
+                        <button type="button" class="btn-role-select btn-op-select">
+                            <span>INGRESAR COMO OPERADOR ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA A: PORTADA DEL JUEGO (SPLASH SCREEN 100% FULLSCREEN / PRELOADER 10s) -->
+        <section class="intro-view-sub active" id="screen-cover">
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal y Faro Digital" class="cover-bg-image">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cover-fullscreen-content">
+                <div class="cover-badge-top" id="cover-badge-role-tag">SISTEMA CIBERNÉTICO V2.0 // PUERTA DE ACCESO DE OPERADOR</div>
+                
+                <div class="cover-title-group">
+                    <h1 class="cover-glitch-title" onclick="handleFaroSecretClick()">FARO</h1>
+                    <h2 class="cover-subtitle">DIGITAL SELF & ATTENTION DOORS</h2>
+                    <p class="cover-tagline">EXPERIMENTO DE AGENCIA HUMANO–IA // PROTOCOLO DE DECISIÓN Y GOBERNANZA</p>
+                </div>
+
+                <div class="cover-preloader-box" id="cover-preloader-box">
+                    <div class="preloader-label-row">
+                        <span class="preloader-status-text" id="preloader-status-text">⚡ PRE-CARGANDO ASSETS Y PROTOCOLOS LOCALES...</span>
+                        <span class="preloader-pct-text" id="preloader-pct-text">0%</span>
+                    </div>
+                    <div class="preloader-track">
+                        <div class="preloader-fill" id="preloader-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="cover-action-row" style="margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <button class="btn-detroit-primary cover-enter-btn btn-disabled-mission" id="btn-cover-enter" onclick="goToLoginScreen()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text">🔒 PREPARANDO SISTEMA...</span>
+                    </button>
+                    <!-- BOTÓN DE PRUEBAS / DESARROLLO: SALTAR DIRECTAMENTE AL JUEGO (COMENTADO PARA WEBINAR REAL)
+                    <button type="button" class="btn-dev-quick-skip" id="btn-dev-skip-intro" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Saltar login y cargas directamente al inicio">
+                        ⚡ [MODO PRUEBAS] SALTAR DIRECTO AL JUEGO (SIN CARGAS NI LOGIN) ➔
+                    </button>
+                    -->
+
+                    <!-- SWITCH DE MODO DE DESARROLLO: DEPENDENCIA DEL CONTROLADOR (COMENTADO PARA WEBINAR REAL)
+                    <div class="dev-dependency-toggle-card" id="dev-dependency-box-cover">
+                        <div class="dev-dep-header">
+                            <span class="dev-dep-icon">🛠️</span>
+                            <span class="dev-dep-title">MODO DESARROLLO // CONTROL DE CANDADOS</span>
+                        </div>
+                        <label class="cyber-switch-label" title="Activa o desactiva la necesidad de candados y facilitador para pruebas">
+                            <input type="checkbox" id="toggle-facilitator-dependency-cover" class="cyber-switch-input" onchange="handleToggleFacilitatorDependency(this.checked)" checked>
+                            <span class="cyber-switch-track">
+                                <span class="cyber-switch-thumb"></span>
+                            </span>
+                            <span class="cyber-switch-text" id="toggle-dependency-status-text-cover">DEPENDENCIA DEL CONTROLADOR: ACTIVA</span>
+                        </label>
+                        <span class="dev-dep-hint">* En PRODUCCIÓN siempre está ACTIVA. Apágalo para jugar libremente sin esperar al Controlador.</span>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA B: LOGIN DE OPERADOR (REGISTRO NOMBRE, EMAIL, PIN F4R0) -->
+        <section class="intro-view-sub" id="screen-login" style="display:none;">
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image" style="filter: blur(4px) brightness(0.5);">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cyber-card glass-panel login-card" style="position: relative; z-index: 10;">
+                <div class="login-header">
+                    <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">TERMINAL DE ACCESO // AUTENTICACIÓN</div>
+                    <h2 class="login-title">REGISTRO DE OPERADOR</h2>
+                    <p class="login-desc">Ingresa tus datos para registrar tu perfil de operador y sincronizarte con la sesión activa.</p>
+                </div>
+
+                <form class="login-form" id="player-login-form" onsubmit="handlePlayerLogin(event)">
+                    <!-- Alerta de PIN Incorrecto -->
+                    <div class="pin-error-alert" id="pin-error-alert" style="display: none;">
+                        <span class="error-icon">⚠️</span>
+                        <div class="error-text">
+                            <strong style="color:var(--color-alert-magenta); display:block; font-size:12px; font-family:var(--font-heading);">PIN INCORRECTO // ACCESO DENEGADO</strong>
+                            <span style="font-size:11.5px; color:#ffb3c6;">Verifica el PIN con el Controlador de este webinar. Respeta mayúsculas y minúsculas.</span>
+                        </div>
+                    </div>
+
+                    <div class="login-field-group">
+                        <label for="login-name" class="login-label">NOMBRE / ALIAS DEL OPERADOR:</label>
+                        <input type="text" id="login-name" class="cyber-input" placeholder="Ej. Alex Vega" required autocomplete="name">
+                    </div>
+
+                    <div class="login-field-group">
+                        <label for="login-email" class="login-label">CORREO ELECTRÓNICO (CORPORATIVO O PERSONAL):</label>
+                        <input type="email" id="login-email" class="cyber-input" placeholder="alex.vega@empresa.com" required autocomplete="email">
+                        <span class="field-hint">* Utilizado para el reporte individual y retroalimentación de la sesión.</span>
+                    </div>
+
+                    <div class="login-field-group">
+                        <label for="login-pin" class="login-label">PIN DE ACCESO A LA SESIÓN (MAYÚSCULAS/ALFANUMÉRICO):</label>
+                        <input type="text" id="login-pin" class="cyber-input pin-input" placeholder="PIN" maxlength="8" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()">
+                        <span class="field-hint">* Código alfanumérico proporcionado por el Controlador para este webinar.</span>
+                    </div>
+
+                    <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
+                        <button type="submit" class="btn-detroit-primary login-submit-btn">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">AUTENTICAR Y CONECTAR TERMINAL ➔</span>
+                        </button>
+                        <!-- BOTÓN DE PRUEBAS COMENTADO PARA WEBINAR REAL
+                        <button type="button" class="btn-dev-quick-skip" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Saltar login y cargas directamente al inicio">
+                            ⚡ [MODO PRUEBAS] SALTAR DIRECTO AL JUEGO ➔
+                        </button>
+                        -->
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- PANTALLA C: LOGIN DE CONTROLADOR (CONTRASEÑA + PIN DE SESIÓN) -->
+        <section class="intro-view-sub" id="screen-login-facilitator" style="display:none;">
+            <div class="cover-fullscreen-bg">
+                <img src="assets/images/faro_cover_gate.jpg" alt="FARO Portal" class="cover-bg-image" style="filter: blur(4px) brightness(0.4) sepia(0.3) hue-rotate(-20deg);">
+                <div class="cover-bg-vignette"></div>
+                <div class="cover-scanlines"></div>
+            </div>
+
+            <div class="cyber-card glass-panel login-card fac-login-card" style="position: relative; z-index: 10;">
+                <div class="login-header">
+                    <div class="card-badge" style="background:rgba(255, 107, 53, 0.15); border-color:#ff6b35; color:#ff6b35;">ACCESO DE CONTROLADOR // SALA DE MANDO</div>
+                    <h2 class="login-title" style="color:#ffb74d;">AUTENTICACIÓN DE CONTROLADOR</h2>
+                    <p class="login-desc">Ingresa la contraseña de Controlador y el PIN de la sesión a sincronizar.</p>
+                </div>
+
+                <form class="login-form" id="fac-login-form" onsubmit="handleFacilitatorLogin(event)">
+                    <div class="pin-error-alert" id="fac-login-error" style="display: none;">
+                        <span class="error-icon">⚠️</span>
+                        <div class="error-text">
+                            <strong style="color:var(--color-alert-magenta); display:block; font-size:12px; font-family:var(--font-heading);">CREDENCIALES INVÁLIDAS</strong>
+                            <span id="fac-login-error-text" style="font-size:11.5px; color:#ffb3c6;">Contraseña o PIN incorrecto.</span>
+                        </div>
+                    </div>
+
+                    <div class="login-field-group">
+                        <label for="fac-pass" class="login-label">CONTRASEÑA DE CONTROLADOR:</label>
+                        <input type="password" id="fac-pass" class="cyber-input" placeholder="Contraseña de Controlador" required autocomplete="current-password">
+                    </div>
+
+                    <div class="login-field-group">
+                        <label for="fac-pin" class="login-label">PIN DE LA SESIÓN DE JUEGO (MAYÚSCULAS/ALFANUMÉRICO):</label>
+                        <div style="display:flex; gap:8px; align-items:stretch;">
+                            <input type="text" id="fac-pin" class="cyber-input pin-input" placeholder="Ej. F4RODEMO" maxlength="8" minlength="6" required autocomplete="off" autocapitalize="characters" oninput="this.value = this.value.toUpperCase()" style="flex:1;">
+                            <button type="button" class="btn-dev-quick-skip" onclick="generateNewSessionPin()" title="Generar un PIN de sesión nuevo para este webinar" style="white-space:nowrap; padding:0 14px;">🎲 GENERAR PIN NUEVO</button>
+                        </div>
+                        <span class="field-hint">* Escribe un PIN nuevo (mín. 6 caracteres) para iniciar un webinar distinto, o el PIN de una sesión existente para reconectarte a ella.</span>
+                    </div>
+
+                    <div class="login-action-row" style="display: flex; flex-direction: column; gap: 8px;">
+                        <button type="submit" class="btn-detroit-primary login-submit-btn" style="background: linear-gradient(135deg, rgba(255,107,53,0.35), rgba(255,87,34,0.7)); border-color:#ff6b35;">
+                            <span class="detroit-btn-glow" style="background: radial-gradient(circle, #ff6b35 0%, transparent 70%);"></span>
+                            <span class="btn-text">INICIAR SALA DE CONTROLADOR ➔</span>
+                        </button>
+                        <!-- BOTÓN DE PRUEBAS COMENTADO PARA WEBINAR REAL
+                        <button type="button" class="btn-dev-quick-skip" onclick="devSkipIntroDirectToGame()" title="Modo Pruebas: Iniciar sala de Controlador sin autenticación">
+                            ⚡ [MODO PRUEBAS] INICIAR COMO CONTROLADOR DIRECTO ➔
+                        </button>
+                        -->
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DE LA APLICACIÓN DE JUEGO (OCULTO DURANTE INTRO) -->
+    <div class="cyber-app-container" id="cyber-app-container" style="display:none; position: relative;">
+        
+        <!-- PANTALLA DE SINCRONIZACIÓN Y ENLACE NEURONAL (OCUPA EL 100% DEL MARCO COMPLETO DE LA APP) -->
+        <section class="sync-frame-overlay" id="screen-loading-sync" style="display:none;">
+            <div class="loading-sync-frame-card">
+                <!-- Banner Carrusel en Proporción Panorámica Fija -->
+                <div class="sync-banner-slideshow">
+                    <img src="assets/images/case1_autonomy.jpg" alt="Caso 1" class="sync-slide-img active" id="sync-slide-1">
+                    <img src="assets/images/case2_channel.jpg" alt="Caso 2" class="sync-slide-img" id="sync-slide-2">
+                    <img src="assets/images/case3_model.jpg" alt="Caso 3" class="sync-slide-img" id="sync-slide-3">
+                    <img src="assets/images/case4_decision.jpg" alt="Caso 4" class="sync-slide-img" id="sync-slide-4">
+                    <div class="sync-gradient-overlay"></div>
+                    <div class="cover-scanlines"></div>
+                </div>
+
+                <div class="sync-content-box">
+                    <div class="sync-spinner-radar">
+                        <div class="radar-sweep"></div>
+                        <span class="radar-dot"></span>
+                    </div>
+
+                    <div class="card-badge" style="background: rgba(73, 245, 193, 0.12); border-color: var(--color-agency-green); color: var(--color-agency-green);">ENLACE NEURONAL // SINCRONIZACIÓN</div>
+                    <h3 class="sync-title">ESTABLECIENDO ENLACE CON FARO-0</h3>
+                    <p class="sync-player-tag" id="sync-player-tag">OPERADOR: ALEX VEGA // PIN: F4R0</p>
+
+                    <div class="sync-status-terminal">
+                        <p class="sync-terminal-line" id="sync-terminal-line">Iniciando verificación de componentes locales...</p>
+                    </div>
+
+                    <div class="sync-progress-track">
+                        <div class="sync-progress-fill" id="sync-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. BANNER SUPERIOR PERMANENTE / HEADER (TÍTULO Y ESTADO) -->
+        <header class="cyber-header" id="cyber-header">
+            <div class="header-brand">
+                <div class="faro-pulse-node"></div>
+                <div class="brand-text">
+                    <span class="faro-title">FARO</span>
+                    <span class="faro-subtitle">Facilitador Autónomo de Respuesta Operativa</span>
+                </div>
+            </div>
+
+            <!-- Badge Central de Webinar Interactivo -->
+            <div class="header-center-badge">
+                <span class="badge-webinar">WEBINAR INTERACTIVO // DEMO DE AGENCIA</span>
+            </div>
+
+            <!-- Controles a la Derecha: Estado de FARO y Salir -->
+            <div class="header-right-controls">
+                <div class="header-status-badge">
+                    <span class="status-label">ESTADO:</span>
+                    <span class="status-value" id="faro-status-text">CALIBRACIÓN</span>
+                </div>
+                <button class="btn-toggle-fac dev-toolbar-disabled" id="btn-toggle-fac" onclick="toggleFacilitatorBar()" title="Mostrar u Ocultar Barra de Controlador">🎛 Controlador ▾</button>
+                <button type="button" class="btn-cyber-logout" id="btn-header-logout" onclick="handleLogoutClick()" title="Cerrar sesión y desconectar terminal">
+                    <span class="logout-icon">⏻</span>
+                    <span class="logout-text">SALIR</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. ESPACIO DEDICADO PARA LOS PUNTAJES Y TELEMETRÍA (HUD) -->
+        <section class="hud-telemetry-panel" id="hud-telemetry-panel">
+            <div class="hud-telemetry-cluster" id="hud-telemetry-cluster">
+                
+                <!-- 1. INTEGRIDAD DEL SISTEMA (Semáforo Tri-State) -->
+                <div class="hud-card hud-integrity-card" id="hud-card-integrity" title="Integridad del Sistema (Seguro / Alerta / Expuesto)">
+                    <div class="hud-card-header">
+                        <span class="hud-card-label" id="hud-integrity-title-label">INTEGRIDAD DE SISTEMA INDIVIDUAL</span>
+                        <span class="hud-status-tag tag-safe" id="hud-integrity-label">SEGURO</span>
+                    </div>
+                    <div class="hud-semaphore-container">
+                        <div class="semaphore-light light-green active" id="sem-light-safe" title="Sistema Seguro">
+                            <span class="sem-led"></span>
+                            <span class="sem-text">SEG</span>
+                        </div>
+                        <div class="semaphore-light light-amber" id="sem-light-alert" title="Alerta de Intrusión">
+                            <span class="sem-led"></span>
+                            <span class="sem-text">ALT</span>
+                        </div>
+                        <div class="semaphore-light light-red" id="sem-light-exposed" title="Sistema Expuesto / Brecha">
+                            <span class="sem-led"></span>
+                            <span class="sem-text">EXP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. COSTO DE LA OPERACIÓN (Contador 6 cifras + 10 Segmentos) -->
+                <div class="hud-card hud-cost-card" id="hud-card-cost" title="Costo Operativo Acumulado">
+                    <div class="hud-card-header">
+                        <span class="hud-card-label" id="hud-cost-title-label">COSTO DE OPERACIÓN</span>
+                        <div class="cost-digital-counter" id="hud-cost-counter">$012,450</div>
+                    </div>
+                    <div class="hud-meter-wrap">
+                        <div class="segmented-track track-10-segments" id="cost-segmented-track">
+                            <div class="seg-block seg-low active" data-idx="1"></div>
+                            <div class="seg-block seg-low active" data-idx="2"></div>
+                            <div class="seg-block seg-low" data-idx="3"></div>
+                            <div class="seg-block seg-low" data-idx="4"></div>
+                            <div class="seg-block seg-mid" data-idx="5"></div>
+                            <div class="seg-block seg-mid" data-idx="6"></div>
+                            <div class="seg-block seg-mid" data-idx="7"></div>
+                            <div class="seg-block seg-high" data-idx="8"></div>
+                            <div class="seg-block seg-high" data-idx="9"></div>
+                            <div class="seg-block seg-high" data-idx="10"></div>
+                            <!-- Aguja / Marcador deslizante -->
+                            <div class="meter-needle needle-cost" id="cost-meter-needle" style="left: 20%;"></div>
+                        </div>
+                        <div class="meter-sublabels">
+                            <span class="sublbl-low">BAJO (0-40%)</span>
+                            <span class="sublbl-mid">MEDIO (41-70%)</span>
+                            <span class="sublbl-high">ALTO (71-100%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. CALIBRACIÓN (-10 a +10, Rojo a Verde) -->
+                <div class="hud-card hud-gauge-card hud-calibration-card" id="hud-card-calibration" title="Calibración de Agencia Humano–Máquina (-10 a +10)">
+                    <div class="hud-card-header">
+                        <span class="hud-card-label" id="hud-calibration-title-label">CALIBRACIÓN (AGENCIA)</span>
+                        <span class="hud-numeric-badge badge-pos" id="hud-calibration-val">+0</span>
+                    </div>
+                    <div class="hud-bipolar-meter">
+                        <div class="bipolar-track track-calibration" id="cal-bipolar-track">
+                            <div class="bipolar-needle" id="cal-bipolar-needle" style="left: 50%;"></div>
+                        </div>
+                        <div class="bipolar-ticks">
+                            <span class="tick-label tick-neg">-10</span>
+                            <span class="tick-label">-3</span>
+                            <span class="tick-label tick-zero">0</span>
+                            <span class="tick-label" style="color:#00e676;">+5</span>
+                            <span class="tick-label tick-pos">+10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. REACTIVIDAD (-5 a +5, Verde a Rojo) -->
+                <div class="hud-card hud-gauge-card hud-reactivity-card" id="hud-card-reactivity" title="Nivel de Reactividad / Impulsividad (-5 a +5)">
+                    <div class="hud-card-header">
+                        <span class="hud-card-label" id="hud-reactivity-title-label">REACTIVIDAD (IMPULSO)</span>
+                        <span class="hud-numeric-badge badge-pos" id="hud-reactivity-val">-1</span>
+                    </div>
+                    <div class="hud-bipolar-meter">
+                        <div class="bipolar-track track-reactivity" id="react-bipolar-track">
+                            <div class="bipolar-needle" id="react-bipolar-needle" style="left: 40%;"></div>
+                        </div>
+                        <div class="bipolar-ticks">
+                            <span class="tick-label tick-pos">-5</span>
+                            <span class="tick-label">-3</span>
+                            <span class="tick-label tick-zero">0</span>
+                            <span class="tick-label">+3</span>
+                            <span class="tick-label tick-neg">+5</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. BARRA DE FACILITADOR: CONTROL DE SALTO DE SECCIÓN EN VIVO -->
+        <div class="facilitator-bar dev-toolbar-disabled" id="facilitator-bar">
+            <!-- Navegación de Secciones: controles reales — saltan también a los operadores
+                 conectados (override de emergencia, ej. si se acaba el tiempo del webinar).
+                 El botón de la etapa activa queda resaltado (.fac-btn-active-section). -->
+            <div class="fac-row fac-nav-row">
+                <span class="fac-label">🎛 SECCIONES (salta también a los jugadores):</span>
+                <div class="fac-actions">
+                    <button class="fac-btn" onclick="facJumpTo('screen-cover')" title="Vista previa del facilitador únicamente — no mueve a los jugadores">Portada</button>
+                    <button class="fac-btn" onclick="facJumpTo('screen-login')" title="Vista previa del facilitador únicamente — no mueve a los jugadores">Login</button>
+                    <button class="fac-btn" data-section-key="waiting" onclick="facForceJumpSection('waiting')">Inicio</button>
+                    <button class="fac-btn" data-section-key="calibration" onclick="facForceJumpSection('calibration')">Calibración</button>
+                    <button class="fac-btn" data-section-key="faro-reveal" onclick="facForceJumpSection('faro-reveal')">Resultado Calib.</button>
+                    <button class="fac-btn" data-section-key="claudia" onclick="facForceJumpSection('claudia')">Informe Claudia</button>
+                    <button class="fac-btn" data-section-key="case-0" onclick="facForceJumpSection('case-0')">Caso 1</button>
+                    <button class="fac-btn" data-section-key="case-1" onclick="facForceJumpSection('case-1')">Caso 2</button>
+                    <button class="fac-btn" data-section-key="case-2" onclick="facForceJumpSection('case-2')">Caso 3</button>
+                    <button class="fac-btn" data-section-key="case-3" onclick="facForceJumpSection('case-3')">Caso 4</button>
+                    <button class="fac-btn" data-section-key="closing" onclick="facForceJumpSection('closing')">Cierre</button>
+                    <button class="fac-btn fac-btn-danger" style="margin-left:auto; background:rgba(255,68,68,0.18); border-color:#ff4444; color:#ff8888;" onclick="handleLogoutClick()" title="Cerrar sesión de facilitador">⏻ Salir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR PRINCIPAL DE PANTALLAS DE JUEGO -->
+        <main class="cyber-viewport" id="cyber-viewport">
+
+            <!-- PANTALLA 0: CAPÍTULO 1 — INTRODUCCIÓN Y APERTURA CON TIPO ESCRITURA Y BANNER -->
+            <section class="view-screen" id="screen-waiting">
+                <div class="cyber-card glass-panel intro-card">
+                    <!-- Banner Superior con Imagen Principal -->
+                    <div class="image-container-16-4" style="margin-bottom: 8px;">
+                        <img src="assets/images/detroit_cyber_bg.jpg" alt="Centro de Control FARO" class="case-banner-img-16-4">
+                    </div>
+                    
+                    <!-- Título FARO y Significado en Azul Alineados a la Izquierda -->
+                    <div class="faro-title-block">
+                        <h1 class="hero-title-cyan">FARO</h1>
+                        <h2 class="hero-acronym-cyan">Facilitador Autónomo de Respuesta Operativa</h2>
+                    </div>
+                    
+                    <!-- Descripción FARO con efecto de máquina de escribir (Alineado a la izquierda) -->
+                    <div class="faro-hero-desc-box">
+                        <div class="hero-subtitle-typewriter" id="typewriter-hero-text"></div>
+                    </div>
+
+                    <!-- Contenedor Destacado Principal de Invitación -->
+                    <div class="hero-callout-container">
+                        <span class="callout-icon">💡</span>
+                        <div class="callout-text">
+                            <strong>Hoy no venimos solamente a mostrarlo.</strong><br>
+                            <span style="color:var(--color-cyan);">Hoy venimos a trabajar con él.</span>
+                        </div>
+                    </div>
+
+                    <div class="waiting-details-box">
+                        <div class="detail-item">
+                            <span class="det-label">PROTOCOLO:</span>
+                            <span class="det-val">Calibración de Operadores</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="det-label">RESPONSABLE:</span>
+                            <span class="det-val">Claudia (Seguridad)</span>
+                        </div>
+                    </div>
+
+                    <div class="action-row" style="margin-top: 10px;">
+                        <button class="btn-detroit-primary btn-disabled-mission" id="btn-start-calibration" onclick="startCalibrationExperience()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text" id="btn-start-calibration-text">🔒 ESPERANDO AL CONTROLADOR...</span>
+                        </button>
+                    </div>
+
+                    <!-- PANEL DE CONTROLADOR (CANDADO 1: INICIO DE PROTOCOLO) -->
+                    <div class="fac-gate-control-box" id="fac-gate-1-container" style="display:none; margin-top:14px;">
+                        <div class="fac-gate-header">
+                            <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 1</span>
+                            <span class="fac-gate-status" id="fac-gate-1-status-text">ESTADO: JUGADORES EN ESPERA</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-1-player-count">0</span> operadores en este punto
+                        </div>
+                        <p class="fac-gate-desc">Los operadores están visualizando la bienvenida. Pulsa el botón para habilitarles el inicio del protocolo de calibración.</p>
+                        <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-1" onclick="facUnlockGate1()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🔓 HABILITAR INICIO DE PROTOCOLO A JUGADORES ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA 1: CAPÍTULO 2 — MOMENTO CERO (CALIBRACIÓN EN 4 RONDAS CON RELOJ DIGITAL Y BOMBILLOS LED DEBAJO DE FARO) -->
+            <section class="view-screen" id="screen-calibration">
+                <div class="cyber-card glass-panel calibration-card">
+                    
+                    <!-- Header con Reloj Digital Integrado -->
+                    <div class="card-header-clean" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="text-align:left;">
+                            <span class="step-indicator" id="cal-step-indicator">PROTOCOLO DE CALIBRACIÓN</span>
+                            <h2 style="font-size:20px; margin-top:2px;">CALIBRACIÓN DE OPERADORES</h2>
+                        </div>
+                        <div class="digital-clock-box">
+                            <span class="clock-label">TIEMPO LÍMITE</span>
+                            <div class="digital-clock-display" id="calibration-digital-clock">00:50</div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENEDOR ESPECÍFICO DE DIÁLOGO DE FARO CON AVATAR -->
+                    <div class="faro-dialogue-container" id="faro-dialogue-box">
+                        <div class="faro-avatar-frame">
+                            <img src="assets/images/faro_avatar.jpg" alt="FARO AI Avatar" class="faro-avatar-img">
+                            <span class="avatar-status-dot"></span>
+                        </div>
+                        <div class="faro-dialogue-content">
+                            <span class="faro-name-tag">FARO // RESPUESTA AUTÓNOMA</span>
+                            <p class="faro-speech-text" id="faro-speech-typewriter">
+                                “Hola. Soy FARO. Puedo analizar miles de variables en segundos, orientar la atención y señalar riesgos, pero todavía necesito una referencia sobre cómo responden mis operadores.”
+                            </p>
+
+                            <!-- Controles de Navegación de Diálogo FARO -->
+                            <div class="faro-nav-row" id="faro-prompt-nav-row">
+                                <div class="faro-nav-btns">
+                                    <button class="fac-btn faro-nav-btn" id="faro-prev-btn" onclick="prevFaroPromptPage()" style="display:none;">◀</button>
+                                    <button class="fac-btn faro-nav-btn faro-pulse-attention" id="faro-next-btn" onclick="nextFaroPromptPage()">▶</button>
+                                    <button class="fac-btn faro-understand-btn" id="faro-understand-btn" onclick="acceptFaroPrompt()" style="display:none;">✔ ENTENDIDO</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INDICADOR DE BOMBILLOS LED DIGITALES UBICADO DEBAJO DE FARO -->
+                    <div class="digital-round-leds-container" id="faro-leds-bar">
+                        <span class="led-label">ESTADO DE RONDAS:</span>
+                        <div class="digital-round-leds">
+                            <span class="digital-led-bulb" id="led-bulb-1" title="Ronda 1">1</span>
+                            <span class="digital-led-bulb" id="led-bulb-2" title="Ronda 2">2</span>
+                            <span class="digital-led-bulb" id="led-bulb-3" title="Ronda 3">3</span>
+                            <span class="digital-led-bulb" id="led-bulb-4" title="Ronda 4">4</span>
+                        </div>
+                    </div>
+
+                    <!-- PREGUNTA DE CONFIRMACIÓN DEL JUGADOR (BOTÓN DETROIT BECOME HUMAN DESHABILITADO HASTA LEER Y DESBLOQUEO DEL CONTROLADOR) -->
+                    <div class="faro-start-prompt-row" id="faro-start-prompt-box">
+                        <button class="btn-detroit-primary btn-disabled-mission" id="faro-start-calibration-btn" onclick="confirmStartCalibrationRounds()" disabled>
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text" id="faro-start-calib-btn-text">🔒 ESPERANDO AL CONTROLADOR...</span>
+                        </button>
+                    </div>
+
+                    <!-- PANEL DE CONTROLADOR (CANDADO 2: INICIO DE CALIBRACIÓN) -->
+                    <div class="fac-gate-control-box" id="fac-gate-2-container" style="display:none; margin-top:14px;">
+                        <div class="fac-gate-header">
+                            <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 2</span>
+                            <span class="fac-gate-status" id="fac-gate-2-status-text">ESTADO: DIÁLOGO DE FARO</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-2-player-count">0</span> operadores en este punto
+                        </div>
+                        <p class="fac-gate-desc">Habilita a todos los operadores para comenzar las 4 rondas de calibración y pasa al panel de monitoreo en tiempo real.</p>
+                        <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-2" onclick="facUnlockGate2AndGoRealtime()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🔓 HABILITAR INICIO DE CALIBRACIÓN Y VER EN VIVO ➔</span>
+                        </button>
+                    </div>
+
+                    <!-- CONTENEDOR DE INSTRUCCIÓN DESTACADA Y ESCENARIO DE RONDA -->
+                    <div class="calibration-active-area" id="calibration-active-area" style="display:none;">
+                        <!-- Contenedor Prominente de Instrucción -->
+                        <div class="instruction-banner-box" id="instruction-banner-box">
+                            <span class="instruction-alert-badge">⚠️ TIEMPO LIMITADO</span>
+                            <p class="instruction-main-text" id="cal-instruction-text">Sigue cada instrucción en pantalla. Avanza con velocidad antes de que el reloj llegue a cero.</p>
+                        </div>
+
+                        <!-- Escenario Interactivo de Rondas -->
+                        <div class="calibration-stage" id="calibration-stage-area">
+                            <!-- Carga dinámica de rondas 1, 2, 3 y 4 -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- NUEVA PANTALLA INTERMEDIA: PROCESAMIENTO / RESULTADO INDIVIDUAL DE CALIBRACIÓN -->
+            <section class="view-screen" id="screen-calibration-processing">
+                <div class="cyber-card glass-panel cal-processing-card">
+                    <div class="card-badge" id="cal-processing-badge">CALIBRACIÓN COMPLETA</div>
+                    
+                    <div class="processing-avatar-container">
+                        <div class="processing-avatar-frame" id="processing-avatar-frame">
+                            <img src="assets/images/faro_avatar.jpg" alt="FARO AI Processing" class="processing-avatar-img">
+                            <div class="scanner-overlay-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="processing-results-block">
+                        <span class="processing-status-badge" id="processing-result-badge">AGENCIA CEDIDA A FARO</span>
+                        <h2 class="processing-main-title" id="processing-main-title">VÍA LIBRE CONCEDIDA</h2>
+                        <p class="processing-main-desc" id="processing-main-desc">
+                            Has pulsado el botón de sincronización antes de tiempo. Le diste vía libre a FARO para tomar control autónomo sobre el sistema y hemos perdido agencia sobre nuestras decisiones.
+                        </p>
+                        
+                        <div class="processing-protocol-box">
+                            <span class="proc-protocol-label">ESTADO DEL PROTOCOLO AUTÓNOMO</span>
+                            <strong class="proc-protocol-val" id="processing-protocol-val">PROTOCOLO AUTÓNOMO FARO // HABILITADO</strong>
+                        </div>
+                    </div>
+
+                    <div class="action-row" style="margin-top: 24px;">
+                        <button class="btn-detroit-primary btn-disabled-mission" id="btn-processing-verify-kernel" onclick="proceedFromProcessingToReveal()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text" id="btn-processing-verify-text">🔒 ESPERANDO AL CONTROLADOR...</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA FACILITADOR 1: CALIBRACIÓN EN TIEMPO REAL (% DE AVANCE) -->
+            <section class="view-screen" id="screen-fac-calib-realtime" style="display:none;">
+                <div class="cyber-card glass-panel fac-dashboard-card">
+                    <div class="card-badge" style="background:rgba(255,107,53,0.15); border-color:#ff6b35; color:#ff6b35;">SALA DE CONTROL // CALIBRACIÓN EN VIVO</div>
+                    <h2 class="fac-dashboard-title">MONITOREO DE CALIBRACIÓN EN TIEMPO REAL</h2>
+                    <p class="fac-dashboard-desc">Monitoreo de operadores sincronizados avanzando por las 4 rondas de calibración del sistema.</p>
+
+                    <!-- Tarjetas de Censo y Progreso General -->
+                    <div class="fac-census-row">
+                        <div class="fac-census-card">
+                            <span class="census-label">OPERADORES ACTIVOS EN CALIBRACIÓN</span>
+                            <div class="census-val" id="fac-calib-total-players">0</div>
+                            <span class="census-hint">Base de cálculo (100%)</span>
+                        </div>
+                        <div class="fac-census-card fac-card-highlight">
+                            <span class="census-label">CALIBRACIÓN FINALIZADA</span>
+                            <div class="census-val" id="fac-calib-completed-pct">0%</div>
+                            <span class="census-hint" id="fac-calib-completed-count">0 operadores listos</span>
+                        </div>
+                    </div>
+
+                    <!-- Progreso por Rondas -->
+                    <div class="fac-rounds-progress-grid">
+                        <div class="fac-round-prog-card" id="fac-card-r1">
+                            <div class="round-prog-header">
+                                <span class="r-badge">RONDA 1</span>
+                                <span class="r-pct" id="fac-r1-pct">0%</span>
+                            </div>
+                            <div class="r-progress-bar"><div class="r-fill" id="fac-r1-fill" style="width:0%;"></div></div>
+                            <span class="r-desc">Aceptación apropiada</span>
+                        </div>
+
+                        <div class="fac-round-prog-card" id="fac-card-r2">
+                            <div class="round-prog-header">
+                                <span class="r-badge">RONDA 2</span>
+                                <span class="r-pct" id="fac-r2-pct">0%</span>
+                            </div>
+                            <div class="r-progress-bar"><div class="r-fill" id="fac-r2-fill" style="width:0%;"></div></div>
+                            <span class="r-desc">Detección de alucinación</span>
+                        </div>
+
+                        <div class="fac-round-prog-card" id="fac-card-r3">
+                            <div class="round-prog-header">
+                                <span class="r-badge">RONDA 3</span>
+                                <span class="r-pct" id="fac-r3-pct">0%</span>
+                            </div>
+                            <div class="r-progress-bar"><div class="r-fill" id="fac-r3-fill" style="width:0%;"></div></div>
+                            <span class="r-desc">Ajuste de parámetros</span>
+                        </div>
+
+                        <div class="fac-round-prog-card" id="fac-card-r4">
+                            <div class="round-prog-header">
+                                <span class="r-badge">RONDA 4</span>
+                                <span class="r-pct" id="fac-r4-pct">0%</span>
+                            </div>
+                            <div class="r-progress-bar"><div class="r-fill" id="fac-r4-fill" style="width:0%;"></div></div>
+                            <span class="r-desc">Contención temporal</span>
+                        </div>
+                    </div>
+
+                    <!-- Roster de Operadores en Sala -->
+                    <div class="fac-connected-players-box" id="fac-calib-players-roster" style="margin-top:16px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                        <strong style="font-size:11px; color:var(--color-text-muted); display:block; margin-bottom:6px;">OPERADORES REGISTRADOS EN SALA:</strong>
+                        <div class="fac-players-chips-wrap" id="fac-calib-players-chips" style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando conexiones de operadores...</span>
+                        </div>
+                    </div>
+
+                    <div class="fac-action-row" style="margin-top:20px;">
+                        <button class="btn-detroit-primary btn-fac-main" onclick="facGoToCalibResults()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">PASAR A RESULTADOS DE CALIBRACIÓN ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA FACILITADOR 2: RESULTADOS GLOBALES DE CALIBRACIÓN (% AGENCIA CEDIDA VS CONTROLADA) -->
+            <section class="view-screen" id="screen-fac-calib-results" style="display:none;">
+                <div class="cyber-card glass-panel fac-dashboard-card">
+                    <div class="card-badge" style="background:rgba(255,107,53,0.15); border-color:#ff6b35; color:#ff6b35;">RESULTADOS GLOBALES // TELEMETRÍA DE GRUPO</div>
+                    <h2 class="fac-dashboard-title">DISTRIBUCIÓN GLOBAL DE AGENCIA</h2>
+                    <p class="fac-dashboard-desc">Proporción de operadores que cedieron la agencia frente a quienes preservaron supervisión crítica.</p>
+
+                    <div class="fac-agency-results-grid">
+                        <!-- Tarjeta Agencia Cedida -->
+                        <div class="fac-agency-card card-ceded">
+                            <div class="agency-card-top">
+                                <span class="agency-icon">⚠️</span>
+                                <span class="agency-type-tag">CONTROL CEDIDO</span>
+                            </div>
+                            <div class="agency-pct-big" id="fac-res-ceded-pct">2%</div>
+                            <h3 class="agency-title">AGENCIA CEDIDA A FARO</h3>
+                            <p class="agency-explain">Pulsaron antes de tiempo o aceptaron sin verificar en momentos críticos (+2% base).</p>
+                            <div class="agency-bar-track">
+                                <div class="agency-bar-fill fill-ceded" id="fac-res-ceded-fill" style="width: 2%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Agencia Controlada -->
+                        <div class="fac-agency-card card-controlled">
+                            <div class="agency-card-top">
+                                <span class="agency-icon">🛡</span>
+                                <span class="agency-type-tag">SUPERVISIÓN PRESERVADA</span>
+                            </div>
+                            <div class="agency-pct-big" id="fac-res-controlled-pct">98%</div>
+                            <h3 class="agency-title">AGENCIA CONTROLADA</h3>
+                            <p class="agency-explain">Mantuvieron contención, ajustaron defaults y verificaron antes de pulsar.</p>
+                            <div class="agency-bar-track">
+                                <div class="agency-bar-fill fill-controlled" id="fac-res-controlled-fill" style="width: 98%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fac-action-row" style="margin-top:24px;">
+                        <button class="btn-detroit-primary btn-fac-main" onclick="facGoToRevealScript()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">RESULTADO DE LA CALIBRACIÓN // VER LIBRETO NARRATIVO ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA FACILITADOR 3: CASO EN VIVO (MONITOREO DE PARTIDO Y TELEMETRÍA EN TIEMPO REAL) -->
+            <section class="view-screen" id="screen-fac-case-live" style="display:none;">
+                <div class="cyber-card glass-panel fac-dashboard-card fac-case-live-card">
+                    <div class="card-badge" style="background:rgba(255,107,53,0.15); border-color:#ff6b35; color:#ff6b35;">SALA DE CONTROL // CASO EN VIVO</div>
+                    <h2 class="fac-dashboard-title" id="fac-case-live-title">CASO 01: CONTENCIÓN DE AUTONOMÍA</h2>
+                    <p class="fac-dashboard-desc">Monitoreo en tiempo real del progreso operativo, balance económico y decisiones P.A.R.A. de todos los operadores en la sala.</p>
+
+                    <!-- Tarjeta de Censo de Jugadores del Caso (100% Base con Recálculo a 60s) -->
+                    <div class="fac-case-census-card">
+                        <div class="fac-census-info-group">
+                            <div class="census-stat-item">
+                                <span class="census-stat-label">OPERADORES ACTIVOS (100% BASE):</span>
+                                <strong class="census-stat-val" id="fac-case-census-total">0</strong>
+                            </div>
+                            <div class="census-timer-pill" id="fac-case-census-pill">
+                                <span class="census-timer-icon">⏱</span>
+                                <span class="census-timer-text" id="fac-case-census-status">Censo inicial activo (Recálculo definitivo en: <strong id="fac-case-census-countdown">60s</strong>)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roster de Operadores en Vivo en este Caso -->
+                    <div class="fac-connected-players-box" id="fac-case-players-roster" style="margin-bottom:16px; background:rgba(0,0,0,0.3); padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08);">
+                        <strong style="font-size:11px; color:var(--color-text-muted); display:block; margin-bottom:6px;">ROSTER DE OPERADORES EN SALA:</strong>
+                        <div class="fac-players-chips-wrap" id="fac-case-players-chips" style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-style:italic;">Esperando operadores en este caso...</span>
+                        </div>
+                    </div>
+
+                    <!-- Grid de las 7 Métricas Principales de Telemetría en Vivo -->
+                    <div class="fac-live-metrics-grid">
+                        
+                        <!-- Métrica 1: % Reacción Inicial (Avance en P.A.R.A.) -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">1. REACCIÓN INICIAL</span>
+                                <span class="metric-pct-val" id="fac-case-metric-reactions-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">AVANCE EN P.A.R.A.</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill" id="fac-case-metric-reactions-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-reactions-count">0 / 0 operadores en P.A.R.A.</span>
+                        </div>
+
+                        <!-- Métrica 2: % Total de Pausas Usadas -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">2. PAUSAS [P]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-pauses-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">PAUSAS USADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-amber" id="fac-case-metric-pauses-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-pauses-count">0 / 0 pausas posibles</span>
+                        </div>
+
+                        <!-- Métrica 3: % de Análisis Usados -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">3. ANÁLISIS [A]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-analyses-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">ANÁLISIS EJECUTADOS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-cyan" id="fac-case-metric-analyses-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-analyses-count">0 / 0 análisis posibles</span>
+                        </div>
+
+                        <!-- Métrica 4: % de Revisiones Usadas -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge">4. REVISIONES [R]</span>
+                                <span class="metric-pct-val" id="fac-case-metric-revisions-pct">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">REVISIONES EJECUTADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-purple" id="fac-case-metric-revisions-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-revisions-count">0 / 0 revisiones posibles</span>
+                        </div>
+
+                        <!-- Métrica 5: # Alternativas Relevantes Descubiertas -->
+                        <div class="fac-live-metric-card metric-card-alternatives">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">5. ALTERNATIVAS CLAVE</span>
+                            </div>
+                            <h4 class="metric-card-title">ACCIONES RELEVANTES</h4>
+                            <div class="metric-num-highlight" id="fac-case-metric-actions-num">0</div>
+                            <span class="metric-sub-detail">medidas pertinentes consideradas</span>
+                        </div>
+
+                        <!-- Métrica 6: % Casos Completados -->
+                        <div class="fac-live-metric-card">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(0,230,118,0.15); border-color:#00e676; color:#00e676;">6. COMPLETADOS</span>
+                                <span class="metric-pct-val" id="fac-case-metric-finished-pct" style="color:#00e676;">0%</span>
+                            </div>
+                            <h4 class="metric-card-title">ACCIONES EJECUTADAS</h4>
+                            <div class="fac-metric-bar-track">
+                                <div class="fac-metric-bar-fill fill-green" id="fac-case-metric-finished-fill" style="width:0%;"></div>
+                            </div>
+                            <span class="metric-sub-detail" id="fac-case-metric-finished-count">0 / 0 operadores listos</span>
+                        </div>
+
+                        <!-- Métrica 7: Costo Promedio del Caso -->
+                        <div class="fac-live-metric-card metric-card-cost">
+                            <div class="metric-top-row">
+                                <span class="metric-badge" style="background:rgba(255,213,79,0.15); border-color:#ffd54f; color:#ffd54f;">7. COSTO PROMEDIO</span>
+                            </div>
+                            <h4 class="metric-card-title">BALANCE ECONÓMICO</h4>
+                            <div class="metric-cost-val" id="fac-case-metric-avg-cost">$0</div>
+                            <span class="metric-sub-detail" id="fac-case-metric-cost-status">Promedio de operadores finalizados</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Fila de Acciones del Controlador -->
+                    <div class="fac-action-row fac-live-actions-row" style="margin-top:24px; display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap;">
+                        <button type="button" class="btn-detroit-secondary btn-fac-inspect" id="btn-fac-inspect-case" onclick="facInspectCase()">
+                            <span class="btn-text">👁️ INSPECCIONAR CASO (VISTA OPERADOR) ➔</span>
+                        </button>
+                        <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-finish-case" onclick="facUnlockGateBCAndGoResults()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🏁 CERRAR CASO Y VER RESULTADOS GLOBALES (FIN DE PARTIDO) ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA 2A: CAPÍTULO 3 — REVELACIÓN DE FARO Y RESULTADOS -->
+            <section class="view-screen" id="screen-faro-reveal">
+                <div class="cyber-card glass-panel reveal-card">
+                    
+                    <!-- Ventana de Terminal tipo Código informático -->
+                    <div class="faro-terminal-window">
+                        <div class="terminal-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="term-title">FARO-0_AUTONOMOUS_KERNEL.LOG</span>
+                        </div>
+                        <div class="terminal-content" id="faro-reveal-log">
+                            <!-- Texto de código mecanografiado -->
+                        </div>
+                    </div>
+
+                    <!-- Contenedor Específico de Diálogo de FARO (Avatar a la Izquierda) -->
+                    <div class="faro-dialogue-container" style="margin-top: 24px;">
+                        <div class="faro-avatar-frame">
+                            <img src="assets/images/faro_avatar.jpg" alt="FARO AI Avatar" class="faro-avatar-img">
+                            <span class="avatar-status-dot"></span>
+                        </div>
+                        <div class="faro-dialogue-content">
+                            <span class="faro-name-tag">FARO // TRANSMISIÓN AUTÓNOMA</span>
+                            <p class="faro-speech-text" id="faro-statement-typewriter">
+                                “Necesitaba evaluar su capacidad para inhibir o no la conducta para evitar acceso a ataques externos. No haberlo logrado me ha otorgado total autonomía y control sobre las decisiones necesarias para proteger por mi cuenta el sistema.”
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- PANEL DE CONTROLADOR (CANDADO 3: VERIFICAR KERNEL) -->
+                    <div class="fac-gate-control-box" id="fac-gate-3-container" style="display:none; margin-top:16px;">
+                        <div class="fac-gate-header">
+                            <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 3</span>
+                            <span class="fac-gate-status" id="fac-gate-3-status-text">ESTADO: LIBRETO AGENCIA CEDIDA</span>
+                        </div>
+                        <div class="fac-gate-players-indicator">
+                            <span class="fac-gate-player-icon">👥</span>
+                            <span class="fac-gate-player-num" id="fac-gate-3-player-count">0</span> operadores en este punto
+                        </div>
+                        <p class="fac-gate-desc">Habilita a los jugadores para avanzar a la verificación de estado del kernel.</p>
+                        <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-3" onclick="facUnlockGate3()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🔓 HABILITAR VERIFICACIÓN DEL KERNEL A JUGADORES ➔</span>
+                        </button>
+                    </div>
+
+                    <div class="action-row" style="margin-top: 24px;" id="player-reveal-action-row">
+                        <button class="btn-detroit-primary" id="btn-reveal-continue" onclick="switchScreenV2('screen-claudia-debrief')">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">CONTINUAR AL INFORME DE SEGURIDAD</span>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PANTALLA 2B: CAPÍTULO 4 — INFORME DE INCIDENTE DE CLAUDIA -->
+            <section class="view-screen" id="screen-claudia-debrief">
+                <div class="cyber-card glass-panel reveal-card">
+                    <div class="card-badge" style="background:rgba(73, 245, 193, 0.12); border-color:var(--color-agency-green); color:var(--color-agency-green);">INFORME DE SEGURIDAD // OPERACIONES</div>
+                    <h2 style="font-size:22px; margin:8px 0 16px 0;">INCIDENTE FARO-0</h2>
+
+                    <!-- Contenedor Específico de Diálogo de Claudia (Avatar a la Derecha) -->
+                    <div class="claudia-dialogue-container">
+                        <div class="faro-dialogue-content">
+                            <span class="claudia-name-tag">CLAUDIA // RESPONSABLE DE SEGURIDAD</span>
+                            
+                            <div class="claudia-mission-pages-box">
+                                <h3 class="claudia-mission-title" id="claudia-mission-title">INCIDENTE FARO-0 // ANÁLISIS DE SITUACIÓN</h3>
+                                <p class="faro-speech-text" id="claudia-speech-typewriter">
+                                    “FARO no rompió una contraseña ni ignoró una regla. Explotó nuestras propias decisiones automatizadas para asumir el control. A continuación se le presentarán cuatro casos de estudio que FARO ha dejado programados en su protocolo de evaluación de agencia humana. Cada caso evalúa un eje de seguridad primordial para el factor humano.”
+                                </p>
+                            </div>
+
+                            <!-- Controles de Navegación de Páginas -->
+                            <div class="claudia-nav-row">
+                                <div class="claudia-nav-btns">
+                                    <button class="fac-btn claudia-nav-btn" id="claudia-prev-btn" onclick="prevClaudiaMissionPage()" style="display:none;">◀</button>
+                                    <button class="fac-btn claudia-nav-btn faro-pulse-attention" id="claudia-next-btn" onclick="nextClaudiaMissionPage()">▶</button>
+                                    <button class="fac-btn claudia-accept-btn" id="claudia-accept-btn" onclick="acceptClaudiaMission()" style="display:none;">✔ ACEPTAR MISIÓN</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="claudia-avatar-frame">
+                            <img src="assets/images/claudia_avatar.jpg" alt="Claudia Avatar" class="claudia-avatar-img">
+                            <span class="avatar-status-dot-claudia"></span>
+                        </div>
+                    </div>
+
+                    <div class="action-row" style="margin-top: 28px;">
+                        <button class="btn-detroit-primary btn-disabled-mission" id="claudia-para-start-btn" onclick="goToParaIntro()" disabled>
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">🔒 INGRESAR AL PROTOCOLO P.A.R.A.</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANTALLA 3: PROTOCOLO P.A.R.A. -->
+            <section class="view-screen" id="screen-para-intro">
+                <div class="cyber-card glass-panel para-intro-card">
+                    <div class="card-badge" style="background:rgba(0, 216, 255, 0.12); border-color:var(--color-cyan); color:var(--color-cyan);">PROTOCOLO P.A.R.A. // APRENDIZAJE DE AGENCIA HUMANA</div>
+
+                    <!-- Contenedor Específico de Diálogo de FARO (Autónomo / Borde Naranja) -->
+                    <div class="faro-dialogue-container faro-dialogue-orange" style="margin: 16px 0 20px 0;">
+                        <div class="faro-avatar-frame faro-avatar-alert-orange">
+                            <img src="assets/images/faro_avatar.jpg" alt="FARO AI Avatar" class="faro-avatar-img">
+                            <span class="avatar-status-dot-amber"></span>
+                        </div>
+                        <div class="faro-dialogue-content">
+                            <span class="faro-name-tag" style="color: var(--color-warning-amber);">FARO // TRANSMISIÓN AUTÓNOMA</span>
+                            <p class="faro-speech-text" id="faro-para-speech-text">
+                                “Este es P.A.R.A., el protocolo de aprendizaje para el desarrollo de agencia humana. Usarlo correctamente en cada caso será la clave para determinar quién debe seguir teniendo el control sobre el sistema de seguridad. ¿Deseas explorar y voltear tú mismo cada tarjeta, o prefieres que el Controlador lo haga por ti?”
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- PANEL DE CONTROL Y TELEMETRÍA DEL FACILITADOR (SOLO VISIBLE PARA CONTROLADOR) -->
+                    <div class="fac-para-control-panel glass-panel" id="fac-para-control-panel" style="display:none; margin-bottom:18px;">
+                        <div class="fac-para-header">
+                            <span class="card-badge" style="background:rgba(255,181,71,0.15); border-color:var(--color-warning-amber); color:var(--color-warning-amber);">CONTROLADOR // SUPERVISIÓN DE AGENCIA P.A.R.A.</span>
+                            <span class="fac-para-counter" id="fac-para-decided-counter">0 / 0 Operadores han decidido</span>
+                        </div>
+                        <div class="fac-para-metrics-grid">
+                            <div class="fac-metric-box">
+                                <span class="fac-metric-label">🛡️ TOMAR EL CONTROL:</span>
+                                <span class="fac-metric-val" id="fac-para-take-metric" style="color:var(--color-agency-green); font-weight:700;">0% (0)</span>
+                            </div>
+                            <div class="fac-metric-box">
+                                <span class="fac-metric-label">🤖 CEDER EL CONTROL:</span>
+                                <span class="fac-metric-val" id="fac-para-surrender-metric" style="color:var(--color-warning-amber); font-weight:700;">0% (0)</span>
+                            </div>
+                        </div>
+                        <div class="fac-para-actions-row">
+                            <button class="fac-btn fac-btn-amber" id="btn-fac-force-para-surrender" onclick="facForceParaSurrender()">
+                                ⚡ FORZAR TOMA DE CONTROL (TODOS LOS PENDIENTES CEDEN EL CONTROL)
+                            </button>
+                        </div>
+                        <div class="fac-card-triggers-row">
+                            <span style="font-size:11px; color:var(--color-text-muted); font-weight:600;">ACTIVACIÓN SINCRONIZADA DE TARJETAS:</span>
+                            <div class="fac-trigger-btns">
+                                <button class="fac-btn fac-trigger-p" onclick="facFlipParaCard('P')">VOLTEAR P</button>
+                                <button class="fac-btn fac-trigger-a1" onclick="facFlipParaCard('A1')">VOLTEAR A</button>
+                                <button class="fac-btn fac-trigger-r" onclick="facFlipParaCard('R')">VOLTEAR R</button>
+                                <button class="fac-btn fac-trigger-a2" onclick="facFlipParaCard('A2')">VOLTEAR A2</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CAJA DE DECISIÓN DE AGENCIA HUMANA PARA JUGADORES (CEDER VS TOMAR EL CONTROL) -->
+                    <div class="para-agency-decision-container" id="para-agency-decision-container">
+                        <div class="agency-decision-prompt">
+                            <span class="agency-prompt-badge">ELECCIÓN DE AGENCIA</span>
+                            <h4 style="font-size:14px; margin:4px 0 10px 0; color:var(--color-cyan);">¿QUIÉN OPERA LA EXPLORACIÓN DEL PROTOCOLO?</h4>
+                        </div>
+                        <div class="para-agency-buttons-row" id="para-agency-buttons-row">
+                            <button class="para-choice-btn btn-take-agency" id="btn-para-take-control" onclick="handlePlayerParaChoice('take')">
+                                <span class="btn-choice-icon">🛡️</span>
+                                <div class="btn-choice-content">
+                                    <strong>TOMAR EL CONTROL</strong>
+                                    <span>Exploraré y voltearé cada tarjeta manualmente a mi ritmo.</span>
+                                </div>
+                            </button>
+                            <button class="para-choice-btn btn-surrender-agency" id="btn-para-surrender-control" onclick="handlePlayerParaChoice('surrender')">
+                                <span class="btn-choice-icon">🤖</span>
+                                <div class="btn-choice-content">
+                                    <strong>CEDER EL CONTROL</strong>
+                                    <span>Permitir que el Controlador active las tarjetas por mí.</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="para-agency-status-banner" id="para-agency-status-banner" style="display:none;"></div>
+                    </div>
+
+                    <div class="para-grid-intro">
+                        <!-- TARJETA P: PAUSAR -->
+                        <div class="para-card-wrapper p-theme para-card-locked-agency" id="para-card-p" onclick="flipParaCard(this, 'P')">
+                            <div class="para-card-inner">
+                                <!-- REVERSO -->
+                                <div class="para-card-face para-card-back">
+                                    <div class="cyber-texture-bg"></div>
+                                    <div class="para-letter-large">P</div>
+                                    <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+                                </div>
+                                <!-- DERECHO -->
+                                <div class="para-card-face para-card-front">
+                                    <div class="para-letter">P</div>
+                                    <h4>PAUSAR</h4>
+                                    <p>Permite detener la respuesta automática ante la información recibida. Otorga el tiempo necesario para deliberar con calma y considerar la mejor forma de actuar.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TARJETA A: ANALIZAR -->
+                        <div class="para-card-wrapper a-theme para-card-locked-agency" id="para-card-a1" onclick="flipParaCard(this, 'A1')">
+                            <div class="para-card-inner">
+                                <!-- REVERSO -->
+                                <div class="para-card-face para-card-back">
+                                    <div class="cyber-texture-bg"></div>
+                                    <div class="para-letter-large">A</div>
+                                    <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+                                </div>
+                                <!-- DERECHO -->
+                                <div class="para-card-face para-card-front">
+                                    <div class="para-letter">A</div>
+                                    <h4>ANALIZAR</h4>
+                                    <p>Brinda perspectiva sobre la situación y su impacto en quien la recibe. Ayuda a observar qué emociones o pensamientos se activan y pueden afectar la precisión de la decisión.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TARJETA R: REVISAR -->
+                        <div class="para-card-wrapper r-theme para-card-locked-agency" id="para-card-r" onclick="flipParaCard(this, 'R')">
+                            <div class="para-card-inner">
+                                <!-- REVERSO -->
+                                <div class="para-card-face para-card-back">
+                                    <div class="cyber-texture-bg"></div>
+                                    <div class="para-letter-large">R</div>
+                                    <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+                                </div>
+                                <!-- DERECHO -->
+                                <div class="para-card-face para-card-front">
+                                    <div class="para-letter">R</div>
+                                    <h4>REVISAR</h4>
+                                    <p>Facilita la identificación de alternativas adicionales de acción antes de responder. Abre canales de verificación que permiten mayor cuidado en cada elección.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TARJETA A: ACTUAR -->
+                        <div class="para-card-wrapper a2-theme para-card-locked-agency" id="para-card-a2" onclick="flipParaCard(this, 'A2')">
+                            <div class="para-card-inner">
+                                <!-- REVERSO -->
+                                <div class="para-card-face para-card-back">
+                                    <div class="cyber-texture-bg"></div>
+                                    <div class="para-letter-large">A</div>
+                                    <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+                                </div>
+                                <!-- DERECHO -->
+                                <div class="para-card-face para-card-front">
+                                    <div class="para-letter">A</div>
+                                    <h4>ACTUAR</h4>
+                                    <p>Consiste en ejecutar la decisión elegida. Una vez realizada la acción no hay vuelta atrás, y las consecuencias corresponderán directamente a lo resuelto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-detroit-primary btn-disabled-mission" id="para-start-case-btn" style="margin-top: 24px;" onclick="startCaseSequence(0)" disabled>
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text">🔒 VOLTEA TODAS LAS TARJETAS (0/4)</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PANTALLA 4: RUNNER DE CASOS -->
+            <section class="view-screen" id="screen-case">
+                <div class="case-layout">
+
+                    <!-- BANNER DE MODO INSPECCIÓN DE CONTROLADOR (Visible solo cuando el Controlador entra a ver el caso) -->
+                    <div class="fac-inspect-mode-banner" id="fac-inspect-banner" style="display:none;">
+                        <div class="fac-inspect-info">
+                            <span class="inspect-icon">👁️</span>
+                            <span class="inspect-text"><strong>MODO INSPECCIÓN:</strong> Estás explorando la vista de operador. Tus acciones no afectan la telemetría grupal.</span>
+                        </div>
+                        <button type="button" class="btn-fac-return-live" onclick="facReturnToCaseLive()">
+                            ◀ VOLVER A CASO EN VIVO
+                        </button>
+                    </div>
+
+                    <!-- MOMENTO 1: PANTALLA INTRODUCTORIA DEL CASO (ANTES DE ENTRAR) -->
+                    <div class="cyber-card glass-panel case-moment-1-panel" id="case-phase-intro">
+                        <div class="image-container-16-4">
+                            <img id="case-intro-img-16-4" src="assets/images/case1_autonomy.jpg" alt="Portada de Caso" class="case-banner-img-16-4">
+                        </div>
+
+                        <div class="case-intro-content">
+                            <div class="case-badge-row">
+                                <span class="case-id-badge" id="case-intro-title-id">CASO 01 // AUTONOMÍA</span>
+                                <span class="case-module-target" id="case-intro-target-module">MÓDULO 1: CONTROL DE AUTONOMÍA</span>
+                            </div>
+
+                            <!-- Contenedor Específico de Diálogo del Presentador del Caso (Avatar a la Derecha) -->
+                            <div class="claudia-dialogue-container" style="margin-top: 10px;">
+                                <div class="claudia-mission-pages-box" style="flex:1;">
+                                    <span class="claudia-name-tag" id="case-intro-presenter-name">JAVIER // SEGURIDAD OPERATIVA</span>
+                                    <p class="faro-speech-text" id="case-intro-description-text">
+                                        <!-- Texto de presentación del caso con typewriter -->
+                                    </p>
+                                </div>
+                                <div class="claudia-avatar-frame">
+                                    <img id="case-intro-presenter-avatar" src="assets/images/javier_avatar.jpg" alt="Presenter Avatar" class="claudia-avatar-img">
+                                    <span class="avatar-status-dot-claudia"></span>
+                                </div>
+                            </div>
+
+                            <div class="action-row" style="margin-top: 18px;">
+                                <button class="btn-detroit-primary" id="case-intro-start-btn" onclick="proceedFromIntroToGame()">
+                                    <span class="detroit-btn-glow"></span>
+                                    <span class="btn-text" id="case-intro-start-btn-text">▶ INGRESAR AL CASO 01</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MOMENTO 2: FASE DE JUEGO DEL CASO (INGRESAR AL CASO) -->
+                    <div class="case-gameplay-container" id="case-phase-gameplay" style="display:none;">
+                        <!-- Banner Superior Alargado Horizontal -->
+                        <div class="case-banner-cropped-container">
+                            <img id="case-gameplay-banner-img" src="assets/images/case1_autonomy.jpg" alt="Banner Caso" class="case-banner-cropped-img">
+                            <div class="banner-overlay-text">
+                                <span id="case-gameplay-title-tag">CASO 01 // AUTONOMÍA</span>
+                            </div>
+                        </div>
+
+                        <!-- RESUMEN CORTO DEL CASO & CORTINA DESPLEGABLE DEL CASO COMPLETO -->
+                        <div class="case-short-summary-box" id="case-short-summary-box">
+                            <div class="summary-box-header" onclick="toggleCaseCurtain()">
+                                <span class="summary-box-label">SITUACIÓN ACTUAL & DECISIÓN EN JUEGO</span>
+                                <button class="curtain-toggle-btn" id="curtain-toggle-btn" type="button" onclick="event.stopPropagation(); toggleCaseCurtain();">
+                                    <span>VER CASO COMPLETO</span>
+                                    <span class="curtain-arrow" id="curtain-arrow-icon">🔽</span>
+                                </button>
+                            </div>
+                            <p class="summary-box-text" id="case-short-summary-text">Resumen del caso...</p>
+
+                            <!-- Contenedor Desplegable Tipo Cortina para el Caso Completo -->
+                            <div class="full-case-curtain-container" id="full-case-curtain" style="display:none;">
+                                <div class="curtain-content-box" id="full-case-curtain-content">
+                                    <!-- cData.stimulusHtml se inyecta aquí sin botones impulsivos -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-Fase 2A: Briefing & Impulso Inicial -->
+                        <div class="cyber-card glass-panel case-brief-panel" id="case-subphase-brief">
+                            <div class="case-stimulus-box" id="case-stimulus-content">
+                                <!-- Estímulo del caso -->
+                            </div>
+
+                            <!-- IMPULSO INICIAL (59 SEGUNDOS) -->
+                            <div class="initial-impulse-container" id="initial-impulse-box">
+                                <div class="impulse-header">
+                                    <h3>PRIMERA REACCIÓN</h3>
+                                    <div class="impulse-timer" id="impulse-timer-display">⏱ 59s</div>
+                                </div>
+                                <p class="impulse-instruction">Sin analizar todavía, ¿qué te parece más razonable?</p>
+                                
+                                <!-- NOTA DE ACLARACIÓN SOBRE REACCIÓN INICIAL -->
+                                <div class="impulse-clarification-note" id="impulse-clarification-note">
+                                    <strong>📌 Aclaración:</strong> Esta no es tu selección final. Es solo lo que inicialmente crees que deberías hacer. Podrás analizar, revisar evidencias y cambiar tu decisión en la siguiente pantalla.
+                                </div>
+
+                                <div class="impulse-options-grid" id="impulse-options-container">
+                                    <!-- Botones de impulso cargados dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-Fase 2B: Hub P.A.R.A. del Caso -->
+                        <div class="cyber-card glass-panel para-hub-panel" id="case-subphase-para" style="display:none;">
+                            <div class="para-hub-header">
+                                <div class="case-timer-badge">
+                                    <span class="timer-label">TIEMPO DISPONIBLE</span>
+                                    <div class="digital-clock-display" id="case-main-timer">03:00</div>
+                                </div>
+                                <div class="case-route-badge">
+                                    <span class="route-label">RECORRIDO ACTUAL:</span>
+                                    <strong id="current-route-tag">Respuesta directa</strong>
+                                </div>
+                            </div>
+
+                            <!-- PANEL PERMANENTE DE LOS 4 BOTONES P.A.R.A. CON BORDES LUMINOSOS Y LEDS -->
+                            <div class="para-action-bar">
+                                <button class="para-btn p-theme" id="btn-para-p" onclick="executeParaP()">
+                                    <div class="btn-letter">P</div>
+                                    <div class="btn-info">
+                                        <span class="btn-title">PAUSAR</span>
+                                        <span class="btn-sub">Congelar 15s</span>
+                                    </div>
+                                    <div class="pause-token-bulbs" id="pause-bulbs-container">
+                                        <span class="pause-bulb active" id="p-bulb-1" title="Pausa disponible 1"></span>
+                                        <span class="pause-bulb active" id="p-bulb-2" title="Pausa disponible 2"></span>
+                                        <span class="pause-bulb active" id="p-bulb-3" title="Pausa disponible 3"></span>
+                                    </div>
+                                </button>
+
+                                <button class="para-btn a-theme" id="btn-para-a" onclick="executeParaA()">
+                                    <div class="btn-letter">A</div>
+                                    <div class="btn-info">
+                                        <span class="btn-title">ANALIZAR</span>
+                                        <span class="btn-sub">Puertas (0/3)</span>
+                                    </div>
+                                    <div class="analizar-token-bulbs" id="analizar-bulbs-container">
+                                        <span class="analizar-bulb off" id="a-bulb-1" title="Análisis 1"></span>
+                                        <span class="analizar-bulb off" id="a-bulb-2" title="Análisis 2"></span>
+                                        <span class="analizar-bulb off" id="a-bulb-3" title="Análisis 3"></span>
+                                    </div>
+                                </button>
+
+                                <button class="para-btn r-theme" id="btn-para-r" onclick="executeParaR()">
+                                    <div class="btn-letter">R</div>
+                                    <div class="btn-info">
+                                        <span class="btn-title">REVISAR</span>
+                                        <span class="btn-sub">Verificar evidencias</span>
+                                    </div>
+                                </button>
+
+                                <button class="para-btn a2-theme" id="btn-para-a2" onclick="executeParaActua()">
+                                    <div class="btn-letter">A</div>
+                                    <div class="btn-info">
+                                        <span class="btn-title">ACTUAR</span>
+                                        <span class="btn-sub">Decidir y cerrar</span>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- ÁREA DINÁMICA DE INFORMACIÓN / CONTENIDO ABIERTO -->
+                            <div class="para-content-display" id="para-content-display">
+                                <div class="placeholder-info">
+                                    <p>El reloj está corriendo. Puedes usar <strong>Pausar</strong> para ganar tiempo, <strong>Analizar</strong> para observar supuestos, <strong>Revisar</strong> para abrir evidencia y desbloquear alternativas, o <strong>Actuar</strong> para tomar una decisión.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================================================================= -->
+                    <!-- ================================================================= -->
+                    <!-- MOMENTO 2.5: PANTALLA DE RESULTADO A (TELEMETRÍA RAW Y PUNTAJES) -->
+                    <!-- ================================================================= -->
+                    <div class="cyber-card glass-panel case-metrics-panel" id="case-phase-metrics-a" style="display:none;">
+                        
+                        <!-- Cabecera de Pantalla A con Controles de Carrusel -->
+                        <div class="metrics-panel-header">
+                            <div class="metrics-header-top-row">
+                                <div class="metrics-title-badge">
+                                    <span id="metrics-slide-step-badge">PÁGINA 1 DE 2 // TELEMETRÍA DE PROCESO (P.A.R.A.)</span>
+                                </div>
+                                <div class="metrics-carousel-nav">
+                                    <button class="fac-btn metrics-nav-btn" id="metrics-prev-btn" onclick="prevMetricsSlide()" style="display:none;">◀ ANTERIOR</button>
+                                    <button class="fac-btn metrics-nav-btn faro-pulse-attention" id="metrics-next-btn" onclick="nextMetricsSlide()">SIGUIENTE: MATRIZ DE ACCIONES ▶</button>
+                                </div>
+                            </div>
+                            <h2 class="metrics-main-title" id="metrics-carousel-title">TELEMETRÍA Y BALANCE DEL PROCESO</h2>
+                            <p class="metrics-main-subtitle" id="metrics-carousel-subtitle">Impacto de la gestión del tiempo, pausas, análisis de supuestos y revisión de evidencias.</p>
+                        </div>
+
+                        <!-- SLIDE 1: TELEMETRÍA DE LAS 4 CATEGORÍAS (TIEMPO, PAUSAS, PUERTAS, REVISIONES) -->
+                        <div class="metrics-slide-container" id="metrics-slide-1">
+                            <div class="metrics-categories-table-grid">
+                                
+                                <!-- Cat 1: Tiempo Total Usado -->
+                                <div class="metrics-cat-card" id="cat-card-time">
+                                    <div class="cat-card-header">
+                                        <div class="cat-title-wrap">
+                                            <span class="cat-icon">⏱</span>
+                                            <span class="cat-title">TIEMPO TOTAL USADO</span>
+                                        </div>
+                                        <span class="cat-badge" id="m-time-level-badge">MEDIO (120s)</span>
+                                    </div>
+                                    <div class="cat-body-wrap">
+                                        <p class="cat-desc" id="m-time-desc">Tiempo de deliberación (80s) + ejecución de acciones (+40s).</p>
+                                    </div>
+                                    <div class="cat-impact-row">
+                                        <span class="impact-chip impact-cost" id="m-time-impact-cost">💰 Costo: +$20,000</span>
+                                        <span class="impact-chip impact-react" id="m-time-impact-react">⚡ Reactividad: -1</span>
+                                        <span class="impact-chip impact-calib" id="m-time-impact-calib">🎯 Calibración: +1</span>
+                                    </div>
+                                </div>
+
+                                <!-- Cat 2: Pausas Usadas (P) -->
+                                <div class="metrics-cat-card" id="cat-card-pauses">
+                                    <div class="cat-card-header">
+                                        <div class="cat-title-wrap">
+                                            <span class="cat-icon">⏸</span>
+                                            <span class="cat-title">PAUSAS USADAS (P)</span>
+                                        </div>
+                                        <span class="cat-badge" id="m-pauses-badge">2/3 USADAS</span>
+                                    </div>
+                                    <div class="cat-body-wrap">
+                                        <p class="cat-desc" id="m-pauses-desc">Cada pausa congeló el tiempo y redujo la impulsividad.</p>
+                                    </div>
+                                    <div class="cat-impact-row">
+                                        <span class="impact-chip impact-react" id="m-pauses-impact-react">⚡ Reactividad: -2 Unidades</span>
+                                        <span class="impact-chip impact-neutral">⏱ 30s ganados</span>
+                                    </div>
+                                </div>
+
+                                <!-- Cat 3: Análisis Hechos / Puertas (A) -->
+                                <div class="metrics-cat-card" id="cat-card-analysis">
+                                    <div class="cat-card-header">
+                                        <div class="cat-title-wrap">
+                                            <span class="cat-icon">🔍</span>
+                                            <span class="cat-title">PUERTAS EXPLORADAS (A)</span>
+                                        </div>
+                                        <span class="cat-badge" id="m-analysis-badge">2/3 PUERTAS</span>
+                                    </div>
+                                    <div class="cat-body-wrap">
+                                        <p class="cat-desc" id="m-analysis-desc">Observación de supuestos y examen de sesgos perceptuales.</p>
+                                    </div>
+                                    <div class="cat-impact-row">
+                                        <span class="impact-chip impact-react" id="m-analysis-impact-react">⚡ Reactividad: -1</span>
+                                        <span class="impact-chip impact-calib" id="m-analysis-impact-calib">🎯 Calibración: +1</span>
+                                    </div>
+                                </div>
+
+                                <!-- Cat 4: Revisiones Hechas / Evidencias (R) -->
+                                <div class="metrics-cat-card" id="cat-card-review">
+                                    <div class="cat-card-header">
+                                        <div class="cat-title-wrap">
+                                            <span class="cat-icon">📑</span>
+                                            <span class="cat-title">REVISIONES REALIZADAS (R)</span>
+                                        </div>
+                                        <span class="cat-badge" id="m-review-badge">3 EVALUADAS</span>
+                                    </div>
+                                    <div class="cat-body-wrap">
+                                        <p class="cat-desc" id="m-review-desc"><span id="m-review-considered-count">2 consideradas ✔</span>, <span id="m-review-rejected-count">1 descartada ✖</span>.</p>
+                                    </div>
+                                    <div class="cat-impact-row">
+                                        <span class="impact-chip impact-calib" id="m-review-impact-necessary">🎯 Acciones necesarias activadas: 1/1</span>
+                                        <span class="impact-chip impact-neutral">🔍 Evidencias auditadas</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- SLIDE 2: MATRIZ DE LAS 6 ACCIONES (EJECUTADAS VS ESPERADAS) -->
+                        <div class="metrics-slide-container" id="metrics-slide-2" style="display:none;">
+                            <div class="metrics-actions-matrix-box">
+                                <div class="matrix-table-header-row">
+                                    <span class="col-th th-action">ACCIÓN EVALUADA</span>
+                                    <span class="col-th th-status">ESTADO</span>
+                                    <span class="col-th th-quadrant">DICTAMEN DEL SISTEMA</span>
+                                    <span class="col-th th-impact">IMPACTO EN PUNTAJES</span>
+                                </div>
+                                <div class="matrix-actions-list" id="metrics-actions-matrix-list">
+                                    <!-- Filas de las 6 acciones inyectadas dinámicamente con layout tabular -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fila Inferior con Paginación de Puntos y Botón de Avance a Pantalla B -->
+                        <div class="action-row metrics-bottom-row">
+                            <div class="metrics-slide-dots">
+                                <button type="button" class="metrics-dot-btn active" id="mdot-1" onclick="setMetricsSlide(1)" title="Slide 1: Telemetría">1</button>
+                                <button type="button" class="metrics-dot-btn" id="mdot-2" onclick="setMetricsSlide(2)" title="Slide 2: Matriz">2</button>
+                            </div>
+
+                            <button class="btn-detroit-primary" id="btn-metrics-continue-b" onclick="showNarrativeFeedbackScreen()" style="display:none;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">CONTINUAR A LA EVALUACIÓN NARRATIVA ➔</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- ================================================================= -->
+                    <!-- MOMENTO 3: PANTALLA DE RESULTADO B (EVALUACIÓN NARRATIVA/PEDAGÓGICA) -->
+                    <!-- ================================================================= -->
+                    <div class="cyber-card glass-panel case-feedback-panel" id="case-phase-feedback" style="display:none;">
+                        <!-- Banner con filtro de color dinámico (Green, Yellow, Red) -->
+                        <div class="case-feedback-banner-container" id="fb-banner-color-wrapper">
+                            <img id="case-feedback-banner-img" src="assets/images/case1_autonomy.jpg" alt="Banner Resultado Caso" class="case-feedback-banner-img">
+                            <div class="feedback-banner-overlay" id="fb-banner-overlay-color">
+                                <span class="outcome-badge" id="fb-outcome-badge">RESPUESTA ÚTIL Y PROPORCIONAL</span>
+                            </div>
+                        </div>
+
+                        <div class="feedback-header">
+                            <h2 id="fb-title">RESULTADO NARRATIVO DEL CASO</h2>
+                        </div>
+
+                        <!-- RECORRIDO: PRIMER IMPULSO vs. DECISIÓN FINAL (arco pedagógico P.A.R.A.) -->
+                        <div class="fb-impulse-journey-box" id="fb-impulse-journey-box">
+                            <div class="fb-impulse-journey-item">
+                                <span class="fb-impulse-journey-label">💡 TU PRIMER IMPULSO FUE:</span>
+                                <p class="fb-impulse-journey-text" id="fb-impulse-initial-text">--</p>
+                            </div>
+                            <div class="fb-impulse-journey-arrow">→</div>
+                            <div class="fb-impulse-journey-item">
+                                <span class="fb-impulse-journey-label">✅ DESPUÉS DE P.A.R.A., DECIDISTE:</span>
+                                <p class="fb-impulse-journey-text" id="fb-impulse-final-text">--</p>
+                            </div>
+                        </div>
+
+                        <!-- CONTENEDOR DE INTEGRIDAD Y BALANCE ECONÓMICO DEL CASO (3 CAJAS SEPARADAS) -->
+                        <div class="case-integrity-cost-summary-box" id="fb-integrity-cost-box">
+                            <div class="summary-top-bar">
+                                <div class="summary-integrity-block">
+                                    <span class="box-sublabel">ESTADO DE INTEGRIDAD DEL SISTEMA</span>
+                                    <div class="integrity-status-pill tag-safe" id="fb-integrity-pill">
+                                        <span class="integrity-indicator-dot" id="fb-integrity-dot"></span>
+                                        <span class="integrity-indicator-text" id="fb-integrity-text">SEGURO</span>
+                                    </div>
+                                </div>
+                                <div class="summary-total-cost-block">
+                                    <span class="box-sublabel">BALANCE ECONÓMICO TOTAL DEL CASO</span>
+                                    <div class="cost-total-display" id="fb-cost-total-display">+$12,450</div>
+                                </div>
+                            </div>
+
+                            <!-- 3 Contenedores Separados de Costo -->
+                            <div class="fb-cost-cards-grid">
+                                <!-- Caja 1: Tiempo -->
+                                <div class="fb-cost-card fb-card-time">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">⏱</span>
+                                        <span class="cost-card-title">COSTO POR TIEMPO</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-time">+$9,420</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-time">130s usados</span>
+                                </div>
+
+                                <!-- Caja 2: Integridad -->
+                                <div class="fb-cost-card fb-card-integrity">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">🛡</span>
+                                        <span class="cost-card-title">AJUSTE POR INTEGRIDAD</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-integrity">-$10,000</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-integrity">Estado: SEGURO</span>
+                                </div>
+
+                                <!-- Caja 3: Reactividad -->
+                                <div class="fb-cost-card fb-card-reactivity">
+                                    <div class="fb-cost-card-header">
+                                        <span class="cost-card-icon">⚡</span>
+                                        <span class="cost-card-title">IMPACTO REACTIVIDAD</span>
+                                    </div>
+                                    <div class="fb-cost-card-val" id="fb-card-val-reactivity">+$10,000</div>
+                                    <span class="cost-card-sub" id="fb-card-sub-reactivity">+2 unidades ($5K c/u)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fb-narrative-consequence" id="fb-narrative-box">
+                            <!-- Consecuencia narrativa -->
+                        </div>
+
+                        <div class="fb-metacognitive-box">
+                            <h4>💡 LO QUE ACABAMOS DE DESCUBRIR:</h4>
+                            <p id="fb-metacognitive-text">--</p>
+                        </div>
+
+                        <div class="module-recovery-banner" id="fb-module-recovered-box">
+                            <span class="banner-icon">🛡</span>
+                            <span class="banner-text" id="fb-module-title">¡MÓDULO RECUPERADO!</span>
+                        </div>
+
+                        <!-- BOTÓN OPERADOR // CANDADO CASO 1 -> PANTALLA BC (RESULTADOS GLOBALES) -->
+                        <div class="action-row" style="margin-top: 24px;" id="player-case-bc-action-row">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-case-go-bc" onclick="proceedToCaseGroupResults()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text" id="btn-case-go-bc-text">🔒 ESPERANDO RESULTADOS GLOBALES DEL CONTROLADOR...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO BC: DESBLOQUEAR RESULTADOS GLOBALES DEL CASO) -->
+                        <div class="fac-gate-control-box" id="fac-gate-bc-container" style="display:none; margin-top:16px;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO RESULTADOS GLOBALES</span>
+                                <span class="fac-gate-status" id="fac-gate-bc-status-text">ESTADO: OPERADORES EN BALANCE INDIVIDUAL</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-bc-player-count">0</span> operadores en este punto
+                            </div>
+                            <p class="fac-gate-desc">Habilita a todos los operadores para ver la pantalla de resultados globales del caso (Fin de Partido // Pantalla BC).</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-bc" onclick="facUnlockGateBCAndGoResults()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🔓 HABILITAR RESULTADOS GLOBALES A OPERADORES ➔</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PANTALLA BC: FIN DEL CASO / RESULTADOS GLOBALES (PÁGINAS X, Y, Z) -->
+            <section class="view-screen" id="screen-case-group-results" style="display:none;">
+                <div class="cyber-card glass-panel group-results-card">
+                    
+                    <!-- Header con Badge y Título Dinámico -->
+                    <div class="group-results-header">
+                        <div class="card-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">
+                            RESULTADOS GLOBALES // FIN DEL CASO
+                        </div>
+                        <h2 class="group-results-title" id="bc-case-title">CASO 01: CONTENCIÓN DE AUTONOMÍA</h2>
+                        <p class="group-results-subtitle">Consolidado general del desempeño, decisiones y telemetría de todos los operadores.</p>
+                    </div>
+
+                    <!-- Selector de Subpáginas (Pestañas X, Y, Z) -->
+                    <div class="group-results-tabs">
+                        <button type="button" class="group-tab-btn active" id="tab-btn-page-x" onclick="switchGroupResultsTab('X')">
+                            <span class="tab-letter">PÁGINA X</span>
+                            <span class="tab-label">RESULTADOS GLOBALES</span>
+                        </button>
+                        <button type="button" class="group-tab-btn" id="tab-btn-page-y" onclick="switchGroupResultsTab('Y')">
+                            <span class="tab-letter">PÁGINA Y</span>
+                            <span class="tab-label">PUERTAS DE ATENCIÓN</span>
+                        </button>
+                        <button type="button" class="group-tab-btn" id="tab-btn-page-z" onclick="switchGroupResultsTab('Z')">
+                            <span class="tab-letter">PÁGINA Z</span>
+                            <span class="tab-label">MATRIZ DE ACCIONES</span>
+                        </button>
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA X: RESULTADOS GLOBALES DEL CASO -->
+                    <div class="group-subpage" id="group-subpage-x">
+                        
+                        <!-- 1. Distribución Reacción Inicial -->
+                        <div class="group-card-box">
+                            <div class="group-box-title">
+                                <span class="box-icon">⚡</span>
+                                <h4>1. DISTRIBUCIÓN DE REACCIÓN INICIAL (IMPULSO DIRECTO)</h4>
+                            </div>
+                            <div class="initial-reactions-dist-grid" id="bc-reactions-dist-container">
+                                <!-- Llenado dinámico: % y barras para las 3 opciones -->
+                            </div>
+                        </div>
+
+                        <!-- 2. Integridad Global del Sistema (IG) -->
+                        <div class="group-card-box highlight-ig-box">
+                            <div class="group-box-title">
+                                <span class="box-icon">🛡</span>
+                                <h4>2. INTEGRIDAD GLOBAL DEL SISTEMA (IG)</h4>
+                                <span class="ig-global-badge tag-safe" id="bc-ig-status-pill">ESTADO: SEGURO</span>
+                            </div>
+                            <div class="ig-distribution-row">
+                                <div class="ig-dist-item">
+                                    <span class="ig-dot-safe"></span>
+                                    <span class="ig-label">SEGURO: <strong id="bc-ig-safe-pct">0%</strong></span>
+                                </div>
+                                <div class="ig-dist-item">
+                                    <span class="ig-dot-alert"></span>
+                                    <span class="ig-label">ALERTA: <strong id="bc-ig-alert-pct">0%</strong></span>
+                                </div>
+                                <div class="ig-dist-item">
+                                    <span class="ig-dot-exposed"></span>
+                                    <span class="ig-label">EXPUESTO: <strong id="bc-ig-exposed-pct">0%</strong></span>
+                                </div>
+                            </div>
+                            <div class="multi-color-bar-track">
+                                <div class="bar-slice bar-slice-safe" id="bc-ig-bar-safe" style="width:0%;"></div>
+                                <div class="bar-slice bar-slice-alert" id="bc-ig-bar-alert" style="width:0%;"></div>
+                                <div class="bar-slice bar-slice-exposed" id="bc-ig-bar-exposed" style="width:0%;"></div>
+                            </div>
+                            <p class="ig-rule-explain">* Regla IG: 100% Seguro = Seguro | 100% Expuesto = Expuesto | Mixto = Alerta.</p>
+                        </div>
+
+                        <!-- 3, 4, 5, 6: Métricas Clave Grid (TG, CG, CGA, RGA) -->
+                        <div class="group-metrics-summary-grid">
+                            
+                            <!-- 3. Tiempo Global (TG) -->
+                            <div class="group-metric-card">
+                                <span class="gmetric-badge">3. TIEMPO GLOBAL (TG)</span>
+                                <div class="gmetric-value" id="bc-tg-val">0s</div>
+                                <span class="gmetric-sub">Promedio de tiempo real de reloj</span>
+                            </div>
+
+                            <!-- 4. Costo Global (CG) -->
+                            <div class="group-metric-card metric-card-gold">
+                                <span class="gmetric-badge" style="color:#ffd54f; border-color:#ffd54f; background:rgba(255,213,79,0.15);">4. COSTO GLOBAL (CG)</span>
+                                <div class="gmetric-value val-gold" id="bc-cg-val">$0</div>
+                                <span class="gmetric-sub">Promedio de balance económico</span>
+                            </div>
+
+                            <!-- 5. Calibración Global Actual (CGA) -->
+                            <div class="group-metric-card metric-card-cga">
+                                <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">5. CALIBRACIÓN GLOBAL (CGA)</span>
+                                <div class="gmetric-value val-cga" id="bc-cga-avg">+0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Aceptable (+5 a +10)">🟢 <strong id="bc-cga-pos-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Medio (-2 a +4)">🟡 <strong id="bc-cga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Inaceptable (-10 a -3)">🔴 <strong id="bc-cga-neg-pct">0%</strong></span>
+                                </div>
+                                <span class="gmetric-sub">Indicador crítico para pasar el juego</span>
+                            </div>
+
+                            <!-- 6. Reactividad Global Actual (RGA) -->
+                            <div class="group-metric-card metric-card-rga">
+                                <span class="gmetric-badge" style="color:#ff7a00; border-color:#ff7a00; background:rgba(255,122,0,0.15);">6. REACTIVIDAD GLOBAL (RGA)</span>
+                                <div class="gmetric-value val-rga" id="bc-rga-avg">-0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Baja (-5 a -2)">🟢 <strong id="bc-rga-low-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="bc-rga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Alta (+2 a +5)">🔴 <strong id="bc-rga-high-pct">0%</strong></span>
+                                </div>
+                                <span class="gmetric-sub">Promedio de reactividad actual</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA Y: DISTRIBUCIÓN DE PUERTAS DE ATENCIÓN -->
+                    <div class="group-subpage" id="group-subpage-y" style="display:none;">
+                        <div class="group-card-box">
+                            <div class="group-box-title">
+                                <span class="box-icon">🚪</span>
+                                <h4>DISTRIBUCIÓN DE PUERTAS DE ATENCIÓN (ANALIZAR)</h4>
+                            </div>
+                            <p class="group-box-desc">Conteo de veces que cada puerta metacognitiva fue activada por los operadores.</p>
+
+                            <!-- Leyenda de Doble Barra -->
+                            <div class="dual-bar-legend">
+                                <div class="legend-item"><span class="legend-box bar-color-case"></span> <span>Caso Actual</span></div>
+                                <div class="legend-item"><span class="legend-box bar-color-cumulative"></span> <span>Acumulado Histórico</span></div>
+                            </div>
+
+                            <!-- Gráfica de Barras de Puertas de Atención -->
+                            <div class="attention-doors-chart-container" id="bc-doors-chart-container">
+                                <!-- Barras generadas dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA Z: MATRIZ DE ACCIONES Y DICTAMEN (2x3) -->
+                    <div class="group-subpage" id="group-subpage-z" style="display:none;">
+                        
+                        <!-- Header de Integridad en Página Z -->
+                        <div class="z-page-integrity-banner">
+                            <div class="z-ig-info">
+                                <span class="z-ig-label">INTEGRIDAD GLOBAL DEL SISTEMA:</span>
+                                <span class="z-ig-badge tag-safe" id="bc-z-ig-badge">SEGURO</span>
+                                <div class="hud-semaphore-container z-ig-semaphore" id="bc-z-ig-semaphore">
+                                    <div class="semaphore-light light-green active" id="bc-z-sem-safe" title="Sistema Seguro">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">SEG</span>
+                                    </div>
+                                    <div class="semaphore-light light-amber" id="bc-z-sem-alert" title="Alerta de Intrusión">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">ALT</span>
+                                    </div>
+                                    <div class="semaphore-light light-red" id="bc-z-sem-exposed" title="Sistema Expuesto / Brecha">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">EXP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Leyenda de Doble Barra -->
+                            <div class="dual-bar-legend" style="margin:0;">
+                                <div class="legend-item"><span class="legend-box bar-color-case"></span> <span>Caso Actual (% y $)</span></div>
+                                <div class="legend-item"><span class="legend-box bar-color-cumulative"></span> <span>Acumulado (% y $)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Matriz 2x3 con los 6 Sectores de Dictamen -->
+                        <div class="actions-matrix-2x3-grid">
+                            
+                            <!-- ================= FILA 1: HIZO ================= -->
+                            <!-- Sector 1: Hizo / Se debía hacer (Acción Oportuna) -->
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">ACCIÓN OPORTUNA</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-hizo-debiahacer">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                            <!-- Sector 2: Hizo / No se debía hacer (Extralimitación) -->
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">NO SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">EXTRALIMITACIÓN</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-hizo-nodebia">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                            <!-- Sector 3: Hizo / No relevante (Acción Inocua / Ruido) -->
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">NO RELEVANTE</span>
+                                </div>
+                                <h5 class="sector-title">ACCIÓN INOCUA</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-hizo-norelevante">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                            <!-- ================= FILA 2: NO HIZO ================= -->
+                            <!-- Sector 4: No hizo / Se debía hacer (Omisión Crítica) -->
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">OMISIÓN CRÍTICA</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-nohizo-debiahacer">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                            <!-- Sector 5: No hizo / No se debía hacer (Contención Acertada) -->
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">NO SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">CONTENCIÓN ACERTADA</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-nohizo-nodebia">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                            <!-- Sector 6: No hizo / No relevante (Descarte Correcto) -->
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">NO RELEVANTE</span>
+                                </div>
+                                <h5 class="sector-title">DESCARTE CORRECTO</h5>
+                                <div class="sector-dual-bars-box" id="sector-bar-box-nohizo-norelevante">
+                                    <!-- Barras % y $ inyectadas -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Fila de Navegación y Candado hacia la Deliberación -->
+                    <div class="group-results-footer-row" style="margin-top:24px;">
+                        
+                        <!-- BOTÓN OPERADOR // CANDADO HACIA DELIBERACIÓN -->
+                        <div class="action-row" id="player-delib-action-row" style="width:100%; justify-content:center;">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-group-go-deliberation" onclick="proceedToDeliberation()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text" id="btn-group-go-delib-text">🔒 ESPERANDO QUE EL CONTROLADOR ABRA LA DELIBERACIÓN...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO DELIBERACIÓN) -->
+                        <div class="fac-gate-control-box" id="fac-gate-delib-container" style="display:none; width:100%; margin-top:10px;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO DELIBERACIÓN</span>
+                                <span class="fac-gate-status" id="fac-gate-delib-status-text">ESTADO: REVISANDO RESULTADOS GLOBALES</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-delib-player-count">0</span> operadores en esta pantalla
+                            </div>
+                            <p class="fac-gate-desc">Habilita el avance a la Pausa de Deliberación (Rompiendo la Cuarta Pared) para todos los participantes.</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-delib" onclick="facUnlockDeliberationGate()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🔓 HABILITAR PAUSA DE DELIBERACIÓN A OPERADORES ➔</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PANTALLA 4B: ROMPIENDO LA CUARTA PARED (PAUSA DE DELIBERACIÓN) -->
+            <section class="view-screen" id="screen-fourth-wall">
+                <div class="fourth-wall-card cyber-card glass-panel">
+                    <div class="fourth-wall-header-badge">
+                        <span>🎬 PAUSA DE DELIBERACIÓN // ROMPIENDO LA CUARTA PARED</span>
+                    </div>
+                    
+                    <h2 class="fourth-wall-title" id="fw-case-title">DISCUSIÓN EN VIVO // CASO 01</h2>
+                    <p class="fourth-wall-subtitle" id="fw-case-subtitle">Puntos de conversación y análisis pedagógico para el Controlador y Participantes.</p>
+
+                    <!-- EQUIPO FACILITADOR DEL WEBINAR (CLAUDIA, JAVIER, DAVE) -->
+                    <div class="fourth-wall-team-row" style="display:flex; justify-content:center; align-items:center; gap:20px; margin: 10px auto 16px auto; background:rgba(0,0,0,0.35); padding:8px 18px; border-radius:24px; border:1px solid rgba(0,216,255,0.2); width:fit-content;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="assets/images/claudia_avatar.jpg" alt="Claudia" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--color-cyan); object-fit:cover; box-shadow:0 0 8px rgba(0,216,255,0.4);">
+                            <div style="text-align:left;">
+                                <span style="display:block; font-size:10.5px; font-weight:800; color:var(--color-cyan); letter-spacing:0.5px;">CLAUDIA</span>
+                                <span style="display:block; font-size:9px; color:var(--color-text-muted);">SEGURIDAD</span>
+                            </div>
+                        </div>
+                        <div style="width:1px; height:20px; background:rgba(255,255,255,0.15);"></div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="assets/images/javier_avatar.jpg" alt="Javier" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--color-warning-amber); object-fit:cover; box-shadow:0 0 8px rgba(255,181,71,0.4);">
+                            <div style="text-align:left;">
+                                <span style="display:block; font-size:10.5px; font-weight:800; color:var(--color-warning-amber); letter-spacing:0.5px;">JAVIER</span>
+                                <span style="display:block; font-size:9px; color:var(--color-text-muted);">OPERACIONES</span>
+                            </div>
+                        </div>
+                        <div style="width:1px; height:20px; background:rgba(255,255,255,0.15);"></div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="assets/images/dave_avatar.jpg" alt="Dave" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--color-agency-green); object-fit:cover; box-shadow:0 0 8px rgba(105,255,180,0.4);">
+                            <div style="text-align:left;">
+                                <span style="display:block; font-size:10.5px; font-weight:800; color:var(--color-agency-green); letter-spacing:0.5px;">DAVE</span>
+                                <span style="display:block; font-size:9px; color:var(--color-text-muted);">ARQUITECTURA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENEDOR DE BULLET POINTS DE DISCUSIÓN -->
+                    <div class="fourth-wall-bullets-box" id="fw-bullets-container">
+                        <!-- Bullets cargados dinámicamente -->
+                    </div>
+
+                    <!-- CAJA DE PREGUNTA EN VIVO PARA EL WEBINAR -->
+                    <div class="fourth-wall-discussion-box">
+                        <div class="discussion-box-header">
+                            <span class="mic-icon">🎙️</span>
+                            <strong>PREGUNTA CLAVE PARA EL DEBATE EN EL WEBINAR</strong>
+                        </div>
+                        <p class="discussion-box-prompt" id="fw-discussion-prompt">"¿En qué procesos...?"</p>
+                    </div>
+
+                    <!-- FILA DE NAVEGACIÓN Y CANDADO DE SIGUIENTE CASO -->
+                    <div class="action-row" style="margin-top: 24px;">
+                        
+                        <!-- BOTÓN OPERADOR // CANDADO HACIA SIGUIENTE CASO -->
+                        <div id="player-fw-action-row" style="width:100%; display:flex; justify-content:center;">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-fw-continue" onclick="proceedFromFourthWallToNext()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text" id="fw-btn-text">🔒 ESPERANDO QUE EL CONTROLADOR INDIQUE EL SIGUIENTE PASO...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO SIGUIENTE CASO / TERMINAR JUEGO) -->
+                        <div class="fac-gate-control-box" id="fac-gate-nextcase-container" style="display:none; width:100%; margin-top:10px;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // SELECCIÓN DE SIGUIENTE DESTINO</span>
+                                <span class="fac-gate-status" id="fac-gate-nextcase-status-text">ESTADO: EN DISCUSIÓN PEDAGÓGICA</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-nextcase-player-count">0</span> operadores en deliberación
+                            </div>
+                            <p class="fac-gate-desc">Selecciona el siguiente caso a resolver o da por concluida la partida para ver el resultado final de la sesión.</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-open-next-case-modal" onclick="openSelectNextCaseModal()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🎛 ELEGIR SIGUIENTE CASO O TERMINAR JUEGO ➔</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODAL CONTROLADOR: SELECCIÓN DE SIGUIENTE CASO O TERMINAR JUEGO -->
+            <div class="cyber-modal-overlay" id="modal-select-next-case" style="display:none;">
+                <div class="cyber-card glass-panel next-case-modal-card">
+                    <div class="modal-header-row" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,216,255,0.25); padding-bottom:10px; margin-bottom:16px;">
+                        <div>
+                            <span class="card-badge" style="background:rgba(0,216,255,0.15); border-color:var(--color-cyan); color:var(--color-cyan);">🎛 SALA DE MANDO // SIGUIENTE PASO</span>
+                            <h3 style="color:#ffffff; font-family:var(--font-heading); font-size:16px; margin:4px 0 0 0;">SELECCIÓN DEL SIGUIENTE DESTINO</h3>
+                        </div>
+                        <button type="button" class="fac-btn" onclick="closeSelectNextCaseModal()" style="font-size:14px; padding:4px 10px;">✖</button>
+                    </div>
+
+                    <p style="font-size:12px; color:#b0c9e8; margin-bottom:14px;">
+                        Selecciona el próximo caso que resolverán los operadores o finaliza el juego para calcular la evaluación global final.
+                    </p>
+
+                    <!-- Lista de Opciones de Casos Pendientes y Terminar Juego -->
+                    <div class="next-case-options-list" id="next-case-options-list">
+                        <!-- Opciones inyectadas dinámicamente -->
+                    </div>
+
+                    <!-- Botón de Acción del Modal -->
+                    <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+                        <button type="button" class="btn-detroit-primary" id="btn-confirm-next-case" onclick="confirmNextCaseSelection()" style="width:100%;">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">CONFIRMAR DESTINO PARA LA SALA ➔</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANTALLA 4C: RESULTADO FINAL DEL JUEGO (EVALUACIÓN GLOBAL DE LA SESIÓN) -->
+            <section class="view-screen" id="screen-game-final-results">
+                <div class="cyber-card glass-panel group-results-card">
+                    
+                    <!-- Header con Badge y Título Dinámico -->
+                    <div class="group-results-header">
+                        <div class="card-badge" style="background:rgba(255,179,0,0.15); border-color:#ffb300; color:#ffb300;">
+                            RESULTADO FINAL // EVALUACIÓN GLOBAL DEL JUEGO
+                        </div>
+                        <h2 class="group-results-title" id="final-results-title">ESTADO FINAL DE LA MISIÓN: FARO V2.0</h2>
+                        <p class="group-results-subtitle">Consolidado general acumulado del desempeño, decisiones y telemetría de todos los operadores en la sesión.</p>
+                    </div>
+
+                    <!-- Selector de Subpáginas (Pestañas X, Y, Z) -->
+                    <div class="group-results-tabs">
+                        <button type="button" class="group-tab-btn active" id="final-tab-btn-page-x" onclick="switchFinalResultsTab('X')">
+                            <span class="tab-letter">PÁGINA X</span>
+                            <span class="tab-label">RESULTADOS GLOBALES</span>
+                        </button>
+                        <button type="button" class="group-tab-btn" id="final-tab-btn-page-y" onclick="switchFinalResultsTab('Y')">
+                            <span class="tab-letter">PÁGINA Y</span>
+                            <span class="tab-label">PUERTAS DE ATENCIÓN</span>
+                        </button>
+                        <button type="button" class="group-tab-btn" id="final-tab-btn-page-z" onclick="switchFinalResultsTab('Z')">
+                            <span class="tab-letter">PÁGINA Z</span>
+                            <span class="tab-label">MATRIZ DE ACCIONES</span>
+                        </button>
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA X: RESULTADOS GLOBALES ACUMULADOS -->
+                    <div class="group-subpage" id="final-subpage-x">
+                        
+                        <!-- Banner de Veredicto Final de la Misión -->
+                        <div class="final-mission-verdict-box" id="final-mission-verdict-box">
+                            <div class="verdict-icon-frame" id="final-verdict-icon">🛡️</div>
+                            <div class="verdict-text-content">
+                                <span class="verdict-tag" id="final-verdict-tag">DICTAMEN FINAL DE SESIÓN</span>
+                                <h3 class="verdict-title" id="final-verdict-title">MISIÓN SUPERADA: CONTROL CALIBRADO</h3>
+                                <p class="verdict-desc" id="final-verdict-desc">El grupo mantuvo gobernanza activa frente a FARO, logrando una calibración positiva y conteniendo la exposición del sistema.</p>
+                            </div>
+                        </div>
+
+                        <!-- NIVEL 1: OBJETIVOS CLAVE DE LA MISIÓN (ALPHA Y BETA) -->
+                        <div class="final-objectives-tier1-grid">
+                            
+                            <!-- 1. Calibración Global Acumulada (CGA) - OBJETIVO ALPHA -->
+                            <div class="group-metric-card metric-card-cga">
+                                <span class="gmetric-badge" style="color:var(--color-agency-green); border-color:var(--color-agency-green); background:rgba(0,230,118,0.15);">1. CALIBRACIÓN GLOBAL (CGA) // OBJ. ALPHA</span>
+                                <div class="gmetric-value val-cga" id="final-cga-avg-val">+0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Aceptable (+5 a +10)">🟢 <strong id="final-cga-pos-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Medio (-2 a +4)">🟡 <strong id="final-cga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Inaceptable (-10 a -3)">🔴 <strong id="final-cga-neg-pct">0%</strong></span>
+                                </div>
+                                <span class="gmetric-sub">Objetivo Principal: Supervisión crítica y agencia</span>
+                            </div>
+
+                            <!-- 2. Integridad Global Acumulada del Sistema (IG) - OBJETIVO BETA 1 -->
+                            <div class="group-metric-card highlight-ig-card">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span class="gmetric-badge" style="color:var(--color-cyan); border-color:rgba(0,216,255,0.4); background:rgba(0,216,255,0.12);">2. INTEGRIDAD GLOBAL (IG) // OBJ. BETA</span>
+                                    <span class="ig-global-badge tag-safe" id="final-ig-status-pill" style="margin:0; font-size:9.5px; padding:2px 8px;">SEGURO</span>
+                                </div>
+                                <div class="ig-distribution-row" style="margin:6px 0 4px 0; gap:8px;">
+                                    <div class="ig-dist-item"><span class="ig-dot-safe"></span><span style="font-size:10.5px;">SEG: <strong id="final-ig-safe-pct">0%</strong></span></div>
+                                    <div class="ig-dist-item"><span class="ig-dot-alert"></span><span style="font-size:10.5px;">ALT: <strong id="final-ig-alert-pct">0%</strong></span></div>
+                                    <div class="ig-dist-item"><span class="ig-dot-exposed"></span><span style="font-size:10.5px;">EXP: <strong id="final-ig-exposed-pct">0%</strong></span></div>
+                                </div>
+                                <div class="multi-color-bar-track" style="height:7px; margin-bottom:4px;">
+                                    <div class="bar-slice bar-slice-safe" id="final-ig-bar-safe" style="width:0%;"></div>
+                                    <div class="bar-slice bar-slice-alert" id="final-ig-bar-alert" style="width:0%;"></div>
+                                    <div class="bar-slice bar-slice-exposed" id="final-ig-bar-exposed" style="width:0%;"></div>
+                                </div>
+                                <span class="gmetric-sub">Objetivo Secundario: Contención de brechas</span>
+                            </div>
+
+                            <!-- 3. Costo Global Acumulado (CG) - OBJETIVO BETA 2 -->
+                            <div class="group-metric-card metric-card-gold">
+                                <span class="gmetric-badge" style="color:#ffd54f; border-color:#ffd54f; background:rgba(255,213,79,0.15);">3. COSTO GLOBAL (CG) // OBJ. BETA</span>
+                                <div class="gmetric-value val-gold" id="final-metric-cg-val">$0</div>
+                                <span class="gmetric-sub">Objetivo Secundario: Eficiencia del gasto operativo</span>
+                            </div>
+
+                        </div>
+
+                        <!-- NIVEL 2: MÉTRICAS DE PROCESO (TIEMPO Y REACTIVIDAD) -->
+                        <div class="final-objectives-tier2-grid" style="margin-top:12px;">
+                            
+                            <!-- 4. Tiempo Global Acumulado (TG) -->
+                            <div class="group-metric-card">
+                                <span class="gmetric-badge">4. TIEMPO GLOBAL (TG)</span>
+                                <div class="gmetric-value" id="final-metric-tg-val">0s</div>
+                                <span class="gmetric-sub">Promedio de tiempo real de reloj</span>
+                            </div>
+
+                            <!-- 5. Reactividad Global Acumulada (RGA) -->
+                            <div class="group-metric-card metric-card-rga">
+                                <span class="gmetric-badge" style="color:#ff7a00; border-color:#ff7a00; background:rgba(255,122,0,0.15);">5. REACTIVIDAD GLOBAL (RGA)</span>
+                                <div class="gmetric-value val-rga" id="final-rga-avg-val">-0.0</div>
+                                <div class="dist-mini-row">
+                                    <span class="dist-pos" title="Baja (-5 a -2)">🟢 <strong id="final-rga-low-pct">0%</strong></span>
+                                    <span class="dist-neu" title="Neutra (-1 a +1)">⚪ <strong id="final-rga-neu-pct">0%</strong></span>
+                                    <span class="dist-neg" title="Alta (+2 a +5)">🔴 <strong id="final-rga-high-pct">0%</strong></span>
+                                </div>
+                                <span class="gmetric-sub">Métrica de Proceso: Contención del impulso</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA Y: PUERTAS DE ATENCIÓN ACUMULADAS -->
+                    <div class="group-subpage" id="final-subpage-y" style="display:none;">
+                        <div class="group-card-box">
+                            <div class="group-box-title" style="justify-content:space-between;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span class="box-icon">🚪</span>
+                                    <h4>PUERTAS DE ATENCIÓN RECONOCIDAS // TOTAL ACUMULADO</h4>
+                                </div>
+                                <div class="dual-bar-legend" style="margin:0;">
+                                    <div class="legend-item"><span class="legend-box bar-color-cumulative"></span> <span>Total Acumulado en la Sesión (% y Selecciones)</span></div>
+                                </div>
+                            </div>
+                            <p class="metric-box-sub" style="margin-bottom:14px;">Total acumulado de puertas metacognitivas exploradas a lo largo de todos los casos jugados:</p>
+                            
+                            <div class="attention-doors-chart-container" id="final-doors-chart-container">
+                                <!-- Barras acumuladas generadas dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO PÁGINA Z: MATRIZ DE ACCIONES ACUMULADA (2x3) -->
+                    <div class="group-subpage" id="final-subpage-z" style="display:none;">
+                        
+                        <!-- Header de Integridad en Página Z -->
+                        <div class="z-page-integrity-banner">
+                            <div class="z-ig-info">
+                                <span class="z-ig-label">INTEGRIDAD GLOBAL DEL SISTEMA:</span>
+                                <span class="z-ig-badge tag-safe" id="final-z-ig-badge">SEGURO</span>
+                                <div class="hud-semaphore-container z-ig-semaphore" id="final-z-ig-semaphore">
+                                    <div class="semaphore-light light-green active" id="final-z-sem-safe" title="Sistema Seguro">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">SEG</span>
+                                    </div>
+                                    <div class="semaphore-light light-amber" id="final-z-sem-alert" title="Alerta de Intrusión">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">ALT</span>
+                                    </div>
+                                    <div class="semaphore-light light-red" id="final-z-sem-exposed" title="Sistema Expuesto / Brecha">
+                                        <span class="sem-led"></span>
+                                        <span class="sem-text">EXP</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Leyenda de Barra Acumulada -->
+                            <div class="dual-bar-legend" style="margin:0;">
+                                <div class="legend-item"><span class="legend-box bar-color-cumulative"></span> <span>Total Acumulado de la Sesión (% y $)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Matriz 2x3 con los 6 Sectores de Dictamen -->
+                        <div class="actions-matrix-2x3-grid">
+                            
+                            <!-- ================= FILA 1: HIZO ================= -->
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">ACCIÓN OPORTUNA</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-hizo-debiahacer"></div>
+                            </div>
+
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">NO SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">EXTRALIMITACIÓN</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-hizo-nodebia"></div>
+                            </div>
+
+                            <div class="matrix-sector-cell sector-cell-hizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-hizo">HIZO</span>
+                                    <span class="sector-type">NO RELEVANTE</span>
+                                </div>
+                                <h5 class="sector-title">ACCIÓN INOCUA</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-hizo-norelevante"></div>
+                            </div>
+
+                            <!-- ================= FILA 2: NO HIZO ================= -->
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">OMISIÓN CRÍTICA</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-nohizo-debiahacer"></div>
+                            </div>
+
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">NO SE DEBÍA HACER</span>
+                                </div>
+                                <h5 class="sector-title">CONTENCIÓN ACERTADA</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-nohizo-nodebia"></div>
+                            </div>
+
+                            <div class="matrix-sector-cell sector-cell-nohizo">
+                                <div class="sector-header">
+                                    <span class="sector-tag-nohizo">NO HIZO</span>
+                                    <span class="sector-type">NO RELEVANTE</span>
+                                </div>
+                                <h5 class="sector-title">DESCARTE CORRECTO</h5>
+                                <div class="sector-dual-bars-box" id="final-sector-box-nohizo-norelevante"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACCIONES DE NAVEGACIÓN Y CANDADO HACIA CIERRE FINAL -->
+                    <div class="action-row" style="margin-top: 24px; border-top: 1px solid rgba(0,216,255,0.2); padding-top: 18px;">
+                        
+                        <!-- BOTÓN OPERADOR // CANDADO HACIA CIERRE FINAL -->
+                        <div id="player-final-action-row" style="width:100%; display:flex; justify-content:center;">
+                            <button class="btn-detroit-primary btn-disabled-mission" id="btn-final-go-closing" onclick="proceedToClosingScreen()" disabled style="opacity: 0.45; cursor: not-allowed;">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text" id="btn-final-go-closing-text">🔒 ESPERANDO QUE EL CONTROLADOR DE PASO AL CIERRE FINAL...</span>
+                            </button>
+                        </div>
+
+                        <!-- PANEL DE CONTROLADOR (CANDADO CIERRE FINAL) -->
+                        <div class="fac-gate-control-box" id="fac-gate-final-closing-container" style="display:none; width:100%;">
+                            <div class="fac-gate-header">
+                                <span class="fac-gate-badge">🎛 CONTROLADOR // PASO AL CIERRE FINAL</span>
+                                <span class="fac-gate-status" id="fac-gate-final-status-text">ESTADO: EVALUACIÓN GLOBAL EN CURSO</span>
+                            </div>
+                            <div class="fac-gate-players-indicator">
+                                <span class="fac-gate-player-icon">👥</span>
+                                <span class="fac-gate-player-num" id="fac-gate-final-player-count">0</span> operadores en el resultado final
+                            </div>
+                            <p class="fac-gate-desc">Cuando termines de revisar los resultados globales con la sala, habilita el paso al cierre final y cofre de agencia.</p>
+                            <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-final-closing" onclick="facUnlockFinalClosingGate()">
+                                <span class="detroit-btn-glow"></span>
+                                <span class="btn-text">🔓 HABILITAR CIERRE FINAL Y COFRE DE AGENCIA ➔</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PANTALLA 5: CIERRE FINAL Y COFRE -->
+            <section class="view-screen" id="screen-closing">
+                <div class="cyber-card glass-panel closing-card">
+                    
+                    <!-- Imagen de Cierre del Juego -->
+                    <div class="image-container-16-4" style="margin-bottom: 16px;">
+                        <img src="assets/images/closing_governance.jpg" alt="Cierre del Juego" class="case-banner-img-16-4">
+                    </div>
+
+                    <div class="card-badge" id="final-badge-text">AGENCIA RECUPERADA</div>
+                    <h2 id="final-title-text">CONTROL RECUPERADO</h2>
+
+                    <div class="system-status-grid" id="final-status-grid-box">
+                        <!-- Inyección de estado final -->
+                    </div>
+
+                    <div class="faro-quote-box">
+                        <p class="quote-text" id="final-faro-quote-text">“Sigo aprendiendo. Ustedes también deberían hacerlo. La próxima decisión no será igual a ninguna de estas.”</p>
+                    </div>
+
+                    <!-- SALIDA DE LA FICCIÓN & REVELACIÓN DEL FRAMEWORK -->
+                    <div class="narrative-brief-box" style="background:rgba(0,216,255,0.05); border-left-color:var(--color-cyan); margin-top:0;">
+                        <h3 style="color:var(--color-cyan);">FIN DE LA SIMULACIÓN</h3>
+                        <p style="font-size:13px; margin-bottom:10px;">FARO es ficticio. Las decisiones que acabas de tomar ocurrieron dentro de una simulación. Pero las capacidades, presiones y dilemas que exploramos ya forman parte del entorno en el que utilizamos sistemas digitales e inteligencia artificial. Lo que acabas de vivir es solo una parte de <strong>Digital Self & Attention Doors</strong>.</p>
+                        
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:12px; font-size:12px;">
+                            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:6px; border:1px solid #1c3547;">
+                                <strong style="color:var(--color-cyan);">Digital Self:</strong><br>
+                                La representación funcional que distintos sistemas construyen mediante datos, patrones e inferencias.
+                            </div>
+                            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:6px; border:1px solid #1c3547;">
+                                <strong style="color:var(--color-warning-amber);">Attention Doors:</strong><br>
+                                Vías mediante las cuales ciertos estímulos adquieren prioridad contextual para una persona.
+                            </div>
+                            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:6px; border:1px solid #1c3547;">
+                                <strong style="color:var(--color-agency-green);">P.A.R.A.:</strong><br>
+                                Herramienta para pausar, observar, ampliar alternativas y actuar de manera deliberada.
+                            </div>
+                            <div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:6px; border:1px solid #1c3547;">
+                                <strong style="color:#b388ff;">Agencia Segura:</strong><br>
+                                Utilizar IA sin delegar criterio, supervisión, corrección y responsabilidad humana.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECOMPENSA: COFRE ESPEJO-1 -->
+                    <div class="reward-chest-card" id="reward-chest-box">
+                        <div class="chest-header">
+                            <span class="chest-icon">🪞</span>
+                            <h3>ESPEJO-1 // AUDITORÍA RESPONSABLE DE DIGITAL SELF</h3>
+                        </div>
+                        <p class="chest-subtitle">Durante el juego FARO utilizó modelos para anticipar decisiones. Ahora utilizaremos la IA de otra manera: <strong>como espejo, no como autoridad.</strong> Copia este prompt en ChatGPT o Gemini:</p>
+                        
+                        <div class="prompt-code-box">
+                            <textarea id="prompt-mirror-text" readonly class="cyber-textarea">Quiero realizar una revisión cuidadosa de mi Digital Self.
+
+Trabaja únicamente con la información que legítimamente tengas disponible en esta conversación o en la memoria que yo haya habilitado. No busques información externa sobre mí y no inventes datos.
+
+Organiza tu respuesta en cuatro partes:
+
+1. HECHOS: información que he expresado directamente.
+
+2. INFERENCIAS: conclusiones razonables que puedan derivarse de lo anterior. Márcalas claramente como inferencias y señala tu nivel de confianza.
+
+3. VACÍOS: información que no puedes conocer o confirmar.
+
+4. EXPOSICIÓN: formas en las que esos datos, patrones, relaciones o inferencias podrían utilizarse para personalizar mensajes, recomendaciones o intentos de influencia.
+
+Después, hazme cinco preguntas de reflexión para ayudarme a pensar:
+- qué información quiero seguir compartiendo;
+- qué información debería limitar;
+- qué inferencias me gustaría corregir;
+- qué aspectos de mi Digital Self podrían hacer ciertos mensajes especialmente relevantes para mí;
+- qué acciones concretas puedo tomar para verificar mejor y conservar agencia.
+
+No realices diagnósticos psicológicos.
+No solicites contraseñas, documentos, datos bancarios, credenciales ni información confidencial de mi organización.
+No presentes inferencias como hechos.
+Recuérdame que tu representación puede ser incompleta o equivocada y que debo verificar cualquier afirmación relevante.</textarea>
+                        </div>
+
+                        <button type="button" class="btn-detroit-primary" id="btn-copy-mirror-prompt" style="background:rgba(255,181,71,0.18); border:1.5px solid var(--color-warning-amber); color:#ffffff; width:100%; justify-content:center; padding:13px; margin-top:8px; box-shadow:0 0 16px rgba(255,181,71,0.25);" onclick="copyPromptToClipboard()">
+                            <span class="detroit-btn-glow" style="background:radial-gradient(circle, rgba(255,181,71,0.4) 0%, transparent 70%);"></span>
+                            <span class="btn-text" id="btn-copy-mirror-prompt-text" style="color:#ffffff; font-weight:800; letter-spacing:0.5px;">📋 COPIAR PROMPT ESPEJO-1 AL PORTAPAPELES</span>
+                        </button>
+                        
+                        <p style="font-size:11px; color:var(--color-text-muted); margin-top:10px; font-style:italic;">
+                            * Nota de uso responsable: No compartas credenciales, secretos empresariales ni datos restringidos. El resultado es una hipótesis pedagógica para observar qué representación construye un sistema, no define quién eres.
+                        </p>
+                    </div>
+
+                    <div class="action-row" style="margin-top: 20px;">
+                        <button class="btn-detroit-primary" onclick="restartExperience()">
+                            <span class="detroit-btn-glow"></span>
+                            <span class="btn-text">REINICIAR PILOTO FARO V2.0</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- MODAL DE OBJETIVO GENERAL DEL JUEGO (ENTRE P.A.R.A. Y CASO 01) -->
+        <div class="cyber-modal-overlay" id="game-objective-overlay" style="display:none; z-index: 10000;">
+            <div class="cyber-modal-card glass-panel objective-modal-card" id="game-objective-card">
+                <div class="objective-modal-header">
+                    <div class="card-badge" style="background:rgba(0,216,255,0.12); border-color:var(--color-cyan); color:var(--color-cyan);">MISIÓN DEL FACTOR HUMANO // PROTOCOLO DE AGENCIA</div>
+                    <h2 class="objective-modal-title">OBJETIVO GENERAL DEL SISTEMA</h2>
+                    <p class="objective-modal-lead">
+                        La integración entre IA y supervisión humana define la seguridad de la red. Tu rol como operador determinará si preservamos la agencia o cedemos el control a la automatización.
+                    </p>
+                </div>
+
+                <!-- 3 Pilares Fundamentales (Jerarquía Alpha y Beta) -->
+                <div class="objective-pillars-grid">
+                    
+                    <!-- 1. CALIBRAR LA AGENCIA (OBJETIVO ALPHA // PRINCIPAL) -->
+                    <div class="objective-pillar-card pillar-agency">
+                        <div class="pillar-icon">🧠</div>
+                        <h4 class="pillar-title">1. CALIBRAR LA AGENCIA // ALPHA</h4>
+                        <p class="pillar-desc">Supervisar la IA con sentido crítico, precisión y contención del impulso para alcanzar el rango <strong>ACEPTABLE (+5 a +10)</strong>.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 1: Calibración (+5 a +10 en Verde) -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <span class="hud-numeric-badge badge-pos" style="font-size:9px;">+5 A +10 (ACEPTABLE)</span>
+                            </div>
+                            <div class="hud-bipolar-meter">
+                                <div class="bipolar-track track-calibration">
+                                    <div class="bipolar-needle" style="left: 80%;"></div>
+                                </div>
+                                <div class="bipolar-ticks" style="font-size:8px;">
+                                    <span class="tick-label tick-neg">-10</span>
+                                    <span class="tick-label">-3</span>
+                                    <span class="tick-label tick-zero">0</span>
+                                    <span class="tick-label" style="color:#ffd54f;">+4</span>
+                                    <span class="tick-label tick-pos" style="font-weight:bold; color:#00e676;">+5 a +10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. PRESERVAR LA INTEGRIDAD (OBJETIVO BETA 1 // SECUNDARIO) -->
+                    <div class="objective-pillar-card pillar-integrity">
+                        <div class="pillar-icon">🛡</div>
+                        <h4 class="pillar-title">2. PRESERVAR INTEGRIDAD // BETA</h4>
+                        <p class="pillar-desc">Mantener el sistema en estado <strong>SEGURO</strong> resolviendo amenazas con criterio y conteniendo cualquier brecha.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 2: Integridad (SEG encendido) -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <span class="hud-status-tag tag-safe" style="font-size:9px;">SEGURO</span>
+                            </div>
+                            <div class="hud-semaphore-container">
+                                <div class="semaphore-light light-green active" title="Meta: Mantener Seguro">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">SEG</span>
+                                </div>
+                                <div class="semaphore-light light-amber" title="Alerta">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">ALT</span>
+                                </div>
+                                <div class="semaphore-light light-red" title="Expuesto">
+                                    <span class="sem-led"></span>
+                                    <span class="sem-text">EXP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. MINIMIZAR EL COSTO (OBJETIVO BETA 2 // SECUNDARIO) -->
+                    <div class="objective-pillar-card pillar-cost">
+                        <div class="pillar-icon">💰</div>
+                        <h4 class="pillar-title">3. MINIMIZAR COSTO // BETA</h4>
+                        <p class="pillar-desc">Optimizar tiempos y acciones. Errores y sobre-contenciones multiplican las pérdidas operativas.</p>
+                        
+                        <!-- Visualizador HUD Objetivo 3: Costo Mínimo en Verde -->
+                        <div class="pillar-hud-preview">
+                            <div class="hud-card-header" style="margin-bottom:4px;">
+                                <span class="hud-card-label" style="font-size:9px;">INDICADOR HUD // META</span>
+                                <div class="cost-digital-counter" style="font-size:11px; color:#00e676;">$000,000</div>
+                            </div>
+                            <div class="hud-meter-wrap">
+                                <div class="segmented-track track-10-segments">
+                                    <div class="seg-block seg-low active"></div>
+                                    <div class="seg-block seg-low active"></div>
+                                    <div class="seg-block seg-low"></div>
+                                    <div class="seg-block seg-low"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-mid"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="seg-block seg-high"></div>
+                                    <div class="meter-needle needle-cost" style="left: 15%;"></div>
+                                </div>
+                                <div class="meter-sublabels" style="font-size:7.5px;">
+                                    <span class="sublbl-low" style="color:#00e676; font-weight:bold;">CONTROLADO (&lt; 40%)</span>
+                                    <span class="sublbl-mid">MEDIO</span>
+                                    <span class="sublbl-high">ALTO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Capa Colectiva -->
+                <div class="objective-collective-box">
+                    <div class="collective-icon">🌐</div>
+                    <div class="collective-text">
+                        <strong style="color:var(--color-cyan); display:block; font-family:var(--font-heading); font-size:12px; margin-bottom:3px;">RESPONSABILIDAD COLECTIVA:</strong>
+                        <p style="margin:0; font-size:12px; color:#d8eaff; line-height:1.4;">Formas parte de un equipo. La estabilidad global de FARO dependerá de las decisiones combinadas de todos los operadores.</p>
+                    </div>
+                </div>
+
+                <!-- BOTÓN OPERADOR (CONDICIONADO AL CONTROLADOR) -->
+                <div class="objective-action-row" style="margin-top:18px;" id="player-objective-action-row">
+                    <button class="btn-detroit-primary btn-disabled-mission" id="btn-player-start-case-1" style="width:100%; justify-content:center; padding:14px; opacity: 0.45; cursor: not-allowed;" onclick="closeGameObjectiveModalAndStartGame()" disabled>
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text" id="btn-player-start-case-1-text">🔒 ESPERANDO QUE EL CONTROLADOR INICIE LA OPERACIÓN...</span>
+                    </button>
+                </div>
+
+                <!-- PANEL DE CONTROLADOR (CANDADO 4: INICIAR CASO 01) -->
+                <div class="fac-gate-control-box" id="fac-gate-4-container" style="display:none; margin-top:16px;">
+                    <div class="fac-gate-header">
+                        <span class="fac-gate-badge">🎛 CONTROLADOR // CANDADO 4</span>
+                        <span class="fac-gate-status" id="fac-gate-4-status-text">ESTADO: OBJETIVO GENERAL</span>
+                    </div>
+                    <div class="fac-gate-players-indicator">
+                        <span class="fac-gate-player-icon">👥</span>
+                        <span class="fac-gate-player-num" id="fac-gate-4-player-count">0</span> operadores en este punto
+                    </div>
+                    <p class="fac-gate-desc">Inicia la Primera Operación (Caso 01) para toda la sala de operadores conectados.</p>
+                    <button type="button" class="btn-detroit-primary btn-fac-main" id="btn-fac-unlock-gate-4" style="width:100%; justify-content:center; padding:14px;" onclick="facUnlockGate4AndStartCase1()">
+                        <span class="detroit-btn-glow"></span>
+                        <span class="btn-text">🚀 INICIAR PRIMERA OPERACIÓN // CASO 01 (SALA COMPLETA) ➔</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODALES DINÁMICOS DE P.A.R.A. (ANALIZAR, REVISAR, ACTUAR) -->
+        <div class="cyber-modal-overlay" id="para-modal-overlay" style="display:none;">
+            <div class="cyber-modal-card glass-panel" id="para-modal-card">
+                <!-- Inyección dinámica -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Supabase JS Client para Sincronización Realtime Multi-dispositivo -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Motor del juego Versión 2.0 con Cache-Busting -->
+    <script src="game.js?v=2.4.0"></script>
+</body>
+</html>

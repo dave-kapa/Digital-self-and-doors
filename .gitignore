@@ -1,6 +1,18 @@
-﻿# Backups y temporales
-backups/
-*.tmp
-*.log
+# Dependencias y sistema
+node_modules/
 .DS_Store
 Thumbs.db
+
+# Resguardos locales y temporales
+backups/
+scratch/
+*.tmp
+*.log
+
+# Biblioteca científica: PDFs pesados protegidos por copyright
+v3/research_library/academic_articles/*.pdf
+!v3/research_library/academic_articles/.gitkeep
+v3/research_library/inbox/*
+!v3/research_library/inbox/.gitkeep
+
+.netlify/

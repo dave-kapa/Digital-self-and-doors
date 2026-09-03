@@ -1,0 +1,43 @@
+---
+manifest:
+  - source_id: SRC-DOC-MAESTRO-DS-AD
+    migration_status: in_progress
+    extracted:
+      concepts: ready_for_block_a
+      research: ready_for_block_c
+      claims: ready_for_block_c
+      decisions: ready_for_block_a
+      methodology: ready_for_block_d
+      products: ready_for_block_d
+      prompts: ready_for_block_d
+      commercial: ready_for_block_d
+      open_questions: complete
+      discarded_ideas: complete
+    destinations:
+      - CON-THESIS
+      - CON-DIGITAL-SELF
+      - CON-ATTENTION-DOORS
+      - DOOR-001
+      - DOOR-009
+      - CON-PARA
+      - DEC-001
+      - DEC-012
+
+  - source_id: SRC-DOC-MAESTRO-WEBINAR
+    migration_status: in_progress
+    extracted:
+      concepts: complete
+      research: ready_for_block_c
+      claims: ready_for_block_c
+      decisions: complete
+      methodology: ready_for_block_d
+      products: ready_for_block_d
+      prompts: ready_for_block_d
+      commercial: ready_for_block_d
+      open_questions: complete
+      discarded_ideas: complete
+    destinations:
+      - MET-PHILOSOPHY
+      - MET-TRAIN-VS-INTERV
+      - GAME-FARO-SIMULATION-V3PLUS
+      - PROD-WEBINAR-V1
