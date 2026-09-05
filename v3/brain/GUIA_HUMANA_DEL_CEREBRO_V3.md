@@ -21,6 +21,8 @@ El **Cerebro V3** (ubicado en la carpeta `/v3/brain/` del repositorio de GitHub)
 2. **El "Canon" vs. Borradores:** En este cerebro llamamos **Canon** a lo que el equipo ha validado formalmente como oficial (definiciones, reglas de juego, posturas éticas). Nada se inventa sobre la marcha.
 3. **El Código NO es la Documentación:** Si quieres saber cómo funciona el juego FARO, qué significa un caso o cómo se calcula el puntaje, no tienes que leer JavaScript. Está escrito en español claro y estructurado en documentos de diseño de juego (GDD).
 
+> **📎 Nota sobre enlaces (portabilidad):** todos los enlaces internos de este cerebro deben escribirse como **rutas relativas** (ej. `07_commercial_and_gotomarket/problem_space.md` o `../../v2`), nunca como rutas absolutas de una máquina (`file:///C:/...`, `file:///d:/...`, `/Users/tu_usuario/...`). Cada colaborador clona el repositorio en una ruta distinta, así que un enlace absoluto solo funciona en el computador de quien lo escribió y se rompe para todos los demás — en GitHub, en VS Code y en cualquier otro editor. Antes de guardar un enlace nuevo, pregúntate: "¿este link abre igual en la máquina de otra persona?".
+
 ---
 
 ## 🏛️ 2. MAPA DE NAVEGACIÓN: LAS 8 CAPAS DEL CEREBRO
@@ -62,17 +64,17 @@ El objetivo comercial inmediato es tener reuniones con **CISOs (Seguridad de la 
 
 ### Tu Ruta Rápida de Preparación para una Reunión:
 1. **Entender el Problema del Cliente (El dolor):**
-   * Lee [`07_commercial_and_gotomarket/problem_space.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/07_commercial_and_gotomarket/problem_space.md). Te da las palabras exactas para explicar por qué las campañas tradicionales de phishing ("mandar correos trampa y castigar al que cae") ya no funcionan frente a la IA generativa.
+   * Lee [`07_commercial_and_gotomarket/problem_space.md`](07_commercial_and_gotomarket/problem_space.md). Te da las palabras exactas para explicar por qué las campañas tradicionales de phishing ("mandar correos trampa y castigar al que cae") ya no funcionan frente a la IA generativa.
 2. **Preparar el Argumentario según quién te escuche:**
-   * Abre [`07_commercial_and_gotomarket/value_proposition.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/07_commercial_and_gotomarket/value_proposition.md) y [`audiences_and_buyers.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/07_commercial_and_gotomarket/audiences_and_buyers.md). 
+   * Abre [`07_commercial_and_gotomarket/value_proposition.md`](07_commercial_and_gotomarket/value_proposition.md) y [`audiences_and_buyers.md`](07_commercial_and_gotomarket/audiences_and_buyers.md). 
    * Al CISO le hablas de *calibración de juicio, reducción de impulsividad y tiempo de reacción*.
    * Al de RRHH le hablas de *desarrollo de competencias, cero culpabilización y cultura de seguridad psicológica*.
 3. **Utilizar solo Cifras y Datos Autorizados (Cero Alucinaciones de Venta):**
-   * Abre [`07_commercial_and_gotomarket/evidence_for_sales.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/07_commercial_and_gotomarket/evidence_for_sales.md). 
+   * Abre [`07_commercial_and_gotomarket/evidence_for_sales.md`](07_commercial_and_gotomarket/evidence_for_sales.md). 
    * Contiene las estadísticas formales (ej. cifras del DBIR de Verizon sobre explotación de vulnerabilidades y phishing móvil). 
    * **Atención:** Cada dato tiene una sección *"Do not say"*; léela para no prometer cosas que la ciencia o el juego aún no respaldan (ej. nunca prometer "reducción del 100% de ataques").
 4. **Estructurar la Reunión de Presentación:**
-   * Sigue el guión paso a paso de [`07_commercial_and_gotomarket/sales_deck_script.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/07_commercial_and_gotomarket/sales_deck_script.md).
+   * Sigue el guión paso a paso de [`07_commercial_and_gotomarket/sales_deck_script.md`](07_commercial_and_gotomarket/sales_deck_script.md).
 
 ---
 
@@ -94,17 +96,17 @@ graph LR
 ```
 
 1. **Paso 1: Seleccionar qué competencias vas a desarrollar:**
-   * Consulta [`03_methodology_and_learning/competencies_inventory.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/03_methodology_and_learning/competencies_inventory.md). Elige 2 o 3 competencias para un taller corto (ej. *Reconocimiento de saliencia interna* y *Verificación por canales independientes*).
+   * Consulta [`03_methodology_and_learning/competencies_inventory.md`](03_methodology_and_learning/competencies_inventory.md). Elige 2 o 3 competencias para un taller corto (ej. *Reconocimiento de saliencia interna* y *Verificación por canales independientes*).
 2. **Paso 2: Elegir qué Puertas de Atención se activarán:**
-   * Abre [`02_framework_canon/attention_doors/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/02_framework_canon/attention_doors). Si el taller es para el área Financiera, consulta las fichas de `03_responsibility.md`, `07_protection.md` y `08_loss.md`. Esas fichas ya traen ejemplos legítimos y ejemplos de ingeniería social listos para convertir en casos.
+   * Abre [`02_framework_canon/attention_doors/`](02_framework_canon/attention_doors/). Si el taller es para el área Financiera, consulta las fichas de `03_responsibility.md`, `07_protection.md` y `08_loss.md`. Esas fichas ya traen ejemplos legítimos y ejemplos de ingeniería social listos para convertir en casos.
 3. **Paso 3: Diseñar los Casos con la Lógica de FARO:**
-   * Mira cómo están redactados los casos del juego en [`04_product_system/reusable_components/games/faro_v3plus/cases/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/04_product_system/reusable_components/games/faro_v3plus/cases).
+   * Mira cómo están redactados los casos del juego en [`04_product_system/reusable_components/games/faro_v3plus/cases/`](04_product_system/reusable_components/games/faro_v3plus/cases/).
    * Todo buen caso tiene: un estímulo verosímil, una tensión emocional/puerta, un espacio de pausa (P.A.R.A.), y opciones donde la solución no es un simple "hacer clic / no hacer clic", sino elegir acciones reversibles de contención.
 4. **Paso 4: El Debrief (Donde ocurre el aprendizaje):**
-   * Consulta [`03_methodology_and_learning/learning_philosophy.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/03_methodology_and_learning/learning_philosophy.md) y [`safe_deception_protocol.md`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/03_methodology_and_learning/safe_deception_protocol.md).
+   * Consulta [`03_methodology_and_learning/learning_philosophy.md`](03_methodology_and_learning/learning_philosophy.md) y [`safe_deception_protocol.md`](03_methodology_and_learning/safe_deception_protocol.md).
    * La simulación solo sirve para generar sorpresa controlada; el aprendizaje real se fija en la conversación reflexiva posterior guiada por el facilitador.
 5. **Paso 5: Registrar la ficha técnica del nuevo producto:**
-   * Crea una nueva carpeta en [`05_products_catalog/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain/05_products_catalog/) (ej. `workshops/workshop_inmersion_4h/PRODUCT_SPEC.md`). Declara qué componentes y puertas utiliza.
+   * Crea una nueva carpeta en [`05_products_catalog/`](05_products_catalog/) (ej. `workshops/workshop_inmersion_4h/PRODUCT_SPEC.md`). Declara qué componentes y puertas utiliza.
 
 ---
 
@@ -129,10 +131,10 @@ Para mantener la seriedad ética y comercial, el cerebro tiene una **lista negra
 
 Si abres el repositorio en Visual Studio Code o en GitHub, esta es la estructura que verás:
 
-* **[`/v3/brain/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain)**: El Cerebro de Conocimiento que acabamos de describir.
-* **[`/v3/app/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/app)**: El código limpio del juego interactivo en producción.
-* **[`/v3/research_library/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/research_library)**: La biblioteca física de PDFs y papers científicos.
-* **[`/v3/scripts/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/scripts)**: Las herramientas que auditan y compilan el cerebro automáticamente.
-* **[`/v2/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v2)**: El código de respaldo que corrió en el webinar.
+* **[`/v3/brain/`](.)**: El Cerebro de Conocimiento que acabamos de describir.
+* **[`/v3/app/`](../app)**: El código limpio del juego interactivo en producción.
+* **[`/v3/research_library/`](../research_library)**: La biblioteca física de PDFs y papers científicos.
+* **[`/v3/scripts/`](../scripts)**: Las herramientas que auditan y compilan el cerebro automáticamente.
+* **[`/v2/`](../../v2)**: El código de respaldo que corrió en el webinar.
 
 Cualquier persona del equipo puede entrar a `/v3/brain/INDEX.md` y, desde allí, navegar a cualquier rincón del conocimiento del proyecto con enlaces directos y explicaciones en español claro.

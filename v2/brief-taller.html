@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de Inmersión FARO — Brief Comercial | Digital Self &amp; Attention Doors</title>
+<meta name="description" content="Brief comercial del Taller de Inmersión FARO: entrenamiento de criterio y decisión humano-IA, no un diagnóstico de vulnerabilidades.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-dark:#07131F;
+    --surface:#0B1F2A;
+    --surface-2:#0E2733;
+    --border-cyan:#274A5C;
+    --cyan:#00D8FF;
+    --green:#49F5C1;
+    --magenta:#FF4D7A;
+    --amber:#FFB547;
+    --text-main:#F5F7FA;
+    --text-muted:#A9BBC8;
+    --font-heading:'Outfit',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(0,216,255,0.08), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(73,245,193,0.06), transparent 55%),
+      var(--bg-dark);
+    color:var(--text-main);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:var(--font-heading); margin:0 0 .5em 0; letter-spacing:.2px;}
+  p{margin:0 0 1em 0;}
+  a{color:var(--cyan);}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  section{padding:64px 0; border-bottom:1px solid rgba(39,74,92,0.5);}
+  .eyebrow{
+    display:inline-block; font-family:var(--font-heading); font-size:12px; font-weight:700;
+    letter-spacing:1.6px; text-transform:uppercase; color:var(--cyan);
+    border:1px solid var(--border-cyan); border-radius:999px; padding:6px 14px; margin-bottom:18px;
+    background:rgba(0,216,255,0.06);
+  }
+  .h1{font-size:clamp(30px,4.6vw,48px); font-weight:800; line-height:1.14;}
+  .h2{font-size:clamp(23px,3vw,32px); font-weight:700;}
+  .lede{font-size:clamp(16px,1.9vw,19px); color:var(--text-muted); max-width:66ch;}
+  .muted{color:var(--text-muted);}
+  .accent{color:var(--cyan);}
+  .accent-green{color:var(--green);}
+  figcaption{font-size:12.5px; color:var(--text-muted); margin-top:8px; line-height:1.4;}
+  figure{margin:0;}
+  .photo{ border-radius:14px; overflow:hidden; border:1px solid var(--border-cyan); background:var(--surface);}
+  .photo img{ width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* TOP BAR (static, no interactivity) */
+  header.topbar{
+    border-bottom:1px solid var(--border-cyan);
+    background:rgba(7,19,31,0.9);
+  }
+  .navrow{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:16px 24px; max-width:var(--maxw); margin:0 auto;}
+  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-heading); font-weight:700; font-size:14px; color:var(--text-main); text-decoration:none;}
+  .brand-dot{width:9px; height:9px; border-radius:50%; background:var(--cyan); box-shadow:0 0 10px var(--cyan);}
+  nav.navlinks{ display:flex; flex-wrap:wrap; gap:18px 22px; }
+  nav.navlinks a{ color:var(--text-muted); text-decoration:none; font-size:13.5px; font-weight:500; }
+  nav.navlinks a:hover{ color:var(--cyan); }
+
+  /* HERO */
+  #hero{ padding-top:56px; padding-bottom:56px; border-bottom:1px solid var(--border-cyan);}
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 1fr; gap:40px; align-items:center;}
+  .hero-badges{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px;}
+  .badge{ font-size:12px; border:1px solid var(--border-cyan); color:var(--text-muted); padding:6px 12px; border-radius:999px;}
+  .hero-photo{ aspect-ratio:16/10.5; }
+  .hero-photo figcaption{ padding:0 4px;}
+
+  /* GRIDS */
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .card{
+    background:var(--surface); border:1px solid var(--border-cyan); border-radius:14px; padding:22px;
+  }
+  .card h3{ font-size:17px; color:var(--text-main); margin-bottom:8px;}
+  .card p{ color:var(--text-muted); font-size:14.5px; margin-bottom:0;}
+  .card .tag{ display:inline-block; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--magenta); margin-bottom:10px;}
+  .num{
+    font-family:var(--font-heading); font-weight:800; font-size:22px; color:var(--cyan);
+    display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px;
+    border:1px solid var(--border-cyan); border-radius:10px; margin-bottom:12px;
+  }
+
+  /* CASE GALLERY */
+  .case-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:26px;}
+  .case-card .photo{ aspect-ratio:4/3; margin-bottom:12px;}
+  .case-card h4{ font-size:13.5px; color:var(--text-main); margin-bottom:4px;}
+  .case-card p{ font-size:12.5px; color:var(--text-muted); margin:0;}
+
+  /* PROBLEM SECTION */
+  .compare{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:36px;}
+  .compare .col{ border-radius:14px; padding:24px; border:1px solid var(--border-cyan);}
+  .compare .old{ background:rgba(255,77,122,0.05); }
+  .compare .new{ background:rgba(73,245,193,0.05); }
+  .compare h4{ font-family:var(--font-heading); font-size:14px; text-transform:uppercase; letter-spacing:1px;}
+  .compare .old h4{ color:var(--magenta); }
+  .compare .new h4{ color:var(--green); }
+  ul.checklist{ list-style:none; margin:0; padding:0;}
+  ul.checklist li{ position:relative; padding-left:26px; margin-bottom:10px; color:var(--text-muted); font-size:14.5px;}
+  ul.checklist li::before{ position:absolute; left:0; top:1px; font-weight:700;}
+  .old ul.checklist li::before{ content:"✕"; color:var(--magenta);}
+  .new ul.checklist li::before{ content:"✓"; color:var(--green);}
+
+  /* DIVIDER BAND (circuit texture) */
+  .band{ position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--border-cyan); margin:30px 0 6px 0;}
+  .band img{ width:100%; height:110px; object-fit:cover; opacity:.35;}
+  .band .band-label{
+    position:absolute; inset:0; display:flex; align-items:center; padding:0 26px;
+    font-family:var(--font-heading); font-weight:700; font-size:13px; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--text-main); background:linear-gradient(90deg, rgba(7,19,31,0.65), rgba(7,19,31,0.15));
+  }
+
+  table.compare-table{ width:100%; border-collapse:collapse; margin-top:14px; font-size:14px;}
+  table.compare-table th, table.compare-table td{ padding:12px 14px; border-bottom:1px solid var(--border-cyan); text-align:left; vertical-align:top;}
+  table.compare-table th{ color:var(--text-muted); font-family:var(--font-heading); font-size:12px; text-transform:uppercase; letter-spacing:.6px;}
+
+  /* AUDIENCES */
+  .buyer-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:30px;}
+  .buyer-card{ background:var(--surface); border:1px solid var(--border-cyan); border-radius:14px; padding:22px;}
+  .buyer-card h3{ display:flex; align-items:center; gap:10px; font-size:16px;}
+  .buyer-icon{ width:34px; height:34px; border-radius:8px; background:rgba(0,216,255,0.1); border:1px solid var(--border-cyan); display:flex; align-items:center; justify-content:center; color:var(--cyan); font-family:var(--font-heading); font-weight:800; font-size:13px;}
+  .buyer-card .label{ font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--text-muted); font-weight:700; margin-top:14px;}
+  .buyer-card p{ font-size:14px; color:var(--text-muted); margin:4px 0 0 0;}
+
+  /* EVIDENCE */
+  .evidence-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:30px; margin-top:30px; align-items:start;}
+  .evidence-photo{ aspect-ratio:16/11; position:sticky; top:20px;}
+  .claim{ border-left:3px solid var(--cyan); padding:10px 0 10px 18px; margin-bottom:18px;}
+  .claim p{ margin:0; color:var(--text-main); font-size:15px;}
+  .claim .src{ display:block; margin-top:6px; font-size:12.5px; color:var(--text-muted);}
+  .disclaimer-box{
+    margin-top:28px; border:1px dashed var(--border-cyan); border-radius:12px; padding:20px;
+    background:rgba(255,181,71,0.04);
+  }
+  .disclaimer-box h4{ color:var(--amber); font-size:13px; text-transform:uppercase; letter-spacing:.8px; margin-bottom:10px;}
+  .disclaimer-box ul{ margin:0; padding-left:18px; color:var(--text-muted); font-size:13.5px;}
+  .disclaimer-box li{ margin-bottom:6px;}
+
+  /* CONTACT / CLOSING */
+  #cta{ text-align:center; }
+  #cta .h2{ max-width:26ch; margin:0 auto 14px auto;}
+  .contact-block{
+    display:inline-block; margin-top:30px; padding:22px 30px; border:1px solid var(--border-cyan);
+    border-radius:14px; background:var(--surface); text-align:left;
+  }
+  .contact-block .label{ font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); font-weight:700; margin-bottom:6px;}
+  .contact-block .name{ font-family:var(--font-heading); font-weight:700; font-size:17px; color:var(--text-main);}
+  .contact-block .mail{ font-size:15px; }
+  .contact-block .mail a{ text-decoration:underline; }
+
+  footer{ padding:32px 0 56px 0; }
+  footer .wrap{ display:flex; flex-direction:column; gap:6px; }
+  footer p{ margin:0; font-size:12.5px; color:var(--text-muted); }
+
+  .doors-strip{ display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;}
+  .door-chip{ font-size:12.5px; border:1px solid var(--border-cyan); color:var(--text-muted); padding:7px 12px; border-radius:999px; background:rgba(255,255,255,0.02);}
+
+  .print-only{ display:none; }
+
+  /* RESPONSIVE */
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-grid > div:first-child{ order:2; }
+    .hero-photo{ order:1; }
+    .grid-2, .grid-3, .grid-4, .case-grid{ grid-template-columns:1fr 1fr; }
+    .buyer-grid{ grid-template-columns:1fr; }
+    .compare{ grid-template-columns:1fr; }
+    .evidence-grid{ grid-template-columns:1fr; }
+    .evidence-photo{ position:static; aspect-ratio:16/9; }
+  }
+  @media (max-width:560px){
+    section{ padding:46px 0; }
+    .grid-2, .grid-3, .grid-4, .case-grid{ grid-template-columns:1fr; }
+    .navrow{ padding:12px 16px; }
+    .wrap{ padding:0 18px; }
+    nav.navlinks{ gap:10px 16px; }
+  }
+
+  /* PRINT — real document, not a rendered webpage */
+  @media print{
+    @page{ margin:16mm; }
+    html, body{ background:#ffffff !important; color:#10151A !important; }
+    header.topbar{ display:none !important; }
+    .print-only{ display:block !important; margin-bottom:26px; }
+    .print-only h1{ font-size:22pt; color:#0B1F2A; margin-bottom:4px;}
+    .print-only p{ color:#555; font-size:10.5pt; margin:0;}
+    a{ color:#0B4E63 !important; text-decoration:underline; }
+    section{ padding:14px 0 !important; border-bottom:1px solid #ccc !important; break-inside:avoid; }
+    #hero{ padding-top:0 !important; }
+    body{ font-size:11pt; }
+    .eyebrow{ border-color:#333 !important; color:#0B4E63 !important; background:none !important; }
+    .card, .buyer-card, .compare .col, .contact-block{
+      background:#F6F8FA !important; border:1px solid #C9D2D8 !important; box-shadow:none !important;
+    }
+    .compare .old{ background:#FBEEEF !important; }
+    .compare .new{ background:#EEFBF5 !important; }
+    ul.checklist li{ color:#222 !important; }
+    .lede, .muted, .card p, footer p, .buyer-card p, .case-card p{ color:#3A4550 !important; }
+    .claim p{ color:#111 !important; }
+    .claim .src{ color:#555 !important; }
+    .disclaimer-box{ background:#FFF7E8 !important; border:1px solid #D9B36C !important; }
+    .badge, .door-chip{ border-color:#999 !important; color:#333 !important; }
+    h1,h2,h3,h4{ color:#0B1F2A !important; }
+    .accent, .accent-green{ color:#0B4E63 !important; }
+    table.compare-table th, table.compare-table td{ border-color:#ccc !important; }
+    .photo, .band{ border:1px solid #C9D2D8 !important; }
+    .band img{ opacity:.5 !important; }
+    .band .band-label{ color:#0B1F2A !important; background:rgba(255,255,255,0.55) !important;}
+    figcaption{ color:#555 !important; }
+    .evidence-photo{ position:static !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-only">
+  <h1>Taller de Inmersión FARO — Brief Comercial</h1>
+  <p>Digital Self &amp; Attention Doors · documento vivo, versión navegable en el repositorio del proyecto.</p>
+</div>
+
+<header class="topbar">
+  <div class="navrow">
+    <a href="#hero" class="brand"><span class="brand-dot"></span> DIGITAL SELF &amp; ATTENTION DOORS</a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#problema">El problema</a>
+      <a href="#taller">El taller</a>
+      <a href="#competencias">Qué desarrolla</a>
+      <a href="#audiencias">Para quién</a>
+      <a href="#formato">Formato</a>
+      <a href="#evidencia">Evidencia</a>
+      <a href="#cta">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Taller de Inmersión · FARO V3+</span>
+        <h1 class="h1">Formar criterio, <span class="accent">no solo señalar puertas.</span></h1>
+        <p class="lede">
+          No vendemos un diagnóstico de vulnerabilidades humanas. Construimos, con práctica real y simulación, la capacidad de decidir bien cuando el mensaje es plausible, la presión es auténtica y una IA recomienda actuar.
+        </p>
+        <div class="hero-badges">
+          <span class="badge">2h / 4h de inmersión</span>
+          <span class="badge">Simulación FARO V3+</span>
+          <span class="badge">Protocolo P.A.R.A.</span>
+          <span class="badge">Sin ranking individual</span>
+        </div>
+      </div>
+      <figure class="photo hero-photo">
+        <img src="assets/images/faro_cover_gate.jpg" alt="Portal de simulación FARO junto a un faro digital, representando el punto de decisión del taller.">
+        <figcaption class="print-only" style="display:block; padding:8px 14px;">FARO: el punto donde se pausa antes de actuar.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section id="problema">
+    <div class="wrap">
+      <span class="eyebrow">Por qué este taller existe</span>
+      <h2 class="h2">El awareness tradicional informa. No entrena la decisión.</h2>
+      <p class="lede">
+        No decimos que la formación previa sea inútil. Decimos que memorizar una regla en frío no garantiza aplicarla bajo fatiga, urgencia, autoridad o miedo a perder algo — y que los mensajes generados o asistidos por IA ya no delatan su origen por ortografía o tono.
+      </p>
+
+      <div class="compare">
+        <div class="col old">
+          <h4>El enfoque que se queda corto</h4>
+          <ul class="checklist">
+            <li>Asume que conocer la política basta para actuar bien bajo presión.</li>
+            <li>Depende de que la persona detecte una señal externa (ortografía, remitente, formato).</li>
+            <li>Mide asistencia o clics, no criterio ni transferencia.</li>
+            <li>Cuando alguien falla, la respuesta es "pedir más atención" — sin tocar el sistema.</li>
+          </ul>
+        </div>
+        <div class="col new">
+          <h4>Lo que entrena este taller</h4>
+          <ul class="checklist">
+            <li>Practica el proceso completo de decisión: pausar, evaluar, verificar y actuar de forma proporcional.</li>
+            <li>Construye evidencia por canales independientes cuando la señal externa no es suficiente.</li>
+            <li>Observa competencias en escenarios simulados, con debrief formativo — no con ranking de personas.</li>
+            <li>Identifica también qué condiciones del sistema (procesos, permisos, canales) deben cambiar.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL TALLER -->
+  <section id="taller">
+    <div class="wrap">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2 class="h2">Simulación con propósito, no un juego de "click o no click"</h2>
+      <p class="lede">
+        El taller usa el motor interactivo <strong>FARO V3+</strong> para poner a los participantes frente a decisiones plausibles — nunca frente a un examen de detección de mentiras.
+      </p>
+
+      <div class="grid-3" style="margin-top:32px;">
+        <div class="card">
+          <span class="num">1</span>
+          <h3>Casos con tensión real</h3>
+          <p>Escenarios donde el estímulo es verosímil, la puerta de atención está identificada y la salida correcta no es "hacer clic / no hacer clic", sino elegir una acción proporcional y reversible.</p>
+        </div>
+        <div class="card">
+          <span class="num">2</span>
+          <h3>Protocolo P.A.R.A.</h3>
+          <p><strong>Pausar</strong> el impulso automático, <strong>Analizar</strong> señales internas y externas, <strong>Revisar</strong> alternativas por canales independientes, <strong>Actuar</strong> de forma proporcional y preferiblemente reversible.</p>
+        </div>
+        <div class="card">
+          <span class="num">3</span>
+          <h3>IA como parte del ejercicio</h3>
+          <p>La IA aparece como Espejo, Sparring y Asistente dentro de la simulación — para practicar <em>reliance calibrada</em>: ni delegación ciega, ni rechazo automático de sus recomendaciones.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:44px;">
+        <h4 style="font-family:var(--font-heading); font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);">Los 4 casos del simulador FARO V3+</h4>
+        <div class="case-grid">
+          <div class="case-card">
+            <figure class="photo"><img src="assets/images/case1_autonomy.jpg" alt="Sala de servidores con drones automatizados, escena del Caso 1 de FARO."></figure>
+            <h4>Caso 1</h4>
+            <p>Autonomía y Confianza Calibrada</p>
+          </div>
+          <div class="case-card">
+            <figure class="photo"><img src="assets/images/case2_digital_self.jpg" alt="Representación holográfica de una silueta humana conectada a datos, escena del Caso 2 de FARO."></figure>
+            <h4>Caso 2</h4>
+            <p>Digital Self e Hiperpersonalización</p>
+          </div>
+          <div class="case-card">
+            <figure class="photo"><img src="assets/images/case2_channel.jpg" alt="Agente verificando identidad y mensajes cifrados en pantallas, escena del Caso 3 de FARO."></figure>
+            <h4>Caso 3</h4>
+            <p>Señales Internas sin Ground Truth</p>
+          </div>
+          <div class="case-card">
+            <figure class="photo"><img src="assets/images/case4_decision.jpg" alt="Comité ejecutivo deliberando alrededor de una mesa con datos proyectados, escena del Caso 4 de FARO."></figure>
+            <h4>Caso 4</h4>
+            <p>Autenticidad No Obvia y Repertorio</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="band">
+        <img src="assets/images/circuit_pattern.jpg" alt="">
+        <div class="band-label">Vocabulario compartido: Attention Doors</div>
+      </div>
+      <p class="muted" style="max-width:70ch; margin-top:16px;">
+        Nueve prioridades funcionales que pueden hacer que un mensaje se vuelva urgente para una persona en un contexto concreto. No son rasgos de personalidad ni un diagnóstico: son un lenguaje para observar, en el momento, qué está organizando la atención antes de decidir.
+      </p>
+      <div class="doors-strip">
+        <span class="door-chip">Identidad</span>
+        <span class="door-chip">Curiosidad</span>
+        <span class="door-chip">Responsabilidad</span>
+        <span class="door-chip">Justicia</span>
+        <span class="door-chip">Coherencia</span>
+        <span class="door-chip">Pertenencia</span>
+        <span class="door-chip">Protección</span>
+        <span class="door-chip">Pérdida</span>
+        <span class="door-chip">Conveniencia / Rutina</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETENCIAS -->
+  <section id="competencias">
+    <div class="wrap">
+      <span class="eyebrow">Qué se lleva cada participante</span>
+      <h2 class="h2">Competencias observables, no una etiqueta psicológica</h2>
+      <p class="lede">
+        El taller selecciona 2–3 competencias del inventario de catorce, según el rol y el riesgo de la audiencia. Cada una se practica en caso guiado y se revisa en el debrief — nunca se diagnostica con una sola respuesta.
+      </p>
+      <div class="grid-4" style="margin-top:30px;">
+        <div class="card"><span class="tag">Observar</span><h3>Reconocimiento del estado cognitivo</h3><p>Nombrar fatiga, prisa o presión sin convertirla en debilidad personal.</p></div>
+        <div class="card"><span class="tag">Verificar</span><h3>Verificación independiente</h3><p>Buscar evidencia por una vía distinta a la del estímulo bajo sospecha.</p></div>
+        <div class="card"><span class="tag">Decidir</span><h3>Acción proporcional y reversible</h3><p>Ajustar alcance y permisos al riesgo, preservando la posibilidad de recuperación.</p></div>
+        <div class="card"><span class="tag">Regular con IA</span><h3>Reliance calibrada</h3><p>Usar el consejo o la automatización según desempeño y costo, no por defecto.</p></div>
+        <div class="card"><span class="tag">Ampliar</span><h3>Repertorio de respuesta</h3><p>Romper el falso binario: limitar, ganar tiempo, dividir la acción o cambiar el canal.</p></div>
+        <div class="card"><span class="tag">Escalar</span><h3>Responsabilidad compartida</h3><p>Reconocer cuándo una decisión excede la autoridad propia y activar un segundo aprobador.</p></div>
+        <div class="card"><span class="tag">Recuperar</span><h3>Reporte y aprendizaje</h3><p>Convertir un error o casi-incidente en mejora documentada, sin vergüenza ni castigo.</p></div>
+        <div class="card"><span class="tag">Calibrar</span><h3>Pensamiento probabilístico</h3><p>Tratar alertas y recomendaciones como evidencia con grados de confianza, no como certeza binaria.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCIAS -->
+  <section id="audiencias">
+    <div class="wrap">
+      <span class="eyebrow">Para quién es</span>
+      <h2 class="h2">Un mismo taller, cuatro conversaciones de valor</h2>
+      <div class="buyer-grid">
+        <div class="buyer-card">
+          <h3><span class="buyer-icon">CISO</span> Seguridad</h3>
+          <p>Entrena verificación, proporcionalidad y escalamiento; convierte la telemetría del taller en señales de diseño, no en rankings personales.</p>
+          <div class="label">Objeción típica</div>
+          <p>"Ya tenemos awareness y phishing simulado" → esto entrena la decisión completa frente a IA, de forma complementaria.</p>
+        </div>
+        <div class="buyer-card">
+          <h3><span class="buyer-icon">CHRO</span> Gestión Humana / L&amp;D</h3>
+          <p>Formación que evita culpa y vergüenza; desarrolla criterio transferible sin perfilar psicológicamente a nadie.</p>
+          <div class="label">Objeción típica</div>
+          <p>"Esto parece muy técnico" → el objeto es el criterio bajo presión; los casos se adaptan al rol sin exigir especialización.</p>
+        </div>
+        <div class="buyer-card">
+          <h3><span class="buyer-icon">GRC</span> Riesgo / Compliance</h3>
+          <p>Hace visibles decisiones, excepciones y rutas de escalamiento; conecta hallazgos con condiciones del sistema que deben cambiar.</p>
+          <div class="label">Objeción típica</div>
+          <p>"¿Esto demuestra cumplimiento?" → produce evidencia formativa y hallazgos; no sustituye auditoría ni certificación.</p>
+        </div>
+        <div class="buyer-card">
+          <h3><span class="buyer-icon">CIO</span> Gobernanza de IA</h3>
+          <p>Practica supervisión humana, alcance y reversibilidad frente a agentes y recomendaciones automatizadas.</p>
+          <div class="label">Objeción típica</div>
+          <p>"Nuestra IA ya tiene guardrails" → los guardrails técnicos no agotan decisiones de autorización y confianza humana.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATO -->
+  <section id="formato">
+    <div class="wrap">
+      <span class="eyebrow">Formato y alcance</span>
+      <h2 class="h2">Dos duraciones, un mismo estándar formativo</h2>
+      <p class="lede">Presencial, híbrido o virtual. El taller es el segundo peldaño de una ruta de profundidad — no reemplaza un diagnóstico sociotécnico ni un programa continuo, y tampoco promete lo que ellos entregan.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>&nbsp;</th><th>Workshop 2 horas</th><th>Workshop 4 horas</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Casos FARO</td><td>2–3 casos</td><td>Casos completos + reintentos</td></tr>
+          <tr><td>Trabajo</td><td>Mapa inicial de puertas, verificación y alternativas</td><td>Trabajo por roles, IA como Sparring</td></tr>
+          <tr><td>Cierre</td><td>Debrief aplicado</td><td>Mapa de gaps + plan de aplicación</td></tr>
+          <tr><td>Entregable</td><td>Rúbrica formativa y aprendizajes agregados</td><td>+ Compromisos y oportunidades sociotécnicas identificadas</td></tr>
+        </tbody>
+      </table>
+
+      <div class="disclaimer-box" style="margin-top:34px;">
+        <h4>Límites declarados desde el inicio</h4>
+        <ul>
+          <li>No es un test psicométrico ni una escala de personalidad.</li>
+          <li>No es un pentest, una auditoría regulatoria ni una certificación.</li>
+          <li>No genera ranking individual oculto ni scoring secreto de empleados.</li>
+          <li>Si el taller revela que el problema real es una interfaz o un proceso, esa parte requiere intervención, no más práctica.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVIDENCIA -->
+  <section id="evidencia">
+    <div class="wrap">
+      <span class="eyebrow">Evidencia y honestidad</span>
+      <h2 class="h2">Decimos lo que podemos sostener — nada más</h2>
+      <p class="lede">Cada afirmación de este brief proviene del banco de claims comerciales gobernado del proyecto. Vencen, se revisan y se retiran si dejan de estar respaldados.</p>
+
+      <div class="evidence-grid">
+        <figure class="photo evidence-photo">
+          <img src="assets/images/closing_governance.jpg" alt="Comité ejecutivo revisando un modelo de gobernanza de IA proyectado sobre la mesa.">
+          <figcaption>Gobernanza humano–IA: el criterio que se practica en el taller también se lleva a la sala de comité.</figcaption>
+        </figure>
+        <div>
+          <div class="claim">
+            <p>"Los modelos de lenguaje pueden automatizar parte de la investigación, redacción y personalización de campañas de spear phishing."</p>
+            <span class="src">Fuente: literatura sobre GenAI e ingeniería social, revisión 2027-03</span>
+          </div>
+          <div class="claim">
+            <p>"Ortografía, tono familiar y coherencia visual ya no son prueba suficiente de autenticidad."</p>
+            <span class="src">Fuente: matriz de claims GenAI / ingeniería social, revisión 2027-03</span>
+          </div>
+          <div class="claim">
+            <p>"La conducta de seguridad emerge de la interacción entre personas, tareas, interfaces, procesos y tecnología; culpar al usuario no corrige esas condiciones."</p>
+            <span class="src">Fuente: matriz de claims de factores humanos, revisión 2027-09</span>
+          </div>
+          <div class="claim">
+            <p>"El objetivo no es maximizar la confianza en la IA, sino favorecer una dependencia apropiada según desempeño, contexto y costo."</p>
+            <span class="src">Fuente: literatura de human–AI teaming, revisión 2027-09</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer-box">
+        <h4>Lo que no afirmamos</h4>
+        <ul>
+          <li>No prometemos reducción garantizada de incidentes ni inmunidad ante el engaño.</li>
+          <li>No presentamos las Attention Doors como un test validado ni como rasgos fijos de personalidad.</li>
+          <li>No decimos que el awareness previo sea inútil: es insuficiente cuando se trata como intervención completa.</li>
+          <li>El framework, FARO y su taxonomía integrada continúan en proceso de validación.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="cta">
+    <div class="wrap">
+      <span class="eyebrow">Siguiente paso</span>
+      <h2 class="h2">Empecemos por la decisión que más les preocupa</h2>
+      <p class="lede" style="margin:0 auto;">
+        Una sesión de descubrimiento de 30 minutos con Seguridad, Riesgo y L&amp;D basta para definir si el punto de entrada es este taller, un diagnóstico sociotécnico o un programa continuo.
+      </p>
+      <div class="contact-block">
+        <div class="label">Contacto comercial</div>
+        <div class="name">Claudia Gómez</div>
+        <div class="mail"><a href="mailto:claudia.gomez@4ssoluciones.com">claudia.gomez@4ssoluciones.com</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Digital Self &amp; Attention Doors — Taller de Inmersión FARO V3+. Documento comercial, no constituye certificación, auditoría regulatoria ni evaluación psicométrica.</p>
+    <p>Precio, volumen y SLA se definen en propuesta comercial separada.</p>
+  </div>
+</footer>
+
+</body>
+</html>
