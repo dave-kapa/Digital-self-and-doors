@@ -57,7 +57,7 @@ function parseFieldBlocks(text) {
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        const match = line.match(/^\*\*([A-Za-z0-9 _&-]+):\*\*(?:\s*(.*))?$/);
+        const match = line.match(/^(?:-\s+)?\*\*([A-Za-z0-9 _&-]+):\*\*(?:\s*(.*))?$/);
         if (match) {
             flushCurrent();
             const rawKey = match[1].trim();
