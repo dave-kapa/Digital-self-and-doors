@@ -49,6 +49,12 @@ related_doors:
   - DOOR-005
 related_theories:
   - THEORY-COG-OFFLOAD
+related_gaps: []
+related_concepts: []
+related_claim_matrices:
+  - CLM-MATRIX-ATT-DEC
+  - CLM-MATRIX-TRAINING
+  - CLM-MATRIX-HF
 ---
 
 # 1. Citation (APA)
@@ -103,6 +109,7 @@ Los autores describen su modelo como todavía temprano. Reconocen evidencia indi
 
 # 9. Candidate claims proposed
 
+
 ## CAND-WOOD-001
 
 - **Statement:** La repetición de una respuesta en contextos estables puede formar asociaciones contexto–respuesta que guían ejecuciones posteriores sin mediación continua de metas conscientes.
@@ -110,6 +117,13 @@ Los autores describen su modelo como todavía temprano. Reconocen evidencia indi
 - **Proposed confidence:** high
 - **Scope:** teoría y evidencia general de hábitos; no estimación específica en ciberseguridad.
 - **Promotion target:** `claims_attention_decision.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-WOOD-002
 
@@ -118,6 +132,13 @@ Los autores describen su modelo como todavía temprano. Reconocen evidencia indi
 - **Proposed confidence:** medium
 - **Scope:** principio de intervención; efectividad depende del contexto y debe evaluarse.
 - **Promotion target:** `claims_training_learning.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-WOOD-003
 
@@ -126,3 +147,10 @@ Los autores describen su modelo como todavía temprano. Reconocen evidencia indi
 - **Proposed confidence:** high
 - **Scope:** interpretación conceptual y ética.
 - **Promotion target:** `claims_human_factor.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null

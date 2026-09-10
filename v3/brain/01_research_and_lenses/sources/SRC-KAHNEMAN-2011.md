@@ -51,6 +51,12 @@ related_doors:
 related_theories:
   - THEORY-SDT
   - THEORY-COG-OFFLOAD
+related_gaps: []
+related_concepts:
+  - CON-METACOGNITION
+related_claim_matrices:
+  - CLM-MATRIX-ATT-DEC
+  - CLM-MATRIX-TRAINING
 ---
 
 # 1. Citation (APA)
@@ -103,6 +109,7 @@ En los materiales accesibles, Kahneman presenta Sistema 1 y Sistema 2 explícita
 
 # 9. Candidate claims proposed
 
+
 ## CAND-KAHNEMAN-001
 
 - **Statement:** La distinción rápido/automático versus lento/deliberativo es un recurso pedagógico para describir familias de procesos, no una partición anatómica literal.
@@ -110,6 +117,13 @@ En los materiales accesibles, Kahneman presenta Sistema 1 y Sistema 2 explícita
 - **Proposed confidence:** high
 - **Scope:** uso conceptual y formativo; la evidencia de cada fenómeno requiere fuente primaria.
 - **Promotion target:** `claims_attention_decision.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-KAHNEMAN-002
 
@@ -118,6 +132,13 @@ En los materiales accesibles, Kahneman presenta Sistema 1 y Sistema 2 explícita
 - **Proposed confidence:** high
 - **Scope:** principio general de juicio; especificar tarea y evidencia al cuantificarlo.
 - **Promotion target:** `claims_attention_decision.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-KAHNEMAN-003
 
@@ -126,3 +147,10 @@ En los materiales accesibles, Kahneman presenta Sistema 1 y Sistema 2 explícita
 - **Proposed confidence:** medium
 - **Scope:** implicación pedagógica del framework, pendiente de evaluación comparativa.
 - **Promotion target:** `claims_training_learning.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null

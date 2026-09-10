@@ -50,6 +50,11 @@ related_theories:
   - THEORY-PMT
   - THEORY-TRA-TPB
   - THEORY-SDT
+related_gaps: []
+related_concepts: []
+related_claim_matrices:
+  - CLM-MATRIX-HF
+  - CLM-MATRIX-TRAINING
 ---
 
 # 1. Citation (APA)
@@ -101,6 +106,7 @@ El resumen presenta la teoría como propuesta y como base para reinterpretar dat
 
 # 9. Candidate claims proposed
 
+
 ## CAND-ROGERS-001
 
 - **Statement:** En la formulación de Rogers de 1975, gravedad, probabilidad de ocurrencia y eficacia de la respuesta son componentes distintos de la evaluación protectora.
@@ -108,6 +114,13 @@ El resumen presenta la teoría como propuesta y como base para reinterpretar dat
 - **Proposed confidence:** high
 - **Scope:** contenido de la teoría original, no magnitud de efectos en ciberseguridad.
 - **Promotion target:** `claims_human_factor.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-ROGERS-002
 
@@ -116,6 +129,13 @@ El resumen presenta la teoría como propuesta y como base para reinterpretar dat
 - **Proposed confidence:** high
 - **Scope:** historia conceptual y atribución bibliográfica.
 - **Promotion target:** `claims_human_factor.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-ROGERS-003
 
@@ -124,3 +144,10 @@ El resumen presenta la teoría como propuesta y como base para reinterpretar dat
 - **Proposed confidence:** medium
 - **Scope:** principio de diseño extrapolado a entrenamiento, pendiente de evidencia propia.
 - **Promotion target:** `claims_training_learning.md`
+- **Reading basis:** abstract_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null

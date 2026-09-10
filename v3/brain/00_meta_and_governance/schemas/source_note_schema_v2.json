@@ -30,7 +30,9 @@
   "properties": {
     "schema_version": {
       "type": "integer",
-      "enum": [2]
+      "enum": [
+        2
+      ]
     },
     "id": {
       "type": "string",
@@ -277,13 +279,29 @@
       "items": {
         "type": "string"
       }
+    },
+    "related_concepts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CON-[A-Z0-9-]+$"
+      }
+    },
+    "related_claim_matrices": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CLM-MATRIX-[A-Z0-9-]+$"
+      }
     }
   },
   "allOf": [
     {
       "if": {
         "properties": {
-          "review_status": { "const": "accepted" }
+          "review_status": {
+            "const": "accepted"
+          }
         }
       },
       "then": {
@@ -306,7 +324,9 @@
     {
       "if": {
         "properties": {
-          "status": { "const": "canonical" }
+          "status": {
+            "const": "canonical"
+          }
         }
       },
       "then": {
@@ -326,5 +346,6 @@
         ]
       }
     }
-  ]
+  ],
+  "additionalProperties": false
 }
