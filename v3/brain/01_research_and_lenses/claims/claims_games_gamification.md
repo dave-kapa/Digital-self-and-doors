@@ -33,7 +33,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No garantiza que cualquier punto, narrativa o competencia mejore aprendizaje. La heterogeneidad impide presentar un efecto universal aplicable a FARO.
 
@@ -51,7 +55,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No permite tratar «game-based» como mecanismo causal único ni inferir transferencia desde una comparación sin seguimiento.
 
@@ -69,7 +77,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No identifica una combinación universalmente óptima ni demuestra que una mecánica específica de FARO produzca el resultado esperado.
 
@@ -87,7 +99,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que engagement sea irrelevante ni generaliza un estudio de contenido específico a todos los juegos.
 
@@ -105,7 +121,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No concluye que el campo carezca de evidencia; indica que las comparaciones y claims deben conservar diseño, población y outcome.
 
@@ -123,6 +143,10 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No implica que FARO sea ineficaz. Impide afirmar efectividad demostrada, mejora conductual o superioridad frente a otras modalidades sin evaluación apropiada.

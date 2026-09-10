@@ -34,7 +34,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que todas las causas tengan el mismo peso ni que una persona carezca de responsabilidad. «Sociotécnico» no debe utilizarse para diluir causalidad o evitar analizar una conducta concreta.
 
@@ -52,7 +56,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** Es una conclusión de diseño, no evidencia de que toda formación centrada en individuos sea inútil. Tampoco afirma que los errores individuales sean irrelevantes.
 
@@ -70,7 +78,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No permite atribuir un incidente específico a «carga cognitiva» sin datos ni afirmar que toda fricción reduzca seguridad; cierta fricción puede ser protectora en acciones irreversibles.
 
@@ -88,7 +100,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que los hábitos sean inconscientes en todo momento, que sean necesariamente inseguros ni que Conveniencia/Rutina sea una medición validada de automaticidad.
 
@@ -106,6 +122,10 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No niega que patrones repetidos puedan estudiarse con instrumentos validados. Establece que el dato disponible debe ser proporcional a la inferencia y que los perfiles actuales de puertas son hipótesis de reflexión.

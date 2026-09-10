@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SalesClaimSchemaV1",
+  "type": "object",
+  "required": [
+    "sales_claim_id",
+    "foundation_type",
+    "claim_refs",
+    "authorized_statement",
+    "status",
+    "commercial_tier_allowed"
+  ],
+  "properties": {
+    "sales_claim_id": {
+      "type": "string",
+      "pattern": "^SALES-CLAIM-[0-9]{3}$"
+    },
+    "foundation_type": {
+      "type": "string",
+      "enum": [
+        "external_evidence",
+        "internal_evidence",
+        "framework_position",
+        "product_description"
+      ]
+    },
+    "claim_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authorized_statement": {
+      "type": "string"
+    },
+    "evidence_summary": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending_evidence_debt",
+        "suspended"
+      ]
+    },
+    "commercial_tier_allowed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "do_not_say": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

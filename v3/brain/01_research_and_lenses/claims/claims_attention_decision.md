@@ -35,7 +35,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No valida nueve rutas discretas ni permite predecir qué estímulo atenderá una persona concreta.
 
@@ -53,7 +57,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No demuestra que todo mensaje personalizado sea más persuasivo ni que Identidad sea una dimensión psicométrica independiente.
 
@@ -71,7 +79,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que toda persona evite pérdidas siempre ni que Pérdida sea equivalente a prospect theory.
 
@@ -89,7 +101,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No implica ausencia total de conciencia ni que los hábitos sean inseguros. No valida Conveniencia/Rutina como escala.
 
@@ -107,7 +123,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que la taxonomía sea falsa o inútil. Exige presentar perfiles como hipótesis de reflexión y separar Canon de validación empírica.
 
@@ -125,6 +145,10 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No establece correlaciones empíricas ni combinaciones universales. Las relaciones documentadas son hipótesis de trabajo.

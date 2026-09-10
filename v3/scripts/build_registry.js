@@ -1,11 +1,13 @@
 /**
  * build_registry.js
- * Escanea todos los archivos .md en /v3/brain/, extrae metadatos frontmatter YAML
- * y genera el archivo /v3/brain/00_meta_and_governance/registry.json con el mapa ID -> path.
+ * Escanea todos los archivos .md en /v3/brain/, extrae metadatos frontmatter
+ * usando js-yaml formal y genera registry.json.
+ * Ignora la capa 99_archive_and_history para preservar el firewall histórico.
  * Detecta y reporta colisiones de IDs (D001).
  */
 const fs = require('fs');
 const path = require('path');
+const yaml = require('js-yaml');
 
 const brainDir = path.join(__dirname, '../brain');
 const registryPath = path.join(brainDir, '00_meta_and_governance/registry.json');
@@ -13,19 +15,11 @@ const registryPath = path.join(brainDir, '00_meta_and_governance/registry.json')
 function parseFrontmatter(content) {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     if (!match) return null;
-    const lines = match[1].split(/\r?\n/);
-    const data = {};
-    lines.forEach(line => {
-        const parts = line.split(':');
-        if (parts.length >= 2) {
-            const key = parts[0].trim();
-            const val = parts.slice(1).join(':').trim().replace(/^["']|["']$/g, '');
-            if (key && !key.startsWith('#')) {
-                data[key] = val;
-            }
-        }
-    });
-    return data;
+    try {
+        return yaml.load(match[1]);
+    } catch (e) {
+        return null;
+    }
 }
 
 function scanDir(dir, results = []) {
@@ -33,6 +27,11 @@ function scanDir(dir, results = []) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const e of entries) {
         const full = path.join(dir, e.name);
+        const rel = path.relative(brainDir, full).replace(/\\/g, '/');
+        
+        // Firewall: No indexar en el registro activo el archivo histórico
+        if (rel.startsWith('99_archive_and_history')) continue;
+
         if (e.isDirectory()) {
             scanDir(full, results);
         } else if (e.isFile() && e.name.endsWith('.md')) {
@@ -66,8 +65,26 @@ files.forEach(file => {
     }
 });
 
-fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf8');
-console.log('Registry generado exitosamente con ' + Object.keys(registry).length + ' entradas.');
+const isCheckMode = process.argv.includes('--check');
+const formattedRegistry = JSON.stringify(registry, null, 2) + '\n';
+
+if (isCheckMode) {
+    if (fs.existsSync(registryPath)) {
+        const existing = fs.readFileSync(registryPath, 'utf8');
+        if (existing !== formattedRegistry) {
+            console.error('[DRIFT] registry.json está desactualizado respecto al contenido Markdown del Cerebro.');
+            process.exit(1);
+        } else {
+            console.log('Registry verificado sin drift respecto a Markdown (PASS --check). ' + Object.keys(registry).length + ' entradas activas.');
+        }
+    } else {
+        console.error('[DRIFT] registry.json no existe. Ejecuta npm run build:registry');
+        process.exit(1);
+    }
+} else {
+    fs.writeFileSync(registryPath, formattedRegistry, 'utf8');
+    console.log('Registry generado exitosamente con ' + Object.keys(registry).length + ' entradas activas.');
+}
 
 if (duplicates.length > 0) {
     console.error('ERROR D001: IDs duplicados encontrados:');
@@ -76,3 +93,4 @@ if (duplicates.length > 0) {
 } else {
     console.log('0 colisiones de IDs detectadas (PASS D001).');
 }
+

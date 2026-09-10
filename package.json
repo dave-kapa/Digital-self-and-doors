@@ -8,9 +8,35 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "audit:brain": "node v3/scripts/audit_brain.js --mode=migration",
+    "audit:brain:strict": "node v3/scripts/audit_brain.js --mode=strict",
+    "audit:spec": "node v3/scripts/audit_spec_code_sync.js",
+    "test:contract": "node v3/scripts/run_content_contract.js",
+    "test:schemas": "node v3/tests/test_schemas_positive.js",
+    "test:dedupe": "node v3/tests/test_librarian_dedupe.js",
+    "test:negative": "node v3/tests/test_audit_brain_negative.js",
+    "verify:containment": "node v3/scripts/verify_containment_invariants.js",
+    "test": "npm run audit:brain && npm run audit:brain:strict && npm run audit:spec && npm run test:contract && npm run test:schemas && npm run test:dedupe && npm run test:negative && npm run verify:containment",
+    "build:registry": "node v3/scripts/build_registry.js",
+    "build:registry:check": "node v3/scripts/build_registry.js --check",
+    "build:bib": "node v3/scripts/build_bibliography.js",
+    "build:bib:check": "node v3/scripts/build_bibliography.js --check",
+    "build:mocs": "node v3/scripts/build_mocs.js",
+    "build:mocs:check": "node v3/scripts/build_mocs.js --check",
+    "build:claims": "node v3/scripts/build_claims_index.js",
+    "build:claims:check": "node v3/scripts/build_claims_index.js --check",
+    "build:sales": "node v3/scripts/build_sales_claims_index.js",
+    "build:sales:check": "node v3/scripts/build_sales_claims_index.js --check",
+    "build:graph": "node v3/scripts/build_evidence_graph.js",
+    "build:graph:check": "node v3/scripts/build_evidence_graph.js --check",
+    "verify:all": "npm run test && npm run build:registry:check && npm run build:bib:check && npm run build:mocs:check && npm run build:claims:check && npm run build:sales:check && npm run build:graph:check"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "js-yaml": "^5.4.1"
+  }
 }

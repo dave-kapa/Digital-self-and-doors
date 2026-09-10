@@ -1,0 +1,889 @@
+[
+  {
+    "claim_id": "CLAIM-AD-001",
+    "statement": "La atención es limitada y la selección de información está influida por la relevancia y el valor esperado de obtener información.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Procesos generales de selección atencional y búsqueda de información; no especifica todas las variables que determinan atención en contextos reales.",
+    "limitations": "No valida nueve rutas discretas ni permite predecir qué estímulo atenderá una persona concreta.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-GOTTLIEB-ETAL-2013",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-KIDD-HAYDEN-2015",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-AD-002",
+    "statement": "Vincular información con el self puede mejorar su codificación y recuerdo frente a ciertos tipos de procesamiento no autorreferencial.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Efecto de referencia al self en paradigmas experimentales de memoria; condiciones y magnitud dependen de tarea y población.",
+    "limitations": "No demuestra que todo mensaje personalizado sea más persuasivo ni que Identidad sea una dimensión psicométrica independiente.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-ROGERS-KUIPER-KIRKER-1977",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-OYSERMAN-2009",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-AD-003",
+    "statement": "El encuadre de alternativas como ganancias o pérdidas puede modificar preferencias aun cuando los resultados descritos sean formalmente equivalentes.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Decisiones bajo riesgo e incertidumbre en condiciones compatibles con los paradigmas estudiados.",
+    "limitations": "No afirma que toda persona evite pérdidas siempre ni que Pérdida sea equivalente a prospect theory.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-KAHNEMAN-TVERSKY-1979",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-TVERSKY-KAHNEMAN-1981",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-AD-004",
+    "statement": "Las señales contextuales pueden activar respuestas habituales sin una evaluación deliberativa completa de sus consecuencias actuales.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Hábitos formados por repetición en contextos estables; el grado de automaticidad varía.",
+    "limitations": "No implica ausencia total de conciencia ni que los hábitos sean inseguros. No valida Conveniencia/Rutina como escala.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-WOOD-NEAL-2007",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-ADRIAANSE-ETAL-2011",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-AD-005",
+    "statement": "La taxonomía integrada de nueve Attention Doors es una formulación provisional del proyecto y no una escala psicométrica validada.",
+    "epistemic_status": "provisional",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Estado epistemológico interno del framework a la fecha de verificación.",
+    "limitations": "No afirma que la taxonomía sea falsa o inútil. Exige presentar perfiles como hipótesis de reflexión y separar Canon de validación empírica.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-DSAD-MASTER-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-AD-006",
+    "statement": "Las nueve puertas pueden solaparse conceptualmente y el modelo no debe asumir independencia estadística, exclusividad mutua ni universalidad.",
+    "epistemic_status": "provisional",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Regla de modelado y límite de inferencia del framework, pendiente de estudios de estructura y validez.",
+    "limitations": "No establece correlaciones empíricas ni combinaciones universales. Las relaciones documentadas son hipótesis de trabajo.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-DSAD-MASTER-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-DOOR-RELATIONS-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_attention_decision.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-001",
+    "statement": "Los LLM pueden automatizar partes de la investigación, redacción y personalización de campañas de spear phishing.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Demostraciones y estudios experimentales con modelos y flujos concretos; capacidad técnica, no prevalencia delictiva observada.",
+    "limitations": "No afirma que todos los atacantes usen IA, que el flujo sea completamente autónomo en la práctica ni que toda personalización aumente éxito.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-HAZELL-2023",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HEIDING-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-BETHANY-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-002",
+    "statement": "En estudios específicos, mensajes personalizados generados con LLM han alcanzado niveles de persuasión o respuesta comparables con mensajes elaborados por humanos.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Estudios con muestras, canales, modelos y outcomes particulares; incluye medidas de ranking, intención de clic o clic observado según el estudio.",
+    "limitations": "No autoriza afirmar superioridad universal de IA, «ataques perfectos» ni tasas de éxito aplicables a cualquier población. No deben combinarse outcomes distintos como si fueran equivalentes.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-FRANCIA-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HEIDING-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-003",
+    "statement": "Información pública o voluntariamente aportada puede utilizarse para construir mensajes contextuales y perfiles funcionales orientados a personalización.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Datos accesibles dentro del diseño de cada estudio; la precisión, legalidad y disponibilidad varían por objetivo y jurisdicción.",
+    "limitations": "No significa que el perfil sea verdadero, completo o psicológico. Tampoco justifica buscar datos externos de participantes sin consentimiento.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-HAZELL-2023",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-FRANCIA-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HEIDING-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-004",
+    "statement": "Calidad lingüística, tono familiar y coherencia visual son evidencia insuficiente para establecer autenticidad, especialmente cuando herramientas generativas pueden reproducir esas características.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Evaluación de mensajes digitales; se refiere a insuficiencia de estas señales aisladas, no a su ausencia total de valor.",
+    "limitations": "No afirma que sea imposible detectar phishing por señales externas ni que todo mensaje impecable haya sido generado por IA.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-FRANCIA-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HEIDING-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-BETHANY-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-005",
+    "statement": "No es fiable atribuir autoría humana o generativa de un mensaje únicamente por su redacción percibida.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Juicios humanos de autoría en estudios de mensajes personalizados; generalización limitada por modelos, muestras y tareas.",
+    "limitations": "No demuestra que la detección técnica de contenido generado sea siempre imposible ni que conocer la autoría determine legitimidad o seguridad.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-FRANCIA-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GENAI-006",
+    "statement": "Los estudios de capacidad de LLM para phishing no establecen por sí solos la prevalencia de uso criminal, el impacto agregado ni la efectividad en todos los entornos organizacionales.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Límite de inferencia al interpretar estudios experimentales, pilotos, red teams y demostraciones de capacidad.",
+    "limitations": "No minimiza el riesgo. Distingue capacidad demostrada de frecuencia real y prohíbe convertir resultados contextuales en una cifra universal de amenaza.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-HAZELL-2023",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-FRANCIA-ETAL-2024",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HEIDING-ETAL-2024",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_genai_social_engineering.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-001",
+    "statement": "La gamificación educativa muestra, en promedio, efectos positivos pequeños sobre outcomes cognitivos, motivacionales y conductuales, con heterogeneidad relevante entre estudios.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Síntesis meta-analítica de intervenciones educativas gamificadas; no exclusivamente ciberseguridad.",
+    "limitations": "No garantiza que cualquier punto, narrativa o competencia mejore aprendizaje. La heterogeneidad impide presentar un efecto universal aplicable a FARO.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SAILER-HOMNER-2020",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-002",
+    "statement": "Juegos serios y actividades gamificadas pueden apoyar aprendizaje y motivación, pero sus resultados dependen del diseño, la comparación, el contenido y la forma de evaluación.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Educación general y ciberseguridad; incluye formatos y poblaciones diversas.",
+    "limitations": "No permite tratar «game-based» como mecanismo causal único ni inferir transferencia desde una comparación sin seguimiento.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SAILER-HOMNER-2020",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-CYBER-GAMES-SCOPING-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-TRAINING-REVIEW-2023",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-003",
+    "statement": "Los efectos de elementos como narrativa, competencia, colaboración, feedback o recompensas no son uniformes; dependen de cómo se combinan con objetivos y actividades de aprendizaje.",
+    "epistemic_status": "mixed",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Diseño de gamificación educativa y juegos serios.",
+    "limitations": "No identifica una combinación universalmente óptima ni demuestra que una mecánica específica de FARO produzca el resultado esperado.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SAILER-HOMNER-2020",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-CYBER-GAMES-SCOPING-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-004",
+    "statement": "Mayor engagement con un juego no implica necesariamente mayor ganancia de conocimiento frente a un recurso no lúdico.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Evidencia directa de un estudio controlado de un juego narrativo de ciberseguridad y principio general de separación de outcomes.",
+    "limitations": "No afirma que engagement sea irrelevante ni generaliza un estudio de contenido específico a todos los juegos.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-STEGADVENTURE-2025",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-SAILER-HOMNER-2020",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-005",
+    "statement": "La investigación sobre juegos de concienciación en ciberseguridad utiliza métodos y métricas diversos, y la evaluación de efectividad y transferencia continúa siendo desigual.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Corpus de estudios sobre educación y awareness en ciberseguridad revisados sistemáticamente.",
+    "limitations": "No concluye que el campo carezca de evidencia; indica que las comparaciones y claims deben conservar diseño, población y outcome.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-CYBER-GAMES-SCOPING-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-TRAINING-REVIEW-2023",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-GG-006",
+    "statement": "FARO dispone de una lógica pedagógica y una mecánica canónica, pero su efectividad para aprendizaje o transferencia todavía no está validada.",
+    "epistemic_status": "provisional",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Estado de evidencia del producto FARO V3+ a la fecha de verificación.",
+    "limitations": "No implica que FARO sea ineficaz. Impide afirmar efectividad demostrada, mejora conductual o superioridad frente a otras modalidades sin evaluación apropiada.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-FARO-V3PLUS-CANON-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-WEBINAR-INTERNAL-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-001",
+    "statement": "La confianza influye en la disposición a depender de automatización, especialmente cuando su complejidad impide comprender completamente su funcionamiento durante la decisión.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Interacción humano–automatización en múltiples dominios; la magnitud depende de sistema, tarea y riesgo.",
+    "limitations": "Confianza no equivale a reliance observado y no es el único determinante. No establece que más confianza sea siempre mejor.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-LEE-SEE-2004",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-HOFF-BASHIR-2015",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-002",
+    "statement": "La sobredependencia y el desuso son formas distintas de reliance inapropiada; una puede omitir monitoreo y la otra desaprovechar una ayuda superior.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Uso de automatización y ayudas decisorias donde existe información sobre desempeño relativo.",
+    "limitations": "No permite clasificar toda aceptación como misuse ni todo rechazo como disuse; se necesita desempeño, contexto y objetivo.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-PARASURAMAN-RILEY-1997",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-LEE-SEE-2004",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-003",
+    "statement": "En tareas Judge–Advisor, las personas suelen integrar consejo de forma parcial y con frecuencia conservan un peso considerable para su estimación inicial.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Paradigmas de advice taking, principalmente juicios cuantitativos; depende de experiencia, tarea y estructura del consejo.",
+    "limitations": "No prueba que el consejo sea subutilizado en toda decisión ni que advice taking humano se transfiera sin cambios a IA generativa.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-YANIV-2004",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-BONACCIO-DALAL-2006",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-004",
+    "statement": "La literatura documenta tanto aversión como apreciación algorítmica; la dirección de la preferencia depende de experiencia con errores, tarea, comparación y posibilidad de intervención.",
+    "epistemic_status": "mixed",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Estudios experimentales de predicción y consejo algorítmico; no toda forma de IA o decisión.",
+    "limitations": "No existe una tendencia humana única hacia algoritmos. «Aversión» y «apreciación» no determinan si el uso fue apropiado.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-DIETVORST-SIMMONS-MASSEY-2015",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-LOGG-MINSON-MOORE-2019",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-005",
+    "statement": "En estudios de predicción, permitir una modificación limitada del resultado algorítmico aumentó la disposición a utilizar algoritmos imperfectos.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Paradigmas experimentales específicos de predicción y control sobre el output.",
+    "limitations": "No prueba que cualquier control aumente calibración, precisión o agencia ni que el resultado se generalice a sistemas generativos o acciones críticas.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-DIETVORST-SIMMONS-MASSEY-2016",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HAI-006",
+    "statement": "Espejo, Sparring y Asistente de decisión segura son roles pedagógicos plausibles para apoyar agencia, pero su impacto en calibración, aprendizaje y dependencia permanece por validar.",
+    "epistemic_status": "provisional",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Diseño canónico del framework y sus productos; no taxonomía universal de interacción humano–IA.",
+    "limitations": "Las teorías relacionadas no validan el diseño completo. No debe afirmarse efectividad, autonomía aumentada o reducción de incidentes sin evaluación específica.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-DSAD-MASTER-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-LEE-SEE-2004",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-BONACCIO-DALAL-2006",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-RYAN-DECI-2000",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_ai.md"
+  },
+  {
+    "claim_id": "CLAIM-HF-001",
+    "statement": "El desempeño de una función de seguridad humana depende de la interacción entre la comunicación, las capacidades y atención disponibles, la interfaz, las demandas de la tarea y el contexto organizacional.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Funciones de seguridad que requieren que una persona perciba información, comprenda una solicitud y ejecute una acción dentro de un sistema.",
+    "limitations": "No afirma que todas las causas tengan el mismo peso ni que una persona carezca de responsabilidad. «Sociotécnico» no debe utilizarse para diluir causalidad o evitar analizar una conducta concreta.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-CRANOR-2008",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_factor.md"
+  },
+  {
+    "claim_id": "CLAIM-HF-002",
+    "statement": "Culpar de forma genérica al usuario como «eslabón más débil» es insuficiente para diseñar seguridad efectiva; es necesario identificar y modificar las condiciones que hacen probable una conducta insegura.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Diseño y análisis de sistemas de seguridad utilizables, especialmente contraseñas, advertencias y tareas que compiten con objetivos operativos.",
+    "limitations": "Es una conclusión de diseño, no evidencia de que toda formación centrada en individuos sea inútil. Tampoco afirma que los errores individuales sean irrelevantes.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-CRANOR-2008",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_factor.md"
+  },
+  {
+    "claim_id": "CLAIM-HF-003",
+    "statement": "Demandas incompatibles, carga, memoria limitada, falta de apoyo y fricción de usabilidad pueden contribuir a que las personas eviten o incumplan controles de seguridad.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Tareas de seguridad integradas en trabajo cotidiano; la magnitud y dirección dependen del control y del entorno.",
+    "limitations": "No permite atribuir un incidente específico a «carga cognitiva» sin datos ni afirmar que toda fricción reduzca seguridad; cierta fricción puede ser protectora en acciones irreversibles.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-CRANOR-2008",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_factor.md"
+  },
+  {
+    "claim_id": "CLAIM-HF-004",
+    "statement": "Las respuestas habituales pueden ser activadas por señales contextuales y ejecutarse sin deliberación renovada, lo que produce eficiencia y también posibles desajustes cuando cambia el contexto.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Conductas repetidas en contextos relativamente estables; su aplicación a una tarea específica requiere observar historia de aprendizaje y señales presentes.",
+    "limitations": "No afirma que los hábitos sean inconscientes en todo momento, que sean necesariamente inseguros ni que Conveniencia/Rutina sea una medición validada de automaticidad.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-WOOD-NEAL-2007",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-GOLLWITZER-1999",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_factor.md"
+  },
+  {
+    "claim_id": "CLAIM-HF-005",
+    "statement": "Una respuesta aislada en una simulación no justifica inferir una vulnerabilidad estable, un rasgo personal o la propensión general de una persona a sufrir ataques.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Interpretación ética y metodológica de ejercicios, telemetría y perfiles formativos con pocas observaciones.",
+    "limitations": "No niega que patrones repetidos puedan estudiarse con instrumentos validados. Establece que el dato disponible debe ser proporcional a la inferencia y que los perfiles actuales de puertas son hipótesis de reflexión.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-CRANOR-2008",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-DSAD-MASTER-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_human_factor.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-001",
+    "statement": "Practicar la recuperación de información puede mejorar la retención demorada más que dedicar el mismo tiempo únicamente a reestudiar.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Aprendizaje de materiales declarativos en paradigmas de retrieval practice; transferencia a decisiones complejas requiere evidencia adicional.",
+    "limitations": "No demuestra que cualquier quiz o repetición produzca competencia conductual ni que recordar reglas garantice aplicarlas bajo presión.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-ROEDIGER-KARPICKE-2006",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-002",
+    "statement": "Actividades deliberadamente diseñadas para mejorar aspectos específicos del desempeño, con feedback y repetición, contribuyen al desarrollo de habilidad.",
+    "epistemic_status": "mixed",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Desarrollo de desempeño en dominios donde es posible definir tareas, feedback y oportunidades sostenidas de práctica.",
+    "limitations": "La práctica deliberada no explica toda la variación en desempeño y no respalda una regla universal de horas. Su aplicación a ciberseguridad debe validarse por competencia concreta.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-MACNAMARA-HAMBRICK-OSWALD-2014",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-003",
+    "statement": "Un estudio de entrenamiento anti-phishing integrado al contexto de uso encontró retención de conocimiento a 28 días y beneficio de una segunda exposición.",
+    "epistemic_status": "supported",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "PhishGuru, estudio real con 515 participantes y outcomes específicos del diseño.",
+    "limitations": "No prueba que cualquier simulación funcione, que los efectos sean permanentes ni que el mismo resultado se aplique a FARO o a las Attention Doors.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-KUMARAGURU-ETAL-2009",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-004",
+    "statement": "La eficacia del entrenamiento anti-phishing es heterogénea y algunos efectos observados después de simulaciones pueden ser de corto plazo o no mantenerse sistemáticamente.",
+    "epistemic_status": "mixed",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "medium",
+    "scope": "Estudios de campo y revisiones con intervenciones, poblaciones, dosis y outcomes diferentes.",
+    "limitations": "No permite concluir que el entrenamiento sea inútil ni combinar resultados heterogéneos en una única tasa de efectividad.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-KUMARAGURU-ETAL-2009",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-JEBO-SME-FIELD-2025",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-TRAINING-REVIEW-2023",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-005",
+    "statement": "Satisfacción, engagement, conocimiento, desempeño en simulación y transferencia conductual son outcomes distintos y no deben tratarse como equivalentes.",
+    "epistemic_status": "established",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Diseño y evaluación de intervenciones educativas y juegos serios.",
+    "limitations": "No afirma que engagement carezca de valor. Exige medir el outcome que se desea reclamar y evita usar interés como sustituto de aprendizaje o transferencia.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-SAILER-HOMNER-2020",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-STEGADVENTURE-2025",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-TRAINING-REVIEW-2023",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  },
+  {
+    "claim_id": "CLAIM-TL-006",
+    "statement": "El interés comercial y la respuesta positiva observados en el webinar no demuestran por sí solos aprendizaje sostenido ni transferencia conductual.",
+    "epistemic_status": "provisional",
+    "evidence_status": "unresolved",
+    "review_status": "suspended",
+    "confidence": "high",
+    "scope": "Interpretación de la evidencia interna disponible para el webinar Digital Self & Attention Doors.",
+    "limitations": "No niega valor comercial ni experiencia favorable. Prohíbe promover esas observaciones a evidencia de efectividad sin diseño de evaluación y seguimiento.",
+    "allowed_uses": [
+      "internal_research"
+    ],
+    "supported_by": [
+      {
+        "source_id": "SRC-WEBINAR-INTERNAL-2026",
+        "relation": "unspecified_legacy"
+      },
+      {
+        "source_id": "SRC-DSAD-MASTER-2026",
+        "relation": "unspecified_legacy"
+      }
+    ],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md"
+  }
+]

@@ -34,7 +34,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No demuestra que cualquier quiz o repetición produzca competencia conductual ni que recordar reglas garantice aplicarlas bajo presión.
 
@@ -52,7 +56,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** La práctica deliberada no explica toda la variación en desempeño y no respalda una regla universal de horas. Su aplicación a ciberseguridad debe validarse por competencia concreta.
 
@@ -70,7 +78,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No prueba que cualquier simulación funcione, que los efectos sean permanentes ni que el mismo resultado se aplique a FARO o a las Attention Doors.
 
@@ -88,7 +100,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No permite concluir que el entrenamiento sea inútil ni combinar resultados heterogéneos en una única tasa de efectividad.
 
@@ -106,7 +122,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que engagement carezca de valor. Exige medir el outcome que se desea reclamar y evita usar interés como sustituto de aprendizaje o transferencia.
 
@@ -124,6 +144,10 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No niega valor comercial ni experiencia favorable. Prohíbe promover esas observaciones a evidencia de efectividad sin diseño de evaluación y seguimiento.

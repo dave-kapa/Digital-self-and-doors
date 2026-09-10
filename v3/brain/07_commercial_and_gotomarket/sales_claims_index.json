@@ -1,0 +1,136 @@
+[
+  {
+    "sales_claim_id": "SALES-CLAIM-001",
+    "title": "IA y personalización",
+    "foundation_type": "external_evidence",
+    "claim_refs": [
+      "CLAIM-GENAI-001",
+      "SRC-HAZELL-2023",
+      "SRC-HEIDING-ETAL-2024"
+    ],
+    "authorized_statement": "Los LLM pueden automatizar partes de la investigación, redacción y personalización de campañas de spear phishing».",
+    "status": "pending_evidence_debt",
+    "commercial_tier_allowed": [
+      "presentación ejecutiva, propuesta, web y conversación comercial con enlace a evidencia."
+    ],
+    "do_not_say": [
+      "La IA crea ataques perfectos», «todo phishing ya usa IA» o «la IA garantiza hiperpersonalización efectiva»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-03-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-002",
+    "title": "Señales superficiales",
+    "foundation_type": "framework_position",
+    "claim_refs": [
+      "CON-ATTENTION-DOORS"
+    ],
+    "authorized_statement": "Ortografía, tono familiar y coherencia visual no son prueba suficiente de autenticidad».",
+    "status": "active",
+    "commercial_tier_allowed": [
+      "todos los materiales con recomendación de verificación independiente."
+    ],
+    "do_not_say": [
+      "Ya no existen señales externas» o «es imposible detectar phishing»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-03-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-003",
+    "title": "Factor humano",
+    "foundation_type": "external_evidence",
+    "claim_refs": [
+      "CLAIM-HF-001",
+      "CLAIM-HF-002",
+      "SRC-SASSE-BROSTOFF-WEIRICH-2001"
+    ],
+    "authorized_statement": "La conducta de seguridad emerge de la interacción entre personas, tareas, interfaces, procesos y tecnología; culpar al usuario no corrige esas condiciones».",
+    "status": "pending_evidence_debt",
+    "commercial_tier_allowed": [
+      "posicionamiento, propuestas y workshops."
+    ],
+    "do_not_say": [
+      "El usuario no tiene responsabilidad» o «el factor humano deja de importar»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-09-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-004",
+    "title": "Training e intervention",
+    "foundation_type": "framework_position",
+    "claim_refs": [
+      "MET-TRAIN-VS-INTERV"
+    ],
+    "authorized_statement": "Desarrollar capacidad humana y modificar condiciones sociotécnicas son líneas complementarias».",
+    "status": "active",
+    "commercial_tier_allowed": [
+      "diagnóstico, programa continuo y conversación ejecutiva."
+    ],
+    "do_not_say": [
+      "El awareness no sirve» o «el training por sí solo reduce incidentes»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-09-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-005",
+    "title": "Gamificación",
+    "foundation_type": "external_evidence",
+    "claim_refs": [
+      "CLAIM-GG-001",
+      "CLAIM-GG-002",
+      "SRC-SAILER-HOMNER-2020"
+    ],
+    "authorized_statement": "La gamificación educativa muestra efectos promedio positivos, pero heterogéneos; el diseño y la evaluación importan».",
+    "status": "pending_evidence_debt",
+    "commercial_tier_allowed": [
+      "propuestas de experiencia y metodología."
+    ],
+    "do_not_say": [
+      "Jugar garantiza aprendizaje», «FARO está científicamente validado» o «engagement demuestra transferencia»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-03-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-006",
+    "title": "Confianza calibrada",
+    "foundation_type": "framework_position",
+    "claim_refs": [
+      "CLAIM-HAI-001",
+      "CLAIM-HAI-002",
+      "SRC-LEE-SEE-2004"
+    ],
+    "authorized_statement": "El objetivo no es maximizar confianza en IA, sino favorecer reliance apropiada según desempeño, contexto y costo».",
+    "status": "pending_evidence_debt",
+    "commercial_tier_allowed": [
+      "human–AI decision training, gobernanza y transformación."
+    ],
+    "do_not_say": [
+      "La supervisión humana siempre mejora la IA» o «confiar en IA es perder agencia»."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2027-09-03"
+  },
+  {
+    "sales_claim_id": "SALES-CLAIM-007",
+    "title": "Evidencia del webinar",
+    "foundation_type": "internal_evidence",
+    "claim_refs": [
+      "EVD-WEBINAR-V1"
+    ],
+    "authorized_statement": "El primer webinar produjo una señal cualitativa positiva de interés y abrió conversaciones comerciales».",
+    "status": "active",
+    "commercial_tier_allowed": [
+      "conversación comercial y credenciales de experiencia, identificado como reporte interno cualitativo."
+    ],
+    "do_not_say": [
+      "El webinar probó efectividad», «mejoró conductas», «redujo incidentes» o cualquier porcentaje no documentado.\n\n# Prohibiciones globales de copywriting\n\n- No llamar a las personas «eslabón más débil».\n- No presentar Attention Doors como test validado o perfil de vulnerabilidad.\n- No afirmar que existen exactamente nueve puertas universales.\n- No decir que Digital Self es un gemelo exacto o perfil psicológico.\n- No prometer cero incidentes, inmunidad, ROI o cambio de conducta sin estudio.\n- No convertir scores D/N en medición de personalidad.\n- No usar miedo, vergüenza o cifras sin fuente.\n- No afirmar certificación, cumplimiento o aval académico inexistente.\n\n# Gobernanza\n\nTodo claim nuevo enlaza un claim de Research o un Evidence Record, conserva fecha y propietario, y pasa revisión humana. Si vence, queda suspendido hasta revalidación."
+    ],
+    "valid_from": "2026-09-03",
+    "review_by": "2026-12-03"
+  }
+]

@@ -1,0 +1,330 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SourceNoteSchemaV2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "type",
+    "layer",
+    "status",
+    "epistemic_status",
+    "version",
+    "summary",
+    "authors",
+    "year",
+    "source_type",
+    "study_design",
+    "peer_review_status",
+    "reading_status",
+    "review_status",
+    "reviewed_by_agents",
+    "approved_by_humans",
+    "last_verified",
+    "review_cadence_months",
+    "next_review",
+    "topics",
+    "fulltext"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "enum": [2]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^SRC-[A-Z0-9-]+-[0-9]{4}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "source"
+      ]
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "01_research_and_lenses"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "working",
+        "review",
+        "canonical",
+        "archived"
+      ]
+    },
+    "epistemic_status": {
+      "type": "string",
+      "enum": [
+        "not_applicable"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "journal_article",
+        "book",
+        "industry_report",
+        "preprint",
+        "conference_paper",
+        "theoretical_monograph"
+      ]
+    },
+    "study_design": {
+      "type": "string",
+      "enum": [
+        "empirical_experiment",
+        "meta_analysis",
+        "observational_study",
+        "conceptual_synthesis",
+        "survey",
+        "mixed_methods",
+        "theoretical_article",
+        "evidence_synthesis",
+        "industry_observational_report",
+        "not_applicable"
+      ]
+    },
+    "peer_review_status": {
+      "type": "string",
+      "enum": [
+        "peer_reviewed",
+        "non_peer_reviewed",
+        "working_paper",
+        "editorial_review"
+      ]
+    },
+    "doi": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "isbn": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonical_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "reading_status": {
+      "type": "string",
+      "enum": [
+        "discovered",
+        "metadata_verified",
+        "abstract_reviewed",
+        "full_text_reviewed"
+      ]
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_review",
+        "reviewed",
+        "accepted",
+        "rejected",
+        "recheck_required"
+      ]
+    },
+    "reviewed_by_agents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approved_by_humans": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approval_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$|^$"
+    },
+    "last_verified": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "review_cadence_months": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "next_review": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "fulltext": {
+      "type": "object",
+      "required": [
+        "availability",
+        "storage_type",
+        "location",
+        "local_path",
+        "license_id",
+        "redistribution_allowed",
+        "sha256",
+        "hash_status",
+        "accessed_at"
+      ],
+      "properties": {
+        "availability": {
+          "type": "string",
+          "enum": [
+            "public_open_access",
+            "proprietary_closed",
+            "restricted"
+          ]
+        },
+        "storage_type": {
+          "type": "string",
+          "enum": [
+            "local_archive",
+            "external_reference"
+          ]
+        },
+        "location": {
+          "type": "string"
+        },
+        "local_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "license_id": {
+          "type": "string"
+        },
+        "redistribution_allowed": {
+          "type": "boolean"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hash_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "verified",
+            "not_available"
+          ]
+        },
+        "accessed_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      }
+    },
+    "related_doors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_theories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review_status": { "const": "accepted" }
+        }
+      },
+      "then": {
+        "properties": {
+          "approved_by_humans": {
+            "type": "array",
+            "minItems": 1
+          },
+          "approval_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "required": [
+          "approved_by_humans",
+          "approval_date"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "canonical" }
+        }
+      },
+      "then": {
+        "properties": {
+          "approved_by_humans": {
+            "type": "array",
+            "minItems": 1
+          },
+          "approval_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "required": [
+          "approved_by_humans",
+          "approval_date"
+        ]
+      }
+    }
+  ]
+}
