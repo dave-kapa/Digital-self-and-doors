@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const { parseClaimsFile, parseSalesClaimsFile } = require('./lib/content_parser');
+const { canonicalFileHash } = require('./lib/text_normalizer');
 
 const rootDir = path.join(__dirname, '../..');
 const brainDir = path.join(__dirname, '../brain');
@@ -68,8 +69,8 @@ Object.keys(PHASE_2A_CERTIFIED_HASHES).forEach(f => {
         console.error('Archivo no encontrado para hash check: ' + f);
         return;
     }
-    const hActive = sha256(fs.readFileSync(activePath, 'utf8').replace(/\r\n/g, '\n'));
-    const hSnap = sha256(fs.readFileSync(snapPath, 'utf8').replace(/\r\n/g, '\n'));
+    const hActive = canonicalFileHash(activePath);
+    const hSnap = canonicalFileHash(snapPath);
 
     if (hSnap !== BASELINE_SNAPSHOT_HASHES[f]) {
         allHashesMatch = false;

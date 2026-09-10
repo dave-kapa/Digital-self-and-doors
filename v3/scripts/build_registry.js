@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const { normalizeEol } = require('./lib/text_normalizer');
 
 const brainDir = path.join(__dirname, '../brain');
 const registryPath = path.join(brainDir, '00_meta_and_governance/registry.json');
@@ -71,7 +72,7 @@ const formattedRegistry = JSON.stringify(registry, null, 2) + '\n';
 if (isCheckMode) {
     if (fs.existsSync(registryPath)) {
         const existing = fs.readFileSync(registryPath, 'utf8');
-        if (existing.replace(/\r\n/g, '\n') !== formattedRegistry.replace(/\r\n/g, '\n')) {
+        if (normalizeEol(existing) !== normalizeEol(formattedRegistry)) {
             console.error('[DRIFT] registry.json está desactualizado respecto al contenido Markdown del Cerebro.');
             process.exit(1);
         } else {

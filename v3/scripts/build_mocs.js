@@ -6,6 +6,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { normalizeEol } = require('./lib/text_normalizer');
 
 const brainDir = path.join(__dirname, '../brain');
 const registryPath = path.join(brainDir, '00_meta_and_governance/registry.json');
@@ -53,7 +54,7 @@ layers.forEach(layer => {
         const expectedSection = '<!-- AUTO-GENERATED:START -->\n' + table + '<!-- AUTO-GENERATED:END -->';
         const currentMatch = content.match(regex)[0];
 
-        if (currentMatch.replace(/\r\n/g, '\n') !== expectedSection.replace(/\r\n/g, '\n')) {
+        if (normalizeEol(currentMatch) !== normalizeEol(expectedSection)) {
             hasDrift = true;
             if (isCheckMode) {
                 console.warn('[DRIFT] ' + layer + '/README.md desactualizado respecto a registry.json');
