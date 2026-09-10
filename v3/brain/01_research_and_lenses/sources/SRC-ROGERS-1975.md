@@ -1,31 +1,55 @@
 ---
-id: "SRC-ROGERS-1975"
-title: "A Protection Motivation Theory of Fear Appeals and Attitude Change"
-type: "source"
-layer: "01_research_and_lenses"
-status: "canonical"
-epistemic_status: "not_applicable"
-reading_status: "complete"
-reading_depth: "abstract_only"
-version: "1.0.0"
-author: "Ronald W. Rogers"
+schema_version: 2
+id: SRC-ROGERS-1975
+title: A Protection Motivation Theory of Fear Appeals and Attitude Change
+type: source
+layer: 01_research_and_lenses
+status: review
+epistemic_status: not_applicable
+version: 1.0.0
+summary: Artículo teórico fundacional que propone que la gravedad de un evento amenazante, su probabilidad percibida y la eficacia de la respuesta protectora activan evaluaciones cognitivas que median el cambio de actitud; fundamenta una lectura no simplista de las apelaciones al miedo, pero la formulación de 1975 no basta por sí sola para atribuir a PMT todas las variables de revisiones posteriores, incluida la autoeficacia.
+authors:
+  - Ronald W. Rogers
+year: 1975
+source_type: journal_article
+study_design: theoretical_article
+peer_review_status: peer_reviewed
+doi: 10.1080/00223980.1975.9915803
+isbn: null
+canonical_url: https://doi.org/10.1080/00223980.1975.9915803
+reading_status: abstract_reviewed
+review_status: pending_review
+reviewed_by_agents:
+  - librarian_agent
+  - antigravity
+approved_by_humans: []
+approval_date: null
+last_verified: '2026-09-04'
+review_cadence_months: 12
+next_review: '2027-09-04'
 topics:
-  - "protection_motivation"
-  - "risk_perception"
-  - "threat_appraisal"
-  - "protective_behavior"
+  - protection
+  - loss
+  - behavior_change
+  - human_factor
+  - decision_making
 fulltext:
-  availability: "restricted"
-  storage_type: "external_url"
-  location: "https://doi.org/10.1080/00223980.1975.9915803"
+  availability: restricted
+  storage_type: external_reference
+  location: https://doi.org/10.1080/00223980.1975.9915803
+  local_path: null
+  license_id: publisher_restricted
+  redistribution_allowed: false
   sha256: null
-summary: "Artículo teórico fundacional que propone que la gravedad de un evento amenazante, su probabilidad percibida y la eficacia de la respuesta protectora activan evaluaciones cognitivas que median el cambio de actitud; fundamenta una lectura no simplista de las apelaciones al miedo, pero la formulación de 1975 no basta por sí sola para atribuir a PMT todas las variables de revisiones posteriores, incluida la autoeficacia."
-related:
-  - "THEORY-PMT"
-  - "DOOR-007"
-  - "DOOR-008"
-  - "CON-PARA"
-  - "CLM-MATRIX-HF"
+  hash_status: not_available
+  accessed_at: '2026-09-04'
+related_doors:
+  - DOOR-007
+  - DOOR-008
+related_theories:
+  - THEORY-PMT
+  - THEORY-TRA-TPB
+  - THEORY-SDT
 ---
 
 # 1. Citation (APA)

@@ -1,83 +1,102 @@
 const fs = require('fs');
 const path = require('path');
+const { parseClaimsFile, parseSalesClaimsFile } = require('./lib/content_parser');
 
-const brainDir = 'd:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/brain';
+const brainDir = path.join(__dirname, '../brain');
 const claimsDir = path.join(brainDir, '01_research_and_lenses/claims');
 const salesFile = path.join(brainDir, '07_commercial_and_gotomarket/evidence_for_sales.md');
 const sourcesDir = path.join(brainDir, '01_research_and_lenses/sources');
 const debtFilePath = path.join(brainDir, '01_research_and_lenses/librarian/EVIDENCE_DEBT.md');
+const debtIndexPath = path.join(brainDir, '01_research_and_lenses/librarian/evidence_debt_index.json');
 
-// 1. Extraer todas las referencias SRC-* de claims/*.md
-const claimFiles = fs.readdirSync(claimsDir).filter(f => f.endsWith('.md'));
-const citedSources = new Map(); // srcId -> [claims citing it]
+// 1. Extraer todas las referencias SRC-* citadas
+const claimFiles = fs.readdirSync(claimsDir).filter(f => f.endsWith('.md')).sort();
+const citedSources = new Map();
 
 claimFiles.forEach(f => {
-    const content = fs.readFileSync(path.join(claimsDir, f), 'utf8');
-    const matches = content.matchAll(/##\s+(CLAIM-[A-Z0-9-]+)[\s\S]*?\*\*Supported by:\*\*\s+\[([^\]]+)\]/g);
-    for (const m of matches) {
-        const claimId = m[1];
-        const sList = m[2].split(',').map(s => s.replace(/[`'"]/g, '').trim()).filter(Boolean);
-        sList.forEach(src => {
-            if (src.startsWith('SRC-')) {
+    const { claims } = parseClaimsFile(path.join(claimsDir, f));
+    claims.forEach(c => {
+        if (c.supported_by && Array.isArray(c.supported_by)) {
+            c.supported_by.forEach(ref => {
+                const src = ref.source_id;
                 if (!citedSources.has(src)) citedSources.set(src, []);
-                citedSources.get(src).push(claimId);
-            }
-        });
-    }
+                citedSources.get(src).push(c.claim_id);
+            });
+        }
+    });
 });
 
-// Extraer referencias de sales claims
 if (fs.existsSync(salesFile)) {
-    const salesContent = fs.readFileSync(salesFile, 'utf8');
-    const salesMatches = salesContent.matchAll(/##\s+(SALES-CLAIM-[0-9]{3})[\s\S]*?\*\*Sources:\*\*\s+\[([^\]]+)\]/g);
-    for (const m of salesMatches) {
-        const scId = m[1];
-        const sList = m[2].split(',').map(s => s.replace(/[`'"]/g, '').trim()).filter(Boolean);
-        sList.forEach(src => {
-            if (src.startsWith('SRC-')) {
+    const { salesClaims } = parseSalesClaimsFile(salesFile);
+    salesClaims.forEach(sc => {
+        if (sc.source_refs && Array.isArray(sc.source_refs)) {
+            sc.source_refs.forEach(src => {
                 if (!citedSources.has(src)) citedSources.set(src, []);
-                citedSources.get(src).push(scId);
-            }
-        });
-    }
+                citedSources.get(src).push(sc.sales_claim_id);
+            });
+        }
+    });
 }
 
 // 2. Fuentes físicas existentes en sources/
-const resolvedSources = new Set();
+const physicalSources = new Set();
 if (fs.existsSync(sourcesDir)) {
     fs.readdirSync(sourcesDir).filter(f => f.endsWith('.md') && f.startsWith('SRC-')).forEach(f => {
-        const id = f.replace('.md', '');
-        resolvedSources.add(id);
+        physicalSources.add(f.replace('.md', ''));
     });
 }
 
 // 3. Clasificación canónica
-const INTERNAL_REFERENCES = new Set([
-    'SRC-DOOR-RELATIONS-2026',
-    'SRC-DSAD-MASTER-2026',
-    'SRC-FARO-V3PLUS-CANON-2026',
-    'SRC-WEBINAR-INTERNAL-2026'
-]);
-
-const internalFound = [];
 const resolvedFound = [];
 const externalUnresolvedFound = [];
 
 citedSources.forEach((claims, src) => {
-    if (INTERNAL_REFERENCES.has(src)) {
-        internalFound.push({ id: src, claims });
-    } else if (resolvedSources.has(src)) {
+    if (physicalSources.has(src)) {
         resolvedFound.push({ id: src, claims });
     } else {
         externalUnresolvedFound.push({ id: src, claims });
     }
 });
 
-internalFound.sort((a, b) => a.id.localeCompare(b.id));
 resolvedFound.sort((a, b) => a.id.localeCompare(b.id));
 externalUnresolvedFound.sort((a, b) => a.id.localeCompare(b.id));
 
-// 4. Backlog de investigación propuesto (obras no citadas en los 35 claims actuales)
+// Registro histórico de identidades internas desacopladas en Fase 2A
+const decoupledInternal = [
+    {
+        source_id: 'SRC-DOOR-RELATIONS-2026',
+        target_relation: 'grounded_in',
+        targets: ['DOOR-RELATIONS'],
+        type: 'Canon del Framework',
+        claims: ['CLAIM-AD-006'],
+        action: 'Desacoplado exitosamente a grounded_in en Fase 2A'
+    },
+    {
+        source_id: 'SRC-DSAD-MASTER-2026',
+        target_relation: 'grounded_in',
+        targets: ['CON-ATTENTION-DOORS', 'CON-EPISTEMIC-BOUNDARIES', 'CON-AI-ROLES', 'DEC-011', 'CON-FRAMEWORK-ETHICS', 'MET-TELEMETRY'],
+        type: 'Canon del Framework',
+        claims: ['CLAIM-AD-005', 'CLAIM-AD-006', 'CLAIM-HAI-006', 'CLAIM-HF-005', 'CLAIM-TL-006'],
+        action: 'Desacoplado semánticamente a conceptos canónicos específicos en Fase 2A'
+    },
+    {
+        source_id: 'SRC-FARO-V3PLUS-CANON-2026',
+        target_relation: 'grounded_in',
+        targets: ['GAME-FARO-SIMULATION-V3PLUS'],
+        type: 'Componente / Juego',
+        claims: ['CLAIM-GG-006'],
+        action: 'Desacoplado exitosamente a grounded_in en Fase 2A'
+    },
+    {
+        source_id: 'SRC-WEBINAR-INTERNAL-2026',
+        target_relation: 'evidenced_by',
+        targets: ['EVD-WEBINAR-V1'],
+        type: 'Evidencia Propia',
+        claims: ['CLAIM-GG-006', 'CLAIM-TL-006'],
+        action: 'Desacoplado exitosamente a evidenced_by en Fase 2A'
+    }
+];
+
 const researchBacklog = [
     { id: 'BACKLOG-GREEN-SWETS-1966', author: 'Green & Swets (1966)', topic: 'Signal Detection Theory', slug_provisional: 'SRC-GREEN-SWETS-1966' },
     { id: 'BACKLOG-MADDUX-ROGERS-1983', author: 'Maddux & Rogers (1983)', topic: 'Protection Motivation Theory', slug_provisional: 'SRC-MADDUX-ROGERS-1983' },
@@ -106,28 +125,27 @@ const researchBacklog = [
     { id: 'BACKLOG-VEPREK-ETAL-2022', author: 'Veprek et al. (2022)', topic: 'Simulation debriefing methodology', slug_provisional: 'SRC-VEPREK-ETAL-2022' }
 ];
 
-console.log('--- RECONCILIACIÓN DETERMINÍSTICA DE DEUDA DE EVIDENCIA ---');
+console.log('--- RECONCILIACIÓN DETERMINÍSTICA DE DEUDA DE EVIDENCIA (FASE 2A) ---');
 console.log('Total de referencias SRC-* citadas únicas:', citedSources.size);
 console.log(' - Resueltas en sources/ (1):', resolvedFound.length);
-console.log(' - Referencias internas a desacoplar (4):', internalFound.length);
+console.log(' - Referencias internas desacopladas (4):', decoupledInternal.length);
 console.log(' - Referencias externas no resueltas citadas (32):', externalUnresolvedFound.length);
 console.log(' - Backlog propuesto no citado (25):', researchBacklog.length);
 
-const totalCheck = resolvedFound.length + internalFound.length + externalUnresolvedFound.length;
-if (totalCheck !== citedSources.size || citedSources.size !== 37) {
-    console.error('ERROR: La suma de partes (' + totalCheck + ') no coincide con el total de citas (' + citedSources.size + ') o con 37');
+if (resolvedFound.length !== 1 || externalUnresolvedFound.length !== 32 || citedSources.size !== 33) {
+    console.error('ERROR: Ecuación matemática post-desacople no coincide (esperado 1 resuelta + 32 deuda = 33 citas)');
     process.exit(1);
 }
 
-// 5. Generar contenido de EVIDENCE_DEBT.md
+// 4. Escribir EVIDENCE_DEBT.md
 let md = `# REGISTRO MAESTRO DE DEUDA DE EVIDENCIA (EVIDENCE DEBT)
 ## Scientific Library System & Integrity Framework — Digital Self & Attention Doors
 
-> **Versión:** 2.0.0-reconciled (Fase 1R)  
-> **Fecha de Publicación:** 2026-09-04  
+> **Versión:** 3.0.0-phase2a (Fase 2A)  
+> **Fecha de Publicación:** 2026-09-09  
 > **Gobernanza:** Agente Bibliotecario & Antigravity Hub  
-> **Estado:** Documento de Contención Oficial Reconciliado Mecánicamente  
-> **Reconciliación:** 37 citas únicas = 1 resuelta + 4 internas a desacoplar + 32 externas no resueltas citadas  
+> **Estado:** Documento de Contención Oficial — Desacople Interno Culminado  
+> **Ecuación Post-Desacople:** 33 citas únicas = 1 resuelta + 32 externas no resueltas citadas (4 internas desacopladas a canon)  
 
 ---
 
@@ -138,20 +156,20 @@ Ninguna afirmación o claim que dependa de una fuente registrada aquí como no r
 
 ---
 
-## 2. Ecuación Matemática de Cierre de Citas
+## 2. Ecuación Matemática de Cierre de Citas (Fase 2A)
 
 \`\`\`text
-Total citas únicas SRC-* en claims y sales claims = 37
+Total citas únicas SRC-* en claims y sales claims = 33
   ├── 1 Fuente existente y resuelta en sources/ (SRC-WOOD-NEAL-2007)
-  ├── 4 Referencias internas propias (a desacoplar a canon en Fase 2)
   └── 32 Referencias externas citadas y no resueltas (deuda activa de claims)
 
+Referencias internas desacopladas en Fase 2A: 4 identidades migradas a canon/evidencia
 Backlog de investigación propuesto (obras no citadas en claims): 25 obras
 \`\`\`
 
 ---
 
-## 3. Fuentes Resueltas Activas (1)
+## 3. Fuentes Resueltas Activas Citadas por Claims (1)
 
 | ID | Título / Obra | Ubicación | Claims que la Citan |
 | :--- | :--- | :--- | :--- |
@@ -159,22 +177,22 @@ Backlog de investigación propuesto (obras no citadas en claims): 25 obras
 
 ---
 
-## 4. Referencias Internas Propias (4 a Desacoplar en Fase 2)
+## 4. Referencias Internas Propias Desacopladas (4 en Fase 2A)
 
-Estas 4 referencias fueron citadas históricamente con prefijo \`SRC-*\`, pero corresponden a componentes de software, especificaciones de canon o evidencia preliminar interna del proyecto. No son literatura científica externa.
+Estas 4 referencias fueron citadas históricamente con prefijo \`SRC-*\`, pero correspondían a componentes de software, especificaciones de canon o evidencia preliminar interna. En Fase 2A han sido desacopladas integralmente del namespace bibliográfico hacia sus objetos canónicos legítimos:
 
-| Referencia Heredada | Objeto Canónico Destino | Tipo de Objeto | Claims que la Citan | Acción en Fase 2 |
+| Referencia Retirada | Objeto Canónico Destino | Relación en Claims | Claims Afectados | Estado de Desacople |
 | :--- | :--- | :--- | :--- | :--- |
-| \`SRC-DOOR-RELATIONS-2026\` | \`DOOR-RELATIONS\` | Canon del Framework | \`${internalFound.find(x => x.id === 'SRC-DOOR-RELATIONS-2026').claims.join(', ')}\` | Migrar a \`grounded_in\` |
-| \`SRC-DSAD-MASTER-2026\` | \`CON-THESIS\` | Tesis / Canon | \`${internalFound.find(x => x.id === 'SRC-DSAD-MASTER-2026').claims.join(', ')}\` | Mapear a \`grounded_in\` |
-| \`SRC-FARO-V3PLUS-CANON-2026\` | \`GAME-FARO-SIMULATION-V3PLUS\` | Componente / Juego | \`${internalFound.find(x => x.id === 'SRC-FARO-V3PLUS-CANON-2026').claims.join(', ')}\` | Migrar a \`grounded_in\` |
-| \`SRC-WEBINAR-INTERNAL-2026\` | \`EVD-WEBINAR-V1\` | Evidencia Propia | \`${internalFound.find(x => x.id === 'SRC-WEBINAR-INTERNAL-2026').claims.join(', ')}\` | Migrar a \`evidenced_by\` |
+| \`SRC-DOOR-RELATIONS-2026\` | \`DOOR-RELATIONS\` | \`grounded_in\` | \`CLAIM-AD-006\` | **DESACOPLADO** (100% canon) |
+| \`SRC-DSAD-MASTER-2026\` | \`CON-ATTENTION-DOORS\`, \`CON-EPISTEMIC-BOUNDARIES\`, \`CON-AI-ROLES\`, \`DEC-011\`, \`CON-FRAMEWORK-ETHICS\`, \`MET-TELEMETRY\` | \`grounded_in\` | \`CLAIM-AD-005, CLAIM-AD-006, CLAIM-HAI-006, CLAIM-HF-005, CLAIM-TL-006\` | **DESACOPLADO** (mapeo semántico específico) |
+| \`SRC-FARO-V3PLUS-CANON-2026\` | \`GAME-FARO-SIMULATION-V3PLUS\` | \`grounded_in\` | \`CLAIM-GG-006\` | **DESACOPLADO** (100% canon) |
+| \`SRC-WEBINAR-INTERNAL-2026\` | \`EVD-WEBINAR-V1\` | \`evidenced_by\` | \`CLAIM-GG-006, CLAIM-TL-006\` | **DESACOPLADO** (100% evidencia propia) |
 
 ---
 
 ## 5. Deuda Externa Activa: 32 Referencias No Resueltas Citadas por Claims
 
-Todas se encuentran en estado estricto \`unresolved_identity\` hasta completar su verificación en Fase 2.
+Todas se encuentran en estado estricto \`unresolved_identity\` con claims confinados a \`internal_research\` hasta autorizar su ingesta.
 
 | # | ID Nominal | Claims que la Citan | Estado de Identidad |
 | :--- | :--- | :--- | :--- |
@@ -204,15 +222,34 @@ md += `
 
 ## 7. Regla de Confinamiento y Cero Overclaim
 
-1. **Investigación Interna Exclusiva:** Los 35 claims que citan estas fuentes permanecen suspendidos con \`allowed_uses: [internal_research]\`.
+1. **Investigación Interna Exclusiva:** Los claims que citan estas 32 fuentes permanecen suspendidos con \`allowed_uses: [internal_research]\`.
 2. **Protección Comercial:** Ningún material de ventas, pitch deck, propuesta o workshop puede atribuir validación externa con base en fuentes no resueltas.
-3. **Ingesta Gobernada:** La resolución de estas fuentes se realizará estrictamente por olas durante Fase 2, previa autorización humana.
+3. **Ingesta Gobernada:** La resolución de estas 32 fuentes permanece estrictamente no autorizada hasta la aprobación del checkpoint de Fase 2A.
 `;
 
 fs.writeFileSync(debtFilePath, md, 'utf8');
-console.log('EVIDENCE_DEBT.md actualizado exitosamente con la ecuación matemática exacta.');
+console.log('[PASS] EVIDENCE_DEBT.md actualizado exitosamente.');
 
-// También copiar script a v3/scripts/reconcile_evidence_debt.js
-const targetScript = 'd:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v3/scripts/reconcile_evidence_debt.js';
-fs.copyFileSync(__filename, targetScript);
-console.log('Script copiado a ' + targetScript);
+// 5. Escribir evidence_debt_index.json
+const debtIndexObj = {
+    schema_version: '2.0.0',
+    description: 'Índice máquina-legible del registro de deuda de evidencia bibliográfica (Fase 2A)',
+    counts: {
+        resolved_sources: resolvedFound.length,
+        internal_references_to_decouple: 0,
+        decoupled_internal_references: decoupledInternal.length,
+        cited_external_unresolved_debt: externalUnresolvedFound.length,
+        research_backlog: researchBacklog.length
+    },
+    resolved_sources: resolvedFound.map(r => r.id),
+    internal_references_to_decouple: [],
+    decoupled_internal_references: decoupledInternal,
+    cited_external_unresolved_debt: externalUnresolvedFound.map(e => e.id),
+    research_backlog: {
+        backlog_ids: researchBacklog.map(b => b.id),
+        provisional_slugs: researchBacklog.map(b => b.slug_provisional)
+    }
+};
+
+fs.writeFileSync(debtIndexPath, JSON.stringify(debtIndexObj, null, 2) + '\n', 'utf8');
+console.log('[PASS] evidence_debt_index.json actualizado exitosamente.');

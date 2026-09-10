@@ -139,7 +139,11 @@ decisions:
 
 **Scope:** Estado de evidencia del producto FARO V3+ a la fecha de verificación.
 
-**Supported by:** [`SRC-FARO-V3PLUS-CANON-2026`, `SRC-WEBINAR-INTERNAL-2026`]
+**Supported by:** []
+
+**Evidenced by:** [`EVD-WEBINAR-V1`]
+
+**Grounded in:** [`GAME-FARO-SIMULATION-V3PLUS`]
 
 **Last verified:** 2026-09-03
 

@@ -140,7 +140,11 @@ decisions:
 
 **Scope:** Interpretación de la evidencia interna disponible para el webinar Digital Self & Attention Doors.
 
-**Supported by:** [`SRC-WEBINAR-INTERNAL-2026`, `SRC-DSAD-MASTER-2026`]
+**Supported by:** []
+
+**Evidenced by:** [`EVD-WEBINAR-V1`]
+
+**Grounded in:** [`CON-EPISTEMIC-BOUNDARIES`]
 
 **Last verified:** 2026-09-03
 

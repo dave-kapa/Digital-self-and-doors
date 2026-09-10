@@ -91,10 +91,12 @@ let realCollisions = 0;
 realFiles.forEach(f => {
     const c = fs.readFileSync(path.join(realSourcesDir, f), 'utf8');
     const m = c.match(/doi:\s*["']?([^"'\r\n]+)/);
-    if (m) {
+    if (m && m[1].trim() !== 'null' && m[1].trim() !== '~') {
         const d = normalizeDoi(m[1]);
-        if (realDois.has(d)) realCollisions++;
-        realDois.add(d);
+        if (d) {
+            if (realDois.has(d)) realCollisions++;
+            realDois.add(d);
+        }
     }
 });
 assert(realCollisions === 0, '0 colisiones internas en los ' + realFiles.length + ' archivos de sources/ reales');

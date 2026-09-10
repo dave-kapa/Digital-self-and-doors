@@ -20,14 +20,8 @@ const mode = process.argv.includes('--mode=strict') ? 'strict' : 'migration';
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
 
-// Inventario cerrado de Source Notes legacy (R1)
-const LEGACY_SOURCE_NOTES = new Set([
-    'SRC-KAHNEMAN-2011',
-    'SRC-ROGERS-1975',
-    'SRC-VAFA-2026',
-    'SRC-VERIZON-DBIR-2026',
-    'SRC-WOOD-NEAL-2007'
-]);
+// Inventario de Source Notes legacy (R1) - Cerrado en Fase 2A (todas migradas a Schema v2)
+const LEGACY_SOURCE_NOTES = new Set();
 
 // Cargar Schemas JSON
 const defaultSchemasDir = path.join(__dirname, '../brain/00_meta_and_governance/schemas');

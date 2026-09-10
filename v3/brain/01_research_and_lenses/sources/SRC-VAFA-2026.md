@@ -1,34 +1,60 @@
 ---
-id: "SRC-VAFA-2026"
-title: "Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data"
-type: "source"
-layer: "01_research_and_lenses"
-status: "canonical"
-epistemic_status: "not_applicable"
-reading_status: "complete"
-reading_depth: "full_text"
-version: "1.0.0"
-author: "Elham Pourabbas Vafa, Sayak Saha Roy y Shirin Nilizadeh"
+schema_version: 2
+id: SRC-VAFA-2026
+title: 'Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data'
+type: source
+layer: 01_research_and_lenses
+status: review
+epistemic_status: not_applicable
+version: 1.0.0
+summary: Preprint de 2026 que demuestra en un entorno controlado cómo cinco modelos generativos pueden combinar señales públicas de Instagram, perfilado de estilo y siete estrategias de ingeniería social para producir 17.916 correos personalizados; sus evaluaciones automatizadas y un estudio con 70 adultos estadounidenses hallan mayor calidad percibida y menor sospecha que en muestras APWG, aunque la plataforma única, los estímulos estáticos, el tamaño humano y el carácter no revisado por pares limitan la generalización a victimización real.
+authors:
+  - Elham Pourabbas Vafa
+  - Sayak Saha Roy
+  - Shirin Nilizadeh
+year: 2026
+source_type: preprint
+study_design: mixed_methods
+peer_review_status: working_paper
+doi: 10.48550/arXiv.2605.11268
+isbn: null
+canonical_url: https://arxiv.org/abs/2605.11268
+reading_status: full_text_reviewed
+review_status: pending_review
+reviewed_by_agents:
+  - librarian_agent
+  - antigravity
+approved_by_humans: []
+approval_date: null
+last_verified: '2026-09-04'
+review_cadence_months: 6
+next_review: '2027-03-04'
 topics:
-  - "generative_ai"
-  - "social_engineering_phishing"
-  - "digital_footprint"
-  - "personalization"
-  - "human_ai_interaction"
+  - genai
+  - social_engineering
+  - phishing
+  - digital_self
+  - identity
+  - human_ai_interaction
 fulltext:
-  availability: "public"
-  storage_type: "external_url"
-  location: "https://arxiv.org/pdf/2605.11268"
+  availability: public_open_access
+  storage_type: external_reference
+  location: https://arxiv.org/pdf/2605.11268
+  local_path: null
+  license_id: arXiv_nonexclusive_access
+  redistribution_allowed: false
   sha256: null
-summary: "Preprint de 2026 que demuestra en un entorno controlado cómo cinco modelos generativos pueden combinar señales públicas de Instagram, perfilado de estilo y siete estrategias de ingeniería social para producir 17.916 correos personalizados; sus evaluaciones automatizadas y un estudio con 70 adultos estadounidenses hallan mayor calidad percibida y menor sospecha que en muestras APWG, aunque la plataforma única, los estímulos estáticos, el tamaño humano y el carácter no revisado por pares limitan la generalización a victimización real."
-related:
-  - "CON-DIGITAL-FOOTPRINT"
-  - "CON-DIGITAL-SELF"
-  - "DOOR-001"
-  - "DOOR-002"
-  - "DOOR-005"
-  - "DOOR-006"
-  - "CLM-MATRIX-GENAI-SE"
+  hash_status: not_available
+  accessed_at: '2026-09-04'
+related_doors:
+  - DOOR-001
+  - DOOR-002
+  - DOOR-005
+  - DOOR-006
+related_theories:
+  - THEORY-SDT
+  - THEORY-TRUST-AUTO
+  - THEORY-JUDGE-ADVISOR
 ---
 
 # 1. Citation (APA)

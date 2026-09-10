@@ -118,7 +118,9 @@ decisions:
 
 **Scope:** Interpretación ética y metodológica de ejercicios, telemetría y perfiles formativos con pocas observaciones.
 
-**Supported by:** [`SRC-CRANOR-2008`, `SRC-DSAD-MASTER-2026`]
+**Supported by:** [`SRC-CRANOR-2008`]
+
+**Grounded in:** [`CON-FRAMEWORK-ETHICS`, `MET-TELEMETRY`, `CON-EPISTEMIC-BOUNDARIES`]
 
 **Last verified:** 2026-09-03
 

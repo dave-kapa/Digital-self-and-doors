@@ -40,17 +40,27 @@ function sha256(str) {
     return crypto.createHash('sha256').update(str).digest('hex');
 }
 
-// 1. Integridad de las 5 Source Notes congeladas vs snapshot previo
-const legacyNotes = [
-    'SRC-KAHNEMAN-2011.md',
-    'SRC-ROGERS-1975.md',
-    'SRC-VAFA-2026.md',
-    'SRC-VERIZON-DBIR-2026.md',
-    'SRC-WOOD-NEAL-2007.md'
-];
+// 1. Trazabilidad criptográfica de las 5 Source Notes (Fase 2A)
+// 1.1 Snapshot baseline inmutable (pre-Fase -1 a 1R.1)
+const BASELINE_SNAPSHOT_HASHES = {
+    'SRC-KAHNEMAN-2011.md': 'e0fa1fdf9bdd5f214a9658c7585b43fd384c6f82ac3f16a63d1d3b75d292d477',
+    'SRC-ROGERS-1975.md': '9a024caceb84c3cd9deb028f068609faeb83fa08e25ae4e2881ca1e67cdede5b',
+    'SRC-VAFA-2026.md': '74c7442656897a5052755db5c50ddb4a3829616b6d6788c275d7ba4b6a0907fd',
+    'SRC-VERIZON-DBIR-2026.md': 'ddd39ab89c13a0cdbd278f43e3e9359c4e1c484653b149b7b9e9419374e45081',
+    'SRC-WOOD-NEAL-2007.md': '93e2fed7f8388d54f13e668c0ac454e23d3c06ec0a0d105d1389341a8bfb0fc0'
+};
+
+// 1.2 Hashes certificados de migración Schema v2 (Fase 2A)
+const PHASE_2A_CERTIFIED_HASHES = {
+    'SRC-KAHNEMAN-2011.md': 'b80ae8215eabfe83d49ee52f17b7c0a2244d7a707d095272715c14f65e218c95',
+    'SRC-ROGERS-1975.md': '1dd0385d6cbf5b9dbad51f162b1aa0ed133c04eab339ca0fb648c167e8f83763',
+    'SRC-VAFA-2026.md': '7d90f891dd87efde80d4cdd29e58e0c82f0a6a15d5958b1d8d763fddd3cd1f43',
+    'SRC-VERIZON-DBIR-2026.md': '2c4afb53b3f06da89092a651f837f93856cdbfc2e0a98e396514a1b2770c6c25',
+    'SRC-WOOD-NEAL-2007.md': '5cd5aae33b1c63420766e54267eb365f4a44b7eed16224f69bc605509b6518f4'
+};
 
 let allHashesMatch = true;
-legacyNotes.forEach(f => {
+Object.keys(PHASE_2A_CERTIFIED_HASHES).forEach(f => {
     const activePath = path.join(sourcesDir, f);
     const snapPath = path.join(snapshotSourcesDir, f);
     if (!fs.existsSync(activePath) || !fs.existsSync(snapPath)) {
@@ -60,12 +70,32 @@ legacyNotes.forEach(f => {
     }
     const hActive = sha256(fs.readFileSync(activePath));
     const hSnap = sha256(fs.readFileSync(snapPath));
-    if (hActive !== hSnap) {
+
+    if (hSnap !== BASELINE_SNAPSHOT_HASHES[f]) {
         allHashesMatch = false;
-        console.error('Hash mismatch en ' + f + ': ' + hActive + ' !== ' + hSnap);
+        console.error('Snapshot baseline alterado en ' + f + ': ' + hSnap);
+    }
+    if (hActive !== PHASE_2A_CERTIFIED_HASHES[f]) {
+        allHashesMatch = false;
+        console.error('Hash migrado 2A mismatch en ' + f + ': ' + hActive + ' !== ' + PHASE_2A_CERTIFIED_HASHES[f]);
+    }
+
+    // Verificar estricto Schema v2 governance frontmatter
+    try {
+        const content = fs.readFileSync(activePath, 'utf8');
+        const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+        const data = yaml.load(match[1]);
+        if (data.schema_version !== 2 || data.status !== 'review' || data.review_status !== 'pending_review' ||
+            !Array.isArray(data.approved_by_humans) || data.approved_by_humans.length !== 0 || data.approval_date !== null) {
+            allHashesMatch = false;
+            console.error('Gobernanza de Schema v2 inválida en nota migrada: ' + f);
+        }
+    } catch (e) {
+        allHashesMatch = false;
+        console.error('Error parseando frontmatter en ' + f + ': ' + e.message);
     }
 });
-assert(allHashesMatch, 'Las 5 Source Notes congeladas tienen hash idéntico al snapshot pre-Fase -1');
+assert(allHashesMatch, 'Las 5 Source Notes migradas a Schema v2 tienen trazabilidad criptográfica y snapshot inmutable');
 
 // 2. Cero nuevos PDFs en el árbol de trabajo (rutas exactas y hash SHA-256 preexistente)
 function findPdfs(dir, list = []) {

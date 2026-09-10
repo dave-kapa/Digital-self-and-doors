@@ -119,7 +119,9 @@ decisions:
 
 **Scope:** Estado epistemológico interno del framework a la fecha de verificación.
 
-**Supported by:** [`SRC-DSAD-MASTER-2026`]
+**Supported by:** []
+
+**Grounded in:** [`CON-ATTENTION-DOORS`, `CON-EPISTEMIC-BOUNDARIES`]
 
 **Last verified:** 2026-09-03
 
@@ -141,7 +143,9 @@ decisions:
 
 **Scope:** Regla de modelado y límite de inferencia del framework, pendiente de estudios de estructura y validez.
 
-**Supported by:** [`SRC-DSAD-MASTER-2026`, `SRC-DOOR-RELATIONS-2026`]
+**Supported by:** []
+
+**Grounded in:** [`DOOR-RELATIONS`, `CON-ATTENTION-DOORS`]
 
 **Last verified:** 2026-09-03
 

@@ -123,7 +123,7 @@
     "id": "SRC-KAHNEMAN-2011",
     "title": "Thinking, Fast and Slow",
     "type": "source",
-    "status": "canonical",
+    "status": "review",
     "epistemic_status": "not_applicable",
     "path": "01_research_and_lenses/sources/SRC-KAHNEMAN-2011.md"
   },
@@ -131,7 +131,7 @@
     "id": "SRC-ROGERS-1975",
     "title": "A Protection Motivation Theory of Fear Appeals and Attitude Change",
     "type": "source",
-    "status": "canonical",
+    "status": "review",
     "epistemic_status": "not_applicable",
     "path": "01_research_and_lenses/sources/SRC-ROGERS-1975.md"
   },
@@ -139,7 +139,7 @@
     "id": "SRC-VAFA-2026",
     "title": "Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data",
     "type": "source",
-    "status": "canonical",
+    "status": "review",
     "epistemic_status": "not_applicable",
     "path": "01_research_and_lenses/sources/SRC-VAFA-2026.md"
   },
@@ -147,7 +147,7 @@
     "id": "SRC-VERIZON-DBIR-2026",
     "title": "2026 Data Breach Investigations Report",
     "type": "source",
-    "status": "canonical",
+    "status": "review",
     "epistemic_status": "not_applicable",
     "path": "01_research_and_lenses/sources/SRC-VERIZON-DBIR-2026.md"
   },
@@ -155,7 +155,7 @@
     "id": "SRC-WOOD-NEAL-2007",
     "title": "A New Look at Habits and the Habit-Goal Interface",
     "type": "source",
-    "status": "canonical",
+    "status": "review",
     "epistemic_status": "not_applicable",
     "path": "01_research_and_lenses/sources/SRC-WOOD-NEAL-2007.md"
   },

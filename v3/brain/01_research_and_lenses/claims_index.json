@@ -111,14 +111,13 @@
     "allowed_uses": [
       "internal_research"
     ],
-    "supported_by": [
-      {
-        "source_id": "SRC-DSAD-MASTER-2026",
-        "relation": "unspecified_legacy"
-      }
-    ],
+    "supported_by": [],
     "last_verified": "2026-09-03",
-    "file_source": "claims_attention_decision.md"
+    "file_source": "claims_attention_decision.md",
+    "grounded_in": [
+      "CON-ATTENTION-DOORS",
+      "CON-EPISTEMIC-BOUNDARIES"
+    ]
   },
   {
     "claim_id": "CLAIM-AD-006",
@@ -132,18 +131,13 @@
     "allowed_uses": [
       "internal_research"
     ],
-    "supported_by": [
-      {
-        "source_id": "SRC-DSAD-MASTER-2026",
-        "relation": "unspecified_legacy"
-      },
-      {
-        "source_id": "SRC-DOOR-RELATIONS-2026",
-        "relation": "unspecified_legacy"
-      }
-    ],
+    "supported_by": [],
     "last_verified": "2026-09-03",
-    "file_source": "claims_attention_decision.md"
+    "file_source": "claims_attention_decision.md",
+    "grounded_in": [
+      "DOOR-RELATIONS",
+      "CON-ATTENTION-DOORS"
+    ]
   },
   {
     "claim_id": "CLAIM-GENAI-001",
@@ -444,18 +438,18 @@
     "allowed_uses": [
       "internal_research"
     ],
-    "supported_by": [
+    "supported_by": [],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_games_gamification.md",
+    "evidenced_by": [
       {
-        "source_id": "SRC-FARO-V3PLUS-CANON-2026",
-        "relation": "unspecified_legacy"
-      },
-      {
-        "source_id": "SRC-WEBINAR-INTERNAL-2026",
-        "relation": "unspecified_legacy"
+        "evidence_id": "EVD-WEBINAR-V1",
+        "relation": "preliminary_signal"
       }
     ],
-    "last_verified": "2026-09-03",
-    "file_source": "claims_games_gamification.md"
+    "grounded_in": [
+      "GAME-FARO-SIMULATION-V3PLUS"
+    ]
   },
   {
     "claim_id": "CLAIM-HAI-001",
@@ -592,10 +586,6 @@
     ],
     "supported_by": [
       {
-        "source_id": "SRC-DSAD-MASTER-2026",
-        "relation": "unspecified_legacy"
-      },
-      {
         "source_id": "SRC-LEE-SEE-2004",
         "relation": "unspecified_legacy"
       },
@@ -609,7 +599,11 @@
       }
     ],
     "last_verified": "2026-09-03",
-    "file_source": "claims_human_ai.md"
+    "file_source": "claims_human_ai.md",
+    "grounded_in": [
+      "CON-AI-ROLES",
+      "DEC-011"
+    ]
   },
   {
     "claim_id": "CLAIM-HF-001",
@@ -727,14 +721,15 @@
       {
         "source_id": "SRC-CRANOR-2008",
         "relation": "unspecified_legacy"
-      },
-      {
-        "source_id": "SRC-DSAD-MASTER-2026",
-        "relation": "unspecified_legacy"
       }
     ],
     "last_verified": "2026-09-03",
-    "file_source": "claims_human_factor.md"
+    "file_source": "claims_human_factor.md",
+    "grounded_in": [
+      "CON-FRAMEWORK-ETHICS",
+      "MET-TELEMETRY",
+      "CON-EPISTEMIC-BOUNDARIES"
+    ]
   },
   {
     "claim_id": "CLAIM-TL-001",
@@ -873,17 +868,17 @@
     "allowed_uses": [
       "internal_research"
     ],
-    "supported_by": [
+    "supported_by": [],
+    "last_verified": "2026-09-03",
+    "file_source": "claims_training_learning.md",
+    "evidenced_by": [
       {
-        "source_id": "SRC-WEBINAR-INTERNAL-2026",
-        "relation": "unspecified_legacy"
-      },
-      {
-        "source_id": "SRC-DSAD-MASTER-2026",
-        "relation": "unspecified_legacy"
+        "evidence_id": "EVD-WEBINAR-V1",
+        "relation": "preliminary_signal"
       }
     ],
-    "last_verified": "2026-09-03",
-    "file_source": "claims_training_learning.md"
+    "grounded_in": [
+      "CON-EPISTEMIC-BOUNDARIES"
+    ]
   }
 ]

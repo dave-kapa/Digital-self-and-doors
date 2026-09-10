@@ -236,10 +236,18 @@ const tests = [
         mode: 'migration',
         expectedCode: '[FAIL D040]',
         expectedMessage: 'contiene referencias a 99_archive_and_history como fuente activa'
+    },
+    {
+        id: 'NEG-029-D010-ROUTING-CLOSED',
+        name: 'Detección de rechazo a Source Note con formato legacy (sin schema_version: 2) tras cierre de routing (R1 / D010)',
+        dir: 'fixture_legacy_note_closed_routing',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: 'carece de schema_version requerido (2)'
     }
 ];
 
-console.log('=== SUITE DE PRUEBAS NEGATIVAS: AUDITORÍA DETERMINÍSTICA (Fase 1R.1) ===');
+console.log('=== SUITE DE PRUEBAS NEGATIVAS: AUDITORÍA DETERMINÍSTICA (Fase 2A) ===');
 console.log('Total de casos de prueba negativos: ' + tests.length);
 console.log('Ejecutable utilizado: ' + process.execPath);
 console.log('----------------------------------------------------------------------');
@@ -280,5 +288,5 @@ if (failed > 0) {
     console.error('AL MENOS UNA PRUEBA NEGATIVA NO FALLÓ COMO SE ESPERABA.');
     process.exit(1);
 } else {
-    console.log('SUITE NEGATIVA 100% PASS: Todos los 28 defectos intencionales fueron interceptados con su mensaje específico.');
+    console.log(`SUITE NEGATIVA 100% PASS: Todos los ${tests.length} defectos intencionales fueron interceptados con su mensaje específico.`);
 }

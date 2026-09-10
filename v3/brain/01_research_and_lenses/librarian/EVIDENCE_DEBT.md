@@ -1,11 +1,11 @@
 # REGISTRO MAESTRO DE DEUDA DE EVIDENCIA (EVIDENCE DEBT)
 ## Scientific Library System & Integrity Framework — Digital Self & Attention Doors
 
-> **Versión:** 2.0.0-reconciled (Fase 1R)  
-> **Fecha de Publicación:** 2026-09-04  
+> **Versión:** 3.0.0-phase2a (Fase 2A)  
+> **Fecha de Publicación:** 2026-09-09  
 > **Gobernanza:** Agente Bibliotecario & Antigravity Hub  
-> **Estado:** Documento de Contención Oficial Reconciliado Mecánicamente  
-> **Reconciliación:** 37 citas únicas = 1 resuelta + 4 internas a desacoplar + 32 externas no resueltas citadas  
+> **Estado:** Documento de Contención Oficial — Desacople Interno Culminado  
+> **Ecuación Post-Desacople:** 33 citas únicas = 1 resuelta + 32 externas no resueltas citadas (4 internas desacopladas a canon)  
 
 ---
 
@@ -16,20 +16,20 @@ Ninguna afirmación o claim que dependa de una fuente registrada aquí como no r
 
 ---
 
-## 2. Ecuación Matemática de Cierre de Citas
+## 2. Ecuación Matemática de Cierre de Citas (Fase 2A)
 
 ```text
-Total citas únicas SRC-* en claims y sales claims = 37
+Total citas únicas SRC-* en claims y sales claims = 33
   ├── 1 Fuente existente y resuelta en sources/ (SRC-WOOD-NEAL-2007)
-  ├── 4 Referencias internas propias (a desacoplar a canon en Fase 2)
   └── 32 Referencias externas citadas y no resueltas (deuda activa de claims)
 
+Referencias internas desacopladas en Fase 2A: 4 identidades migradas a canon/evidencia
 Backlog de investigación propuesto (obras no citadas en claims): 25 obras
 ```
 
 ---
 
-## 3. Fuentes Resueltas Activas (1)
+## 3. Fuentes Resueltas Activas Citadas por Claims (1)
 
 | ID | Título / Obra | Ubicación | Claims que la Citan |
 | :--- | :--- | :--- | :--- |
@@ -37,22 +37,22 @@ Backlog de investigación propuesto (obras no citadas en claims): 25 obras
 
 ---
 
-## 4. Referencias Internas Propias (4 a Desacoplar en Fase 2)
+## 4. Referencias Internas Propias Desacopladas (4 en Fase 2A)
 
-Estas 4 referencias fueron citadas históricamente con prefijo `SRC-*`, pero corresponden a componentes de software, especificaciones de canon o evidencia preliminar interna del proyecto. No son literatura científica externa.
+Estas 4 referencias fueron citadas históricamente con prefijo `SRC-*`, pero correspondían a componentes de software, especificaciones de canon o evidencia preliminar interna. En Fase 2A han sido desacopladas integralmente del namespace bibliográfico hacia sus objetos canónicos legítimos:
 
-| Referencia Heredada | Objeto Canónico Destino | Tipo de Objeto | Claims que la Citan | Acción en Fase 2 |
+| Referencia Retirada | Objeto Canónico Destino | Relación en Claims | Claims Afectados | Estado de Desacople |
 | :--- | :--- | :--- | :--- | :--- |
-| `SRC-DOOR-RELATIONS-2026` | `DOOR-RELATIONS` | Canon del Framework | `CLAIM-AD-006` | Migrar a `grounded_in` |
-| `SRC-DSAD-MASTER-2026` | `CON-THESIS` | Tesis / Canon | `CLAIM-AD-005, CLAIM-AD-006, CLAIM-HAI-006, CLAIM-HF-005, CLAIM-TL-006` | Mapear a `grounded_in` |
-| `SRC-FARO-V3PLUS-CANON-2026` | `GAME-FARO-SIMULATION-V3PLUS` | Componente / Juego | `CLAIM-GG-006` | Migrar a `grounded_in` |
-| `SRC-WEBINAR-INTERNAL-2026` | `EVD-WEBINAR-V1` | Evidencia Propia | `CLAIM-GG-006, CLAIM-TL-006` | Migrar a `evidenced_by` |
+| `SRC-DOOR-RELATIONS-2026` | `DOOR-RELATIONS` | `grounded_in` | `CLAIM-AD-006` | **DESACOPLADO** (100% canon) |
+| `SRC-DSAD-MASTER-2026` | `CON-ATTENTION-DOORS`, `CON-EPISTEMIC-BOUNDARIES`, `CON-AI-ROLES`, `DEC-011`, `CON-FRAMEWORK-ETHICS`, `MET-TELEMETRY` | `grounded_in` | `CLAIM-AD-005, CLAIM-AD-006, CLAIM-HAI-006, CLAIM-HF-005, CLAIM-TL-006` | **DESACOPLADO** (mapeo semántico específico) |
+| `SRC-FARO-V3PLUS-CANON-2026` | `GAME-FARO-SIMULATION-V3PLUS` | `grounded_in` | `CLAIM-GG-006` | **DESACOPLADO** (100% canon) |
+| `SRC-WEBINAR-INTERNAL-2026` | `EVD-WEBINAR-V1` | `evidenced_by` | `CLAIM-GG-006, CLAIM-TL-006` | **DESACOPLADO** (100% evidencia propia) |
 
 ---
 
 ## 5. Deuda Externa Activa: 32 Referencias No Resueltas Citadas por Claims
 
-Todas se encuentran en estado estricto `unresolved_identity` hasta completar su verificación en Fase 2.
+Todas se encuentran en estado estricto `unresolved_identity` con claims confinados a `internal_research` hasta autorizar su ingesta.
 
 | # | ID Nominal | Claims que la Citan | Estado de Identidad |
 | :--- | :--- | :--- | :--- |
@@ -67,14 +67,14 @@ Todas se encuentran en estado estricto `unresolved_identity` hasta completar su 
 | 9 | `SRC-FRANCIA-ETAL-2024` | `CLAIM-GENAI-002, CLAIM-GENAI-003, CLAIM-GENAI-004, CLAIM-GENAI-005, CLAIM-GENAI-006` | `unresolved_identity` |
 | 10 | `SRC-GOLLWITZER-1999` | `CLAIM-HF-004` | `unresolved_identity` |
 | 11 | `SRC-GOTTLIEB-ETAL-2013` | `CLAIM-AD-001` | `unresolved_identity` |
-| 12 | `SRC-HAZELL-2023` | `CLAIM-GENAI-001, CLAIM-GENAI-003, CLAIM-GENAI-006, SALES-CLAIM-001` | `unresolved_identity` |
-| 13 | `SRC-HEIDING-ETAL-2024` | `CLAIM-GENAI-001, CLAIM-GENAI-002, CLAIM-GENAI-003, CLAIM-GENAI-004, CLAIM-GENAI-006, SALES-CLAIM-001` | `unresolved_identity` |
+| 12 | `SRC-HAZELL-2023` | `CLAIM-GENAI-001, CLAIM-GENAI-003, CLAIM-GENAI-006` | `unresolved_identity` |
+| 13 | `SRC-HEIDING-ETAL-2024` | `CLAIM-GENAI-001, CLAIM-GENAI-002, CLAIM-GENAI-003, CLAIM-GENAI-004, CLAIM-GENAI-006` | `unresolved_identity` |
 | 14 | `SRC-HOFF-BASHIR-2015` | `CLAIM-HAI-001` | `unresolved_identity` |
 | 15 | `SRC-JEBO-SME-FIELD-2025` | `CLAIM-TL-004` | `unresolved_identity` |
 | 16 | `SRC-KAHNEMAN-TVERSKY-1979` | `CLAIM-AD-003` | `unresolved_identity` |
 | 17 | `SRC-KIDD-HAYDEN-2015` | `CLAIM-AD-001` | `unresolved_identity` |
 | 18 | `SRC-KUMARAGURU-ETAL-2009` | `CLAIM-TL-003, CLAIM-TL-004` | `unresolved_identity` |
-| 19 | `SRC-LEE-SEE-2004` | `CLAIM-HAI-001, CLAIM-HAI-002, CLAIM-HAI-006, SALES-CLAIM-006` | `unresolved_identity` |
+| 19 | `SRC-LEE-SEE-2004` | `CLAIM-HAI-001, CLAIM-HAI-002, CLAIM-HAI-006` | `unresolved_identity` |
 | 20 | `SRC-LOGG-MINSON-MOORE-2019` | `CLAIM-HAI-004` | `unresolved_identity` |
 | 21 | `SRC-MACNAMARA-HAMBRICK-OSWALD-2014` | `CLAIM-TL-002` | `unresolved_identity` |
 | 22 | `SRC-OYSERMAN-2009` | `CLAIM-AD-002` | `unresolved_identity` |
@@ -82,8 +82,8 @@ Todas se encuentran en estado estricto `unresolved_identity` hasta completar su 
 | 24 | `SRC-ROEDIGER-KARPICKE-2006` | `CLAIM-TL-001` | `unresolved_identity` |
 | 25 | `SRC-ROGERS-KUIPER-KIRKER-1977` | `CLAIM-AD-002` | `unresolved_identity` |
 | 26 | `SRC-RYAN-DECI-2000` | `CLAIM-HAI-006` | `unresolved_identity` |
-| 27 | `SRC-SAILER-HOMNER-2020` | `CLAIM-GG-001, CLAIM-GG-002, CLAIM-GG-003, CLAIM-GG-004, CLAIM-TL-005, SALES-CLAIM-005` | `unresolved_identity` |
-| 28 | `SRC-SASSE-BROSTOFF-WEIRICH-2001` | `CLAIM-HF-001, CLAIM-HF-002, CLAIM-HF-003, SALES-CLAIM-003` | `unresolved_identity` |
+| 27 | `SRC-SAILER-HOMNER-2020` | `CLAIM-GG-001, CLAIM-GG-002, CLAIM-GG-003, CLAIM-GG-004, CLAIM-TL-005` | `unresolved_identity` |
+| 28 | `SRC-SASSE-BROSTOFF-WEIRICH-2001` | `CLAIM-HF-001, CLAIM-HF-002, CLAIM-HF-003` | `unresolved_identity` |
 | 29 | `SRC-STEGADVENTURE-2025` | `CLAIM-GG-004, CLAIM-TL-005` | `unresolved_identity` |
 | 30 | `SRC-TRAINING-REVIEW-2023` | `CLAIM-GG-002, CLAIM-GG-005, CLAIM-TL-004, CLAIM-TL-005` | `unresolved_identity` |
 | 31 | `SRC-TVERSKY-KAHNEMAN-1981` | `CLAIM-AD-003` | `unresolved_identity` |
@@ -127,6 +127,6 @@ Estas obras forman parte del horizonte de fundamentación teórica y metodológi
 
 ## 7. Regla de Confinamiento y Cero Overclaim
 
-1. **Investigación Interna Exclusiva:** Los 35 claims que citan estas fuentes permanecen suspendidos con `allowed_uses: [internal_research]`.
+1. **Investigación Interna Exclusiva:** Los claims que citan estas 32 fuentes permanecen suspendidos con `allowed_uses: [internal_research]`.
 2. **Protección Comercial:** Ningún material de ventas, pitch deck, propuesta o workshop puede atribuir validación externa con base en fuentes no resueltas.
-3. **Ingesta Gobernada:** La resolución de estas fuentes se realizará estrictamente por olas durante Fase 2, previa autorización humana.
+3. **Ingesta Gobernada:** La resolución de estas 32 fuentes permanece estrictamente no autorizada hasta la aprobación del checkpoint de Fase 2A.

@@ -2,17 +2,17 @@
   "meta": {
     "title": "Evidence & Knowledge Graph — Cerebro V3 (Fase 1R.1)",
     "generated_at": "2026-09-04",
-    "node_count": 152,
-    "edge_count": 88,
+    "node_count": 148,
+    "edge_count": 92,
     "namespaces": {
-      "supported_by": 73,
-      "evidenced_by": 0,
-      "grounded_in": 0,
+      "supported_by": 64,
+      "evidenced_by": 2,
+      "grounded_in": 11,
       "commercial_ref": 15
     },
     "resolution_summary": {
-      "resolved_edges": 12,
-      "registered_debt_edges": 76,
+      "resolved_edges": 25,
+      "registered_debt_edges": 67,
       "unresolved_error_edges": 0
     }
   },
@@ -906,35 +906,11 @@
       "resolution_status": "registered_debt"
     },
     {
-      "id": "SRC-DOOR-RELATIONS-2026",
-      "type": "source_reference",
-      "layer": "01_research_and_lenses",
-      "status": "unresolved",
-      "label": "SRC-DOOR-RELATIONS-2026",
-      "resolution_status": "registered_debt"
-    },
-    {
-      "id": "SRC-DSAD-MASTER-2026",
-      "type": "source_reference",
-      "layer": "01_research_and_lenses",
-      "status": "unresolved",
-      "label": "SRC-DSAD-MASTER-2026",
-      "resolution_status": "registered_debt"
-    },
-    {
       "id": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
       "type": "source_reference",
       "layer": "01_research_and_lenses",
       "status": "unresolved",
       "label": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
-      "resolution_status": "registered_debt"
-    },
-    {
-      "id": "SRC-FARO-V3PLUS-CANON-2026",
-      "type": "source_reference",
-      "layer": "01_research_and_lenses",
-      "status": "unresolved",
-      "label": "SRC-FARO-V3PLUS-CANON-2026",
       "resolution_status": "registered_debt"
     },
     {
@@ -997,7 +973,7 @@
       "id": "SRC-KAHNEMAN-2011",
       "type": "source",
       "layer": "01_research_and_lenses",
-      "status": "canonical",
+      "status": "review",
       "label": "Thinking, Fast and Slow",
       "resolution_status": "resolved"
     },
@@ -1077,7 +1053,7 @@
       "id": "SRC-ROGERS-1975",
       "type": "source",
       "layer": "01_research_and_lenses",
-      "status": "canonical",
+      "status": "review",
       "label": "A Protection Motivation Theory of Fear Appeals and Attitude Change",
       "resolution_status": "resolved"
     },
@@ -1141,7 +1117,7 @@
       "id": "SRC-VAFA-2026",
       "type": "source",
       "layer": "01_research_and_lenses",
-      "status": "canonical",
+      "status": "review",
       "label": "Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data",
       "resolution_status": "resolved"
     },
@@ -1149,23 +1125,15 @@
       "id": "SRC-VERIZON-DBIR-2026",
       "type": "source",
       "layer": "01_research_and_lenses",
-      "status": "canonical",
+      "status": "review",
       "label": "2026 Data Breach Investigations Report",
       "resolution_status": "resolved"
-    },
-    {
-      "id": "SRC-WEBINAR-INTERNAL-2026",
-      "type": "source_reference",
-      "layer": "01_research_and_lenses",
-      "status": "unresolved",
-      "label": "SRC-WEBINAR-INTERNAL-2026",
-      "resolution_status": "registered_debt"
     },
     {
       "id": "SRC-WOOD-NEAL-2007",
       "type": "source",
       "layer": "01_research_and_lenses",
-      "status": "canonical",
+      "status": "review",
       "label": "A New Look at Habits and the Habit-Goal Interface",
       "resolution_status": "resolved"
     },
@@ -1293,24 +1261,31 @@
     },
     {
       "source": "CLAIM-AD-005",
-      "target": "SRC-DSAD-MASTER-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "CON-ATTENTION-DOORS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-AD-005",
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-AD-006",
-      "target": "SRC-DOOR-RELATIONS-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "CON-ATTENTION-DOORS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-AD-006",
-      "target": "SRC-DSAD-MASTER-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "DOOR-RELATIONS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-GENAI-001",
@@ -1489,17 +1464,17 @@
     },
     {
       "source": "CLAIM-GG-006",
-      "target": "SRC-FARO-V3PLUS-CANON-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "EVD-WEBINAR-V1",
+      "namespace": "evidenced_by",
+      "relation": "preliminary_signal",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-GG-006",
-      "target": "SRC-WEBINAR-INTERNAL-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "GAME-FARO-SIMULATION-V3PLUS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-HAI-001",
@@ -1566,14 +1541,21 @@
     },
     {
       "source": "CLAIM-HAI-006",
-      "target": "SRC-BONACCIO-DALAL-2006",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "CON-AI-ROLES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-HAI-006",
-      "target": "SRC-DSAD-MASTER-2026",
+      "target": "DEC-011",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "SRC-BONACCIO-DALAL-2006",
       "namespace": "supported_by",
       "relation": "unspecified_legacy",
       "resolution_status": "registered_debt"
@@ -1650,14 +1632,28 @@
     },
     {
       "source": "CLAIM-HF-005",
-      "target": "SRC-CRANOR-2008",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-HF-005",
-      "target": "SRC-DSAD-MASTER-2026",
+      "target": "CON-FRAMEWORK-ETHICS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "MET-TELEMETRY",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "SRC-CRANOR-2008",
       "namespace": "supported_by",
       "relation": "unspecified_legacy",
       "resolution_status": "registered_debt"
@@ -1734,17 +1730,17 @@
     },
     {
       "source": "CLAIM-TL-006",
-      "target": "SRC-DSAD-MASTER-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
     },
     {
       "source": "CLAIM-TL-006",
-      "target": "SRC-WEBINAR-INTERNAL-2026",
-      "namespace": "supported_by",
-      "relation": "unspecified_legacy",
-      "resolution_status": "registered_debt"
+      "target": "EVD-WEBINAR-V1",
+      "namespace": "evidenced_by",
+      "relation": "preliminary_signal",
+      "resolution_status": "resolved"
     },
     {
       "source": "SALES-CLAIM-001",

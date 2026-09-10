@@ -141,7 +141,9 @@ decisions:
 
 **Scope:** Diseño canónico del framework y sus productos; no taxonomía universal de interacción humano–IA.
 
-**Supported by:** [`SRC-DSAD-MASTER-2026`, `SRC-LEE-SEE-2004`, `SRC-BONACCIO-DALAL-2006`, `SRC-RYAN-DECI-2000`]
+**Supported by:** [`SRC-LEE-SEE-2004`, `SRC-BONACCIO-DALAL-2006`, `SRC-RYAN-DECI-2000`]
+
+**Grounded in:** [`CON-AI-ROLES`, `DEC-011`]
 
 **Last verified:** 2026-09-03
 

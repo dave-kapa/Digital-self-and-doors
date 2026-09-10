@@ -1,20 +1,76 @@
 {
-  "schema_version": "1.0.0",
-  "description": "Índice máquina-legible del registro de deuda de evidencia bibliográfica",
+  "schema_version": "2.0.0",
+  "description": "Índice máquina-legible del registro de deuda de evidencia bibliográfica (Fase 2A)",
   "counts": {
     "resolved_sources": 1,
-    "internal_references_to_decouple": 4,
+    "internal_references_to_decouple": 0,
+    "decoupled_internal_references": 4,
     "cited_external_unresolved_debt": 32,
     "research_backlog": 25
   },
   "resolved_sources": [
     "SRC-WOOD-NEAL-2007"
   ],
-  "internal_references_to_decouple": [
-    "SRC-DOOR-RELATIONS-2026",
-    "SRC-DSAD-MASTER-2026",
-    "SRC-FARO-V3PLUS-CANON-2026",
-    "SRC-WEBINAR-INTERNAL-2026"
+  "internal_references_to_decouple": [],
+  "decoupled_internal_references": [
+    {
+      "source_id": "SRC-DOOR-RELATIONS-2026",
+      "target_relation": "grounded_in",
+      "targets": [
+        "DOOR-RELATIONS"
+      ],
+      "type": "Canon del Framework",
+      "claims": [
+        "CLAIM-AD-006"
+      ],
+      "action": "Desacoplado exitosamente a grounded_in en Fase 2A"
+    },
+    {
+      "source_id": "SRC-DSAD-MASTER-2026",
+      "target_relation": "grounded_in",
+      "targets": [
+        "CON-ATTENTION-DOORS",
+        "CON-EPISTEMIC-BOUNDARIES",
+        "CON-AI-ROLES",
+        "DEC-011",
+        "CON-FRAMEWORK-ETHICS",
+        "MET-TELEMETRY"
+      ],
+      "type": "Canon del Framework",
+      "claims": [
+        "CLAIM-AD-005",
+        "CLAIM-AD-006",
+        "CLAIM-HAI-006",
+        "CLAIM-HF-005",
+        "CLAIM-TL-006"
+      ],
+      "action": "Desacoplado semánticamente a conceptos canónicos específicos en Fase 2A"
+    },
+    {
+      "source_id": "SRC-FARO-V3PLUS-CANON-2026",
+      "target_relation": "grounded_in",
+      "targets": [
+        "GAME-FARO-SIMULATION-V3PLUS"
+      ],
+      "type": "Componente / Juego",
+      "claims": [
+        "CLAIM-GG-006"
+      ],
+      "action": "Desacoplado exitosamente a grounded_in en Fase 2A"
+    },
+    {
+      "source_id": "SRC-WEBINAR-INTERNAL-2026",
+      "target_relation": "evidenced_by",
+      "targets": [
+        "EVD-WEBINAR-V1"
+      ],
+      "type": "Evidencia Propia",
+      "claims": [
+        "CLAIM-GG-006",
+        "CLAIM-TL-006"
+      ],
+      "action": "Desacoplado exitosamente a evidenced_by en Fase 2A"
+    }
   ],
   "cited_external_unresolved_debt": [
     "SRC-ADRIAANSE-ETAL-2011",

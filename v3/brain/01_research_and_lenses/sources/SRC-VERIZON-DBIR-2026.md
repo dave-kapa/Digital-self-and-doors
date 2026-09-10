@@ -1,33 +1,57 @@
 ---
-id: "SRC-VERIZON-DBIR-2026"
-title: "2026 Data Breach Investigations Report"
-type: "source"
-layer: "01_research_and_lenses"
-status: "canonical"
-epistemic_status: "not_applicable"
-reading_status: "complete"
-reading_depth: "full_text"
-version: "1.0.0"
-author: "Verizon Business"
+schema_version: 2
+id: SRC-VERIZON-DBIR-2026
+title: 2026 Data Breach Investigations Report
+type: source
+layer: 01_research_and_lenses
+status: review
+epistemic_status: not_applicable
+version: 1.0.0
+summary: Informe observacional global que normaliza datos aportados por múltiples organizaciones mediante VERIS y describe patrones de brechas ocurridas principalmente entre noviembre de 2024 y octubre de 2025; documenta el ascenso de la explotación de vulnerabilidades, la presencia persistente de phishing e interacción humana, el desplazamiento hacia canales móviles y usos observables de IA, pero no identifica causas psicológicas individuales ni evalúa la eficacia del framework Digital Self & Attention Doors.
+authors:
+  - Verizon Business
+year: 2026
+source_type: industry_report
+study_design: industry_observational_report
+peer_review_status: non_peer_reviewed
+doi: null
+isbn: null
+canonical_url: https://www.verizon.com/business/resources/reports/dbir/
+reading_status: full_text_reviewed
+review_status: pending_review
+reviewed_by_agents:
+  - librarian_agent
+  - antigravity
+approved_by_humans: []
+approval_date: null
+last_verified: '2026-09-04'
+review_cadence_months: 12
+next_review: '2027-09-04'
 topics:
-  - "human_factor"
-  - "social_engineering_phishing"
-  - "cybersecurity_incidents"
-  - "vulnerability_exploitation"
-  - "generative_ai"
+  - human_factor
+  - social_engineering
+  - phishing
+  - measurement
+  - industry_standards
+  - genai
 fulltext:
-  availability: "public"
-  storage_type: "external_url"
-  location: "https://www.verizon.com/business/resources/T1e0/reports/2026-dbir-data-breach-investigations-report.pdf"
+  availability: public_open_access
+  storage_type: external_reference
+  location: https://www.verizon.com/business/resources/T1e0/reports/2026-dbir-data-breach-investigations-report.pdf
+  local_path: null
+  license_id: verizon_proprietary_freely_accessible
+  redistribution_allowed: false
   sha256: null
-summary: "Informe observacional global que normaliza datos aportados por múltiples organizaciones mediante VERIS y describe patrones de brechas ocurridas principalmente entre noviembre de 2024 y octubre de 2025; documenta el ascenso de la explotación de vulnerabilidades, la presencia persistente de phishing e interacción humana, el desplazamiento hacia canales móviles y usos observables de IA, pero no identifica causas psicológicas individuales ni evalúa la eficacia del framework Digital Self & Attention Doors."
-related:
-  - "CON-THESIS"
-  - "CON-SOCIOTECHNICAL"
-  - "DOOR-007"
-  - "DOOR-009"
-  - "CLM-MATRIX-HF"
-  - "CLM-MATRIX-GENAI-SE"
+  hash_status: not_available
+  accessed_at: '2026-09-04'
+related_doors:
+  - DOOR-007
+  - DOOR-009
+  - DOOR-003
+  - DOOR-006
+related_theories:
+  - THEORY-SDT
+  - THEORY-PMT
 ---
 
 # 1. Citation (APA)
