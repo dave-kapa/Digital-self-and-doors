@@ -1,32 +1,54 @@
 ---
-id: "SRC-WOOD-NEAL-2007"
-title: "A New Look at Habits and the Habit-Goal Interface"
-type: "source"
-layer: "01_research_and_lenses"
-status: "canonical"
-epistemic_status: "not_applicable"
-reading_status: "complete"
-reading_depth: "full_text"
-version: "1.0.0"
-author: "Wendy Wood y David T. Neal"
+schema_version: 2
+id: SRC-WOOD-NEAL-2007
+title: A New Look at Habits and the Habit-Goal Interface
+type: source
+layer: 01_research_and_lenses
+status: review
+epistemic_status: not_applicable
+version: 1.0.0
+summary: Revisión teórica que modela los hábitos como asociaciones aprendidas gradualmente entre respuestas y claves estables del contexto, capaces de activarse sin mediación de una meta actual; explica cómo metas y hábitos cooperan, compiten o se desacoplan y por qué modificar claves o construir respuestas alternativas puede ser más eficaz que apelar solo a intenciones, sin probar por sí misma la Puerta de Conveniencia/Rutina ni intervenciones de ciberseguridad.
+authors:
+  - Wendy Wood
+  - David T. Neal
+year: 2007
+source_type: journal_article
+study_design: conceptual_synthesis
+peer_review_status: peer_reviewed
+doi: 10.1037/0033-295X.114.4.843
+isbn: null
+canonical_url: https://doi.org/10.1037/0033-295X.114.4.843
+reading_status: full_text_reviewed
+review_status: pending_review
+reviewed_by_agents:
+  - librarian_agent
+  - antigravity
+approved_by_humans: []
+approval_date: null
+last_verified: '2026-09-04'
+review_cadence_months: 12
+next_review: '2027-09-04'
 topics:
-  - "habits_automaticity"
-  - "goal_directed_behavior"
-  - "context_cues"
-  - "behavior_change"
-  - "attention"
+  - habit_automaticity
+  - decision_making
+  - convenience_routine
+  - behavior_change
+  - attention
 fulltext:
-  availability: "public"
-  storage_type: "external_url"
-  location: "https://dornsife.usc.edu/wendy-wood/wp-content/uploads/sites/183/2023/10/wood.neal_.2007psychrev_a_new_look_at_habits_and_the_interface_between_habits_and_goals.pdf"
+  availability: restricted
+  storage_type: external_reference
+  location: https://doi.org/10.1037/0033-295X.114.4.843
+  local_path: null
+  license_id: apa_copyright_author_reprint
+  redistribution_allowed: false
   sha256: null
-summary: "Revisión teórica que modela los hábitos como asociaciones aprendidas gradualmente entre respuestas y claves estables del contexto, capaces de activarse sin mediación de una meta actual; explica cómo metas y hábitos cooperan, compiten o se desacoplan y por qué modificar claves o construir respuestas alternativas puede ser más eficaz que apelar solo a intenciones, sin probar por sí misma la Puerta de Conveniencia/Rutina ni intervenciones de ciberseguridad."
-related:
-  - "DOOR-009"
-  - "CON-DECISION-PROCESS"
-  - "THEORY-COG-OFFLOAD"
-  - "CLM-MATRIX-HF"
-  - "CLM-MATRIX-ATT-DEC"
+  hash_status: not_available
+  accessed_at: '2026-09-04'
+related_doors:
+  - DOOR-009
+  - DOOR-005
+related_theories:
+  - THEORY-COG-OFFLOAD
 ---
 
 # 1. Citation (APA)

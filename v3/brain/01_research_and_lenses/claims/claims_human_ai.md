@@ -35,7 +35,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** Confianza no equivale a reliance observado y no es el único determinante. No establece que más confianza sea siempre mejor.
 
@@ -53,7 +57,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No permite clasificar toda aceptación como misuse ni todo rechazo como disuse; se necesita desempeño, contexto y objetivo.
 
@@ -71,7 +79,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No prueba que el consejo sea subutilizado en toda decisión ni que advice taking humano se transfiera sin cambios a IA generativa.
 
@@ -89,7 +101,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No existe una tendencia humana única hacia algoritmos. «Aversión» y «apreciación» no determinan si el uso fue apropiado.
 
@@ -107,7 +123,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No prueba que cualquier control aumente calibración, precisión o agencia ni que el resultado se generalice a sistemas generativos o acciones críticas.
 
@@ -121,10 +141,16 @@ decisions:
 
 **Scope:** Diseño canónico del framework y sus productos; no taxonomía universal de interacción humano–IA.
 
-**Supported by:** [`SRC-DSAD-MASTER-2026`, `SRC-LEE-SEE-2004`, `SRC-BONACCIO-DALAL-2006`, `SRC-RYAN-DECI-2000`]
+**Supported by:** [`SRC-LEE-SEE-2004`, `SRC-BONACCIO-DALAL-2006`, `SRC-RYAN-DECI-2000`]
+
+**Grounded in:** [`CON-AI-ROLES`, `DEC-011`]
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** Las teorías relacionadas no validan el diseño completo. No debe afirmarse efectividad, autonomía aumentada o reducción de incidentes sin evaluación específica.

@@ -9,5 +9,7 @@
 ## 📂 Inventario de Documentos del Módulo
 
 <!-- AUTO-GENERATED:START -->
-*(Este inventario será generado y mantenido automáticamente por `scripts/build_mocs.js`)*
+| ID | Título | Tipo | Estatus | Archivo |
+| :--- | :--- | :--- | :--- | :--- |
+| `PROD-WEBINAR-V1` | Webinar Interactivo: Factor Humano e IA en Ciberseguridad | `product` | `canonical` | [Abrir](webinars/webinar_v1/PRODUCT_SPEC.md) |
 <!-- AUTO-GENERATED:END -->

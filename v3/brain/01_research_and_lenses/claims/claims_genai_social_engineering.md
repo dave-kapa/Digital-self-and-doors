@@ -33,7 +33,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que todos los atacantes usen IA, que el flujo sea completamente autónomo en la práctica ni que toda personalización aumente éxito.
 
@@ -51,7 +55,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No autoriza afirmar superioridad universal de IA, «ataques perfectos» ni tasas de éxito aplicables a cualquier población. No deben combinarse outcomes distintos como si fueran equivalentes.
 
@@ -69,7 +77,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No significa que el perfil sea verdadero, completo o psicológico. Tampoco justifica buscar datos externos de participantes sin consentimiento.
 
@@ -87,7 +99,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No afirma que sea imposible detectar phishing por señales externas ni que todo mensaje impecable haya sido generado por IA.
 
@@ -105,7 +121,11 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No demuestra que la detección técnica de contenido generado sea siempre imposible ni que conocer la autoría determine legitimidad o seguridad.
 
@@ -123,6 +143,10 @@ decisions:
 
 **Last verified:** 2026-09-03
 
-**Allowed uses:** [`internal_research`, `training_content`, `commercial`, `external_publication`]
+**Allowed uses:** [`internal_research`]
+
+**Evidence status:** unresolved
+
+**Review status:** suspended
 
 **Limitations & What it does not say:** No minimiza el riesgo. Distingue capacidad demostrada de frecuencia real y prohíbe convertir resultados contextuales en una cifra universal de amenaza.

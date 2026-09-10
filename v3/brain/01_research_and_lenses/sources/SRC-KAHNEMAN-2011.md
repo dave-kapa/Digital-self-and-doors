@@ -1,32 +1,56 @@
 ---
-id: "SRC-KAHNEMAN-2011"
-title: "Thinking, Fast and Slow"
-type: "source"
-layer: "01_research_and_lenses"
-status: "canonical"
-epistemic_status: "not_applicable"
-reading_status: "complete"
-reading_depth: "abstract_only"
-version: "1.0.0"
-author: "Daniel Kahneman"
+schema_version: 2
+id: SRC-KAHNEMAN-2011
+title: Thinking, Fast and Slow
+type: source
+layer: 01_research_and_lenses
+status: review
+epistemic_status: not_applicable
+version: 1.0.0
+summary: Síntesis de divulgación académica de décadas de investigación sobre juicio y decisión que presenta Sistema 1 y Sistema 2 como personajes metafóricos para procesos rápidos, automáticos y asociativos frente a procesos lentos, esforzados y deliberativos; ofrece un lenguaje pedagógico útil para hablar de atención y sesgos, pero no constituye un único estudio, una anatomía literal del cerebro ni validación de las Attention Doors.
+authors:
+  - Daniel Kahneman
+year: 2011
+source_type: book
+study_design: conceptual_synthesis
+peer_review_status: editorial_review
+doi: null
+isbn: '9780374275631'
+canonical_url: https://us.macmillan.com/books/9780374275631/thinkingfastandslow/
+reading_status: abstract_reviewed
+review_status: pending_review
+reviewed_by_agents:
+  - librarian_agent
+  - antigravity
+approved_by_humans: []
+approval_date: null
+last_verified: '2026-09-04'
+review_cadence_months: 12
+next_review: '2027-09-04'
 topics:
-  - "decision_making"
-  - "attention"
-  - "heuristics_biases"
-  - "dual_process"
-  - "metacognition"
+  - decision_making
+  - attention
+  - metacognition
+  - cognitive_offloading
+  - habit_automaticity
 fulltext:
-  availability: "commercial"
-  storage_type: "external_url"
-  location: "https://us.macmillan.com/books/9780374275631/thinkingfastandslow/"
+  availability: proprietary_closed
+  storage_type: external_reference
+  location: https://us.macmillan.com/books/9780374275631/thinkingfastandslow/
+  local_path: null
+  license_id: all_rights_reserved_commercial
+  redistribution_allowed: false
   sha256: null
-summary: "Síntesis de divulgación académica de décadas de investigación sobre juicio y decisión que presenta Sistema 1 y Sistema 2 como personajes metafóricos para procesos rápidos, automáticos y asociativos frente a procesos lentos, esforzados y deliberativos; ofrece un lenguaje pedagógico útil para hablar de atención y sesgos, pero no constituye un único estudio, una anatomía literal del cerebro ni validación de las Attention Doors."
-related:
-  - "CON-DECISION-PROCESS"
-  - "CON-METACOGNITION"
-  - "DOOR-005"
-  - "DOOR-009"
-  - "CLM-MATRIX-ATT-DEC"
+  hash_status: not_available
+  accessed_at: '2026-09-04'
+related_doors:
+  - DOOR-005
+  - DOOR-009
+  - DOOR-002
+  - DOOR-008
+related_theories:
+  - THEORY-SDT
+  - THEORY-COG-OFFLOAD
 ---
 
 # 1. Citation (APA)

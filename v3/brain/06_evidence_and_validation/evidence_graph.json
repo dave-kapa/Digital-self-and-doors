@@ -1,0 +1,1851 @@
+{
+  "meta": {
+    "title": "Evidence & Knowledge Graph — Cerebro V3 (Fase 1R.1)",
+    "generated_at": "2026-09-04",
+    "node_count": 148,
+    "edge_count": 92,
+    "namespaces": {
+      "supported_by": 64,
+      "evidenced_by": 2,
+      "grounded_in": 11,
+      "commercial_ref": 15
+    },
+    "resolution_summary": {
+      "resolved_edges": 25,
+      "registered_debt_edges": 67,
+      "unresolved_error_edges": 0
+    }
+  },
+  "nodes": [
+    {
+      "id": "CASE-FARO-01",
+      "type": "case",
+      "layer": "04_product_system",
+      "status": "canonical",
+      "label": "Caso 1: Autonomía y Confianza Calibrada",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CASE-FARO-02",
+      "type": "case",
+      "layer": "04_product_system",
+      "status": "canonical",
+      "label": "Caso 2: Digital Self e Hiperpersonalización",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CASE-FARO-03",
+      "type": "case",
+      "layer": "04_product_system",
+      "status": "canonical",
+      "label": "Caso 3: Señales Internas sin Ground Truth",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CASE-FARO-04",
+      "type": "case",
+      "layer": "04_product_system",
+      "status": "canonical",
+      "label": "Caso 4: Autenticidad No Obvia y Repertorio",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La atención es limitada y la selección de información está influida por la relevancia y el valor esperado de obtener información.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Vincular información con el self puede mejorar su codificación y recuerdo frente a ciertos tipos de procesamiento no autorreferencial.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "El encuadre de alternativas como ganancias o pérdidas puede modificar preferencias aun cuando los resultados descritos sean formalmente equivalentes.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Las señales contextuales pueden activar respuestas habituales sin una evaluación deliberativa completa de sus consecuencias actuales.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La taxonomía integrada de nueve Attention Doors es una formulación provisional del proyecto y no una escala psicométrica validada.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-AD-006",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Las nueve puertas pueden solaparse conceptualmente y el modelo no debe asumir independencia estadística, exclusividad mutua ni universalidad.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Los LLM pueden automatizar partes de la investigación, redacción y personalización de campañas de spear phishing.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "En estudios específicos, mensajes personalizados generados con LLM han alcanzado niveles de persuasión o respuesta comparables con mensajes elaborados por humanos.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Información pública o voluntariamente aportada puede utilizarse para construir mensajes contextuales y perfiles funcionales orientados a personalización.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Calidad lingüística, tono familiar y coherencia visual son evidencia insuficiente para establecer autenticidad, especialmente cuando herramientas generativas pueden reproducir esas características.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "No es fiable atribuir autoría humana o generativa de un mensaje únicamente por su redacción percibida.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GENAI-006",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Los estudios de capacidad de LLM para phishing no establecen por sí solos la prevalencia de uso criminal, el impacto agregado ni la efectividad en todos los entornos organizacionales.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La gamificación educativa muestra, en promedio, efectos positivos pequeños sobre outcomes cognitivos, motivacionales y conductuales, con heterogeneidad relevante entre estudios.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Juegos serios y actividades gamificadas pueden apoyar aprendizaje y motivación, pero sus resultados dependen del diseño, la comparación, el contenido y la forma de evaluación.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Los efectos de elementos como narrativa, competencia, colaboración, feedback o recompensas no son uniformes; dependen de cómo se combinan con objetivos y actividades de aprendizaje.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Mayor engagement con un juego no implica necesariamente mayor ganancia de conocimiento frente a un recurso no lúdico.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La investigación sobre juegos de concienciación en ciberseguridad utiliza métodos y métricas diversos, y la evaluación de efectividad y transferencia continúa siendo desigual.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-GG-006",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "FARO dispone de una lógica pedagógica y una mecánica canónica, pero su efectividad para aprendizaje o transferencia todavía no está validada.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La confianza influye en la disposición a depender de automatización, especialmente cuando su complejidad impide comprender completamente su funcionamiento durante la decisión.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La sobredependencia y el desuso son formas distintas de reliance inapropiada; una puede omitir monitoreo y la otra desaprovechar una ayuda superior.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "En tareas Judge–Advisor, las personas suelen integrar consejo de forma parcial y con frecuencia conservan un peso considerable para su estimación inicial.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La literatura documenta tanto aversión como apreciación algorítmica; la dirección de la preferencia depende de experiencia con errores, tarea, comparación y posibilidad de intervención.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "En estudios de predicción, permitir una modificación limitada del resultado algorítmico aumentó la disposición a utilizar algoritmos imperfectos.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HAI-006",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Espejo, Sparring y Asistente de decisión segura son roles pedagógicos plausibles para apoyar agencia, pero su impacto en calibración, aprendizaje y dependencia permanece por validar.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HF-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "El desempeño de una función de seguridad humana depende de la interacción entre la comunicación, las capacidades y atención disponibles, la interfaz, las demandas de la tarea y el contexto organizacional.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HF-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Culpar de forma genérica al usuario como «eslabón más débil» es insuficiente para diseñar seguridad efectiva; es necesario identificar y modificar las condiciones que hacen probable una conducta insegura.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HF-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Demandas incompatibles, carga, memoria limitada, falta de apoyo y fricción de usabilidad pueden contribuir a que las personas eviten o incumplan controles de seguridad.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HF-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Las respuestas habituales pueden ser activadas por señales contextuales y ejecutarse sin deliberación renovada, lo que produce eficiencia y también posibles desajustes cuando cambia el contexto.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-HF-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Una respuesta aislada en una simulación no justifica inferir una vulnerabilidad estable, un rasgo personal o la propensión general de una persona a sufrir ataques.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-001",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Practicar la recuperación de información puede mejorar la retención demorada más que dedicar el mismo tiempo únicamente a reestudiar.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-002",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Actividades deliberadamente diseñadas para mejorar aspectos específicos del desempeño, con feedback y repetición, contribuyen al desarrollo de habilidad.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-003",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Un estudio de entrenamiento anti-phishing integrado al contexto de uso encontró retención de conocimiento a 28 días y beneficio de una segunda exposición.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-004",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "La eficacia del entrenamiento anti-phishing es heterogénea y algunos efectos observados después de simulaciones pueden ser de corto plazo o no mantenerse sistemáticamente.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-005",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "Satisfacción, engagement, conocimiento, desempeño en simulación y transferencia conductual son outcomes distintos y no deben tratarse como equivalentes.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLAIM-TL-006",
+      "type": "claim",
+      "layer": "01_research_and_lenses",
+      "status": "suspended",
+      "label": "El interés comercial y la respuesta positiva observados en el webinar no demuestran por sí solos aprendizaje sostenido ni transferencia conductual.",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-ATT-DEC",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Attention and Decision",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-GAMES",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Games and Gamification",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-GENAI-SE",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Generative AI and Social Engineering",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-HF",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Human Factor and Sociotechnical Security",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-HUMAN-AI",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Human–AI Interaction",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CLM-MATRIX-TRAINING",
+      "type": "claim_matrix",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Claims matrix: Training and Learning",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-AUDIENCES",
+      "type": "commercial_strategy",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Audiencias y compradores",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-EVIDENCE-SALES",
+      "type": "commercial_claim_bank",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Evidencia y claims aprobados para ventas",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-OFFER-ARCHITECTURE",
+      "type": "commercial_strategy",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Arquitectura de oferta",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-POSITIONING",
+      "type": "commercial_strategy",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Posicionamiento de mercado",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-PROBLEM-SPACE",
+      "type": "commercial_strategy",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Espacio del problema",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-SALES-DECK",
+      "type": "commercial_asset",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Guion comercial para reunión ejecutiva",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-VALUE-PROP",
+      "type": "commercial_strategy",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Propuesta de valor",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-AI-ROLES",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Roles pedagógicos de la IA aliada",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-ATTENTION-DOORS",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Modelo de Attention Doors",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-DECISION-PROCESS",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Proceso decisional",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-DIGITAL-FOOTPRINT",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Digital Footprint",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-DIGITAL-SELF",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Digital Self",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-EPISTEMIC-BOUNDARIES",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Límites epistemológicos del framework",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-FRAMEWORK-ETHICS",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Principios éticos del framework",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-HUMAN-AGENCY",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Agencia humana",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-INTERNAL-STORY",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Historia interna",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-METACOGNITION",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Metacognición aplicada",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-PARA",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "PARA: Pausar, Analizar, Revisar, Actuar",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-SOCIOTECHNICAL",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Sistema sociotécnico de seguridad",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "CON-THESIS",
+      "type": "concept",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "Tesis de agencia frente al avance de la inteligencia artificial",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-001",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "El humano como agente, no como eslabón más débil",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-002",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Catálogo oficial de nueve Attention Doors",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-003",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Exclusión de Jerarquía y Validación como Attention Doors",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-005",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Transición de MIRA a FARO como agente protector sociotécnico",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-006",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Caso 3 sin revelación del ground truth",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-008",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Adopción del scoring dinámico Debía/No debía",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-010",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Caso 4: autenticidad no equivale a decisión obvia",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DEC-011",
+      "type": "decision",
+      "layer": "00_meta_and_governance",
+      "status": "canonical",
+      "label": "Tres roles pedagógicos de la IA aliada",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-001",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-001",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-002",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-002",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-003",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-003",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-004",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-004",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-005",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-005",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-006",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-006",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-007",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-007",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-008",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-008",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-009",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-009",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "DOOR-RELATIONS",
+      "type": "door",
+      "layer": "02_framework_canon",
+      "status": "canonical",
+      "label": "DOOR-RELATIONS",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "EVD-ATTENTION-DOORS",
+      "type": "evidence_plan",
+      "layer": "06_evidence_and_validation",
+      "status": "canonical",
+      "label": "Estrategia de validación de Attention Doors",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "EVD-FRAMEWORK-HYPOTHESES",
+      "type": "evidence_plan",
+      "layer": "06_evidence_and_validation",
+      "status": "canonical",
+      "label": "Hipótesis del framework",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "EVD-VALIDATION-ROADMAP",
+      "type": "evidence_plan",
+      "layer": "06_evidence_and_validation",
+      "status": "canonical",
+      "label": "Hoja de ruta de validación empírica",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "EVD-WEBINAR-V1",
+      "type": "evidence_record",
+      "layer": "06_evidence_and_validation",
+      "status": "canonical",
+      "label": "Auditoría de evidencia — Webinar V1",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "GAME-FARO-SIMULATION-V3PLUS",
+      "type": "game",
+      "layer": "04_product_system",
+      "status": "canonical",
+      "label": "FARO V3+ Interactive Simulation Engine",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "LIB-RESEARCH-GAPS",
+      "type": "research_gap_register",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Registro inicial de vacíos de investigación",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-COMPETENCIES",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Inventario de competencias de criterio y agencia",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-DELIBERATE-PRACTICE",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Práctica deliberada y situada",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-FACILITATION",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Principios maestros de facilitación",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-PHILOSOPHY",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Filosofía de aprendizaje",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-SAFE-DECEPTION",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Protocolo de engaño pedagógico seguro",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-TELEMETRY",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Telemetría y analítica formativa",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "MET-TRAIN-VS-INTERV",
+      "type": "methodology",
+      "layer": "03_methodology_and_learning",
+      "status": "canonical",
+      "label": "Training versus Intervention",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "PROD-WEBINAR-V1",
+      "type": "product",
+      "layer": "05_products_catalog",
+      "status": "canonical",
+      "label": "Webinar Interactivo: Factor Humano e IA en Ciberseguridad",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-001",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "pending_evidence_debt",
+      "label": "Los LLM pueden automatizar partes de la investigación, redacción y personalización de campañas de spear phishing».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-002",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "active",
+      "label": "Ortografía, tono familiar y coherencia visual no son prueba suficiente de autenticidad».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-003",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "pending_evidence_debt",
+      "label": "La conducta de seguridad emerge de la interacción entre personas, tareas, interfaces, procesos y tecnología; culpar al usuario no corrige esas condiciones».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-004",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "active",
+      "label": "Desarrollar capacidad humana y modificar condiciones sociotécnicas son líneas complementarias».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-005",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "pending_evidence_debt",
+      "label": "La gamificación educativa muestra efectos promedio positivos, pero heterogéneos; el diseño y la evaluación importan».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-006",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "pending_evidence_debt",
+      "label": "El objetivo no es maximizar confianza en IA, sino favorecer reliance apropiada según desempeño, contexto y costo».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SALES-CLAIM-007",
+      "type": "sales_claim",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "active",
+      "label": "El primer webinar produjo una señal cualitativa positiva de interés y abrió conversaciones comerciales».",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-ADRIAANSE-ETAL-2011",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-ADRIAANSE-ETAL-2011",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-BETHANY-ETAL-2024",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-BETHANY-ETAL-2024",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-BONACCIO-DALAL-2006",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-BONACCIO-DALAL-2006",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-CRANOR-2008",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-CRANOR-2008",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-CYBER-GAMES-SCOPING-2026",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-CYBER-GAMES-SCOPING-2026",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-DIETVORST-SIMMONS-MASSEY-2015",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-DIETVORST-SIMMONS-MASSEY-2015",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-DIETVORST-SIMMONS-MASSEY-2016",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-DIETVORST-SIMMONS-MASSEY-2016",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-FRANCIA-ETAL-2024",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-FRANCIA-ETAL-2024",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-GOLLWITZER-1999",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-GOLLWITZER-1999",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-GOTTLIEB-ETAL-2013",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-GOTTLIEB-ETAL-2013",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-HAZELL-2023",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-HAZELL-2023",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-HEIDING-ETAL-2024",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-HEIDING-ETAL-2024",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-HOFF-BASHIR-2015",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-HOFF-BASHIR-2015",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-JEBO-SME-FIELD-2025",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-JEBO-SME-FIELD-2025",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-KAHNEMAN-2011",
+      "type": "source",
+      "layer": "01_research_and_lenses",
+      "status": "review",
+      "label": "Thinking, Fast and Slow",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-KAHNEMAN-TVERSKY-1979",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-KAHNEMAN-TVERSKY-1979",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-KIDD-HAYDEN-2015",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-KIDD-HAYDEN-2015",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-KUMARAGURU-ETAL-2009",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-KUMARAGURU-ETAL-2009",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-LEE-SEE-2004",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-LEE-SEE-2004",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-LOGG-MINSON-MOORE-2019",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-LOGG-MINSON-MOORE-2019",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-MACNAMARA-HAMBRICK-OSWALD-2014",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-MACNAMARA-HAMBRICK-OSWALD-2014",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-OYSERMAN-2009",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-OYSERMAN-2009",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-PARASURAMAN-RILEY-1997",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-PARASURAMAN-RILEY-1997",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-ROEDIGER-KARPICKE-2006",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-ROEDIGER-KARPICKE-2006",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-ROGERS-1975",
+      "type": "source",
+      "layer": "01_research_and_lenses",
+      "status": "review",
+      "label": "A Protection Motivation Theory of Fear Appeals and Attitude Change",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-ROGERS-KUIPER-KIRKER-1977",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-ROGERS-KUIPER-KIRKER-1977",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-RYAN-DECI-2000",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-RYAN-DECI-2000",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-SAILER-HOMNER-2020",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-SAILER-HOMNER-2020",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-STEGADVENTURE-2025",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-STEGADVENTURE-2025",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-TRAINING-REVIEW-2023",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-TRAINING-REVIEW-2023",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-TVERSKY-KAHNEMAN-1981",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-TVERSKY-KAHNEMAN-1981",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "SRC-VAFA-2026",
+      "type": "source",
+      "layer": "01_research_and_lenses",
+      "status": "review",
+      "label": "Context-Aware Spear Phishing: Generative AI-Enabled Attacks Against Individuals via Public Social Media Data",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-VERIZON-DBIR-2026",
+      "type": "source",
+      "layer": "01_research_and_lenses",
+      "status": "review",
+      "label": "2026 Data Breach Investigations Report",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-WOOD-NEAL-2007",
+      "type": "source",
+      "layer": "01_research_and_lenses",
+      "status": "review",
+      "label": "A New Look at Habits and the Habit-Goal Interface",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "SRC-YANIV-2004",
+      "type": "source_reference",
+      "layer": "01_research_and_lenses",
+      "status": "unresolved",
+      "label": "SRC-YANIV-2004",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "id": "THEORY-COG-OFFLOAD",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Cognitive Entrenchment and Cognitive Offloading",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-JUDGE-ADVISOR",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Judge–Advisor Systems and Advice Taking",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-PMT",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Protection Motivation Theory",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-SDT",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Signal Detection Theory",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-SDT-AUTONOMY",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Self-Determination Theory and Autonomy",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-TRA-TPB",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Theory of Reasoned Action and Theory of Planned Behavior",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "THEORY-TRUST-AUTO",
+      "type": "theory_lens",
+      "layer": "01_research_and_lenses",
+      "status": "canonical",
+      "label": "Trust in Automation and Appropriate Reliance",
+      "resolution_status": "resolved"
+    }
+  ],
+  "edges": [
+    {
+      "source": "CLAIM-AD-001",
+      "target": "SRC-GOTTLIEB-ETAL-2013",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-001",
+      "target": "SRC-KIDD-HAYDEN-2015",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-002",
+      "target": "SRC-OYSERMAN-2009",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-002",
+      "target": "SRC-ROGERS-KUIPER-KIRKER-1977",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-003",
+      "target": "SRC-KAHNEMAN-TVERSKY-1979",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-003",
+      "target": "SRC-TVERSKY-KAHNEMAN-1981",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-004",
+      "target": "SRC-ADRIAANSE-ETAL-2011",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-AD-004",
+      "target": "SRC-WOOD-NEAL-2007",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-AD-005",
+      "target": "CON-ATTENTION-DOORS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-AD-005",
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-AD-006",
+      "target": "CON-ATTENTION-DOORS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-AD-006",
+      "target": "DOOR-RELATIONS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-GENAI-001",
+      "target": "SRC-BETHANY-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-001",
+      "target": "SRC-HAZELL-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-001",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-002",
+      "target": "SRC-FRANCIA-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-002",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-003",
+      "target": "SRC-FRANCIA-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-003",
+      "target": "SRC-HAZELL-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-003",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-004",
+      "target": "SRC-BETHANY-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-004",
+      "target": "SRC-FRANCIA-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-004",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-005",
+      "target": "SRC-FRANCIA-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-006",
+      "target": "SRC-FRANCIA-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-006",
+      "target": "SRC-HAZELL-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GENAI-006",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-001",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-002",
+      "target": "SRC-CYBER-GAMES-SCOPING-2026",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-002",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-002",
+      "target": "SRC-TRAINING-REVIEW-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-003",
+      "target": "SRC-CYBER-GAMES-SCOPING-2026",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-003",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-004",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-004",
+      "target": "SRC-STEGADVENTURE-2025",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-005",
+      "target": "SRC-CYBER-GAMES-SCOPING-2026",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-005",
+      "target": "SRC-TRAINING-REVIEW-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-GG-006",
+      "target": "EVD-WEBINAR-V1",
+      "namespace": "evidenced_by",
+      "relation": "preliminary_signal",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-GG-006",
+      "target": "GAME-FARO-SIMULATION-V3PLUS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HAI-001",
+      "target": "SRC-HOFF-BASHIR-2015",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-001",
+      "target": "SRC-LEE-SEE-2004",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-002",
+      "target": "SRC-LEE-SEE-2004",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-002",
+      "target": "SRC-PARASURAMAN-RILEY-1997",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-003",
+      "target": "SRC-BONACCIO-DALAL-2006",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-003",
+      "target": "SRC-YANIV-2004",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-004",
+      "target": "SRC-DIETVORST-SIMMONS-MASSEY-2015",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-004",
+      "target": "SRC-LOGG-MINSON-MOORE-2019",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-005",
+      "target": "SRC-DIETVORST-SIMMONS-MASSEY-2016",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "CON-AI-ROLES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "DEC-011",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "SRC-BONACCIO-DALAL-2006",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "SRC-LEE-SEE-2004",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HAI-006",
+      "target": "SRC-RYAN-DECI-2000",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-001",
+      "target": "SRC-CRANOR-2008",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-001",
+      "target": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-002",
+      "target": "SRC-CRANOR-2008",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-002",
+      "target": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-003",
+      "target": "SRC-CRANOR-2008",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-003",
+      "target": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-004",
+      "target": "SRC-GOLLWITZER-1999",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-HF-004",
+      "target": "SRC-WOOD-NEAL-2007",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "CON-FRAMEWORK-ETHICS",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "MET-TELEMETRY",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-HF-005",
+      "target": "SRC-CRANOR-2008",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-001",
+      "target": "SRC-ROEDIGER-KARPICKE-2006",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-002",
+      "target": "SRC-ERICSSON-KRAMPE-TESCHROMER-1993",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-002",
+      "target": "SRC-MACNAMARA-HAMBRICK-OSWALD-2014",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-003",
+      "target": "SRC-KUMARAGURU-ETAL-2009",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-004",
+      "target": "SRC-JEBO-SME-FIELD-2025",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-004",
+      "target": "SRC-KUMARAGURU-ETAL-2009",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-004",
+      "target": "SRC-TRAINING-REVIEW-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-005",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-005",
+      "target": "SRC-STEGADVENTURE-2025",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-005",
+      "target": "SRC-TRAINING-REVIEW-2023",
+      "namespace": "supported_by",
+      "relation": "unspecified_legacy",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "CLAIM-TL-006",
+      "target": "CON-EPISTEMIC-BOUNDARIES",
+      "namespace": "grounded_in",
+      "relation": "conceptual_grounding",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CLAIM-TL-006",
+      "target": "EVD-WEBINAR-V1",
+      "namespace": "evidenced_by",
+      "relation": "preliminary_signal",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-001",
+      "target": "CLAIM-GENAI-001",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-001",
+      "target": "SRC-HAZELL-2023",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "SALES-CLAIM-001",
+      "target": "SRC-HEIDING-ETAL-2024",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "SALES-CLAIM-002",
+      "target": "CON-ATTENTION-DOORS",
+      "namespace": "commercial_ref",
+      "relation": "framework_position",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-003",
+      "target": "CLAIM-HF-001",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-003",
+      "target": "CLAIM-HF-002",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-003",
+      "target": "SRC-SASSE-BROSTOFF-WEIRICH-2001",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "SALES-CLAIM-004",
+      "target": "MET-TRAIN-VS-INTERV",
+      "namespace": "commercial_ref",
+      "relation": "framework_position",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-005",
+      "target": "CLAIM-GG-001",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-005",
+      "target": "CLAIM-GG-002",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-005",
+      "target": "SRC-SAILER-HOMNER-2020",
+      "namespace": "commercial_ref",
+      "relation": "external_evidence",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "SALES-CLAIM-006",
+      "target": "CLAIM-HAI-001",
+      "namespace": "commercial_ref",
+      "relation": "framework_position",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-006",
+      "target": "CLAIM-HAI-002",
+      "namespace": "commercial_ref",
+      "relation": "framework_position",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SALES-CLAIM-006",
+      "target": "SRC-LEE-SEE-2004",
+      "namespace": "commercial_ref",
+      "relation": "framework_position",
+      "resolution_status": "registered_debt"
+    },
+    {
+      "source": "SALES-CLAIM-007",
+      "target": "EVD-WEBINAR-V1",
+      "namespace": "commercial_ref",
+      "relation": "internal_evidence",
+      "resolution_status": "resolved"
+    }
+  ]
+}

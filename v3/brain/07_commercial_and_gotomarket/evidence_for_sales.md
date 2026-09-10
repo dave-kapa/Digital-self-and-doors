@@ -28,6 +28,10 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 
 ## SALES-CLAIM-001 — IA y personalización
 
+**Foundation type:** `external_evidence`
+
+**Status:** `pending_evidence_debt` (Fuentes pendientes: Hazell 2023, Heiding 2024)
+
 **Approved wording:** «Los LLM pueden automatizar partes de la investigación, redacción y personalización de campañas de spear phishing».
 
 **Sources:** [`CLAIM-GENAI-001`, `SRC-HAZELL-2023`, `SRC-HEIDING-ETAL-2024`]
@@ -42,9 +46,13 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 
 ## SALES-CLAIM-002 — Señales superficiales
 
+**Foundation type:** `framework_position`
+
+**Status:** `active` (Postura metodológica y técnica central del framework)
+
 **Approved wording:** «Ortografía, tono familiar y coherencia visual no son prueba suficiente de autenticidad».
 
-**Sources:** [`CLAIM-GENAI-004`, `CLAIM-GENAI-005`]
+**Sources:** [`CON-ATTENTION-DOORS`]
 
 **Valid from:** 2026-09-03
 
@@ -55,6 +63,10 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 **Do not say:** «Ya no existen señales externas» o «es imposible detectar phishing».
 
 ## SALES-CLAIM-003 — Factor humano
+
+**Foundation type:** `external_evidence`
+
+**Status:** `pending_evidence_debt` (Fuentes pendientes: Sasse 2001, Cranor 2008)
 
 **Approved wording:** «La conducta de seguridad emerge de la interacción entre personas, tareas, interfaces, procesos y tecnología; culpar al usuario no corrige esas condiciones».
 
@@ -70,9 +82,13 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 
 ## SALES-CLAIM-004 — Training e intervention
 
+**Foundation type:** `framework_position`
+
+**Status:** `active` (Tesis pedagógica canónica en MET-TRAIN-VS-INTERV)
+
 **Approved wording:** «Desarrollar capacidad humana y modificar condiciones sociotécnicas son líneas complementarias».
 
-**Sources:** [`CLAIM-HF-001`, `MET-TRAIN-VS-INTERV`]
+**Sources:** [`MET-TRAIN-VS-INTERV`]
 
 **Valid from:** 2026-09-03
 
@@ -83,6 +99,10 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 **Do not say:** «El awareness no sirve» o «el training por sí solo reduce incidentes».
 
 ## SALES-CLAIM-005 — Gamificación
+
+**Foundation type:** `external_evidence`
+
+**Status:** `pending_evidence_debt` (Fuente pendiente: Sailer & Homner 2020)
 
 **Approved wording:** «La gamificación educativa muestra efectos promedio positivos, pero heterogéneos; el diseño y la evaluación importan».
 
@@ -98,6 +118,10 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 
 ## SALES-CLAIM-006 — Confianza calibrada
 
+**Foundation type:** `framework_position`
+
+**Status:** `pending_evidence_debt` (Literatura de soporte en deuda: Lee & See 2004; claims de investigación suspendidos: CLAIM-HAI-001, CLAIM-HAI-002)
+
 **Approved wording:** «El objetivo no es maximizar confianza en IA, sino favorecer reliance apropiada según desempeño, contexto y costo».
 
 **Sources:** [`CLAIM-HAI-001`, `CLAIM-HAI-002`, `SRC-LEE-SEE-2004`]
@@ -112,9 +136,13 @@ Solo se puede publicar el wording aprobado o una paráfrasis que conserve alcanc
 
 ## SALES-CLAIM-007 — Evidencia del webinar
 
+**Foundation type:** `internal_evidence`
+
+**Status:** `active` (Evidencia empírica interna preliminar respaldada en EVD-WEBINAR-V1)
+
 **Approved wording:** «El primer webinar produjo una señal cualitativa positiva de interés y abrió conversaciones comerciales».
 
-**Sources:** [`EVD-WEBINAR-V1`, `SRC-WEBINAR-INTERNAL-2026`]
+**Sources:** [`EVD-WEBINAR-V1`]
 
 **Valid from:** 2026-09-03
 

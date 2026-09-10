@@ -1,40 +1,51 @@
 # BRAIN HEALTH SCORECARD (CERTIFICACIÓN DE INTEGRIDAD)
 ## Digital Self & Attention Doors — Cerebro V3.0
 
-> **Fecha de Emisión:** 2026-09-03  
-> **Auditor Responsable:** Antigravity (Hub de Ingeniería y Operación)  
-> **Estado del Sistema:** CERTIFICADO — 100% PASS  
+> **Fecha de Emisión:** 2026-09-09  
+> **Auditor Técnico:** Antigravity (Hub de Implementación de Código)  
+> **Auditoría Epistemológica Independiente:** ChatGPT (Dictamen Checkpoint Fase 1R: NO-GO TEMPORAL PARA FASE 2; Autorizada Fase 1R.1)  
+> **Estado Operativo:** FASE 1R.1 REMEDIADA — CIERRE TÉCNICO Y CHECKPOINT ALCANZADO  
+> **Versión de Auditor:** v3.3.0-phase1r1  
 
 ---
 
-## 📊 Métricas y Cobertura General
+## 📊 Matriz Canónica de Controles (D001–D080 y LIB001–LIB008)
 
 ```text
-INDICADOR                                       RESULTADO      ESTADO
-----------------------------------------------------------------------
-Referential Integrity (IDs y Links) ........... 100%           [PASS]
-Canonical Metadata Coverage (YAML Frontmatter)  100%           [PASS]
-Zero ID Collisions (D001) ..................... 0 colisiones   [PASS]
-Broken Links (D003) ........................... 0 rotos        [PASS]
-Spec ↔ Code Synchronization (D070) ............ 100%           [PASS]
-Terminology Blocklist Violations (D080) ....... 0 detectadas   [PASS]
-Archive Firewall Compliance (D040 / D041) ..... 100%           [PASS]
-Scientific Library Source Notes (D090-D096) ... 5 procesadas   [PASS]
-Knowledge Semantic Regression Suite (L3) ...... 13/13 (100%)   [PASS]
-----------------------------------------------------------------------
-ESTADO FINAL DEL CEREBRO:                       OPERATIVO & BLINDADO
+CONTROL / REGLA CANÓNICA                ESTADO         EVIDENCIA / PRUEBAS DE RESPALDO
+-------------------------------------------------------------------------------------------------------------
+D001_DUPLICATE_ID ..................... PASSING        0 colisiones en 74 entradas; NEG-003 (FM) y NEG-015 (Claims) (PASS)
+D002_UNRESOLVED_ID .................... PASSING        Resolución universal namespaces (CON, MET, EVD, DOOR, GAME, SRC); NEG-016 (PASS)
+D003_BROKEN_LINK ...................... PASSING        0 links rotos en 132 archivos; prueba negativa NEG-001 (PASS)
+D010_SCHEMA_INVALID ................... PASSING        Ajv Source v2 (B3R), Claims v1, Sales v1, YAML y whitelist; NEG-002, 007, 008, 009, 010, 014, 017 (PASS)
+D011_CANONICAL_INCOMPLETE ............. SPECIFIED      Definición canónica de completitud de metadatos de promoción; reservada a gobernanza canon
+D040_ARCHIVE_REFERENCE ................ PASSING        Firewall estricto hacia 99_archive_and_history con exit status 1; NEG-018 (PASS)
+D041_EXTERNAL_V3_REFERENCE ............ PASSING        0 rutas fuera de /v3/; prueba negativa NEG-005 (PASS)
+D070_SPEC_CODE_DIVERGENCE ............. PASSING        audit_spec_code_sync.js sincroniza 100% con v3/app/game.js
+D080_TERMINOLOGY_BLOCKLIST ............ PASSING        0 términos prohibidos sin rechazo; NEG-004 (PASS)
+
+LIB001: Source <-> Claim Resolution ... PASSING        Strict: NEG-006 y NEG-011 bloquean fuentes en deuda y claims suspendidos
+LIB002: Controlled Taxonomy Topics .... IMPLEMENTED    Excepción legacy cerrada para 5 notas congeladas (R2 Sol. 3); NEG-012 (PASS)
+LIB003: Storage & Hash Verification ... PASSING        Verificación física de local_archive y hash; NEG-013 (PASS)
+LIB004: Identity & Deduplication ...... PASSING        test_librarian_dedupe.js: 9/9 PASS en os.tmpdir() (DOI, ISBN, Título, No-colisión)
+LIB005: Clean Compiled Bibliography ... IMPLEMENTED    build_bibliography.js sin inferencias silenciosas (PASS --check)
+LIB006: Provenance & Licensing Manifest IMPLEMENTED    LIBRARY_MANIFEST.yaml en estado inicial limpio (entries: [])
+LIB007: Candidate Triaging & Trace .... SPECIFIED      Protocolo de promoción y enlaces inversos para Fase 2
+LIB008: Retraction & Review Cadence ... SPECIFIED      Cadencias locales especificadas; conector de retractaciones externo pendiente
+-------------------------------------------------------------------------------------------------------------
+TOTAL COBERTURA DE REGLAS: 11 PASSING, 3 IMPLEMENTED, 3 SPECIFIED, 0 FAILING.
 ```
 
 ---
 
-## 🏛️ Desglose por Capas Activas
+## 🛑 Gobernanza de Claims y Confinamiento Comercial Reconciliado (R3 / R4)
 
-* **00 Meta and Governance:** 8 ADRs fundacionales (`DEC-001` a `DEC-011`), reglas de agentes, taxonomía y registro central.
-* **01 Research and Lenses:** 7 Lentes Teóricas, 6 Matrices de Claims por dominio, 5 Source Notes atómicas con límites de inferencia y catálogo de vacíos de investigación (`RESEARCH_GAPS.md`).
-* **02 Framework Canon:** Tesis de agencia, huella digital vs. representación (Digital Self), modelo de 9 Attention Doors oficiales con sus fichas vivas individuales, proceso decisional y protocolo P.A.R.A.
-* **03 Methodology and Learning:** Filosofía andragógica, formación vs. intervención, inventario de 14 competencias y guía del facilitador.
-* **04 Product System:** Motor interactivo FARO V3+ (`GAME-FARO-SIMULATION-V3PLUS`), matriz de scoring D/N y especificación narrativa de los Casos 1 al 4.
-* **05 Products Catalog:** Ficha del producto Webinar V1 interactivo (`PROD-WEBINAR-V1`).
-* **06 Evidence and Validation:** Hipótesis del framework en evaluación, hoja de ruta de validación y evidencia auditada del webinar V1.
-* **07 Commercial and Go-To-Market:** Posicionamiento, propuesta de valor CISO/CHRO, tiers de oferta y banco de claims autorizados para ventas (`evidence_for_sales.md`).
-* **99 Archive and History:** Insumos históricos, documentos maestros previos y actas de diseño de 2026 resguardados bajo firewall de contexto.
+- **Claims Científicos Confinados:** 35 de 35 en `v3/brain/01_research_and_lenses/claims/`:
+  - `allowed_uses: [internal_research]`, `evidence_status: unresolved`, `review_status: suspended`.
+  - Índice derivado generado y verificado sin drift: `v3/brain/01_research_and_lenses/claims_index.json`.
+- **Sales Claims Clasificados y Saneados:** 7 de 7 en `v3/brain/07_commercial_and_gotomarket/evidence_for_sales.md`:
+  - **Activos (3):** `SALES-CLAIM-002` (postura del framework: señales superficiales), `SALES-CLAIM-004` (postura del framework: training vs intervention), `SALES-CLAIM-007` (evidencia empírica interna preliminar del webinar, sin duplicado).
+  - **En Deuda (4):** `SALES-CLAIM-001` (GenAI), `SALES-CLAIM-003` (factor humano), `SALES-CLAIM-005` (gamificación), `SALES-CLAIM-006` (confianza calibrada). Todos confinados a `pending_evidence_debt`.
+  - Índice derivado generado y verificado sin drift: `v3/brain/07_commercial_and_gotomarket/sales_claims_index.json`.
+- **Reconciliación Exacta de Citas:** 37 citas únicas SRC-* = 1 resuelta + 4 internas a desacoplar + 32 externas no resueltas citadas. Backlog de 25 obras propuesto no citado.
+- **Invariantes de Contención (R7):** Verificados automáticamente al 100% por `verify_containment_invariants.js`.
