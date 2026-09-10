@@ -1,22 +1,152 @@
 {
   "meta": {
-    "title": "Evidence & Knowledge Graph — Cerebro V3 (Fase 1R.1)",
-    "generated_at": "2026-09-04",
-    "node_count": 148,
-    "edge_count": 92,
+    "title": "Evidence & Knowledge Graph — Cerebro V3 (Fase 2B)",
+    "generated_at": "2026-09-10",
+    "node_count": 164,
+    "edge_count": 124,
     "namespaces": {
       "supported_by": 64,
       "evidenced_by": 2,
       "grounded_in": 11,
-      "commercial_ref": 15
+      "commercial_ref": 15,
+      "candidate_proposal": 16,
+      "candidate_target": 16
     },
     "resolution_summary": {
-      "resolved_edges": 25,
+      "resolved_edges": 57,
       "registered_debt_edges": 67,
       "unresolved_error_edges": 0
     }
   },
   "nodes": [
+    {
+      "id": "CAND-DBIR-001",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "En el conjunto 2026 del DBIR, la explotación de vulnerabilidades fue el vector inicial más frecuente y alcanzó el 31% de las brechas.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-DBIR-002",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "En las simulaciones analizadas por el DBIR 2026, las entradas móviles registraron una mediana de clics exitosos 40% superior a las entradas por correo.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-DBIR-003",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Los datos del DBIR respaldan tratar las brechas como resultados sociotécnicos con factores técnicos, humanos y organizacionales solapados.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-KAHNEMAN-001",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "La distinción rápido/automático versus lento/deliberativo es un recurso pedagógico para describir familias de procesos, no una partición anatómica literal.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-KAHNEMAN-002",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "La confianza subjetiva no debe tratarse como prueba suficiente de exactitud decisional.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-KAHNEMAN-003",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Un entrenamiento responsable debe enseñar cuándo revisar una intuición y cuándo la experiencia válida puede hacerla útil, evitando el mandato universal de “pensar lento”.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-ROGERS-001",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "En la formulación de Rogers de 1975, gravedad, probabilidad de ocurrencia y eficacia de la respuesta son componentes distintos de la evaluación protectora.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-ROGERS-002",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "La fuente de 1975 no basta para afirmar que la autoeficacia formaba parte de la formulación original de PMT.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-ROGERS-003",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Los mensajes de amenaza deben acompañarse de respuestas eficaces y ejecutables; su efecto formativo en este framework continúa siendo una hipótesis.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-VAFA-001",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "En un pipeline experimental con 200 perfiles públicos, cinco LLM generaron 17.916 correos contextuales y transfirieron habitualmente 1–2 pistas específicas del usuario a relatos con numerosas entidades adicionales fabricadas.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-VAFA-002",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "En el estudio con 70 participantes, los correos LLM seleccionados recibieron menor sospecha media que los correos APWG seleccionados (2,75 vs. 4,44).",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-VAFA-003",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "La evidencia pública puede bastar para anclar una representación funcional persuasiva aunque gran parte del contenido generado sea inferido o falso.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-VAFA-004",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Las métricas de calidad y sospecha no deben comunicarse como tasas de victimización o eficacia operacional del ataque.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-WOOD-001",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "La repetición de una respuesta en contextos estables puede formar asociaciones contexto–respuesta que guían ejecuciones posteriores sin mediación continua de metas conscientes.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-WOOD-002",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Las intervenciones sobre conducta habitual pueden requerir modificar claves y practicar respuestas alternativas, no solo comunicar nuevas intenciones.",
+      "resolution_status": "non_canonical_candidate"
+    },
+    {
+      "id": "CAND-WOOD-003",
+      "type": "candidate_claim",
+      "layer": "01_research_and_lenses",
+      "status": "pending",
+      "label": "Automaticidad no equivale a fallo moral: los hábitos pueden apoyar o contradecir metas según las asociaciones y el contexto.",
+      "resolution_status": "non_canonical_candidate"
+    },
     {
       "id": "CASE-FARO-01",
       "type": "case",
@@ -1204,6 +1334,118 @@
   ],
   "edges": [
     {
+      "source": "CAND-DBIR-001",
+      "target": "CLM-MATRIX-HF",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-DBIR-002",
+      "target": "CLM-MATRIX-GENAI-SE",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-DBIR-003",
+      "target": "CLM-MATRIX-HF",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-KAHNEMAN-001",
+      "target": "CLM-MATRIX-ATT-DEC",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-KAHNEMAN-002",
+      "target": "CLM-MATRIX-ATT-DEC",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-KAHNEMAN-003",
+      "target": "CLM-MATRIX-TRAINING",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-ROGERS-001",
+      "target": "CLM-MATRIX-HF",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-ROGERS-002",
+      "target": "CLM-MATRIX-HF",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-ROGERS-003",
+      "target": "CLM-MATRIX-TRAINING",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-VAFA-001",
+      "target": "CLM-MATRIX-GENAI-SE",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-VAFA-002",
+      "target": "CLM-MATRIX-GENAI-SE",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-VAFA-003",
+      "target": "CLM-MATRIX-GENAI-SE",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-VAFA-004",
+      "target": "CLM-MATRIX-GENAI-SE",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-WOOD-001",
+      "target": "CLM-MATRIX-ATT-DEC",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-WOOD-002",
+      "target": "CLM-MATRIX-TRAINING",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "CAND-WOOD-003",
+      "target": "CLM-MATRIX-HF",
+      "namespace": "candidate_target",
+      "relation": "targets_matrix",
+      "resolution_status": "resolved"
+    },
+    {
       "source": "CLAIM-AD-001",
       "target": "SRC-GOTTLIEB-ETAL-2013",
       "namespace": "supported_by",
@@ -1845,6 +2087,118 @@
       "target": "EVD-WEBINAR-V1",
       "namespace": "commercial_ref",
       "relation": "internal_evidence",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-KAHNEMAN-2011",
+      "target": "CAND-KAHNEMAN-001",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-KAHNEMAN-2011",
+      "target": "CAND-KAHNEMAN-002",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-KAHNEMAN-2011",
+      "target": "CAND-KAHNEMAN-003",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-ROGERS-1975",
+      "target": "CAND-ROGERS-001",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-ROGERS-1975",
+      "target": "CAND-ROGERS-002",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-ROGERS-1975",
+      "target": "CAND-ROGERS-003",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VAFA-2026",
+      "target": "CAND-VAFA-001",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VAFA-2026",
+      "target": "CAND-VAFA-002",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VAFA-2026",
+      "target": "CAND-VAFA-003",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VAFA-2026",
+      "target": "CAND-VAFA-004",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VERIZON-DBIR-2026",
+      "target": "CAND-DBIR-001",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VERIZON-DBIR-2026",
+      "target": "CAND-DBIR-002",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-VERIZON-DBIR-2026",
+      "target": "CAND-DBIR-003",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-WOOD-NEAL-2007",
+      "target": "CAND-WOOD-001",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-WOOD-NEAL-2007",
+      "target": "CAND-WOOD-002",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
+      "resolution_status": "resolved"
+    },
+    {
+      "source": "SRC-WOOD-NEAL-2007",
+      "target": "CAND-WOOD-003",
+      "namespace": "candidate_proposal",
+      "relation": "proposed_in",
       "resolution_status": "resolved"
     }
   ]

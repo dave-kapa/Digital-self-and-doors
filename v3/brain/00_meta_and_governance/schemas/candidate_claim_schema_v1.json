@@ -1,0 +1,221 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CandidateClaimSchemaV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id",
+    "source_id",
+    "file_source",
+    "statement",
+    "proposed_epistemic_status",
+    "proposed_confidence",
+    "scope",
+    "promotion_target",
+    "proposed_target_file",
+    "proposed_target_matrix_id",
+    "reading_basis",
+    "triage_status",
+    "decided_by_humans"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^CAND-[A-Z0-9-]+-[0-9]{3}$"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^SRC-[A-Z0-9-]+-[0-9]{4}$"
+    },
+    "file_source": {
+      "type": "string"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "proposed_epistemic_status": {
+      "type": "string",
+      "enum": [
+        "established",
+        "supported",
+        "provisional",
+        "speculative",
+        "mixed"
+      ]
+    },
+    "proposed_confidence": {
+      "type": "string",
+      "enum": [
+        "very_high",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 5
+    },
+    "promotion_target": {
+      "type": "string"
+    },
+    "proposed_target_file": {
+      "type": "string"
+    },
+    "proposed_target_matrix_id": {
+      "type": "string",
+      "pattern": "^CLM-MATRIX-[A-Z0-9-]+$"
+    },
+    "reading_basis": {
+      "type": "string",
+      "enum": [
+        "abstract_reviewed",
+        "full_text_reviewed"
+      ]
+    },
+    "evidence_locator": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "triage_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "merged",
+        "promoted",
+        "rejected",
+        "needs_more_evidence"
+      ]
+    },
+    "target_claim_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^CLAIM-[A-Z0-9-]+$"
+    },
+    "decision_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decided_by_humans": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "triage_status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target_claim_id": {
+            "type": "null"
+          },
+          "decision_reason": {
+            "type": "null"
+          },
+          "decided_by_humans": {
+            "maxItems": 0
+          },
+          "decision_date": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "triage_status": {
+            "enum": [
+              "promoted",
+              "merged"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target_claim_id": {
+            "type": "string",
+            "pattern": "^CLAIM-[A-Z0-9-]+$"
+          },
+          "decision_reason": {
+            "type": "string",
+            "minLength": 5
+          },
+          "decided_by_humans": {
+            "type": "array",
+            "minItems": 1
+          },
+          "decision_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "required": [
+          "target_claim_id",
+          "decision_reason",
+          "decided_by_humans",
+          "decision_date"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "triage_status": {
+            "enum": [
+              "rejected",
+              "needs_more_evidence"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target_claim_id": {
+            "type": "null"
+          },
+          "decision_reason": {
+            "type": "string",
+            "minLength": 5
+          },
+          "decided_by_humans": {
+            "type": "array",
+            "minItems": 1
+          },
+          "decision_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "required": [
+          "decision_reason",
+          "decided_by_humans",
+          "decision_date"
+        ]
+      }
+    }
+  ]
+}

@@ -244,10 +244,234 @@ const tests = [
         mode: 'migration',
         expectedCode: '[FAIL D010]',
         expectedMessage: 'carece de schema_version requerido (2)'
+    },
+    {
+        id: 'NEG-030-D001-CAND-INTRA',
+        name: 'Detección de ID de candidate claim duplicado dentro de la misma nota (D001)',
+        dir: 'fixture_cand_dup_id_intra',
+        mode: 'migration',
+        expectedCode: '[FAIL D001]',
+        expectedMessage: "ID de candidato duplicado en nota:"
+    },
+    {
+        id: 'NEG-031-D001-CAND-INTER',
+        name: 'Detección de ID de candidate claim colisionando entre notas (D001)',
+        dir: 'fixture_cand_dup_id_inter',
+        mode: 'migration',
+        expectedCode: '[FAIL D001]',
+        expectedMessage: "Candidate ID colisiona globalmente entre notas:"
+    },
+    {
+        id: 'NEG-032-D010-CAND-UNKNOWN-FIELD',
+        name: 'Detección de campo no permitido en bloque Markdown de candidato (D010)',
+        dir: 'fixture_cand_unknown_field',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "Campo desconocido no permitido en candidato: unknown_field"
+    },
+    {
+        id: 'NEG-033-D010-CAND-DUP-FIELD',
+        name: 'Detección de clave duplicada dentro de bloque Markdown de candidato (D010)',
+        dir: 'fixture_cand_duplicate_field',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "Campo duplicado en candidato: scope"
+    },
+    {
+        id: 'NEG-034-D010-CAND-INVALID-STATUS',
+        name: 'Detección de valor ilegal en Proposed epistemic status de candidato (D010)',
+        dir: 'fixture_cand_invalid_status',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "proposed_epistemic_status must be equal to one of the allowed values"
+    },
+    {
+        id: 'NEG-035-D010-CAND-MISSING-STMT',
+        name: 'Detección de bloque de candidato sin Statement o menor a 10 caracteres (D010)',
+        dir: 'fixture_cand_missing_statement',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "Statement de candidato debe tener al menos 10 caracteres"
+    },
+    {
+        id: 'NEG-036-D002-CAND-MISSING-TARGET',
+        name: 'Detección de Promotion target apuntando a matriz de claims inexistente (D002)',
+        dir: 'fixture_cand_missing_target',
+        mode: 'migration',
+        expectedCode: '[FAIL D002]',
+        expectedMessage: "Promotion target apunta a archivo de matriz inexistente o no autorizado:"
+    },
+    {
+        id: 'NEG-037-D010-CAND-REDUNDANT-PROV',
+        name: 'Detección de campo de procedencia redundante manual en candidato (D010)',
+        dir: 'fixture_cand_redundant_provenance',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "Campo desconocido no permitido en candidato: source_id"
+    },
+    {
+        id: 'NEG-038-D010-CAND-READING-MISMATCH',
+        name: 'Detección de discordancia de reading_basis con el reading_status de la nota (D010)',
+        dir: 'fixture_cand_reading_basis_mismatch',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "Candidato declara reading_basis: full_text_reviewed pero la Source Note tiene reading_status: abstract_reviewed"
+    },
+    {
+        id: 'NEG-039-D010-CAND-PROMOTED-NO-TARGET',
+        name: 'Detección de candidato con triage_status promoted sin target_claim_id (D010)',
+        dir: 'fixture_cand_promoted_no_target',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/target_claim_id must be string"
+    },
+    {
+        id: 'NEG-040-D010-CAND-DECIDED-NO-HUMAN',
+        name: 'Detección de candidato con decisión sin aprobadores humanos (D010)',
+        dir: 'fixture_cand_decided_no_human',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/decided_by_humans must NOT have fewer than 1 items"
+    },
+    {
+        id: 'NEG-041-D010-CAND-DECIDED-NO-DATE',
+        name: 'Detección de candidato con decisión sin fecha (D010)',
+        dir: 'fixture_cand_decided_no_date',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/decision_date must be string"
+    },
+    {
+        id: 'NEG-042-D010-CAND-DECIDED-NO-REASON',
+        name: 'Detección de candidato con decisión sin justificación (D010)',
+        dir: 'fixture_cand_decided_no_reason',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/decision_reason must be string"
+    },
+    {
+        id: 'NEG-043-D002-CLAIM-INVERSE-BROKEN',
+        name: 'Detección de claim citando candidato inexistente en derived_from_candidates (D002)',
+        dir: 'fixture_claim_inverse_broken',
+        mode: 'migration',
+        expectedCode: '[FAIL D002]',
+        expectedMessage: "derived_from_candidates cita candidato inexistente:"
+    },
+    {
+        id: 'NEG-044-LIB007-CLAIM-REJECTED-CITED',
+        name: 'Detección de claim citando candidato con status rejected (LIB007)',
+        dir: 'fixture_claim_rejected_cited',
+        mode: 'migration',
+        expectedCode: '[FAIL LIB007]',
+        expectedMessage: "Claim cita candidato con status rejected:"
+    },
+    {
+        id: 'NEG-045-D010-TOPIC-INVALID-DIR',
+        name: 'Detección de topic mapping con dirección distinta a legacy_to_canonical (D010)',
+        dir: 'fixture_topic_invalid_direction',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/direction must be equal to one of the allowed values"
+    },
+    {
+        id: 'NEG-046-LIB002-TOPIC-INVALID-TARGET',
+        name: 'Detección de topic mapping con target no perteneciente a taxonomía (LIB002)',
+        dir: 'fixture_topic_invalid_target',
+        mode: 'migration',
+        expectedCode: '[FAIL LIB002]',
+        expectedMessage: "Target de mapping fuera de taxonomía:"
+    },
+    {
+        id: 'NEG-047-D010-TOPIC-MALFORMED-TARGETS',
+        name: 'Detección de regla de topic mapping con estructura inválida en mappings (D010)',
+        dir: 'fixture_topic_malformed_targets',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/mappings/0 must have required property 'relation_type'"
+    },
+    {
+        id: 'NEG-048-D010-TOPIC-ACCEPTED-NO-HUMAN',
+        name: 'Detección de topic mapping accepted sin aprobador humano (D010)',
+        dir: 'fixture_topic_accepted_no_human',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/approved_by_humans must NOT have fewer than 1 items"
+    },
+    {
+        id: 'NEG-049-D070-CAND-INDEX-DRIFT',
+        name: 'Detección de drift en candidate_claims_index.json frente al Markdown (D070)',
+        dir: 'fixture_cand_index_drift',
+        mode: 'migration',
+        expectedCode: '[FAIL D070]',
+        expectedMessage: "Drift detectado en candidate_claims_index.json"
+    },
+    {
+        id: 'NEG-050-D010-SOURCE-UNKNOWN-FIELD',
+        name: 'Detección de clave no autorizada en frontmatter de Source Note v2 (D010)',
+        dir: 'fixture_source_unknown_field',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data must NOT have additional properties"
+    },
+    {
+        id: 'NEG-051-LIB007-CAND-PROMOTED-NO-INVERSE',
+        name: 'Detección de candidato promoted/merged apuntando a claim sin vínculo inverso (LIB007)',
+        dir: 'fixture_cand_promoted_no_inverse',
+        mode: 'migration',
+        expectedCode: '[FAIL LIB007]',
+        expectedMessage: "apunta a claim CLAIM-TEST-001 pero el claim no contiene el vínculo inverso"
+    },
+    {
+        id: 'NEG-052-D010-TOPIC-ACCEPTED-NO-HUMAN-DATE',
+        name: 'Detección de topic mapping accepted con fecha pero sin humano (D010)',
+        dir: 'fixture_topic_accepted_no_human_with_date',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/approved_by_humans must NOT have fewer than 1 items"
+    },
+    {
+        id: 'NEG-053-D010-TOPIC-ACCEPTED-NO-DATE-HUMAN',
+        name: 'Detección de topic mapping accepted con humano pero sin fecha (D010)',
+        dir: 'fixture_topic_accepted_no_date_with_human',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/approval_date must be string"
+    },
+    {
+        id: 'NEG-054-D010-TOPIC-PENDING-WITH-HUMAN',
+        name: 'Detección de topic mapping pending_review con aprobadores humanos no vacíos (D010)',
+        dir: 'fixture_topic_pending_with_human',
+        mode: 'migration',
+        expectedCode: '[FAIL D010]',
+        expectedMessage: "data/rules/0/approved_by_humans must NOT have more than 0 items"
+    },
+    {
+        id: 'NEG-055-LIB002-TOPIC-DUP-LEGACY',
+        name: 'Detección de dos reglas con el mismo legacy_topic en topic_mappings.json (LIB002)',
+        dir: 'fixture_topic_dup_legacy',
+        mode: 'migration',
+        expectedCode: '[FAIL LIB002]',
+        expectedMessage: "Legacy topic duplicado en topic_mappings.json:"
+    },
+    {
+        id: 'NEG-056-LIB002-TOPIC-DUP-TARGET',
+        name: 'Detección de target canónico duplicado dentro de mappings[] (LIB002)',
+        dir: 'fixture_topic_dup_target',
+        mode: 'migration',
+        expectedCode: '[FAIL LIB002]',
+        expectedMessage: "Target canónico duplicado dentro de mappings[]:"
+    },
+    {
+        id: 'NEG-057-B3R-CAND-NON-HUMAN-IDENTITY',
+        name: 'Detección de decisión de candidato con agente o placeholder prohibido (B3R)',
+        dir: 'fixture_cand_non_human_identity',
+        mode: 'migration',
+        expectedCode: '[FAIL B3R]',
+        expectedMessage: "contiene identidad no humana o placeholder en decided_by_humans:"
     }
 ];
 
-console.log('=== SUITE DE PRUEBAS NEGATIVAS: AUDITORÍA DETERMINÍSTICA (Fase 2A) ===');
+console.log('=== SUITE DE PRUEBAS NEGATIVAS: AUDITORÍA DETERMINÍSTICA (Fase 2B) ===');
 console.log('Total de casos de prueba negativos: ' + tests.length);
 console.log('Ejecutable utilizado: ' + process.execPath);
 console.log('----------------------------------------------------------------------');

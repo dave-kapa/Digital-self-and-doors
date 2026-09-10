@@ -1,0 +1,304 @@
+{
+  "mappings_version": "1.0.0",
+  "description": "Catálogo controlado de mappings para vocabulario legacy hacia taxonomía canónica (Fase 2B / R2B-05)",
+  "taxonomy_reference": "v3/brain/01_research_and_lenses/librarian/RESEARCH_TAXONOMY.md",
+  "rules": [
+    {
+      "legacy_topic": "heuristics_biases",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-KAHNEMAN-2011"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "broader_term"
+        },
+        {
+          "canonical_target": "metacognition",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Heurísticas y sesgos como atajos de juicio mapeados a toma de decisiones y metacognición.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "dual_process",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-KAHNEMAN-2011"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Modelos de procesamiento dual (Sistema 1 y Sistema 2) vinculados a la toma de decisiones.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "protection_motivation",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-ROGERS-1975"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "protection",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "behavior_change",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Teoría de motivación de protección mapeada a protección y cambio de conducta.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "risk_perception",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-ROGERS-1975"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "human_factor",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Percepción de riesgo y vulnerabilidad mapeada a factores humanos y toma de decisiones.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "threat_appraisal",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-ROGERS-1975"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "protection",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Evaluación de amenaza y severidad percibida mapeada a protección y decisión.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "protective_behavior",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-ROGERS-1975"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "behavior_change",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "protection",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Adopción de conducta protectora mapeada a cambio conductual y protección.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "generative_ai",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VAFA-2026",
+        "SRC-VERIZON-DBIR-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "genai",
+          "relation_type": "exact_match"
+        }
+      ],
+      "rationale": "Mapeo exacto directo del término legado generative_ai al token canónico genai.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "social_engineering_phishing",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VAFA-2026",
+        "SRC-VERIZON-DBIR-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "social_engineering",
+          "relation_type": "broader_term"
+        },
+        {
+          "canonical_target": "phishing",
+          "relation_type": "broader_term"
+        }
+      ],
+      "rationale": "Término compuesto mapeado a los dos dominios canónicos independientes.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "digital_footprint",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VAFA-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "digital_self",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "identity",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Rastro digital y perfil público mapeados a digital_self e identity.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "personalization",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VAFA-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "social_engineering",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Personalización y spear phishing contextual vinculados a ingeniería social.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "cybersecurity_incidents",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VERIZON-DBIR-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "measurement",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "industry_standards",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Incidentes de ciberseguridad empíricos mapeados a métricas y estándares de industria.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "vulnerability_exploitation",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-VERIZON-DBIR-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "human_factor",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Explotación de vulnerabilidades y errores de configuración vinculados al factor humano.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "habits_automaticity",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-WOOD-NEAL-2007"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "habit_automaticity",
+          "relation_type": "exact_match"
+        }
+      ],
+      "rationale": "Mapeo exacto directo al token taxonómico habit_automaticity.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "goal_directed_behavior",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-WOOD-NEAL-2007"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "behavior_change",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Conducta dirigida por metas frente a hábitos automáticos mapeada a cambio conductual y decisión.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    },
+    {
+      "legacy_topic": "context_cues",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-WOOD-NEAL-2007"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "attention",
+          "relation_type": "related_term"
+        },
+        {
+          "canonical_target": "convenience_routine",
+          "relation_type": "related_term"
+        }
+      ],
+      "rationale": "Claves contextuales que disparan respuestas habituales mapeadas a atención y conveniencia/rutina.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    }
+  ]
+}

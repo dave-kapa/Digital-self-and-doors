@@ -31,3 +31,13 @@
 | `THEORY-TRA-TPB` | Theory of Reasoned Action and Theory of Planned Behavior | `theory_lens` | `canonical` | [Abrir](theoretical_lenses/tra_tpb_behavioral_intent.md) |
 | `THEORY-TRUST-AUTO` | Trust in Automation and Appropriate Reliance | `theory_lens` | `canonical` | [Abrir](theoretical_lenses/trust_in_automation_reliance.md) |
 <!-- AUTO-GENERATED:END -->
+
+---
+
+## 📑 Índices y Artefactos Derivados de Capa 01
+
+Adicionalmente a los documentos canónicos registrados en `registry.json`, este módulo mantiene artefactos derivados determinísticos generados por tooling:
+- `claims_index.json`: Índice compilado de los 35 claims científicos atomizados.
+- `candidate_claims_index.json`: Índice derivado de los 16 candidate claims propuestos en las Source Notes (Fase 2B, 100% en triage pendiente).
+- `librarian/topic_mappings.json`: Matriz de mapeo estructurado de 15 topics legacy hacia la taxonomía controlada.
+

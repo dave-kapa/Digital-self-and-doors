@@ -55,6 +55,10 @@ related_theories:
   - THEORY-SDT
   - THEORY-TRUST-AUTO
   - THEORY-JUDGE-ADVISOR
+related_gaps: []
+related_concepts: []
+related_claim_matrices:
+  - CLM-MATRIX-GENAI-SE
 ---
 
 # 1. Citation (APA)
@@ -113,6 +117,7 @@ Los autores señalan que los datos proceden solo de un año de Instagram públic
 
 # 9. Candidate claims proposed
 
+
 ## CAND-VAFA-001
 
 - **Statement:** En un pipeline experimental con 200 perfiles públicos, cinco LLM generaron 17.916 correos contextuales y transfirieron habitualmente 1–2 pistas específicas del usuario a relatos con numerosas entidades adicionales fabricadas.
@@ -120,6 +125,13 @@ Los autores señalan que los datos proceden solo de un año de Instagram públic
 - **Proposed confidence:** medium
 - **Scope:** Instagram público, modelos y prompts del estudio; preprint v1.
 - **Promotion target:** `claims_genai_social_engineering.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-VAFA-002
 
@@ -128,6 +140,13 @@ Los autores señalan que los datos proceden solo de un año de Instagram públic
 - **Proposed confidence:** medium
 - **Scope:** percepción en capturas estáticas; no conducta real de clic.
 - **Promotion target:** `claims_genai_social_engineering.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-VAFA-003
 
@@ -136,6 +155,13 @@ Los autores señalan que los datos proceden solo de un año de Instagram públic
 - **Proposed confidence:** medium
 - **Scope:** mecanismo demostrado en la canalización; requiere replicación externa.
 - **Promotion target:** `claims_genai_social_engineering.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-VAFA-004
 
@@ -144,3 +170,10 @@ Los autores señalan que los datos proceden solo de un año de Instagram públic
 - **Proposed confidence:** high
 - **Scope:** límite inferencial del diseño.
 - **Promotion target:** `claims_genai_social_engineering.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null

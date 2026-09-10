@@ -52,6 +52,11 @@ related_doors:
 related_theories:
   - THEORY-SDT
   - THEORY-PMT
+related_gaps: []
+related_concepts: []
+related_claim_matrices:
+  - CLM-MATRIX-HF
+  - CLM-MATRIX-GENAI-SE
 ---
 
 # 1. Citation (APA)
@@ -105,6 +110,7 @@ El DBIR reconoce que la confidencialidad, las dificultades de respuesta y la het
 
 # 9. Candidate claims proposed
 
+
 ## CAND-DBIR-001
 
 - **Statement:** En el conjunto 2026 del DBIR, la explotación de vulnerabilidades fue el vector inicial más frecuente y alcanzó el 31% de las brechas.
@@ -112,6 +118,13 @@ El DBIR reconoce que la confidencialidad, las dificultades de respuesta y la het
 - **Proposed confidence:** high
 - **Scope:** conjunto global agregado del DBIR 2026 y definiciones VERIS; no prevalencia universal.
 - **Promotion target:** `claims_human_factor.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-DBIR-002
 
@@ -120,6 +133,13 @@ El DBIR reconoce que la confidencialidad, las dificultades de respuesta y la het
 - **Proposed confidence:** medium
 - **Scope:** conjunto de simulaciones y medición reportados; requiere conservar denominador y canal.
 - **Promotion target:** `claims_genai_social_engineering.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null
 
 ## CAND-DBIR-003
 
@@ -128,3 +148,10 @@ El DBIR reconoce que la confidencialidad, las dificultades de respuesta y la het
 - **Proposed confidence:** medium
 - **Scope:** inferencia de síntesis para diseño; no estimación causal.
 - **Promotion target:** `claims_human_factor.md`
+- **Reading basis:** full_text_reviewed
+- **Evidence locator:** null
+- **Triage status:** pending
+- **Target claim ID:** null
+- **Decision reason:** null
+- **Decided by humans:** []
+- **Decision date:** null

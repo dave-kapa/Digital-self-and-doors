@@ -17,7 +17,7 @@
     "test:negative": "node v3/tests/test_audit_brain_negative.js",
     "verify:containment": "node v3/scripts/verify_containment_invariants.js",
     "test:normalizer": "node v3/tests/test_text_normalizer.js",
-    "test": "npm run audit:brain && npm run audit:brain:strict && npm run audit:spec && npm run test:contract && npm run test:schemas && npm run test:dedupe && npm run test:negative && npm run verify:containment && npm run test:normalizer",
+    "test": "npm run audit:brain && npm run audit:brain:strict && npm run audit:spec && npm run test:contract && npm run test:schemas && npm run test:dedupe && npm run test:negative && npm run verify:containment && npm run test:normalizer && npm run test:candidates && npm run test:topics",
     "build:registry": "node v3/scripts/build_registry.js",
     "build:registry:check": "node v3/scripts/build_registry.js --check",
     "build:bib": "node v3/scripts/build_bibliography.js",
@@ -30,7 +30,11 @@
     "build:sales:check": "node v3/scripts/build_sales_claims_index.js --check",
     "build:graph": "node v3/scripts/build_evidence_graph.js",
     "build:graph:check": "node v3/scripts/build_evidence_graph.js --check",
-    "verify:all": "npm run test && npm run build:registry:check && npm run build:bib:check && npm run build:mocs:check && npm run build:claims:check && npm run build:sales:check && npm run build:graph:check"
+    "verify:all": "npm run test && npm run build:registry:check && npm run build:bib:check && npm run build:mocs:check && npm run build:claims:check && npm run build:sales:check && npm run build:candidates:check && npm run build:graph:check",
+    "test:candidates": "node v3/tests/test_candidate_claims.js",
+    "test:topics": "node v3/tests/test_topic_mappings.js",
+    "build:candidates": "node v3/scripts/build_candidate_claims_index.js",
+    "build:candidates:check": "node v3/scripts/build_candidate_claims_index.js --check"
   },
   "keywords": [],
   "author": "",

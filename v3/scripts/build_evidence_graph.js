@@ -1,9 +1,11 @@
 /**
  * build_evidence_graph.js
- * Genera el grafo determinístico de relaciones de evidencia del Cerebro V3 (Fase 1R.1 / B2R).
+ * Genera el grafo determinístico de relaciones de evidencia del Cerebro V3 (Fase 2B / E2B-07).
  * Resuelve namespaces y categoriza nodos y aristas:
  *  - resolved: objeto activo en registry o claims index
  *  - registered_debt: fuente externa registrada formalmente en EVIDENCE_DEBT.md
+ *  - candidate_claim: 16 nodos no canónicos de propuestas pendientes (Fase 2B)
+ *  - candidate_proposal & candidate_target: 32 aristas de propuesta hacia matrices (Fase 2B)
  *  - unresolved_error: ID que no existe en el sistema ni en deuda
  * Excluye estrictamente 99_archive_and_history.
  * Soporta modo --check para verificación en CI sin escribir archivos.
@@ -19,10 +21,11 @@ const salesFile = path.join(brainDir, '07_commercial_and_gotomarket/evidence_for
 const registryFile = path.join(brainDir, '00_meta_and_governance/registry.json');
 const debtFile = path.join(brainDir, '01_research_and_lenses/librarian/EVIDENCE_DEBT.md');
 const debtIndexFile = path.join(brainDir, '01_research_and_lenses/librarian/evidence_debt_index.json');
+const candidateIndexFile = path.join(brainDir, '01_research_and_lenses/candidate_claims_index.json');
 
 const registry = fs.existsSync(registryFile) ? JSON.parse(fs.readFileSync(registryFile, 'utf8')) : {};
 
-// Cargar fuentes registradas en deuda oficial (excluyendo estrictamente el backlog)
+// Cargar fuentes registradas en deuda oficial
 const debtSources = new Set();
 if (fs.existsSync(debtIndexFile)) {
     try {
@@ -197,20 +200,63 @@ if (fs.existsSync(salesFile)) {
     });
 }
 
+// 4. Incorporar Candidate Claims (Fase 2B / E2B-07)
+let totalCandidateProposal = 0;
+let totalCandidateTarget = 0;
+
+if (fs.existsSync(candidateIndexFile)) {
+    const candidateClaims = JSON.parse(fs.readFileSync(candidateIndexFile, 'utf8'));
+    candidateClaims.forEach(cand => {
+        // Nodo no canónico de candidate claim
+        addNode(
+            cand.candidate_id,
+            'candidate_claim',
+            '01_research_and_lenses',
+            'pending',
+            cand.statement,
+            'non_canonical_candidate'
+        );
+
+        // Arista 1: Source Note -> Candidate Claim (candidate_proposal)
+        edges.push({
+            source: cand.source_id,
+            target: cand.candidate_id,
+            namespace: 'candidate_proposal',
+            relation: 'proposed_in',
+            resolution_status: 'resolved'
+        });
+        totalCandidateProposal++;
+        resolvedEdges++;
+
+        // Arista 2: Candidate Claim -> Claim Matrix (candidate_target)
+        edges.push({
+            source: cand.candidate_id,
+            target: cand.proposed_target_matrix_id,
+            namespace: 'candidate_target',
+            relation: 'targets_matrix',
+            resolution_status: 'resolved'
+        });
+        totalCandidateTarget++;
+        resolvedEdges++;
+    });
+}
+
 nodes.sort((a, b) => a.id.localeCompare(b.id));
 edges.sort((a, b) => (a.source + a.target + a.namespace).localeCompare(b.source + b.target + b.namespace));
 
 const graphData = {
     meta: {
-        title: 'Evidence & Knowledge Graph — Cerebro V3 (Fase 1R.1)',
-        generated_at: '2026-09-04',
+        title: 'Evidence & Knowledge Graph — Cerebro V3 (Fase 2B)',
+        generated_at: '2026-09-10',
         node_count: nodes.length,
         edge_count: edges.length,
         namespaces: {
             supported_by: totalSupportedBy,
             evidenced_by: totalEvidencedBy,
             grounded_in: totalGroundedIn,
-            commercial_ref: totalCommercialRefs
+            commercial_ref: totalCommercialRefs,
+            candidate_proposal: totalCandidateProposal,
+            candidate_target: totalCandidateTarget
         },
         resolution_summary: {
             resolved_edges: resolvedEdges,
