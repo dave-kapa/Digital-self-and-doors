@@ -1,0 +1,23 @@
+{
+  "mappings_version": "1.0.0",
+  "description": "Malformed",
+  "taxonomy_reference": "RESEARCH_TAXONOMY.md",
+  "rules": [
+    {
+      "legacy_topic": "heuristics_biases",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-TEST-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "decision_making"
+        }
+      ],
+      "rationale": "Falta relation_type en target mapping.",
+      "review_status": "pending_review",
+      "approved_by_humans": [],
+      "approval_date": null
+    }
+  ]
+}

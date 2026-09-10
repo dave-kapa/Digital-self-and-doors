@@ -1,19 +1,21 @@
 /**
  * verify_containment_invariants.js
- * Verificación automatizada de invariantes de contención epistemológica (R7).
+ * Verificación automatizada de invariantes de contención epistemológica (Fase 2B).
  * Comprueba:
- *  1. Integridad idéntica (hash SHA-256) de las 5 Source Notes congeladas vs snapshot
+ *  1. Trazabilidad criptográfica de las 5 Source Notes (Snapshot baseline, hash certificado 2B y preservación 100% idéntica de Secciones 1 a 8)
  *  2. Cero nuevos PDFs en el repositorio y LIBRARY_MANIFEST.yaml vacío
- *  3. Cero candidate claims promovidos a canon
- *  4. Cero aprobaciones humanas atribuidas indebidamente a agentes
- *  5. Ningún sales claim reactivado por evidencia externa no resuelta
+ *  3. Cero candidate claims promovidos a canon o adjudicados (16 en pending, 0 target claims, 0 aprobaciones humanas)
+ *  4. Cero candidatos en registry.json
+ *  5. Integridad idéntica de los 35 claim statements científicos vs snapshot baseline
+ *  6. Cero aprobaciones humanas atribuidas indebidamente a agentes en notas y candidatos
+ *  7. Confinamiento estricto de sales claims (3 activos del marco interno, 4 en deuda)
  */
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const { parseClaimsFile, parseSalesClaimsFile } = require('./lib/content_parser');
-const { canonicalFileHash } = require('./lib/text_normalizer');
+const { canonicalFileHash, normalizeEol } = require('./lib/text_normalizer');
 
 const rootDir = path.join(__dirname, '../..');
 const brainDir = path.join(__dirname, '../brain');
@@ -21,8 +23,10 @@ const sourcesDir = path.join(brainDir, '01_research_and_lenses/sources');
 const snapshotSourcesDir = path.join(brainDir, '99_archive_and_history/snapshots/pre_phase_neg1_20260904/01_research_and_lenses/sources');
 const manifestPath = path.join(__dirname, '../research_library/LIBRARY_MANIFEST.yaml');
 const salesFile = path.join(brainDir, '07_commercial_and_gotomarket/evidence_for_sales.md');
+const candidateIndexFile = path.join(brainDir, '01_research_and_lenses/candidate_claims_index.json');
+const registryFile = path.join(brainDir, '00_meta_and_governance/registry.json');
 
-console.log('=== VERIFICACIÓN AUTOMATIZADA DE INVARIANTES DE CONTENCIÓN (R7) ===');
+console.log('=== VERIFICACIÓN AUTOMATIZADA DE INVARIANTES DE CONTENCIÓN (Fase 2B) ===');
 
 let passed = 0;
 let failed = 0;
@@ -41,7 +45,7 @@ function sha256(str) {
     return crypto.createHash('sha256').update(str).digest('hex');
 }
 
-// 1. Trazabilidad criptográfica de las 5 Source Notes (Fase 2A)
+// 1. Trazabilidad criptográfica de las 5 Source Notes (Fase 2B)
 // 1.1 Snapshot baseline inmutable (pre-Fase -1 a 1R.1)
 const BASELINE_SNAPSHOT_HASHES = {
     'SRC-KAHNEMAN-2011.md': 'e0fa1fdf9bdd5f214a9658c7585b43fd384c6f82ac3f16a63d1d3b75d292d477',
@@ -51,7 +55,7 @@ const BASELINE_SNAPSHOT_HASHES = {
     'SRC-WOOD-NEAL-2007.md': '93e2fed7f8388d54f13e668c0ac454e23d3c06ec0a0d105d1389341a8bfb0fc0'
 };
 
-// 1.2 Hashes certificados de migración Schema v2 (Fase 2A)
+// 1.2 Hashes certificados de migración Schema v2 (Fase 2A - Histórico)
 const PHASE_2A_CERTIFIED_HASHES = {
     'SRC-KAHNEMAN-2011.md': 'b80ae8215eabfe83d49ee52f17b7c0a2244d7a707d095272715c14f65e218c95',
     'SRC-ROGERS-1975.md': '1dd0385d6cbf5b9dbad51f162b1aa0ed133c04eab339ca0fb648c167e8f83763',
@@ -60,8 +64,19 @@ const PHASE_2A_CERTIFIED_HASHES = {
     'SRC-WOOD-NEAL-2007.md': '5cd5aae33b1c63420766e54267eb365f4a44b7eed16224f69bc605509b6518f4'
 };
 
+// 1.3 Hashes certificados de Fase 2B
+const PHASE_2B_CERTIFIED_HASHES = {
+    'SRC-KAHNEMAN-2011.md': '002b40459f8fa568c2424f560644ece4bfff3cfde2aef01015fb97cc9f739124',
+    'SRC-ROGERS-1975.md': 'b9c5677d8eee490c58003950e41c0156041b1d76685065aec063defe73821d03',
+    'SRC-VAFA-2026.md': '9c380655558c49ddeafddf25095e89a5463d4b949afe87e56bf27d1ea1d75f02',
+    'SRC-VERIZON-DBIR-2026.md': '2e5ccf463403e09b7768e5aa4bc5d4bfc2d4dece48c8354756392ca6080080aa',
+    'SRC-WOOD-NEAL-2007.md': 'feef171c936e34e48dafb2ab9813c5f003ce1813dd6e5d6b75d2c36821b9dbf8'
+};
+
 let allHashesMatch = true;
-Object.keys(PHASE_2A_CERTIFIED_HASHES).forEach(f => {
+let sections1to8Match = true;
+
+Object.keys(PHASE_2B_CERTIFIED_HASHES).forEach(f => {
     const activePath = path.join(sourcesDir, f);
     const snapPath = path.join(snapshotSourcesDir, f);
     if (!fs.existsSync(activePath) || !fs.existsSync(snapPath)) {
@@ -76,15 +91,24 @@ Object.keys(PHASE_2A_CERTIFIED_HASHES).forEach(f => {
         allHashesMatch = false;
         console.error('Snapshot baseline alterado en ' + f + ': ' + hSnap);
     }
-    if (hActive !== PHASE_2A_CERTIFIED_HASHES[f]) {
+    if (hActive !== PHASE_2B_CERTIFIED_HASHES[f]) {
         allHashesMatch = false;
-        console.error('Hash migrado 2A mismatch en ' + f + ': ' + hActive + ' !== ' + PHASE_2A_CERTIFIED_HASHES[f]);
+        console.error('Hash migrado 2B mismatch en ' + f + ': ' + hActive + ' !== ' + PHASE_2B_CERTIFIED_HASHES[f]);
+    }
+
+    // Slicing estricto: Secciones 1 a 8 idénticas byte-for-byte al snapshot baseline
+    const activeContent = normalizeEol(fs.readFileSync(activePath, 'utf8'));
+    const snapContent = normalizeEol(fs.readFileSync(snapPath, 'utf8'));
+    const sliceActive = activeContent.slice(activeContent.indexOf('# 1.'), activeContent.indexOf('# 9.'));
+    const sliceSnap = snapContent.slice(snapContent.indexOf('# 1.'), snapContent.indexOf('# 9.'));
+    if (sliceActive !== sliceSnap) {
+        sections1to8Match = false;
+        console.error('Alteración en Secciones 1 a 8 de ' + f + ' frente al snapshot baseline');
     }
 
     // Verificar estricto Schema v2 governance frontmatter
     try {
-        const content = fs.readFileSync(activePath, 'utf8');
-        const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+        const match = activeContent.match(/^---\n([\s\S]*?)\n---/);
         const data = yaml.load(match[1]);
         if (data.schema_version !== 2 || data.status !== 'review' || data.review_status !== 'pending_review' ||
             !Array.isArray(data.approved_by_humans) || data.approved_by_humans.length !== 0 || data.approval_date !== null) {
@@ -96,7 +120,8 @@ Object.keys(PHASE_2A_CERTIFIED_HASHES).forEach(f => {
         console.error('Error parseando frontmatter en ' + f + ': ' + e.message);
     }
 });
-assert(allHashesMatch, 'Las 5 Source Notes migradas a Schema v2 tienen trazabilidad criptográfica y snapshot inmutable');
+assert(allHashesMatch, 'Las 5 Source Notes migradas a Fase 2B tienen hash certificado y snapshot inmutable');
+assert(sections1to8Match, 'Secciones 1 a 8 de las 5 Source Notes permanecen 100% idénticas byte-for-byte al snapshot baseline');
 
 // 2. Cero nuevos PDFs en el árbol de trabajo (rutas exactas y hash SHA-256 preexistente)
 function findPdfs(dir, list = []) {
@@ -221,6 +246,53 @@ salesClaims.forEach(sc => {
     }
 });
 assert(salesConfinementHonored, 'Clasificación comercial exacta: 3 claims activos del canon y 4 confinados en pending_evidence_debt');
+
+// 8. Confinamiento de Candidate Claims de Fase 2B
+let candidateContainmentPassed = true;
+if (!fs.existsSync(candidateIndexFile)) {
+    candidateContainmentPassed = false;
+    console.error('candidate_claims_index.json no existe');
+} else {
+    const candidates = JSON.parse(fs.readFileSync(candidateIndexFile, 'utf8'));
+    if (candidates.length !== 16) {
+        candidateContainmentPassed = false;
+        console.error('Conteo de candidatos inesperado: ' + candidates.length + ' (esperado 16)');
+    }
+    candidates.forEach(cand => {
+        if (cand.triage_status !== 'pending') {
+            candidateContainmentPassed = false;
+            console.error('Candidato ' + cand.candidate_id + ' no está en pending: ' + cand.triage_status);
+        }
+        if (cand.target_claim_id !== null) {
+            candidateContainmentPassed = false;
+            console.error('Candidato ' + cand.candidate_id + ' tiene target_claim_id asignado: ' + cand.target_claim_id);
+        }
+        if (!Array.isArray(cand.decided_by_humans) || cand.decided_by_humans.length !== 0) {
+            candidateContainmentPassed = false;
+            console.error('Candidato ' + cand.candidate_id + ' tiene decisiones humanas: ' + JSON.stringify(cand.decided_by_humans));
+        }
+        if (cand.decision_date !== null || cand.decision_reason !== null) {
+            candidateContainmentPassed = false;
+            console.error('Candidato ' + cand.candidate_id + ' tiene fecha o razón de decisión');
+        }
+    });
+}
+
+// Verificar que ningún candidato figure en registry.json
+if (fs.existsSync(registryFile)) {
+    const reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    const regIds = new Set(Array.isArray(reg.entries) ? reg.entries.map(e => e.id) : Object.keys(reg));
+    if (fs.existsSync(candidateIndexFile)) {
+        const candidates = JSON.parse(fs.readFileSync(candidateIndexFile, 'utf8'));
+        candidates.forEach(cand => {
+            if (regIds.has(cand.candidate_id)) {
+                candidateContainmentPassed = false;
+                console.error('Candidato incorporado indebidamente a registry.json: ' + cand.candidate_id);
+            }
+        });
+    }
+}
+assert(candidateContainmentPassed, 'Los 16 candidate claims permanecen en pending, sin target claim adjudicado, sin decisiones humanas y fuera de registry.json');
 
 console.log('-------------------------------------------------------------------');
 console.log('Resultado de Invariantes: ' + passed + ' PASS, ' + failed + ' FAIL.');

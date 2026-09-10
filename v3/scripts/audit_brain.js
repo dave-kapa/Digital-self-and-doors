@@ -10,7 +10,7 @@ const path = require('path');
 const yaml = require('js-yaml');
 const Ajv = require('ajv');
 const addFormats = require('ajv-formats');
-const { parseClaimsFile, parseSalesClaimsFile } = require('./lib/content_parser');
+const { parseClaimsFile, parseSalesClaimsFile, parseCandidateClaimsFromSourceNote } = require('./lib/content_parser');
 
 const brainDirArg = process.argv.find(a => a.startsWith('--brain-dir='));
 const brainDir = brainDirArg ? path.resolve(brainDirArg.split('=')[1]) : path.join(__dirname, '../brain');
@@ -31,7 +31,10 @@ const schemasDir = fs.existsSync(path.join(brainDir, '00_meta_and_governance/sch
 
 let sourceSchemaValidator = null;
 let claimSchemaValidator = null;
+let claimIndexSchemaValidator = null;
 let salesSchemaValidator = null;
+let candidateValidator = null;
+let topicMappingValidator = null;
 
 if (fs.existsSync(path.join(schemasDir, 'source_note_schema_v2.json'))) {
     try {
@@ -51,6 +54,15 @@ if (fs.existsSync(path.join(schemasDir, 'claim_entry_schema_v1.json'))) {
     }
 }
 
+if (fs.existsSync(path.join(schemasDir, 'claims_index_entry_schema_v1.json'))) {
+    try {
+        const schema = JSON.parse(fs.readFileSync(path.join(schemasDir, 'claims_index_entry_schema_v1.json'), 'utf8'));
+        claimIndexSchemaValidator = ajv.compile(schema);
+    } catch (e) {
+        console.warn('[WARN] No se pudo compilar claims_index_entry_schema_v1.json:', e.message);
+    }
+}
+
 if (fs.existsSync(path.join(schemasDir, 'sales_claim_schema_v1.json'))) {
     try {
         const schema = JSON.parse(fs.readFileSync(path.join(schemasDir, 'sales_claim_schema_v1.json'), 'utf8'));
@@ -58,6 +70,42 @@ if (fs.existsSync(path.join(schemasDir, 'sales_claim_schema_v1.json'))) {
     } catch (e) {
         console.warn('[WARN] No se pudo compilar sales_claim_schema_v1.json:', e.message);
     }
+}
+
+if (fs.existsSync(path.join(schemasDir, 'candidate_claim_schema_v1.json'))) {
+    try {
+        const schema = JSON.parse(fs.readFileSync(path.join(schemasDir, 'candidate_claim_schema_v1.json'), 'utf8'));
+        candidateValidator = ajv.compile(schema);
+    } catch (e) {
+        console.warn('[WARN] No se pudo compilar candidate_claim_schema_v1.json:', e.message);
+    }
+}
+
+if (fs.existsSync(path.join(schemasDir, 'topic_mapping_schema_v1.json'))) {
+    try {
+        const schema = JSON.parse(fs.readFileSync(path.join(schemasDir, 'topic_mapping_schema_v1.json'), 'utf8'));
+        topicMappingValidator = ajv.compile(schema);
+    } catch (e) {
+        console.warn('[WARN] No se pudo compilar topic_mapping_schema_v1.json:', e.message);
+    }
+}
+
+// B3R Governance: Anti-Placeholder & Anti-Agent
+const DISALLOWED_HUMAN_IDENTIFIERS = new Set([
+    'antigravity', 'chatgpt', 'copilot', 'assistant', 'agent', 'claude', 'gemini',
+    'librarian_agent', 'librarian', 'system', 'auto', 'bot',
+    'tbd', 'todo', 'pending', 'human_approver', 'approver', 'unknown', 'n/a', 'na', 'none', 'null', 'undefined',
+    'fixture_user', 'fixture_human', 'test_user', 'fake_user'
+]);
+
+function isValidHumanName(name) {
+    if (typeof name !== 'string') return false;
+    const trimmed = name.trim();
+    if (trimmed.length < 2) return false;
+    const lower = trimmed.toLowerCase();
+    if (DISALLOWED_HUMAN_IDENTIFIERS.has(lower)) return false;
+    if (lower.startsWith('fixture_') || lower.startsWith('test_') || lower.startsWith('mock_')) return false;
+    return true;
 }
 
 // Cargar taxonomía controlada
@@ -173,6 +221,24 @@ files.forEach(file => {
             console.error('[FAIL D010] Error de sintaxis YAML en ' + rel + ': ' + e.message);
             errors++;
         }
+    }
+});
+
+// Indexar candidate claims en allActiveIds
+const allParsedCandidates = new Map();
+const allCandidateIdsGlobal = new Set();
+files.forEach(file => {
+    const rel = path.relative(brainDir, file).split(path.sep).join('/');
+    if (rel.startsWith('01_research_and_lenses/sources/') && file.endsWith('.md')) {
+        const { candidates } = parseCandidateClaimsFromSourceNote(file);
+        candidates.forEach(cand => {
+            if (allCandidateIdsGlobal.has(cand.candidate_id)) {
+                console.error('[FAIL D001] Candidate ID colisiona globalmente entre notas: ' + cand.candidate_id);
+                errors++;
+            }
+            allCandidateIdsGlobal.add(cand.candidate_id);
+            allParsedCandidates.set(cand.candidate_id, cand);
+        });
     }
 });
 
@@ -303,6 +369,16 @@ files.forEach(file => {
                     }
                 }
 
+                // B3R: Validación de nombres humanos válidos
+                if (data && data.approved_by_humans && Array.isArray(data.approved_by_humans)) {
+                    data.approved_by_humans.forEach(name => {
+                        if (!isValidHumanName(name)) {
+                            console.error('[FAIL B3R] Nombre de aprobador humano no válido o agente/placeholder detectado en ' + rel + ': ' + name);
+                            errors++;
+                        }
+                    });
+                }
+
                 // B3R: Aprobación humana ejecutable (para notas no-legacy / Schema v2)
                 if (!isLegacyNote && data && (data.status === 'canonical' || data.review_status === 'accepted')) {
                     if (!data.approved_by_humans || !Array.isArray(data.approved_by_humans) || data.approved_by_humans.length === 0) {
@@ -366,12 +442,72 @@ files.forEach(file => {
                 }
             } catch (e) {}
         }
+
+        // Validación de Candidate Claims en Sección 9
+        const { candidates, errors: candErrors } = parseCandidateClaimsFromSourceNote(file);
+        if (candErrors.length > 0) {
+            candErrors.forEach(ce => {
+                if (ce.candidateId && ce.message.includes('duplicado en nota')) {
+                    console.error('[FAIL D001] ' + ce.message + ' (' + ce.file + ')');
+                } else if (ce.message.includes('inexistente o no autorizado')) {
+                    console.error('[FAIL D002] ' + ce.message + ' (' + ce.file + ')');
+                } else {
+                    console.error('[FAIL D010] ' + ce.message + ' (' + ce.file + ')');
+                }
+                errors++;
+            });
+        }
+
+        candidates.forEach(cand => {
+            if (candidateValidator) {
+                const valid = candidateValidator(cand);
+                if (!valid) {
+                    console.error('[FAIL D010] Candidato ' + cand.candidate_id + ' viola candidate_claim_schema_v1: ' + ajv.errorsText(candidateValidator.errors));
+                    errors++;
+                }
+            }
+
+            // B3R en decisiones de candidatos (E2B-03 / NEG-057)
+            if (cand.decided_by_humans && Array.isArray(cand.decided_by_humans) && cand.decided_by_humans.length > 0) {
+                cand.decided_by_humans.forEach(name => {
+                    if (!isValidHumanName(name)) {
+                        console.error('[FAIL B3R] Candidato ' + cand.candidate_id + ' contiene identidad no humana o placeholder en decided_by_humans: ' + name);
+                        errors++;
+                    }
+                });
+            }
+
+            // Contrato de procedencia inversa (E2B-02 / NEG-051)
+            if (cand.triage_status === 'promoted' || cand.triage_status === 'merged') {
+                if (cand.target_claim_id) {
+                    let hasInverseLink = false;
+                    files.forEach(cf => {
+                        const crel = path.relative(brainDir, cf).split(path.sep).join('/');
+                        if (crel.startsWith('01_research_and_lenses/claims/')) {
+                            const { claims } = parseClaimsFile(cf);
+                            claims.forEach(cl => {
+                                if (cl.claim_id === cand.target_claim_id) {
+                                    if (cl.derived_from_candidates && Array.isArray(cl.derived_from_candidates) && cl.derived_from_candidates.includes(cand.candidate_id)) {
+                                        hasInverseLink = true;
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    if (!hasInverseLink) {
+                        console.error('[FAIL LIB007] Candidato promoted/merged ' + cand.candidate_id + ' apunta a claim ' + cand.target_claim_id + ' pero el claim no contiene el vínculo inverso');
+                        errors++;
+                    }
+                }
+            }
+        });
     }
 
     // Validación de Claims Científicos (R4, B1, LIB001)
     // Validación de Claims Científicos (R4, B1R, B2R / D002)
     if (rel.startsWith('01_research_and_lenses/claims/')) {
-        const { claims, errors: parseErrs } = parseClaimsFile(file);
+        const { claims, authoritativeClaims, errors: parseErrs } = parseClaimsFile(file);
         if (parseErrs.length > 0) {
             parseErrs.forEach(pe => {
                 console.error('[FAIL D010] Error de parsing en claim ' + pe.file + ': ' + pe.message);
@@ -379,14 +515,39 @@ files.forEach(file => {
             });
         }
 
-        claims.forEach(c => {
-            // Validar contra claim_entry_schema_v1.json
+        claims.forEach((c, idx) => {
+            const auth = authoritativeClaims ? authoritativeClaims[idx] : c;
+
+            // Validar objeto autoritativo contra claim_entry_schema_v1.json
             if (claimSchemaValidator) {
-                const valid = claimSchemaValidator(c);
+                const valid = claimSchemaValidator(auth);
                 if (!valid) {
-                    console.error('[FAIL D010] Claim ' + c.claim_id + ' viola claim_entry_schema_v1.json: ' + ajv.errorsText(claimSchemaValidator.errors));
+                    console.error('[FAIL D010] Claim autoritativo ' + auth.claim_id + ' viola claim_entry_schema_v1.json: ' + ajv.errorsText(claimSchemaValidator.errors));
                     errors++;
                 }
+            }
+
+            // Validar objeto indexado contra claims_index_entry_schema_v1.json
+            if (claimIndexSchemaValidator) {
+                const validIndex = claimIndexSchemaValidator(c);
+                if (!validIndex) {
+                    console.error('[FAIL D010] Claim indexado ' + c.claim_id + ' viola claims_index_entry_schema_v1.json: ' + ajv.errorsText(claimIndexSchemaValidator.errors));
+                    errors++;
+                }
+            }
+
+            // Validar procedencia inversa: derived_from_candidates
+            if (c.derived_from_candidates && Array.isArray(c.derived_from_candidates)) {
+                c.derived_from_candidates.forEach(candId => {
+                    const candObj = allParsedCandidates.get(candId);
+                    if (!candObj) {
+                        console.error('[FAIL D002] Claim ' + c.claim_id + ' derived_from_candidates cita candidato inexistente: ' + candId);
+                        errors++;
+                    } else if (candObj.triage_status === 'rejected') {
+                        console.error('[FAIL LIB007] Claim cita candidato con status rejected: ' + candId + ' en ' + c.claim_id);
+                        errors++;
+                    }
+                });
             }
 
             // Validar topics de claims contra taxonomía
@@ -515,6 +676,83 @@ files.forEach(file => {
         });
     }
 });
+
+// Pase 3: Validación de Topic Mappings & Candidate Claims Index
+const topicMappingsFile = path.join(brainDir, '01_research_and_lenses/librarian/topic_mappings.json');
+if (fs.existsSync(topicMappingsFile)) {
+    try {
+        const tmData = JSON.parse(fs.readFileSync(topicMappingsFile, 'utf8'));
+        if (topicMappingValidator) {
+            const valid = topicMappingValidator(tmData);
+            if (!valid) {
+                console.error('[FAIL D010] topic_mappings.json viola topic_mapping_schema_v1: ' + ajv.errorsText(topicMappingValidator.errors));
+                errors++;
+            }
+        }
+
+        const seenLegacy = new Set();
+        (tmData.rules || []).forEach(r => {
+            if (seenLegacy.has(r.legacy_topic)) {
+                console.error('[FAIL LIB002] Legacy topic duplicado en topic_mappings.json: ' + r.legacy_topic);
+                errors++;
+            }
+            seenLegacy.add(r.legacy_topic);
+
+            const seenTargets = new Set();
+            (r.mappings || []).forEach(m => {
+                if (seenTargets.has(m.canonical_target)) {
+                    console.error('[FAIL LIB002] Target canónico duplicado dentro de mappings[]: ' + m.canonical_target);
+                    errors++;
+                }
+                seenTargets.add(m.canonical_target);
+
+                if (allowedTopics.size > 0 && !allowedTopics.has(m.canonical_target)) {
+                    console.error('[FAIL LIB002] Target de mapping fuera de taxonomía: ' + m.canonical_target);
+                    errors++;
+                }
+            });
+
+            // B3R en mappings
+            if (r.review_status === 'accepted') {
+                if (!r.approved_by_humans || !Array.isArray(r.approved_by_humans) || r.approved_by_humans.length === 0) {
+                    console.error('[FAIL B3R] Regla de mapping accepted sin aprobador humano en ' + r.legacy_topic);
+                    errors++;
+                } else {
+                    r.approved_by_humans.forEach(name => {
+                        if (!isValidHumanName(name)) {
+                            console.error('[FAIL B3R] Regla de mapping con aprobador no humano: ' + name);
+                            errors++;
+                        }
+                    });
+                }
+                if (!r.approval_date || !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(r.approval_date)) {
+                    console.error('[FAIL B3R] Regla de mapping accepted sin fecha de aprobación en ' + r.legacy_topic);
+                    errors++;
+                }
+            } else if (r.review_status === 'pending_review') {
+                if ((r.approved_by_humans && r.approved_by_humans.length > 0) || r.approval_date !== null) {
+                    console.error('[FAIL B3R] Regla de mapping pending_review contiene aprobaciones humanas en ' + r.legacy_topic);
+                    errors++;
+                }
+            }
+        });
+    } catch (e) {
+        console.error('[FAIL D010] Error parseando topic_mappings.json: ' + e.message);
+        errors++;
+    }
+}
+
+// Validación de consistencia del candidate_claims_index.json vs notas
+const candIndexFile = path.join(brainDir, '01_research_and_lenses/candidate_claims_index.json');
+if (fs.existsSync(candIndexFile)) {
+    try {
+        const indexCands = JSON.parse(fs.readFileSync(candIndexFile, 'utf8'));
+        if (indexCands.length !== allParsedCandidates.size) {
+            console.error('[FAIL D070] Drift detectado en candidate_claims_index.json: conteo difiere (' + indexCands.length + ' vs ' + allParsedCandidates.size + ')');
+            errors++;
+        }
+    } catch (e) {}
+}
 
 console.log('---------------------------------------------------------');
 if (errors > 0) {

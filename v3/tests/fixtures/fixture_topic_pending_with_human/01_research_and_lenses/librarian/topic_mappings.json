@@ -1,0 +1,26 @@
+{
+  "mappings_version": "1.0.0",
+  "description": "Test mappings",
+  "taxonomy_reference": "v3/brain/01_research_and_lenses/librarian/RESEARCH_TAXONOMY.md",
+  "rules": [
+    {
+      "legacy_topic": "heuristics_biases",
+      "direction": "legacy_to_canonical",
+      "applied_in": [
+        "SRC-TEST-2026"
+      ],
+      "mappings": [
+        {
+          "canonical_target": "decision_making",
+          "relation_type": "broader_term"
+        }
+      ],
+      "rationale": "Regla pending_review con aprobacion humana indebida.",
+      "review_status": "pending_review",
+      "approved_by_humans": [
+        "David Castañeda-Pardo"
+      ],
+      "approval_date": null
+    }
+  ]
+}
