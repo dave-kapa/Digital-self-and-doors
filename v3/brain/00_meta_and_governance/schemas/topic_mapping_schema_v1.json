@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TopicMappingSchemaV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mappings_version",
+    "description",
+    "taxonomy_reference",
+    "rules"
+  ],
+  "properties": {
+    "mappings_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "taxonomy_reference": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "legacy_topic",
+          "direction",
+          "applied_in",
+          "mappings",
+          "rationale",
+          "review_status",
+          "approved_by_humans",
+          "approval_date"
+        ],
+        "properties": {
+          "legacy_topic": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "legacy_to_canonical"
+            ]
+          },
+          "applied_in": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^SRC-[A-Z0-9-]+$"
+            },
+            "minItems": 1
+          },
+          "mappings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "canonical_target",
+                "relation_type"
+              ],
+              "properties": {
+                "canonical_target": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$"
+                },
+                "relation_type": {
+                  "type": "string",
+                  "enum": [
+                    "exact_match",
+                    "narrower_term",
+                    "broader_term",
+                    "related_term"
+                  ]
+                }
+              }
+            }
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 10
+          },
+          "review_status": {
+            "type": "string",
+            "enum": [
+              "pending_review",
+              "accepted",
+              "rejected"
+            ]
+          },
+          "approved_by_humans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "approval_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "review_status": {
+                  "const": "pending_review"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "approved_by_humans": {
+                  "maxItems": 0
+                },
+                "approval_date": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "review_status": {
+                  "const": "accepted"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "approved_by_humans": {
+                  "minItems": 1
+                },
+                "approval_date": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                }
+              },
+              "required": [
+                "approved_by_humans",
+                "approval_date"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
