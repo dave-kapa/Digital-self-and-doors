@@ -100,12 +100,24 @@ Durante la pausa y hasta una nueva autorización formal de ChatGPT y del usuario
 
 ---
 
-## 7. Separación Obligatoria del Trabajo Comercial (Brief FARO)
+## 7. Articulación de Continuidad: Biblioteca Científica Pausada y Cerebro Activo en la Vía Comercial FARO
 
-- **Pausa, no cancelación:** La biblioteca científica entra en hibernación controlada. No se alteran sus cimientos.
-- **Independencia de ramas:** El trabajo del brief comercial de FARO debe ejecutarse en una rama dedicada creada desde el estado remoto certificado de `main`, sin reutilizar ramas de desarrollo de la biblioteca.
-- **Firewall epistemológico:** El brief comercial puede redactar argumentos de venta y pedagogía, pero **no puede alterar el canon científico**, no puede crear claims científicas y no puede transformar hipótesis no verificadas en afirmaciones comerciales garantizadas.
-- **Capa 07 aislada:** Cualquier propuesta surgida del brief que afecte a la Capa 07 debe permanecer como propuesta pendiente, sin alterar las 7 sales claims existentes ni su estado de evidencia.
+En conformidad con las directrices de gobernanza del proyecto, se establece la distinción taxativa entre la pausa del subsistema bibliotecario y la actividad continua del Cerebro V3:
+
+1. **Pausa de la Línea de Implementación de la Biblioteca Científica:**  
+   - Lo que queda pausado es exclusivamente la línea de implementación, ingesta y adjudicación del *Scientific Library System*.
+   - Permanecen cerrados sus gates pendientes (Gate 2C-H, Gate 2C-2, Fase 3A).
+   - Queda terminantemente prohibido alterar Source Notes, Candidate Claims, topic mappings, registros de deuda de evidencia, schemas bibliotecarios o decisiones humanas pendientes a raíz del trabajo del brief comercial.
+
+2. **Continuidad del Cerebro por su Dimensión Comercial (Brief FARO):**  
+   - **El Cerebro de Conocimiento V3 NO está congelado ni pausado como un todo.**
+   - El trabajo sobre el brief comercial de FARO sigue siendo trabajo orgánico del Cerebro V3: la experiencia pública, el posicionamiento y el producto se derivan directamente del framework (`02_framework_canon/`), del canon pedagógico (`03_methodology_and_learning/`), de las evidencias consolidadas (`06_evidence_and_validation/`) y de las reglas comerciales vigentes (`07_commercial_and_gotomarket/`).
+   - Se prohíbe construir un micrositio o material desconectado que después requiera una "integración" conceptual forzada. Sus aprendizajes, copies, casos y decisiones editoriales quedarán trazados hacia la Capa 07 y, cuando corresponda, hacia la Capa 06.
+
+3. **Implementación Técnica Aislada vs. Coherencia Conceptual Compartida:**  
+   - **Aislamiento técnico:** El brief comercial debe desarrollarse en una rama dedicada (e.g. `feature/faro-commercial-brief`) y un entorno local controlado para proteger la app (`v3/app/`), el simulador del juego y el código de la biblioteca.
+   - **Trazabilidad y gobernanza compartida:** Una propuesta comercial no adquiere estado canónico ni aprobación de evidencia científica automáticamente por aparecer en el brief comercial. Toda propuesta nacida del brief para la Capa 07 debe gestionarse dentro de la arquitectura del cerebro como propuesta sujeta a revisión formal.
+   - **Principio rector:** *Biblioteca científica pausada; cerebro activo en la línea comercial FARO; implementación técnica del brief aislada; coherencia conceptual y trazabilidad compartidas.*
 
 ---
 

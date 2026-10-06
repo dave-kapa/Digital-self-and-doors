@@ -2,7 +2,8 @@
 ## Digital Self & Attention Doors — Cerebro de Conocimiento V3
 
 **Propósito:** Proporcionar la secuencia procedimental exacta y autónoma para que cualquier agente o equipo humano reanude los trabajos de la biblioteca científica sin requerir contexto de sesiones previas.  
-**Estado Actual:** La biblioteca se encuentra en pausa operativa tras el cierre de Fase 2B y la ejecución preliminar de Gate 2C-1.
+**Marco de Gobernanza:** Pausa exclusiva de la línea de implementación del *Scientific Library System*. El *Cerebro de Conocimiento V3* permanece plenamente activo en su dimensión comercial (Brief FARO).  
+**Principio Rector:** *Biblioteca científica pausada; cerebro activo en la línea comercial FARO; implementación técnica del brief aislada; coherencia conceptual y trazabilidad compartidas.*  
 
 ---
 

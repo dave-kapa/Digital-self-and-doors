@@ -141,9 +141,9 @@ Cualquier persona del equipo puede entrar a `/v3/brain/INDEX.md` y, desde allí,
 
 ## ⏸️ 7. ESTADO DE CONTINUIDAD: PAUSA DE LA BIBLIOTECA CIENTÍFICA
 
-El subsistema de la **Biblioteca Científica (Scientific Library System)** se encuentra actualmente en **pausa operativa deliberada** para priorizar el desarrollo comercial del Brief de FARO. 
+El subsistema de la **Biblioteca Científica (Scientific Library System)** se encuentra actualmente en **pausa operativa deliberada**. El **Cerebro V3 permanece plenamente activo en su dimensión comercial** (Brief FARO), derivando la experiencia pública y los mensajes del framework, el canon y las evidencias vigentes, con trazabilidad hacia la Capa 07.
 
-Para retomar la biblioteca en el futuro sin pérdida de contexto ni drift:
+Para retomar la biblioteca científica en el futuro sin pérdida de contexto ni drift:
 * **Checkpoint canónico de pausa:** [`docs/SCIENTIFIC_LIBRARY_PAUSE_CHECKPOINT.md`](SCIENTIFIC_LIBRARY_PAUSE_CHECKPOINT.md)
 * **Estado máquina-legible:** [`docs/scientific_library_pause_state.json`](scientific_library_pause_state.json)
 * **Runbook de reanudación:** [`docs/SCIENTIFIC_LIBRARY_RESUME_RUNBOOK.md`](SCIENTIFIC_LIBRARY_RESUME_RUNBOOK.md)

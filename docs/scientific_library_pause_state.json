@@ -120,11 +120,15 @@
     "open_gate_2c_h_without_human_decision",
     "open_gate_2c_2_without_signed_acta"
   ],
-  "commercial_separation_rules": {
-    "faro_brief_track_isolated": true,
+  "commercial_continuity_rules": {
+    "scientific_library_implementation_paused": true,
+    "cerebro_active_in_commercial_dimension": true,
+    "brief_technical_implementation_isolated": true,
+    "shared_conceptual_coherence_and_traceability": true,
+    "brief_draws_from_framework_and_canon": true,
+    "brief_learnings_trace_to_layer_07_and_06": true,
     "commercial_cannot_mutate_scientific_canon": true,
-    "unvalidated_claims_forbidden_in_sales": true,
-    "layer_07_proposals_require_separate_review": true
+    "commercial_proposals_do_not_auto_canonize": true
   },
   "discrepancies": []
 }
