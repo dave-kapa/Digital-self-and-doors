@@ -9,34 +9,51 @@
 
 ## Secuencia Paso a Paso de Reanudación
 
-### Paso 1: Localización y Verificación del Checkpoint de Pausa
+### Paso 1: Localización del Checkpoint de Pausa y Baseline Histórico
 1. Inspeccionar el archivo canónico de checkpoint:
    `docs/SCIENTIFIC_LIBRARY_PAUSE_CHECKPOINT.md`
 2. Inspeccionar el estado máquina-legible:
    `docs/scientific_library_pause_state.json`
-3. Verificar que el baseline esperado en ambos documentos sea:
-   - Commit: `c4fbaf9eda1ba163359766756a7f93997d89ea82`
-   - Tree: `50518e903e5c594768ead4af8ed42a7c5259899f`
+3. Identificar el **baseline histórico del subsistema bibliotecario**:
+   - Commit baseline: `c4fbaf9eda1ba163359766756a7f93997d89ea82`
+   - Tree baseline: `50518e903e5c594768ead4af8ed42a7c5259899f`
+   *(Nota fundamental: `c4fbaf9` es el baseline histórico de la biblioteca al momento de la pausa, NO el HEAD obligatorio perpetuo del repositorio).*
 
-### Paso 2: Verificación de Integridad de Git y Refs
+### Paso 2: Verificación de Integridad de Git, Refs Actuales y Genealogía
 Ejecutar en la terminal del repositorio:
 ```bash
 git status
 git rev-parse HEAD
-git cat-file -p HEAD
+git rev-parse main
+git rev-parse origin/main
 ```
-- Comprobar que el working tree esté 100% limpio.
-- Si se encuentra en una rama comercial (e.g., `feature/faro-commercial-brief`), **no mezclar trabajos**. Cambiar a `main` o a la rama designada de biblioteca.
-- Comprobar que `main` coincide con `origin/main` en `c4fbaf9eda1ba163359766756a7f93997d89ea82`.
+1. Comprobar que el working tree esté 100% limpio (`git status --porcelain` vacío).
+2. Verificar la relación genealógica con el baseline histórico de la biblioteca:
+   ```bash
+   git merge-base --is-ancestor c4fbaf9eda1ba163359766756a7f93997d89ea82 HEAD
+   ```
+   El commit actual debe ser igual o descendiente directo de `c4fbaf9`.
 
-### Paso 3: Comprobación de Actividad Posterior a la Pausa
-1. Ejecutar `git log c4fbaf9..HEAD --oneline` para detectar si hubo commits en la rama activa.
-2. Si hubo commits documentales de sellado (`checkpoint/scientific-library-pause-continuity`), verificar que no modificaron código, scripts, schemas, claims o notas.
-3. Verificar que el árbol de la biblioteca no haya sufrido drift mediante:
-```bash
-npm run verify:all
-```
-Deben pasar exactamente los 18 controles (18/18 PASS, 0 FAIL).
+### Paso 3: Examen de Commits Posteriores y Preservación del Trabajo Comercial
+Si `main` avanzó más allá de `c4fbaf9` debido al desarrollo del brief de FARO u otros avances comerciales:
+1. Inspeccionar todos los commits posteriores mediante:
+   ```bash
+   git log c4fbaf9..HEAD --stat --oneline
+   ```
+2. **Preservar los cambios comerciales legítimos:**
+   - Comprobar que los commits posteriores correspondan a la dimensión comercial (`07_commercial_and_gotomarket/`), evidencias (`06_evidence_and_validation/`) o producto.
+   - **PROHIBICIÓN ESTRICTA:** **NUNCA ejecutar un `git reset` automático** hacia `c4fbaf9` para "revertir" los avances del repositorio. Una divergencia o avance debe investigarse y entenderse, jamás destruirse.
+3. Verificar que los archivos protegidos de la biblioteca científica permanezcan intactos:
+   - `v3/brain/01_research_and_lenses/sources/` (5 notas semilla en `status: review`).
+   - `v3/brain/01_research_and_lenses/candidate_claims_index.json` (16 candidatos en `pending`).
+   - `v3/brain/01_research_and_lenses/librarian/topic_mappings.json` (15 reglas en `pending_review`).
+   - `v3/brain/01_research_and_lenses/claims/` (35 statements protegidos).
+   - `v3/research_library/LIBRARY_MANIFEST.yaml` (`entries: []`).
+4. Ejecutar el pipeline de integridad:
+   ```bash
+   npm run verify:all
+   ```
+   Deben pasar los 18 controles (18/18 PASS, 0 FAIL).
 
 ### Paso 4: Determinación del Estado de Gate 2C-1
 1. Comprobar la existencia de los cinco artefactos de Gate 2C-1 en el directorio externo `outputs/`:
@@ -90,11 +107,11 @@ Para ejecutar Gate 2C-2 se requiere:
 
 ### Paso 9: Condiciones de Detención Inmediata
 El agente que reanude **DEBE DETENERSE INMEDIATAMENTE** si:
-- Detecta cambios en el working tree no identificados.
-- `main` y `origin/main` presentan divergencias no documentadas.
-- Se intenta prellenar o inferir decisiones humanas.
-- Falla cualquiera de los 18 controles del pipeline.
-- Se intenta descargar PDFs o ingerir fuentes de la deuda de 32 sin autorización.
+- Detecta cambios en el working tree no identificados o estado sucio.
+- Se detecta una divergencia no documentada entre ramas remotas/locales, o commits no autorizados que hayan modificado archivos protegidos de la biblioteca científica. **Bajo ninguna circunstancia se debe recurrir a un `git reset` automático.** Toda divergencia debe investigarse y reportarse.
+- Se intenta prellenar o inferir decisiones humanas soberanas en notas, candidatos o mappings.
+- Falla cualquiera de los 18 controles del pipeline de la biblioteca.
+- Se intenta descargar PDFs o ingerir fuentes de la deuda de 32 sin autorización expresa.
 
 ### Paso 10: Alcance Estrictamente Fuera de Alcance
 Permanece fuera de alcance hasta nuevo aviso:

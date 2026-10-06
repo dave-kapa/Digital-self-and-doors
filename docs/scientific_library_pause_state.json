@@ -3,11 +3,13 @@
   "pause_date": "2026-09-21",
   "seal_date": "2026-10-05",
   "repository": "DigitalSelf_AttentionDoors",
-  "baseline_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
-  "baseline_tree": "50518e903e5c594768ead4af8ed42a7c5259899f",
+  "historical_library_baseline_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "historical_library_baseline_tree": "50518e903e5c594768ead4af8ed42a7c5259899f",
+  "allow_commercial_advances_on_main": true,
+  "required_genealogy_for_resume": "HEAD must be an ancestor or equal to c4fbaf9eda1ba163359766756a7f93997d89ea82",
   "current_inspected_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
-  "main_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
-  "origin_main_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "main_commit_at_pause": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "origin_main_commit_at_pause": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
   "working_tree_clean": true,
   "branches": {
     "historical_phase_2b": "feature/scientific-library-phase-2b@333df9a88321826fe2d467cafe49246c84ed3ebf",
@@ -120,6 +122,13 @@
     "open_gate_2c_h_without_human_decision",
     "open_gate_2c_2_without_signed_acta"
   ],
+  "external_dossiers_storage": {
+    "local_outputs_directory": "C:\\Users\\gdave\\Documents\\Codex\\2026-09-03\\referenced-chatgpt-conversation-this-is-an\\outputs",
+    "private_backup_directory": "C:\\Users\\gdave\\Documents\\Codex\\2026-09-03\\backups\\gate_2c_1_dossiers",
+    "backed_up_in_remote_git": false,
+    "prohibition_upload_to_public_repo": true,
+    "backup_verified_byte_for_byte": true
+  },
   "commercial_continuity_rules": {
     "scientific_library_implementation_paused": true,
     "cerebro_active_in_commercial_dimension": true,

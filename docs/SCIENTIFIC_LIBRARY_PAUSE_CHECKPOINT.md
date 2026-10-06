@@ -13,13 +13,11 @@
 ## 1. Estado Material Certificado del Repositorio
 
 - **Fases Cerradas y Promovidas:** Fases −1, 0, 1, 1R, 1R.1, 2A y 2B concluidas y fusionadas formalmente en `main`.
-- **Baseline Bibliotecario Canónico:** `main@c4fbaf9eda1ba163359766756a7f93997d89ea82`.
-- **Tree Criptográfico Certificado:** `50518e903e5c594768ead4af8ed42a7c5259899f`.
-- **Sincronización Remota:** `main === origin/main` verificado en `c4fbaf9eda1ba163359766756a7f93997d89ea82`.
-- **Estado del Working Tree:** Limpio (`git status --porcelain` vacío).
+- **Baseline Histórico Bibliotecario:** Commit `c4fbaf9eda1ba163359766756a7f93997d89ea82` (Tree `50518e903e5c594768ead4af8ed42a7c5259899f`). Representa el estado canónico de la biblioteca científica al momento de la pausa. *No constituye una congelación obligatoria de `main` ni de `origin/main`*, los cuales avanzarán legítimamente con el desarrollo comercial de FARO.
+- **Genealogía Requerida para Reanudación:** Todo commit futuro en `main` debe ser igual o descendiente directo de `c4fbaf9` (`git merge-base --is-ancestor c4fbaf9 HEAD`). Queda terminantemente prohibido hacer reset automático a `c4fbaf9`.
 - **Rama Histórica de Fase 2B Preservada:** `feature/scientific-library-phase-2b@333df9a88321826fe2d467cafe49246c84ed3ebf`.
-- **Rama de Trabajo de Fase 2C Preparada:** `feature/scientific-library-phase-2c` (creada directamente desde `c4fbaf9`, sin commits adicionales).
-- **Rama Documental de Sellado y Continuidad:** `checkpoint/scientific-library-pause-continuity` (creada desde `c4fbaf9`).
+- **Rama de Trabajo de Fase 2C Preparada:** `feature/scientific-library-phase-2c` (bifurcada de `c4fbaf9`).
+- **Paquete Documental de Sellado y Continuidad:** Integrado en `main` (proveniente de `checkpoint/scientific-library-pause-continuity`).
 
 ---
 
@@ -135,3 +133,31 @@ En conformidad con las directrices de gobernanza del proyecto, se establece la d
 | `PROPUESTAS_REVISION_15_TOPIC_MAPPINGS.md` | `outputs/` | `5D26B1E94B57AC1DACD542005DB3255B6A2F20C9B2F6B63A4D29544184CF72A3` |
 | `BORRADOR_ACTA_DECISION_HUMANA_FASE_2C.md` | `outputs/` | `EF4E8F1C4C8F0C17E3A3CC91B89279CA457DC258FDFAFA0290A8551107C53DE4` |
 | `ENTREGABLE_GATE_2C_1_ANTIGRAVITY.md` | `outputs/` | `DFCB9CA9156928EDB730C3B5C985E4958261D2A6F7381FB059E52E8D86060D8E` |
+
+---
+
+## 9. Persistencia y Respaldo Privado de los Cinco Expedientes Externos de Gate 2C-1
+
+1. **Estado de Respaldo Remoto:**  
+   Los cinco expedientes externos generados en Gate 2C-1 residen exclusivamente en el almacenamiento local del agente (`outputs/`). **NO están versionados en Git ni respaldados por la rama remota `origin/main`**. Está **terminantemente prohibido subirlos al repositorio público**.
+
+2. **Ubicación de Respaldo Privado y Duradero:**  
+   Se ha dispuesto y verificado un respaldo privado local en:
+   `C:\Users\gdave\Documents\Codex\2026-09-03\backups\gate_2c_1_dossiers\`
+
+3. **Verificación Criptográfica Byte-a-Byte del Respaldo:**  
+   | Expediente | SHA-256 en `outputs/` | SHA-256 en Respaldo Privado | Estado |
+   |---|---|---|---|
+   | `EXPEDIENTES_REVISION_FUENTES_FASE_2C.md` | `BE1501CC8F79A13C4CABD2C10E0B26F1553296BCA26454DF72D5AAD205371F92` | `BE1501CC8F79A13C4CABD2C10E0B26F1553296BCA26454DF72D5AAD205371F92` | COINCIDENTE |
+   | `MATRIZ_RECOMENDACIONES_TRIAJE_16_CANDIDATOS.md` | `073F1B2E5AEE2C6FD07843B16B25F82097B6F46541482A3597B86F33B966BE5C` | `073F1B2E5AEE2C6FD07843B16B25F82097B6F46541482A3597B86F33B966BE5C` | COINCIDENTE |
+   | `PROPUESTAS_REVISION_15_TOPIC_MAPPINGS.md` | `5D26B1E94B57AC1DACD542005DB3255B6A2F20C9B2F6B63A4D29544184CF72A3` | `5D26B1E94B57AC1DACD542005DB3255B6A2F20C9B2F6B63A4D29544184CF72A3` | COINCIDENTE |
+   | `BORRADOR_ACTA_DECISION_HUMANA_FASE_2C.md` | `EF4E8F1C4C8F0C17E3A3CC91B89279CA457DC258FDFAFA0290A8551107C53DE4` | `EF4E8F1C4C8F0C17E3A3CC91B89279CA457DC258FDFAFA0290A8551107C53DE4` | COINCIDENTE |
+   | `ENTREGABLE_GATE_2C_1_ANTIGRAVITY.md` | `DFCB9CA9156928EDB730C3B5C985E4958261D2A6F7381FB059E52E8D86060D8E` | `DFCB9CA9156928EDB730C3B5C985E4958261D2A6F7381FB059E52E8D86060D8E` | COINCIDENTE |
+
+4. **Procedimiento de Restauración ante Contingencia:**  
+   En caso de pérdida o corrupción del directorio de trabajo en `outputs/`, restaurar mediante:
+   ```powershell
+   Copy-Item -Path "C:\Users\gdave\Documents\Codex\2026-09-03\backups\gate_2c_1_dossiers\*" -Destination "C:\Users\gdave\Documents\Codex\2026-09-03\referenced-chatgpt-conversation-this-is-an\outputs\" -Force
+   Get-FileHash "C:\Users\gdave\Documents\Codex\2026-09-03\referenced-chatgpt-conversation-this-is-an\outputs\*" | Format-Table -AutoSize
+   ```
+   Validar que cada archivo restaurado coincida exactamente con la tabla de hashes canónicos previa a la apertura de Gate 2C-H.
