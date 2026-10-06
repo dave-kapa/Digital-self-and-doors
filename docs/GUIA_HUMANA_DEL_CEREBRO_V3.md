@@ -136,3 +136,15 @@ Si abres el repositorio en Visual Studio Code o en GitHub, esta es la estructura
 * **[`/v2/`](file:///d:/DCP/Proposito/LearnTheWorld/DigitalSelf_AttentionDoors/v2)**: El código de respaldo que corrió en el webinar.
 
 Cualquier persona del equipo puede entrar a `/v3/brain/INDEX.md` y, desde allí, navegar a cualquier rincón del conocimiento del proyecto con enlaces directos y explicaciones en español claro.
+
+---
+
+## ⏸️ 7. ESTADO DE CONTINUIDAD: PAUSA DE LA BIBLIOTECA CIENTÍFICA
+
+El subsistema de la **Biblioteca Científica (Scientific Library System)** se encuentra actualmente en **pausa operativa deliberada** para priorizar el desarrollo comercial del Brief de FARO. 
+
+Para retomar la biblioteca en el futuro sin pérdida de contexto ni drift:
+* **Checkpoint canónico de pausa:** [`docs/SCIENTIFIC_LIBRARY_PAUSE_CHECKPOINT.md`](SCIENTIFIC_LIBRARY_PAUSE_CHECKPOINT.md)
+* **Estado máquina-legible:** [`docs/scientific_library_pause_state.json`](scientific_library_pause_state.json)
+* **Runbook de reanudación:** [`docs/SCIENTIFIC_LIBRARY_RESUME_RUNBOOK.md`](SCIENTIFIC_LIBRARY_RESUME_RUNBOOK.md)
+

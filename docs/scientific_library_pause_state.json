@@ -1,0 +1,130 @@
+{
+  "checkpoint_version": "1.0.0",
+  "pause_date": "2026-09-21",
+  "seal_date": "2026-10-05",
+  "repository": "DigitalSelf_AttentionDoors",
+  "baseline_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "baseline_tree": "50518e903e5c594768ead4af8ed42a7c5259899f",
+  "current_inspected_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "main_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "origin_main_commit": "c4fbaf9eda1ba163359766756a7f93997d89ea82",
+  "working_tree_clean": true,
+  "branches": {
+    "historical_phase_2b": "feature/scientific-library-phase-2b@333df9a88321826fe2d467cafe49246c84ed3ebf",
+    "prepared_phase_2c": "feature/scientific-library-phase-2c@c4fbaf9eda1ba163359766756a7f93997d89ea82",
+    "continuity_seal": "checkpoint/scientific-library-pause-continuity"
+  },
+  "completed_phases": [
+    "Phase -1",
+    "Phase 0",
+    "Phase 1",
+    "Phase 1R",
+    "Phase 1R.1",
+    "Phase 2A",
+    "Phase 2B"
+  ],
+  "current_gate": "PAUSED_AFTER_GATE_2C_1",
+  "closed_unauthorized_gates": [
+    "GATE_2C_H",
+    "GATE_2C_2",
+    "PHASE_3A"
+  ],
+  "inventories": {
+    "source_notes": {
+      "count": 5,
+      "status": "review",
+      "review_status": "pending_review",
+      "approved_by_humans_count": 0,
+      "reading_basis": {
+        "abstract_reviewed": [
+          "SRC-KAHNEMAN-2011",
+          "SRC-ROGERS-1975"
+        ],
+        "full_text_reviewed": [
+          "SRC-VAFA-2026",
+          "SRC-VERIZON-DBIR-2026",
+          "SRC-WOOD-NEAL-2007"
+        ]
+      }
+    },
+    "candidate_claims": {
+      "count": 16,
+      "triage_status": "pending",
+      "decided_by_humans_count": 0,
+      "target_claim_id_assigned": 0
+    },
+    "topic_mappings": {
+      "rules_count": 15,
+      "applied_in_occurrences": 17,
+      "target_relations_count": 25,
+      "review_status": "pending_review",
+      "approved_by_humans_count": 0
+    },
+    "scientific_claims": {
+      "count_in_index": 35,
+      "scope": "internal_research",
+      "identical_to_baseline_snapshot": true
+    },
+    "sales_claims": {
+      "count_in_index": 7,
+      "active_framework_claims": 3,
+      "pending_evidence_debt_claims": 4,
+      "reactivated_for_commercial_use": 0
+    },
+    "external_sources_debt": {
+      "total_in_debt": 32,
+      "ingested": 0
+    },
+    "binary_files": {
+      "new_pdfs": 0,
+      "historical_preexisting_pdfs": 3,
+      "manifest_entries_count": 0
+    }
+  },
+  "normative_artifacts_hashes": {
+    "CHECKPOINT_PAUSA_SCIENTIFIC_LIBRARY_2026-09-21.md": "F5AABD1A16AF003C6350A2E6A9C2A893748D4330441FB09E134ED958FFCE3316",
+    "PLAN_MAESTRO_CONTINUACION_SCIENTIFIC_LIBRARY_V2_2_CHATGPT.md": "4ED101F0B9D1689B7470339FF3EBAF9CF126A70F20591462F5796343FF9B18C7",
+    "PLAN_EJECUCION_FASE_2C_ANTIGRAVITY_v1_1.md": "A662EF9615235E28898C85788ACC27D66E4E9D308930C248AC336658E66702E3",
+    "DICTAMEN_PLAN_FASE_2C_V1_1_Y_AUTORIZACION_GATE_2C_1_CHATGPT.md": "EA59CCAD3916D5009427418006D422149FB63CDD462A038D3484104391AFB74F",
+    "EXPEDIENTES_REVISION_FUENTES_FASE_2C.md": "BE1501CC8F79A13C4CABD2C10E0B26F1553296BCA26454DF72D5AAD205371F92",
+    "MATRIZ_RECOMENDACIONES_TRIAJE_16_CANDIDATOS.md": "073F1B2E5AEE2C6FD07843B16B25F82097B6F46541482A3597B86F33B966BE5C",
+    "PROPUESTAS_REVISION_15_TOPIC_MAPPINGS.md": "5D26B1E94B57AC1DACD542005DB3255B6A2F20C9B2F6B63A4D29544184CF72A3",
+    "BORRADOR_ACTA_DECISION_HUMANA_FASE_2C.md": "EF4E8F1C4C8F0C17E3A3CC91B89279CA457DC258FDFAFA0290A8551107C53DE4",
+    "ENTREGABLE_GATE_2C_1_ANTIGRAVITY.md": "DFCB9CA9156928EDB730C3B5C985E4958261D2A6F7381FB059E52E8D86060D8E"
+  },
+  "verification_results": {
+    "pipeline_controls_total": 18,
+    "pipeline_controls_passed": 18,
+    "negative_tests_total": 57,
+    "negative_tests_passed": 57,
+    "containment_invariants_total": 9,
+    "containment_invariants_passed": 9,
+    "normalizer_tests_total": 13,
+    "normalizer_tests_passed": 13,
+    "candidate_tests_total": 6,
+    "candidate_tests_passed": 6,
+    "topic_mapping_tests_total": 6,
+    "topic_mapping_tests_passed": 6,
+    "build_checks_total": 7,
+    "build_checks_passed": 7
+  },
+  "expected_resume_action": "Audit Gate 2C-1 outputs against ChatGPT review, finalize machine-readable acta contract specification, obtain sovereign human decision in Gate 2C-H, and execute Gate 2C-2 fail-closed application.",
+  "prohibited_actions": [
+    "modify_source_notes_without_acta",
+    "modify_candidates_without_acta",
+    "modify_topic_mappings_without_acta",
+    "prefill_or_assume_human_identities",
+    "download_or_version_pdfs",
+    "ingest_32_external_sources_without_authorization",
+    "reactivate_sales_claims_for_commercial_use",
+    "open_gate_2c_h_without_human_decision",
+    "open_gate_2c_2_without_signed_acta"
+  ],
+  "commercial_separation_rules": {
+    "faro_brief_track_isolated": true,
+    "commercial_cannot_mutate_scientific_canon": true,
+    "unvalidated_claims_forbidden_in_sales": true,
+    "layer_07_proposals_require_separate_review": true
+  },
+  "discrepancies": []
+}
