@@ -543,6 +543,14 @@
     "epistemic_status": "provisional",
     "path": "07_commercial_and_gotomarket/audiences_and_buyers.md"
   },
+  "COM-VOICE-GUARDRAILS": {
+    "id": "COM-VOICE-GUARDRAILS",
+    "title": "Voz comercial, guardrails de claims y directrices para Brief V2",
+    "type": "commercial_guardrails",
+    "status": "canonical",
+    "epistemic_status": "provisional",
+    "path": "07_commercial_and_gotomarket/commercial_voice_and_claims_guardrails.md"
+  },
   "COM-EVIDENCE-SALES": {
     "id": "COM-EVIDENCE-SALES",
     "title": "Evidencia y claims aprobados para ventas",

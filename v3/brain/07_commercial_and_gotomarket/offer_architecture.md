@@ -7,10 +7,11 @@ status: "canonical"
 epistemic_status: "provisional"
 version: "1.0.0"
 author: "David Castañeda-Pardo y Javier Velasquez"
-summary: "Estructura cuatro tiers —Keynote interactivo, Workshop de inmersión, Diagnóstico y Programa continuo— con promesas, outputs y límites diferenciados."
+summary: "Estructura la dirección comercial aprobada de tres niveles —Keynote/sesión interactiva, Experiencia inmersiva (4h/8h) y Programa formativo extendido (16h+)— y retira formalmente el Diagnóstico de la oferta pública actual."
 related:
   - "COM-VALUE-PROP"
   - "COM-AUDIENCES"
+  - "COM-VOICE-GUARDRAILS"
   - "MET-TRAIN-VS-INTERV"
   - "EVD-VALIDATION-ROADMAP"
 decisions:
@@ -20,97 +21,75 @@ decisions:
 
 # Principio
 
-Cada tier corresponde a una profundidad distinta. No se debe vender una experiencia breve con promesas propias de un programa sostenido.
+Cada nivel de oferta corresponde a un alcance y profundidad pedagógica distintos. No se debe vender una experiencia breve con promesas propias de una intervención sostenida. El descriptor comercial preferido para las intervenciones de entrada es **«experiencia inmersiva»** en lugar de «taller», reflejando su naturaleza práctica, situacional y vivencial.
 
-# Tier 1 — Keynote interactivo
-
-## Propósito
-
-Crear conciencia, lenguaje compartido y una primera experiencia de PARA mediante narrativa y decisiones colectivas.
-
-## Formato
-
-45–90 minutos; presencial, híbrido o virtual; audiencia amplia.
-
-## Incluye
-
-- Apertura Digital Self y agencia.
-- Selección de casos FARO.
-- Práctica inicial de PARA.
-- Debrief colectivo.
-- Recurso de continuidad.
-
-## Evidencia posible
-
-Experiencia, comprensión inmediata y señal de interés. No demuestra competencia sostenida ni transferencia.
-
-# Tier 2 — Workshop de inmersión 2h/4h
+# Nivel 1 — Keynote / sesión interactiva
 
 ## Propósito
 
-Practicar varias competencias, comparar decisiones y conectar el framework con procesos reales.
+Crear conciencia reflexiva, instalar lenguaje compartido y facilitar una primera experiencia de decisión mediante narrativa interactiva y práctica colectiva del método PARA (Pausar, Analizar, Revisar, Actuar).
 
-## Versión 2h
+## Formato y evolución
 
-Dos o tres casos, mapa inicial de puertas, verificación, alternativas y debrief aplicado.
+- Ya existe en formato de webinar y sesión ejecutiva presencial o híbrida (ej. sesión «Antes de un clic»).
+- Funciona como punto de entrada accesible y como prueba de concepto que continuará evolucionando con el uso.
+- Su duración es flexible y ocupa aproximadamente el espacio de tiempo que tendría una oferta separada de dos horas. No se define una duración única cerrada como decisión inmutable.
 
-## Versión 4h
+## Evidencia entregable
 
-Casos completos, reintentos, trabajo por roles, IA como Sparring, mapa de gaps y plan de aplicación.
+Percepción inmediata de relevancia, comprensión conceptual y señal cualitativa de interés organizacional documentada en el primer webinar (`EVD-WEBINAR-V1`). No demuestra desarrollo de competencia duradera ni transferencia al puesto de trabajo.
 
-## Outputs
-
-Rúbrica formativa, aprendizajes agregados, compromisos y oportunidades sociotécnicas.
-
-# Tier 3 — Diagnóstico
+# Nivel 2 — Experiencia inmersiva (4h / 8h)
 
 ## Propósito
 
-Examinar decisiones críticas y las condiciones organizacionales que las habilitan o bloquean.
+Sumergir a equipos y tomadores de decisiones en la práctica deliberada de competencias decisionales y reflexivas (seleccionadas del inventario canónico de 14 competencias de `MET-COMPETENCIES`), comparar cursos de acción, calibrar la confianza ante sistemas inteligentes y vincular los aprendizajes con los procesos reales de la organización.
 
-## Componentes
+## Situación del formato de dos horas
 
-- Descubrimiento con stakeholders.
-- Mapa de decisiones y escenarios.
-- Simulación o walkthrough.
-- Revisión de rutas, interfaces, permisos y escalamiento.
-- Hallazgos de training e intervention.
-- Priorización y roadmap.
+El formato de 2 horas no debe destacarse como producto independiente en la oferta pública del Brief V2, dado que se solapa sustancialmente con la keynote o sesión interactiva sin permitir el espacio de práctica y debrief requeridos para un cambio de criterio significativo. La decisión sobre su permanencia o eliminación definitiva se resolverá en el Blueprint.
 
-## Límite
+## Modalidades candidatas principales como punto de entrada
 
-No es test psicométrico, pentest, auditoría regulatoria ni scoring secreto de empleados.
+- **Versión de 4 horas:** Práctica situada en escenarios contextualizados, aplicación guiada de PARA, trabajo con IA en rol de sparring y debrief aplicado con identificación preliminar de oportunidades sociotécnicas.
+- **Versión de 8 horas:** Inmersión profunda con variantes imprevistas, contraste de criterios entre roles, ejercicios avanzados de reliance calibrada en IA y acuerdos sobre verificación practicable.
 
-# Tier 4 — Programa continuo
+*(Los detalles de agenda, módulos y entregables específicos representan propuestas en diseño que se terminarán de empaquetar en el Blueprint).*
+
+# Nivel 3 — Programa formativo extendido (16 horas o más)
 
 ## Propósito
 
-Desarrollar y sostener competencias mediante práctica distribuida y cambios del sistema.
+Constituye la **oferta que más interesa desarrollar e impulsar**, orientada a facilitar un salto hacia una formación más profunda y extendida que permita consolidar competencias de decisión y reliance a lo largo del tiempo.
 
-## Componentes
+## Estado de diseño de producto
 
-- Baseline ético y outcomes acordados.
-- Cohortes y microprácticas espaciadas.
-- Escenarios adaptados y dificultad progresiva.
-- Espejo, Sparring y Asistente con guardrails.
-- Intervenciones en procesos e interfaces.
-- Seguimiento de retención y transferencia.
-- Revisión ejecutiva y mejora continua.
+«Programa continuo» o «extendido» describe por ahora una dirección estratégica de valor. Sus módulos específicos, cadencia de entrega, mecanismos de seguimiento de retención, entregables y naming definitivo requieren definición formal de producto antes de presentarse como componentes cerrados.
 
-## Horizonte
+# Posición sobre el Diagnóstico
 
-La duración se define por competencias, riesgo y cadencia organizacional; no por una promesa universal.
+El **Diagnóstico no se ofrece actualmente** y se **retira formalmente de la arquitectura pública** del Brief V2:
 
-# Ruta de expansión
+1. **Justificación:** No debe figurar en la oferta pública hasta que exista como servicio diseñado y entregable con metodología validada.
+2. **Distinción:** La experiencia inmersiva puede ayudar a identificar oportunidades sociotécnicas en los procesos de una organización, pero eso no la convierte en un diagnóstico formal ni autoriza presentarlo como servicio incorporado obligatoriamente al programa extendido.
+3. **Límite ético:** En ningún caso se conceptualiza como test psicométrico, auditoría regulatoria ni scoring individual de colaboradores.
 
-`Keynote → Workshop → Diagnóstico → Programa`
+# Escalera de oferta (Dirección comercial de trabajo)
 
-La ruta es frecuente, no obligatoria. Una organización puede iniciar con diagnóstico si ya reconoce el problema o con programa si dispone de baseline y patrocinio.
+```
+Keynote / sesión interactiva ──> Experiencia inmersiva (4h u 8h) ──> Programa formativo extendido (16h+)
+```
 
-# Modularidad
+Esta escalera representa una dirección comercial de trabajo para explorar en el Blueprint, no el empaquetamiento definitivo de la oferta.
 
-FARO es un componente reusable; cada oferta declara versiones, casos y métricas. El contenido canónico no se duplica. Adaptaciones de sector modifican contexto, no definiciones del framework.
+# Criterios para propuestas comerciales
 
-# Criterios de propuesta
+Toda propuesta formal de FARO debe declarar con precisión:
+- Stakeholders participantes y perfiles decisionales involucrados.
+- Decisiones críticas y competencias objetivo a entrenar.
+- Formato horario, modalidad y condiciones de entrega.
+- Guardrails éticos: no culpabilización, no scoring individual, confidencialidad del debrief.
+- Evidencia y entregables acordados.
+- Siguiente decisión sugerida.
 
-Toda propuesta debe declarar audiencia, decisiones objetivo, competencias, datos, debrief, evidencia entregable, límites y siguiente decisión. Precio, volumen y SLA se mantienen fuera del Canon hasta validación comercial.
+Variables de precio, condiciones contractuales y SLA se gestionan en propuestas personalizadas fuera del canon público.

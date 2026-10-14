@@ -7,7 +7,7 @@ status: "canonical"
 epistemic_status: "provisional"
 version: "1.0.0"
 author: "David Castañeda-Pardo y Javier Velasquez"
-summary: "Estructura una conversación ejecutiva de ventas desde el problema y el diagnóstico hasta la arquitectura de oferta, evidencia, límites y siguiente paso."
+summary: "Estructura la conversación ejecutiva y la narrativa comercial en cuatro momentos (Reconocer, Descubrir, Experimentar, Elegir), respondiendo a las cinco preguntas del visitante y guiando hacia una conversación de descubrimiento con Claudia Gómez."
 related:
   - "COM-POSITIONING"
   - "COM-PROBLEM-SPACE"
@@ -15,105 +15,75 @@ related:
   - "COM-AUDIENCES"
   - "COM-OFFER-ARCHITECTURE"
   - "COM-EVIDENCE-SALES"
+  - "COM-VOICE-GUARDRAILS"
 decisions:
   - "DEC-001"
 ---
 
-# Propósito de la reunión
+# Propósito de la conversación comercial
 
-Lograr una segunda decisión concreta —workshop de descubrimiento, piloto o diagnóstico— sin exagerar evidencia ni intentar explicar todo el framework.
+Guiar a líderes corporativos (CISO, CHRO/L&D, GRC, CIO) a través de una experiencia reflexiva que conecte los desafíos reales de decisión en su organización con la propuesta de FARO, culminando en un siguiente paso claro: una conversación de descubrimiento con Claudia Gómez.
 
-# Estructura sugerida: 30–45 minutos
+# Arco narrativo en cuatro momentos
 
-## 1. Apertura — 2 minutos
+La conversación comercial y la experiencia del Brief siguen un único recorrido compartido articulado en cuatro momentos pedagógicos y emocionales:
 
-**Mensaje:** «No venimos a reemplazar sus controles ni su awareness. Queremos explorar qué ocurre en las decisiones que siguen siendo humanas cuando el mensaje es plausible, la presión es real o una IA recomienda actuar».
+```
+[1. Reconocer] ──> [2. Descubrir] ──> [3. Experimentar] ──> [4. Elegir]
+  (Tensión)          (Mecanismos)       (Práctica PARA)       (Acción)
+```
 
-**Pregunta:** ¿Qué tipo de decisión humana genera hoy mayor preocupación en su organización?
+## Momento 1: Reconocer (Tensión del problema)
 
-## 2. Cambio del entorno — 4 minutos
+- **Pregunta del visitante que responde:** *«¿Por qué lo que hacemos hoy ya no alcanza?»*
+- **Apertura:** «No venimos a reemplazar sus controles técnicos ni su entrenamiento actual de awareness. Queremos examinar qué ocurre en las decisiones que siguen siendo inevitablemente humanas cuando el mensaje es plausible, la presión de tiempo es real o un sistema de IA recomienda actuar».
+- **El quiebre:** La IA generativa reduce y oscurece las fallas superficiales tradicionales (ortografía, incoherencias visuales, sintaxis extraña). Detectar el contexto engañoso ya no es cuestión de buscar errores obvios de formato, sino de detenerse a construir evidencia antes de actuar.
+- **Validación del dolor:** CISO ve fallas en el perímetro decisional; CHRO ve saturación y culpa en los colaboradores; GRC ve zonas grises y excepciones no trazables; CIO ve riesgos de sobreconfianza en automatizaciones.
 
-**Mensaje:** Los LLM pueden apoyar investigación, redacción y personalización; tono y formato ya no son prueba suficiente. Evitar cifras universales.
+## Momento 2: Descubrir (Espacio de la solución)
 
-**Visual:** de «detectar errores externos» a «construir evidencia antes de actuar».
+- **Preguntas del visitante que responde:** *«¿Qué pasa realmente antes de que alguien haga clic?»* y *«¿Qué es FARO y cómo funciona la experiencia?»*
+- **La mirada interna y externa:** En lugar de catalogar solo el vector de ataque externo, exploramos los disparadores internos que abren la decisión: urgencia operativa, delegación de autoridad, complacencia o curiosidad.
+- **Definición de FARO:** FARO es una **experiencia inmersiva** de entrenamiento sociotécnico diseñada para ejercitar criterio, pausa deliberada y calibración de confianza en decisiones críticas mediadas por tecnología e IA.
+- **Paridad de audiencias:** No se fragmenta el mensaje en caminos separados. Los cuatro roles observan el mismo fenómeno desde sus respectivas responsabilidades compartidas.
 
-## 3. Tensión ejecutiva — 4 minutos
+## Momento 3: Experimentar (Muestra práctica de PARA)
 
-Presentar tres dilemas:
+- **Pregunta del visitante que responde:** *«¿Cómo funciona esto en la práctica?»*
+- **Demostración interactiva contextualizada:** La muestra de PARA en el brief no introduce otro caso de phishing independiente; su escenario es la propia situación del visitante evaluando si FARO responde a un desafío de su organización:
+  - **P (Pausar):** Pausar antes de saltar hacia una solución conocida o asumir que más awareness pasivo resolverá el problema.
+  - **A (Analizar):** Analizar qué problema intenta resolver realmente la organización (dilemas de decisión humana, presión de tiempos, interfaces, confianza en IA).
+  - **R (Revisar):** Revisar qué evidencia, stakeholders (CISO, CHRO/L&D, GRC, CIO) y alternativas importan antes de contratar o descartar.
+  - **A (Actuar):** Actuar explorando el enfoque, compartiéndolo internamente o solicitando una conversación de descubrimiento.
+- **Resultado de la muestra:** El decisor experimenta la diferencia sustancial entre memorizar una norma pasiva y ejercitar una competencia reflexiva en un entorno seguro y constructivo.
 
-- una alerta automatizada con alta confianza y alto costo de falso positivo;
-- una solicitud auténtica cuyo alcance es inseguro;
-- un proceso donde verificar existe en política, pero no es practicable.
+## Momento 4: Elegir (Oferta y conversión)
 
-**Pregunta:** ¿Cuál se parece más a su operación?
+- **Preguntas del visitante que responde:** *«¿Cómo se aplica esto en mi organización?»* y *«¿Cuál es el siguiente paso y con quién hablo?»*
+- **Estructura de la oferta (dirección aprobada de 3 tiers):**
+  1. **Keynote interactivo o sesión ejecutiva:** Punto de entrada accesible y prueba de concepto (ej. sesión «Antes de un clic» o webinar interactivo) cuya duración flexible puede aproximarse a las dos horas.
+  2. **Experiencia inmersiva (4h / 8h):** Práctica deliberada de competencias decisionales y reflexivas (del inventario canónico de 14 competencias) en escenarios situacionales, trabajo con IA como sparring y debrief aplicado con mapa de fricciones sociotécnicas (4h estándar, 8h intensiva).
+  3. **Programa formativo extendido (16h o más):** Oferta prioritaria de desarrollo e impulso para competencias sostenidas mediante práctica distribuida; sus módulos, entregables específicos y cadencia requieren definición de producto.
+- **Retiro del diagnóstico:** El diagnóstico independiente se retira formalmente de la oferta pública actual y no se ofrece como producto ni como servicio ya incorporado obligatoriamente al programa.
 
-## 4. Tesis — 3 minutos
+# Arquitectura de llamada a la acción (CTA)
 
-**Mensaje:** La seguridad es sociotécnica. Entrenamos agencia y criterio; también identificamos condiciones que deben cambiar.
+El objetivo de conversión comercial es facilitar una **conversación de descubrimiento** sobre la decisión prioritaria de la organización:
 
-Introducir brevemente Digital Self, Attention Doors y PARA sin afirmar validación psicométrica.
+- **Contacto comercial oficial:** Claudia Gómez (Directora Comercial / Relaciones Corporativas), cuyo correo figura en el brief vigente: `claudia.gomez@4ssoluciones.com`.
+- **Canales y detalles en proceso de confirmación:** Enlace directo de WhatsApp con Claudia, herramienta de calendario, duración sugerida y mensajes prellenados representan detalles propuestos que deben confirmarse operativamente antes de su implementación técnica.
+- **Propósito de la llamada:** Una sesión consultiva para explorar los desafíos específicos de toma de decisiones en los flujos críticos de la organización interesada («Exploremos la decisión que más preocupa a su organización»).
 
-## 5. Demostración — 6 minutos
+# Guardrails de honestidad sobre evidencia
 
-Usar un microcaso FARO. Pedir reacción inicial, una evidencia y una alternativa. Cerrar con un mini-debrief, no con «quién cayó».
+Durante cualquier interacción comercial:
+- **Afirmar con claridad:** La experiencia cuenta con un respaldo conceptual riguroso en ciencias cognitivas, factores humanos e interacción humano-IA, y una señal cualitativa preliminar y positiva de interés obtenida en su primer webinar (`EVD-WEBINAR-V1`).
+- **No prometer bajo ninguna circunstancia:** Cero incidentes, inmunidad ante phishing, reducción cuantitativa porcentual no comprobada, validez psicométrica ni efectividad longitudinal de la solución aún no demostrada.
+- **Respeto a las personas:** La seguridad es sociotécnica. Si el sistema empuja a cometer errores por procesos impracticables, culpar al usuario perpetúa la vulnerabilidad.
 
-**Resultado esperado:** el comprador experimenta la diferencia entre información y práctica.
+# Cierre y acuerdos
 
-## 6. Arquitectura de valor — 5 minutos
-
-| Stakeholder | Valor |
-|---|---|
-| CISO | verificación, escalamiento y reliance calibrada |
-| CHRO/L&D | competencias, práctica y aprendizaje sin culpa |
-| Riesgo | decisiones, excepciones, trazabilidad y controles |
-| CIO/AI Governance | supervisión, alcance y reversibilidad |
-
-## 7. Oferta — 5 minutos
-
-Presentar los cuatro tiers:
-
-1. Keynote interactivo: conciencia y lenguaje común.
-2. Workshop 2h/4h: práctica e inmersión.
-3. Diagnóstico: decisiones y condiciones sociotécnicas.
-4. Programa continuo: práctica distribuida, intervención y evaluación.
-
-Recomendar según problema descubierto, no según ticket deseado.
-
-## 8. Evidencia y honestidad — 3 minutos
-
-**Decir:** existe respaldo para los mecanismos relacionados y señal cualitativa positiva del primer webinar; el framework, FARO y la taxonomía integrada continúan en validación.
-
-**No decir:** reducción probada de incidentes, transferencia demostrada o test validado.
-
-## 9. Descubrimiento — 5 minutos
-
-- ¿Qué decisiones y roles priorizarían?
-- ¿Qué controles y rutas existen hoy?
-- ¿Qué pasa cuando alguien pausa o escala?
-- ¿Cómo se utiliza IA en el flujo?
-- ¿Qué outcome justificaría continuidad?
-- ¿Qué restricciones de datos y privacidad aplican?
-
-## 10. Cierre y siguiente paso — 2 minutos
-
-Proponer una sola acción:
-
-- sesión de descubrimiento con Seguridad, Riesgo y L&D;
-- workshop piloto con outcome definido;
-- diagnóstico de un flujo crítico.
-
-Confirmar propietario, participantes, fecha y criterio de decisión.
-
-# Apéndice de objeciones
-
-**«Ya hacemos phishing simulations».** Complementamos detección con decisiones auténticas, reliance en IA y condiciones del sistema.
-
-**«Necesitamos métricas».** Definimos antes qué quieren demostrar y separamos experiencia, aprendizaje, mercado y efectividad.
-
-**«No queremos asustar».** El protocolo exige consentimiento, minimización, debrief y recuperación.
-
-**«¿Está validado?».** Las teorías relacionadas están establecidas; la taxonomía y el producto están en validación. No confundimos ambas cosas.
-
-# Regla de presentación
-
-El deck apoya una conversación, no la sustituye. Cada afirmación factual debe proceder de `COM-EVIDENCE-SALES` y conservar su alcance.
+Toda interacción comercial exitosa concluye con tres acuerdos:
+1. Identificación de un patrocinador y roles clave para la sesión de descubrimiento.
+2. Definición del contexto decisional o área prioritaria.
+3. Acuerdo de contacto formal para coordinar agenda con Claudia Gómez.

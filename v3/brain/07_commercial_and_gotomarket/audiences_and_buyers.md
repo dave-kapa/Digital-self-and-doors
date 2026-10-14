@@ -5,84 +5,87 @@ type: "commercial_strategy"
 layer: "07_commercial_and_gotomarket"
 status: "canonical"
 epistemic_status: "provisional"
-version: "1.0.0"
+version: "1.1.0"
 author: "David Castañeda-Pardo y Javier Velasquez"
-summary: "Distingue compradores, patrocinadores, influenciadores y participantes, y organiza sus dolores, criterios de compra y riesgos de desalineación."
+summary: "Establece la paridad entre las cuatro audiencias ejecutas (CISO, CHRO, GRC, CIO) y la regla de un único journey comercial compartido sin bifurcaciones por rol."
 related:
+  - "COM-POSITIONING"
   - "COM-VALUE-PROP"
   - "COM-OFFER-ARCHITECTURE"
   - "COM-SALES-DECK"
+  - "COM-VOICE-GUARDRAILS"
   - "MET-TRAIN-VS-INTERV"
 decisions:
   - "DEC-001"
 ---
 
-# Regla de segmentación
+# Regla de paridad comercial y journey unificado
 
-Comprador, patrocinador, propietario del problema y participante pueden ser personas distintas. La venta debe alinear sus outcomes y proteger a la audiencia de usos no consentidos de telemetría.
+Las cuatro audiencias de compra mantienen **estricta paridad comercial**: ninguna tiene prioridad jerárquica sobre las demás.
 
-# Buyer 1 — CISO / Security Leadership
+**Regla de diseño de la experiencia pública:**
+- El brief debe mostrar cómo FARO se relaciona con cada audiencia, pero **NO debe crear rutas de navegación distintas ni experiencias independientes por rol**.
+- La relevancia para los cuatro perfiles debe fluir de manera natural dentro de un **mismo journey compartido**.
+- La adaptación específica por industria, tamaño o contexto organizacional se realiza en la conversación de descubrimiento y en la propuesta comercial formal, nunca forzando bifurcaciones en el brief público.
 
-**Dolores:** fatiga de campañas, repetición de incidentes, dependencia de señales superficiales, baja calidad de reporte, adopción de IA sin calibración.
+---
 
-**Busca:** relevancia ejecutiva, integración con controles, métricas útiles, escalabilidad y reducción de fricción.
+# Buyer 1 — CISO / Liderazgo de Ciberseguridad
 
-**Objeción típica:** «Ya tenemos awareness y simulaciones de phishing».
+- **Dolores:** Fatiga generalizada de campañas de awareness, repetición de incidentes a pesar de los cursos aprobados, proliferación de ataques asistidos por IA que eluden la detección superficial y baja calidad en los reportes de seguridad.
+- **Qué busca:** Relevancia ejecutiva real, entrenamiento de toma de decisiones bajo estrés, métricas que no culpabilicen al personal y reducción de fricciones operativas en los canales de verificación.
+- **Objeción típica:** «Ya tenemos awareness anual y plataforma de phishing simulado».
+- **Respuesta de valor:** FARO no repite la teoría; entrena la decisión humana en el momento en que el mensaje parece auténtico o una IA aconseja actuar, complementando las defensas técnicas con criterio y proporcionalidad.
 
-**Respuesta:** posicionar como entrenamiento de decisiones humano–IA y diagnóstico de condiciones, complementario a controles y awareness.
+---
 
-# Buyer 2 — CHRO / L&D / Cultura
+# Buyer 2 — CHRO / Gestión Humana / L&D / Cultura
 
-**Dolores:** baja participación, aprendizaje percibido como castigo, contenidos genéricos, dificultad para transferir al trabajo.
+- **Dolores:** Percepción de la seguridad como un trámite aburrido o punitivo, desconexión entre los cursos obligatorios y la práctica real del trabajo, miedo al error y falta de cultura de reporte abierto.
+- **Qué busca:** Experiencia de aprendizaje formativa y segura, desarrollo de competencias de juicio crítico, cero ranking o señalamiento individual y alta recordación de conceptos.
+- **Objeción típica:** «Esto parece una capacitación técnica de ciberseguridad para ingenieros».
+- **Respuesta de valor:** El objeto de FARO es el criterio humano bajo presión contextual; los escenarios se centran en decisiones organizacionales cotidianas y se adaptan a cualquier rol sin exigir especialización técnica.
 
-**Busca:** experiencia segura, competencias claras, inclusión, continuidad y evidencia de aprendizaje.
+---
 
-**Objeción típica:** «Esto parece demasiado técnico».
+# Buyer 3 — Riesgo / Compliance / Control Interno / GRC
 
-**Respuesta:** el objeto es criterio bajo presión; los casos se adaptan al rol sin exigir especialización técnica.
+- **Dolores:** Decisiones operativas irreversibles tomadas sin autorización clara, excepciones informales no registradas, políticas que existen en el papel pero resultan impracticables en la urgencia y brechas de supervisión en flujos distribuidos.
+- **Qué busca:** Hacer visibles los dilemas de control, identificar cuellos de botella en rutas de escalamiento, evidencia formativa de diligencia debida y hallazgos concretos de condiciones del sistema que requieren cambio.
+- **Objeción típica:** «¿Esto nos entrega una certificación de cumplimiento regulatorio?».
+- **Respuesta de valor:** FARO produce evidencia formativa, mapeo de fricciones y hallazgos cualitativos del sistema; no sustituye una auditoría formal pero revela exactamente dónde fallan los controles prácticos antes de una crisis.
 
-# Buyer 3 — Riesgo / Compliance / Control Interno
+---
 
-**Dolores:** excepciones no gobernadas, responsabilidad difusa, controles que existen en papel, decisiones irreversibles y trazabilidad limitada.
+# Buyer 4 — CIO / Transformación Digital / Gobernanza de IA
 
-**Busca:** conexión con escenarios, control, evidencia, propietarios y planes de mejora.
+- **Dolores:** Despliegue acelerado de herramientas y agentes de IA sin modelos claros de supervisión humana, riesgo de sobredependencia ciega en automatizaciones (*automation bias*) o, por el contrario, rechazo infundado que frena la productividad.
+- **Qué busca:** Adopción responsable de IA, criterio humano calibrado (*calibrated reliance*), protocolos de autorización en flujos asistidos por algoritmos y gobernanza práctica del juicio asistido por máquinas.
+- **Objeción típica:** «Nuestros modelos y herramientas de IA ya cuentan con guardrails técnicos de fábrica».
+- **Respuesta de valor:** Los guardrails técnicos de un modelo no resuelven la decisión humana de qué nivel de alcance, permiso, contexto y reversibilidad otorgar a una recomendación automatizada en una operación sensible.
 
-**Objeción típica:** «¿Esto demuestra cumplimiento?».
+---
 
-**Respuesta:** produce evidencia formativa y hallazgos; no sustituye auditoría ni certificación.
+# Criterios de calificación de oportunidades
 
-# Buyer 4 — CIO / Transformación / AI Governance
+### Alta afinidad (Perfil ideal de cliente):
+- Organizaciones con adopción activa o planificada de herramientas de IA generativa.
+- Flujos donde las decisiones humanas tienen alto impacto económico o reputacional.
+- Patrocinio cruzado entre al menos dos de las cuatro áreas clave (e.g. Seguridad + L&D, o Riesgo + IA Governance).
+- Apertura a examinar fallas sociotécnicas del sistema y no solo a exigir más atención a los usuarios.
 
-**Dolores:** automatización sin modelos claros de supervisión, sobredependencia, rechazo de herramientas y permisos desalineados.
+### Baja afinidad (Descarte comercial):
+- Búsqueda de cumplimiento formal de casillas sin interés en la experiencia participativa.
+- Solicitudes de rankings individuales, scoring secreto de empleados o auditorías punitivas.
+- Expectativa de promesas irreales como «garantía de cero incidentes» o «inmunidad al engaño».
+- Intención de utilizar la experiencia como un test psicométrico de vulnerabilidad personal.
 
-**Busca:** adopción responsable, human oversight, confianza calibrada y gobernanza practicable.
+---
 
-**Objeción típica:** «Nuestra IA ya tiene guardrails».
+# Preguntas de descubrimiento para la reunión inicial
 
-**Respuesta:** los guardrails técnicos no agotan decisiones de alcance, autorización, excepción y reliance humana.
-
-# Influenciadores
-
-- Privacy, Legal y Data Governance.
-- SOC, IAM y arquitectura de seguridad.
-- HR Business Partners y formación.
-- Comunicaciones internas.
-- Líderes de negocio con procesos críticos.
-
-# Audiencias participantes
-
-- Ejecutivos y líderes.
-- Equipos de pagos, finanzas, operaciones y atención.
-- Usuarios de herramientas de IA.
-- Personal técnico y no técnico.
-- Equipos de seguridad y riesgo.
-
-# Criterios de calificación
-
-Alta afinidad cuando existen: decisiones de alto impacto, adopción de IA, patrocinio cruzado, disposición a practicar y posibilidad de cambiar condiciones del sistema.
-
-Baja afinidad cuando se busca: cumplimiento de casilla sin participación, ranking individual oculto, «atrapar usuarios», garantía de cero incidentes o perfil psicológico de empleados.
-
-# Preguntas de descubrimiento
-
-¿Qué decisiones preocupan?, ¿qué ocurre después de un error?, ¿qué rutas de verificación existen?, ¿cómo se usa IA?, ¿quién comparte el riesgo?, ¿qué outcome justificaría continuar?, ¿qué datos pueden recopilarse éticamente?
+1. ¿Cuál es la decisión o tipo de incidente que hoy genera mayor preocupación en su operación?
+2. Cuando alguien recibe una solicitud urgente y plausible, ¿qué canales independientes tiene para verificarla de forma rápida?
+3. ¿Qué ocurre actualmente en su organización cuando una persona comete un error o duda ante una instrucción?
+4. ¿Cómo interactúan hoy sus equipos con recomendaciones o automatizaciones asistidas por IA?
+5. ¿Qué resultado concreto justificaría para ustedes considerar este espacio como una inversión exitosa?

@@ -5,11 +5,13 @@ type: "commercial_strategy"
 layer: "07_commercial_and_gotomarket"
 status: "canonical"
 epistemic_status: "supported"
-version: "1.0.0"
+version: "1.1.0"
 author: "David Castañeda-Pardo y Javier Velasquez"
-summary: "Explica por qué el awareness basado solo en información y señales externas resulta insuficiente ante decisiones contextuales, IA generativa y fricciones sociotécnicas."
+summary: "Explica por qué el awareness tradicional resulta insuficiente cuando la IA aumenta la plausibilidad y cómo el momento de decisión exige mirar hacia adentro y hacia afuera."
 related:
   - "COM-POSITIONING"
+  - "COM-VALUE-PROP"
+  - "COM-VOICE-GUARDRAILS"
   - "CON-THESIS"
   - "CON-SOCIOTECHNICAL"
   - "CLM-MATRIX-HF"
@@ -18,60 +20,52 @@ decisions:
   - "DEC-001"
 ---
 
-# Formulación del problema
+# Formulación del problema en lenguaje de comprador
 
-El awareness tradicional no «falló» de forma universal. Sigue siendo útil para transmitir políticas, señales y rutas de reporte. Resulta insuficiente cuando se trata como intervención completa y se espera que información recordada produzca por sí sola conducta segura bajo presión.
+> Antes de cada clic hay una decisión humana. A veces la tomamos con calma; otras, bajo urgencia, confianza, curiosidad, autoridad o miedo a perder algo. ¿Qué cambia cuando la IA puede hacer que una solicitud parezca completamente real?
 
-# Cinco brechas
+El awareness tradicional no falló de manera universal: sigue siendo necesario para comunicar políticas, canales y rutas de reporte. Sin embargo, resulta insuficiente cuando se trata como intervención completa y se asume que memorizar una regla en frío garantiza aplicarla bajo fatiga, prisa o presión social.
 
-## 1. Señales externas menos confiables
+En el entorno actual, los mensajes generados o asistidos por IA pueden prescindir de fallas obvias de ortografía, diseño o tono. Cuando un estímulo resulta altamente plausible, la señal de alerta ya no es evidente a simple vista: requiere detenerse en el momento de la decisión, mirar hacia adentro para reconocer qué está organizando la atención y mirar hacia afuera para construir evidencia independiente antes de dar un paso irreversible.
 
-Mensajes generados o asistidos por IA pueden ser lingüísticamente correctos, personalizados y contextuales. Ortografía, tono o formato no constituyen prueba suficiente de autenticidad.
+# Las cinco brechas críticas del abordaje tradicional
 
-## 2. Conocimiento no equivale a ejecución
+## 1. Las señales externas ya no bastan
+Los modelos de lenguaje pueden automatizar la investigación previa, redacción y personalización de mensajes. Ortografía, coherencia visual y tono familiar ya no son prueba suficiente de autenticidad.
 
-Saber una regla en frío no garantiza aplicarla durante fatiga, urgencia, autoridad o pérdida. Intención, conducta y transferencia son outcomes distintos.
+## 2. Saber la política no garantiza decidir bien bajo presión
+Conocer la norma en frío no previene el impulso automático cuando entran en juego urgencia, jerarquía o fatiga operativa. La intención declarada y la ejecución en contexto son fenómenos distintos.
 
-## 3. El contexto estrecha alternativas
+## 3. El falso binario («hacer clic o no hacer clic»)
+Una solicitud auténtica también puede ser insegura por permisos excesivos, alcance desproporcionado o falta de reversibilidad. La respuesta correcta rara vez es binaria; requiere ampliar el repertorio: pausar, pedir confirmación por otro canal, limitar el alcance o escalar.
 
-Una solicitud auténtica también puede ser insegura por alcance, permisos o irreversibilidad. El problema no siempre es identificar engaño, sino ampliar opciones bajo presión.
+## 4. La IA como asesora introduce nuevos dilemas de confianza
+La interacción con asistentes, alertas y automatizaciones exige una dependencia calibrada (*reliance*): ni delegación ciega en una recomendación sintética, ni descarte automático por desconfianza infundada.
 
-## 4. La automatización cambia quién aconseja y actúa
+## 5. Culpar al individuo oculta las fallas del sistema
+Cuando verificar toma demasiado tiempo, consultar se percibe como lentitud o los canales seguros son inaccesibles, pedir «más atención» a las personas no resuelve el problema. La seguridad real requiere tanto desarrollar criterio humano (*training*) como rediseñar procesos e interfaces (*intervention*).
 
-Alertas y agentes de IA aportan capacidad, pero pueden producir sobredependencia o desuso. La organización necesita reliance apropiada, no confianza máxima.
+# Momento de experiencia: Reconocer y Descubrir
 
-## 5. Culpar oculta fallas del sistema
+En el viaje del comprador y del visitante del brief, el espacio del problema debe resolver dos momentos emocionales:
 
-Cuando verificar es lento, escalar se castiga o los defaults son inseguros, pedir «más atención» no modifica la causa. La seguridad requiere training e intervention.
+1. **Reconocer:** «Esto ocurre en organizaciones como la mía; nos importa porque nuestras decisiones cotidianas operan bajo estas tensiones».
+2. **Descubrir:** «Comprendo por qué el awareness informativo tradicional se queda corto y por qué necesitamos entrenar el criterio de decisión».
 
-# Tesis de respuesta
+Para proteger la comprensión inmediata, los términos conceptuales propios (Digital Self, Attention Doors) se mantienen fuera de la explicación inicial del problema, presentándose más adelante como herramientas metodológicas de profundización.
 
-Si no podemos garantizar que el engaño se revele desde fuera, entrenamos la capacidad de observar qué ocurre dentro y de construir evidencia antes de actuar.
+# Costos organizacionales del problema no resuelto
 
-El framework integra:
+- Acciones irreversibles ejecutadas con evidencia superficial o insuficiente.
+- Operaciones y negocios bloqueados por desconfianza indiscriminada o fricción excesiva.
+- Delegación no supervisada en recomendaciones automatizadas de IA.
+- Ocultamiento de errores o casi-incidentes por temor a culpa, ranking o castigo.
+- Formaciones evaluadas exclusivamente por asistencia o porcentaje de clics en phishing simulado, sin desarrollo observable de criterio decisional.
 
-- Digital Self y Digital Footprint;
-- seis momentos del proceso decisional;
-- nueve Attention Doors provisionales;
-- PARA;
-- práctica situada, feedback y debrief;
-- IA como Espejo, Sparring y Asistente;
-- rediseño sociotécnico cuando la conducta segura no es practicable.
+# Lo que no afirmamos (Límites epistémicos)
 
-# Costos organizacionales relevantes
-
-- Acciones irreversibles tomadas con evidencia insuficiente.
-- Oportunidades y operaciones bloqueadas por sospecha indiscriminada.
-- Delegación excesiva en scores o recomendaciones.
-- Baja calidad de reporte y escalamiento.
-- fatiga, vergüenza y ocultamiento después de errores.
-- formación evaluada por asistencia o clic, no por competencia.
-
-# Lo que no afirmamos
-
-- Que toda formación previa sea inútil.
-- Que IA haya eliminado todas las señales externas.
-- Que el humano sea la única barrera.
-- Que una experiencia elimine riesgo.
-- Que las Attention Doors predigan quién caerá.
-- Que awareness, training e intervention sean mutuamente excluyentes.
+- No afirmamos que la formación previa o el awareness básico sean inútiles (son complementarios pero insuficientes como solución única).
+- No afirmamos que la IA cree ataques perfectos ni que sea imposible verificar la autenticidad.
+- No afirmamos que el factor humano sea la única línea de defensa ni el «eslabón más débil».
+- No prometemos que una intervención formativa elimine el riesgo de incidentes.
+- No presentamos las prioridades de atención como un diagnóstico de vulnerabilidades personales ni como rasgos fijos.

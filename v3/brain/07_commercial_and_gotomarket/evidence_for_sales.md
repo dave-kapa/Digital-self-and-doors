@@ -14,6 +14,7 @@ related:
   - "CLM-MATRIX-TRAINING"
   - "CLM-MATRIX-GAMES"
   - "EVD-WEBINAR-V1"
+  - "COM-VOICE-GUARDRAILS"
 decisions:
   - "DEC-001"
   - "DEC-002"

@@ -5,74 +5,59 @@ type: "commercial_strategy"
 layer: "07_commercial_and_gotomarket"
 status: "canonical"
 epistemic_status: "provisional"
-version: "1.0.0"
+version: "1.1.0"
 author: "David Castañeda-Pardo y Javier Velasquez"
-summary: "Articula valor diferenciado para CISO, CHRO y Gestión de Riesgo mediante entrenamiento de decisiones, lectura sociotécnica y evidencia trazable."
+summary: "Articula el valor transversal de FARO y sus outcomes contratables con paridad entre CISO, CHRO, Riesgo y CIO/Gobernanza de IA."
 related:
   - "COM-POSITIONING"
+  - "COM-PROBLEM-SPACE"
   - "COM-AUDIENCES"
   - "COM-OFFER-ARCHITECTURE"
+  - "COM-VOICE-GUARDRAILS"
   - "MET-TRAIN-VS-INTERV"
   - "EVD-VALIDATION-ROADMAP"
 decisions:
   - "DEC-001"
 ---
 
-# Propuesta común
+# Propuesta común transversal
 
-Digital Self & Attention Doors ayuda a las organizaciones a pasar de informar sobre amenazas a practicar cómo se decide frente a estímulos plausibles, presión real y recomendaciones de IA. Combina experiencia, lenguaje compartido, PARA, simulación y diagnóstico sociotécnico.
+**FARO entrena la capacidad de pausar, evaluar y decidir con criterio frente a estímulos plausibles, presión real y recomendaciones asistidas por IA.**
 
-# Para CISO y Seguridad
+No vendemos un diagnóstico de vulnerabilidades personales ni un examen de «señalamiento de puertas». Proponemos detenernos en el momento humano antes de una acción irreversible para:
+1. **Mirar hacia adentro:** reconocer qué prioridad atencional, emoción o sesgo está organizando la respuesta inmediata.
+2. **Mirar hacia afuera:** construir evidencia por canales independientes, ampliar el abanico de alternativas (no solo aceptar/rechazar) y actuar de forma proporcional y reversible.
+3. **Calibrar la interacción con IA:** practicar una dependencia adecuada (*calibrated reliance*), evitando tanto la delegación ciega como el rechazo desinformado.
 
-## Valor
+# Paridad entre las cuatro conversaciones de valor
 
-- Entrenar verificación independiente, proporcionalidad y escalamiento.
-- Explorar reliance en automatización y acciones irreversibles.
-- Convertir telemetría en señales de diseño, no rankings personales.
-- Identificar cuándo una falla atribuida al usuario requiere cambiar procesos o interfaces.
+La propuesta de valor articula cuatro conversaciones ejecutivas de igual peso, presentadas de forma integrada en un mismo journey:
 
-## Outcomes contratables
+## 1. Para CISO y Liderazgo de Seguridad
+- **Valor:** Entrena verificación independiente, proporcionalidad de permisos y escalamiento oportuno; convierte la simulación en señales de diseño sociotécnico en lugar de rankings individuales.
+- **Outcomes contratables:** Práctica de toma de decisiones bajo presión, rúbricas de competencias observadas, mapa de fricciones en canales de verificación y reporte cualitativo. *(La reducción garantizada de incidentes no se ofrece como outcome contratable).*
 
-Experiencia ejecutada, competencias objetivo, práctica documentada, findings sociotécnicos y plan de evaluación. Reducción de incidentes solo puede contratarse como hipótesis de programa con medición, no como garantía.
+## 2. Para CHRO, Aprendizaje y Cultura (L&D)
+- **Valor:** Formación experiencial que elimina la culpa, la vergüenza y el scoring punitivo; desarrolla criterio reflexivo transferible y responsabilidad compartida en equipos de trabajo.
+- **Outcomes contratables:** Participación activa en escenarios inmersivos, debriefs estructurados, rúbricas formativas y aprendizajes agregados para diseño de planes de refuerzo.
 
-# Para CHRO, Learning y Cultura
+## 3. Para Gestión de Riesgo, Compliance y GRC
+- **Valor:** Hace visibles las decisiones críticas, las excepciones informales, la trazabilidad de autorizaciones y los puntos donde las políticas existentes no son practicables bajo presión.
+- **Outcomes contratables:** Mapa de decisiones en escenarios simulados, identificación de gaps de control humano–IA, hallazgos de condiciones que el sistema debe corregir. *(No sustituye auditoría regulatoria ni certificación).*
 
-## Valor
+## 4. Para CIO, Transformación Digital y AI Governance
+- **Valor:** Desarrolla supervisión humana real (*human oversight*), alcance proporcionado y reversibilidad ante recomendaciones automatizadas de modelos de lenguaje y agentes de IA.
+- **Outcomes contratables:** Criterios prácticos de *reliance* calibrada, identificación de sobreconfianza en asistentes digitales y recomendaciones de diseño para flujos de autorización asistidos por IA.
 
-- Formación que evita culpa y vergüenza.
-- Desarrollo de criterio transferible, regulación y responsabilidad compartida.
-- Experiencias adaptables a roles sin perfilar psicológicamente.
-- Datos agregados para mejorar aprendizaje y clima de reporte.
+# La experiencia interactiva como demostración del método
 
-## Outcomes contratables
+La propuesta de valor se demuestra mediante la propia experiencia del visitante en el brief:
+- **Demostración de PARA en contexto real:** La muestra interactiva del método no introduce un minijuego ficticio de phishing; sitúa al visitante en su propia decisión de evaluar los desafíos de su organización.
+- **Medio y método alineados:** Invita a pausar ante soluciones preconcebidas, analizar el problema real, revisar evidencia y alternativas, y elegir el siguiente paso con claridad.
 
-Participación, experiencia, comprensión, desempeño en tareas y plan de refuerzo, cada uno medido por separado.
+# Condiciones éticas y límites de credibilidad
 
-# Para Gestión de Riesgo y Compliance
-
-## Valor
-
-- Hacer visibles decisiones, controles, excepciones y propietarios de riesgo.
-- Practicar trazabilidad, segundo aprobador, reversibilidad y rutas de excepción.
-- Separar autenticidad de autorización y seguridad de ejecución.
-- Conectar training con intervención y evidencia de control.
-
-## Outcomes contratables
-
-Mapa de escenarios, gaps de control humano–IA, recomendaciones priorizadas y marco de evidencia. No constituye auditoría regulatoria ni certificación salvo alcance contractual separado.
-
-# Diferencial transversal
-
-La oferta no vende miedo ni «detección humana». Vende una capacidad organizacional en construcción: observar el proceso, ampliar evidencia y alternativas, y actuar de forma proporcional antes de la irreversibilidad.
-
-# Condiciones de credibilidad
-
-- Declarar el nivel real de evidencia.
-- No presentar las puertas como test validado.
-- No prometer transferencia desde una keynote.
-- Adaptar casos sin recolectar datos sensibles.
-- Definir desde el inicio qué outcome se medirá.
-
-# Hipótesis de valor
-
-Se espera que esta propuesta sea especialmente relevante en organizaciones con adopción de IA, decisiones distribuidas, alto costo de error y fatiga de awareness. Esa segmentación debe validarse comercialmente.
+- Declarar con transparencia que el producto entrena el proceso decisional y no constituye un test psicométrico de personalidad.
+- No prometer transferencia conductual automática a largo plazo desde una sola sesión.
+- Prohibición absoluta de rankings de personas o penalizaciones individuales en la telemetría.
+- Definir previamente con el comprador qué outcomes formativos se evaluarán y separar la formación de la intervención en procesos.

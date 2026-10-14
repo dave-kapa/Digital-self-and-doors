@@ -2,7 +2,7 @@
 ## Mapa de Contenido del Módulo
 
 > **Capa:** `07_commercial_and_gotomarket`  
-> **Propósito:** Propuesta de valor B2B para CISOs y CHROs, posicionamiento de mercado, banco de claims autorizados para ventas y pitch deck scripts.
+> **Propósito:** Propuesta de valor B2B para CISO, CHRO/L&D, GRC y CIO, posicionamiento de mercado, arquitectura de oferta de 3 tiers, banco de claims autorizados para ventas, guiones ejecutivos y guardrails éticos de interacción.
 
 ---
 
@@ -18,4 +18,5 @@
 | `COM-PROBLEM-SPACE` | Espacio del problema | `commercial_strategy` | `canonical` | [Abrir](problem_space.md) |
 | `COM-SALES-DECK` | Guion comercial para reunión ejecutiva | `commercial_asset` | `canonical` | [Abrir](sales_deck_script.md) |
 | `COM-VALUE-PROP` | Propuesta de valor | `commercial_strategy` | `canonical` | [Abrir](value_proposition.md) |
+| `COM-VOICE-GUARDRAILS` | Voz comercial, guardrails de claims y directrices para Brief V2 | `commercial_guardrails` | `canonical` | [Abrir](commercial_voice_and_claims_guardrails.md) |
 <!-- AUTO-GENERATED:END -->

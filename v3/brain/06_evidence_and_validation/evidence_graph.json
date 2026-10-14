@@ -2,7 +2,7 @@
   "meta": {
     "title": "Evidence & Knowledge Graph — Cerebro V3 (Fase 2B)",
     "generated_at": "2026-09-10",
-    "node_count": 164,
+    "node_count": 165,
     "edge_count": 124,
     "namespaces": {
       "supported_by": 64,
@@ -561,6 +561,14 @@
       "layer": "07_commercial_and_gotomarket",
       "status": "canonical",
       "label": "Propuesta de valor",
+      "resolution_status": "resolved"
+    },
+    {
+      "id": "COM-VOICE-GUARDRAILS",
+      "type": "commercial_guardrails",
+      "layer": "07_commercial_and_gotomarket",
+      "status": "canonical",
+      "label": "Voz comercial, guardrails de claims y directrices para Brief V2",
       "resolution_status": "resolved"
     },
     {
