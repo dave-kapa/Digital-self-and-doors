@@ -3095,15 +3095,15 @@
        PÁGINA 0: ONBOARDING & CALIBRACIÓN SITUACIONAL (OMITIBLE EN TODO MOMENTO)
        ======================================================================== -->
   <section class="brief-page" id="page-p0">
-    <!-- CABECERA DEL BLOQUE -->
+    <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag">
         <span class="block-id-dot"></span>
         <span>PREPARACIÓN DE EXPERIENCIA · ONBOARDING</span>
       </div>
       <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Pregunta que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿Cómo funciona este recorrido y de qué trata FARO?»</span>
+        <span class="block-visitor-q-label">Pregunta que responde esta sección:</span>
+        <span class="block-visitor-q-text">"¿Cómo funciona este recorrido y de qué trata FARO?"</span>
       </div>
     </div>
 
@@ -3419,56 +3419,69 @@
       </p>
 
       <!-- TABLA COMPARATIVA: EL ENFOQUE QUE SE QUEDA CORTO VS LO QUE ENTRENA ESTE TALLER -->
+            <!-- TABLA COMPARATIVA: PESTAÑAS DESPLEGABLES INDEPENDIENTES (ERROR COMÚN VS LO QUE FARO BUSCA) -->
       <div class="comparison-hud-container">
         <div class="comparison-hud-grid">
-          <!-- PANEL IZQUIERDO: EL ENFOQUE QUE SE QUEDA CORTO -->
-          <div class="comp-panel comp-panel-left">
-            <div class="comp-panel-header">
-              <span class="comp-panel-title">El enfoque que se queda corto</span>
+          <!-- PANEL IZQUIERDO: EL ERROR COMÚN -->
+          <div class="comp-panel comp-panel-left is-collapsed" id="comp-panel-err">
+            <div class="comp-panel-header" onclick="toggleCompPanel('comp-panel-err')">
+              <div class="comp-panel-header-left">
+                <span class="comp-icon" style="margin-top:0;">✕</span>
+                <span class="comp-panel-title">El error común</span>
+              </div>
+              <span class="comp-toggle-arrow">▼</span>
             </div>
-            <ul class="comp-list">
-              <li class="comp-item">
-                <span class="comp-icon">✕</span>
-                <span>Asume que conocer la política basta para actuar bien bajo presión.</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✕</span>
-                <span>Depende de que la persona detecte una señal externa (ortografía, remitente, formato).</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✕</span>
-                <span>Mide asistencia o clics, no criterio ni transferencia.</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✕</span>
-                <span>Cuando alguien falla, la respuesta es "pedir más atención" — sin tocar el sistema.</span>
-              </li>
-            </ul>
+            <div class="comp-panel-body-wrapper">
+              <ul class="comp-list">
+                <li class="comp-item">
+                  <span class="comp-icon">✕</span>
+                  <span>Asumir que conocer la política basta para actuar bien bajo presión.</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✕</span>
+                  <span>Depender de que la persona detecte una señal externa (ortografía, remitente, formato).</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✕</span>
+                  <span>Medir asistencia o clics, no criterio ni transferencia real a la decisión.</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✕</span>
+                  <span>Pedir "más atención" cuando alguien falla, sin tocar las condiciones del sistema.</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <!-- PANEL DERECHO: LO QUE ENTRENA ESTE TALLER -->
-          <div class="comp-panel comp-panel-right">
-            <div class="comp-panel-header">
-              <span class="comp-panel-title">Lo que entrena este taller</span>
+          <!-- PANEL DERECHO: LO QUE FARO BUSCA -->
+          <div class="comp-panel comp-panel-right is-collapsed" id="comp-panel-faro">
+            <div class="comp-panel-header" onclick="toggleCompPanel('comp-panel-faro')">
+              <div class="comp-panel-header-left">
+                <span class="comp-icon" style="margin-top:0;">✓</span>
+                <span class="comp-panel-title">Lo que FARO busca entrenar</span>
+              </div>
+              <span class="comp-toggle-arrow">▼</span>
             </div>
-            <ul class="comp-list">
-              <li class="comp-item">
-                <span class="comp-icon">✓</span>
-                <span>Practica el proceso completo de decisión: pausar, evaluar, verificar y actuar de forma proporcional.</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✓</span>
-                <span>Construye evidencia por canales independientes cuando la señal externa no es suficiente.</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✓</span>
-                <span>Observa competencias en escenarios simulados, con debrief formativo — no con ranking de personas.</span>
-              </li>
-              <li class="comp-item">
-                <span class="comp-icon">✓</span>
-                <span>Identifica también qué condiciones del sistema (procesos, permisos, canales) deben cambiar.</span>
-              </li>
-            </ul>
+            <div class="comp-panel-body-wrapper">
+              <ul class="comp-list">
+                <li class="comp-item">
+                  <span class="comp-icon">✓</span>
+                  <span>Observar y aprender sobre las particularidades y tendencias individuales que afectan las decisiones propias.</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✓</span>
+                  <span>Utilizar la IA como una herramienta de acompañamiento en el entrenamiento de las decisiones.</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✓</span>
+                  <span>Practicar el proceso completo de decisión: pausar, evaluar, verificar y actuar de forma deliberada.</span>
+                </li>
+                <li class="comp-item">
+                  <span class="comp-icon">✓</span>
+                  <span>Construir evidencia por canales independientes cuando la señal externa resulta ambigua o insuficiente.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -3681,20 +3694,29 @@
        PÁGINA 3 (B03/B04): DE RECONOCER AMENAZAS A ENTRENAR DECISIONES
        ======================================================================== -->
   <section class="brief-page" id="page-b03">
-    <!-- CABECERA DEL BLOQUE -->
+    <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag">
         <span class="block-id-dot"></span>
-        <span>BLOQUE 3 · DE RECONOCER AMENAZAS A ENTRENAR DECISIONES (B04 INTEGRADO)</span>
+        <span>SECCIÓN 3 · DE RECONOCER AMENAZAS A ENTRENAR DECISIONES</span>
       </div>
       <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Preguntas que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿Qué podría cambiar?» y «¿Por qué FARO es diferente?»</span>
+        <span class="block-visitor-q-label">Pregunta que responde esta sección:</span>
+        <span class="block-visitor-q-text">"¿Dónde interviene FARO? P.A.R.A. antes de actuar"</span>
       </div>
     </div>
 
-    <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
+    <!-- 1. CONTENIDO PRINCIPAL: DE RECONOCER AMENAZAS A ENTRENAR DECISIONES -->
+    <div class="hero-statement-box">
+      <div class="hero-eyebrow">Protocolo de deliberación humana frente a la incertidumbre</div>
+      <h2 class="hero-motto" style="font-size:28px; margin:6px 0 14px 0;">De reconocer amenazas a entrenar decisiones</h2>
+      <p class="hero-lede" style="color:var(--text-muted); font-size:15px; line-height:1.65; margin:0;">
+        FARO usa situaciones simuladas para que las personas observen cómo interpretan lo que ocurre, amplíen sus alternativas, verifiquen y elijan qué hacer. No presupone que toda situación sea un ataque ni convierte a nadie en un detector infalible.
+      </p>
+    </div>
+
+    <!-- 2. CONSOLA DE FARO (COMPACTA / MISMA JERARQUÍA QUE B01 Y B02) -->
+    <div class="faro-console faro-console-compact">
       <div class="faro-avatar-box">
         <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
         <div class="faro-avatar-dot"></div>
@@ -3705,23 +3727,12 @@
           <span class="faro-console-tag">ETAPA 3 · PROTOCOLO P-A-R-A</span>
         </div>
         <p class="faro-console-speech" id="faro-speech-b03">
-          «No se trata de desconfiar de todo ni de memorizar listas interminables de trampas. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito.»
+          "No se trata de desconfiar de todo ni de memorizar listas interminables de trampas. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito."
         </p>
-        <div class="faro-direct-question">
-          <span class="faro-q-icon">💬</span>
-          <span id="faro-q-b03">¿En cuál de estos cuatro momentos sientes que las personas suelen precipitarse más en tu entorno de trabajo?</span>
-        </div>
       </div>
     </div>
 
-    <div style="margin:20px 0;">
-      <h2 style="font-size:22px; color:#fff; margin-bottom:10px;">De reconocer amenazas a entrenar decisiones</h2>
-      <p style="color:var(--text-muted); font-size:15px; line-height:1.6;">
-        FARO usa situaciones simuladas para que las personas observen cómo interpretan lo que ocurre, amplíen sus alternativas, verifiquen y elijan qué hacer. No presupone que toda situación sea un ataque ni convierte a nadie en un detector infalible.
-      </p>
-    </div>
-
-    <!-- TARJETAS INTERACTIVAS 3D PARA (CANÓNICAS DEL BLUEPRINT) -->
+    <!-- 3. TARJETAS INTERACTIVAS 3D PARA (CANÓNICAS Y CON TAMAÑO EXACTO) -->
     <div class="para-grid-3d">
       <!-- TARJETA P -->
       <div class="para-card-wrapper p-theme" id="para-card-p" onclick="flipParaCard(this, 'P')">
@@ -3734,7 +3745,7 @@
           <div class="para-card-face para-card-front">
             <div class="para-letter-front">P</div>
             <h4>PAUSAR</h4>
-            <p>Detén la respuesta automática y observa qué está captando tu atención.</p>
+            <p>Deliberar implica detener la respuesta automática. Suena sencillo, pero resulta demandante para el cerebro, en especial bajo presiones externas o cuando las alertas se encienden.</p>
           </div>
         </div>
       </div>
@@ -3750,7 +3761,7 @@
           <div class="para-card-face para-card-front">
             <div class="para-letter-front">A</div>
             <h4>ANALIZAR</h4>
-            <p>Aclara qué sucede, qué sabes, qué estás suponiendo y qué puede estar en juego.</p>
+            <p>Entender cómo nos afecta una pieza de información y qué historias o modelos mentales activamos a diario nos ayuda a reconocer en qué momentos se requiere más atención y deliberación.</p>
           </div>
         </div>
       </div>
@@ -3766,7 +3777,7 @@
           <div class="para-card-face para-card-front">
             <div class="para-letter-front">R</div>
             <h4>REVISAR</h4>
-            <p>Contrasta señales, fuentes y alternativas; busca una vía independiente para verificar cuando corresponde.</p>
+            <p>Siempre hay más alternativas. El objetivo es aprender a visualizarlas y usar mecanismos para verificar información de forma independiente, ampliando nuestro repertorio de opciones.</p>
           </div>
         </div>
       </div>
@@ -3782,49 +3793,42 @@
           <div class="para-card-face para-card-front">
             <div class="para-letter-front">A</div>
             <h4>ACTUAR</h4>
-            <p>Elige una respuesta proporcional: verificar, limitar, escalar, reportar o avanzar con criterio.</p>
+            <p>Con "todas las cartas sobre la mesa", elegir y ejecutar una respuesta es un acto deliberado. La decisión final importa tanto como el proceso, reconociendo el impacto real de lo que hacemos.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- REVELACIÓN DE HERRAMIENTAS Y MUESTRA (B04 INTEGRADO) -->
+    <!-- 4. HERRAMIENTAS FORMATIVAS DE FARO -->
     <div style="background:var(--surface-card); border:1px solid var(--border-cyan); border-radius:14px; padding:24px; margin:24px 0;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
-        <h4 style="color:var(--cyan); margin:0;">Las cuatro herramientas formativas de FARO (B04 integrado)</h4>
-        <button type="button" class="btn-detroit btn-detroit-accent btn-detroit-sm" onclick="openModal('modal-para-sample')">
-          ⚡ Muestra de la lógica PARA
-        </button>
+      <div class="tools-header-card">
+        <div class="cyber-texture-bg"></div>
+        <span class="tools-header-icon">🛠️</span>
+        <h4>Herramientas formativas FARO</h4>
       </div>
 
       <div class="tools-compact-grid">
         <div class="tool-compact-item">
           <h5>1. Simulación con propósito</h5>
-          <p style="margin:0; color:var(--text-muted);">Decisiones plausibles tomadas de situaciones reales de la operación.</p>
+          <p style="margin:0; color:var(--text-muted); line-height:1.5;">Decisiones plausibles tomadas de situaciones reales.</p>
         </div>
         <div class="tool-compact-item">
           <h5>2. Protocolo PARA</h5>
-          <p style="margin:0; color:var(--text-muted);">Guía de metacognición y acción para pausar, analizar, revisar y actuar.</p>
+          <p style="margin:0; color:var(--text-muted); line-height:1.5;">Entrenamientos particulares e integrados para pausar, analizar, revisar y actuar.</p>
         </div>
         <div class="tool-compact-item">
-          <h5>3. Conversación y debrief</h5>
-          <p style="margin:0; color:var(--text-muted);">Alternativas y condiciones humanas, organizacionales y tecnológicas sin culpa.</p>
+          <h5>3. Retroalimentación y data</h5>
+          <p style="margin:0; color:var(--text-muted); line-height:1.5;">Información para reconocer los factores propios de decisión, un proceso informado de metacognición para el aprendizaje.</p>
         </div>
         <div class="tool-compact-item">
           <h5>4. IA aliada</h5>
-          <p style="margin:0; color:var(--text-muted);">Espejo, sparring y apoyo para verificar y pensar, sin delegar la agencia humana.</p>
+          <p style="margin:0; color:var(--text-muted); line-height:1.5;">Apoyo para el proceso decisional, el autoconocimiento y el entrenamiento continuo, sin delegar la agencia humana.</p>
         </div>
       </div>
 
-      <p style="font-size:13px; color:var(--text-dim); margin-top:14px;">
-        Pausar, analizar, revisar y actuar no se vuelven hábitos por conocer cuatro palabras. FARO entrena las habilidades que hacen posible cada paso, con práctica en el juego y actividades fuera de él en formatos más extensos.
+      <p style="font-size:13.5px; color:var(--text-muted); margin-top:18px; margin-bottom:0; line-height:1.6;">
+        Pausar, analizar, revisar y actuar no se convierten en hábito solo por memorizar cuatro palabras. FARO entrena en la práctica las capacidades reales que hacen posible cada paso frente a situaciones cotidianas.
       </p>
-
-      <div style="margin-top:16px;">
-        <button type="button" class="btn-detroit btn-detroit-sm btn-detroit-outline" onclick="openModal('modal-p03')">
-          🔍 Abrir profundización P03: Cómo funciona FARO en la práctica
-        </button>
-      </div>
     </div>
 
     <!-- BIFURCACIÓN EXPLÍCITA CON IGUAL PESO -->
@@ -3835,7 +3839,7 @@
       </div>
       <div style="display:flex; gap:12px; flex-wrap:wrap;">
         <button type="button" class="btn-detroit btn-detroit-outline" onclick="goToPage('b05')">
-          Ver a quién le sirve (4 responsabilidades) ➔
+          4: A quién le sirve (4 responsabilidades) ➔
         </button>
         <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b06')">
           Ver formas de comenzar (3 formatos) ➔
@@ -3870,139 +3874,26 @@
     </div>
   </section>
 
-  <!-- ========================================================================
-       PÁGINA 4 (B05): CUATRO RESPONSABILIDADES
-       ======================================================================== -->
-  <section class="brief-page" id="page-b05">
-    <!-- CABECERA DEL BLOQUE -->
-    <div class="block-header-strip">
-      <div class="block-id-tag">
-        <span class="block-id-dot"></span>
-        <span>BLOQUE 4 · UNA DECISIÓN. CUATRO RESPONSABILIDADES</span>
-      </div>
-      <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Pregunta que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿Cómo se relaciona esto con mi responsabilidad?»</span>
-      </div>
-    </div>
-
-    <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
-      <div class="faro-avatar-box">
-        <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
-        <div class="faro-avatar-dot"></div>
-      </div>
-      <div class="faro-console-body">
-        <div class="faro-console-header">
-          <span class="faro-console-name">FARO // Perspectiva Multidisciplinaria</span>
-          <span class="faro-console-tag">ETAPA 4 · CUATRO RESPONSABILIDADES</span>
-        </div>
-        <p class="faro-console-speech" id="faro-speech-b05">
-          «La seguridad de la información ya no puede resolverse solo dentro del departamento de TI. Una sola decisión compromete la operación, la cultura interna, el cumplimiento legal y la tecnología.»
-        </p>
-        <div class="faro-direct-question">
-          <span class="faro-q-icon">👥</span>
-          <span id="faro-q-b05">¿Desde qué responsabilidad lideras o acompañas las decisiones de seguridad en tu organización?</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin:20px 0;">
-      <h2 style="font-size:22px; color:#fff; margin-bottom:10px;">Una decisión. Cuatro responsabilidades que necesitan conversar</h2>
-      <p style="color:var(--text-muted); font-size:15px; line-height:1.6;">
-        FARO crea un espacio común para entrenar la decisión y detectar preguntas que la organización necesita responder, sin convertir a las personas en un ranking ni reducir la seguridad a silos aislados.
-      </p>
-    </div>
-
-    <!-- CUATRO CUADRANTES CON ESTRICTA PARIDAD (CANÓNICOS) -->
-    <div class="roles-quadrant-grid">
-      <!-- CISO -->
-      <div class="role-quad-card">
-        <div class="role-badge-tag">CISO // SEGURIDAD DE LA INFORMACIÓN</div>
-        <h3 style="color:#fff; font-size:17px; margin-bottom:8px;">Seguridad de la Información</h3>
-        <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
-          Practicar verificación, escalamiento y reporte; observar obstáculos sin convertir a las personas en un ranking.
-        </p>
-        <div class="role-dynamic-context" id="ctx-ciso">
-          Frente a la situación elegida, observa obstáculos y canales de verificación.
-        </div>
-      </div>
-
-      <!-- CHRO / L&D -->
-      <div class="role-quad-card">
-        <div class="role-badge-tag">CHRO / L&D // GESTIÓN HUMANA</div>
-        <h3 style="color:#fff; font-size:17px; margin-bottom:8px;">Gestión Humana y Aprendizaje</h3>
-        <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
-          Crear oportunidades de aprendizaje con práctica relevante, lenguaje común y espacio para equivocarse sin humillación.
-        </p>
-        <div class="role-dynamic-context" id="ctx-chro">
-          Frente a la situación elegida, cuida la seguridad psicológica y los hábitos de pausa.
-        </div>
-      </div>
-
-      <!-- GRC -->
-      <div class="role-quad-card">
-        <div class="role-badge-tag">RIESGO // COMPLIANCE / GRC</div>
-        <h3 style="color:#fff; font-size:17px; margin-bottom:8px;">Gobernanza, Riesgo y Cumplimiento</h3>
-        <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
-          Conversar sobre autorizaciones, excepciones y rutas de respuesta; distinguir formación de auditoría.
-        </p>
-        <div class="role-dynamic-context" id="ctx-grc">
-          Frente a la situación elegida, aclara protocolos de excepción y debida diligencia.
-        </div>
-      </div>
-
-      <!-- CIO -->
-      <div class="role-quad-card">
-        <div class="role-badge-tag">CIO // GOBERNANZA DE IA Y TECNOLOGÍA</div>
-        <h3 style="color:#fff; font-size:17px; margin-bottom:8px;">Tecnología y Gobernanza de IA</h3>
-        <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
-          Explorar supervisión humana, alcance de la automatización y verificación de recomendaciones de IA.
-        </p>
-        <div class="role-dynamic-context" id="ctx-cio">
-          Frente a la situación elegida, examina la supervisión humana y los límites de la automatización.
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin:20px 0;">
-      <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="openModal('modal-p04')">
-        🔍 Abrir profundización P04: Preguntas frecuentes detalladas por rol
-      </button>
-    </div>
-
-    <div class="page-footer-nav">
-      <div class="page-nav-left">
-        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="goToPage('b03')">
-          ← Anterior: Protocolo PARA
-        </button>
-      </div>
-      <div class="page-nav-right">
-        <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b06')">
-          5: Formas de comenzar ➔
-        </button>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- ========================================================================
-       PÁGINA 5 (B06): FORMAS DE COMENZAR
+       PÁGINA 4 (B06): FORMAS DE COMENZAR
        ======================================================================== -->
   <section class="brief-page" id="page-b06">
-    <!-- CABECERA DEL BLOQUE -->
+    <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag">
         <span class="block-id-dot"></span>
-        <span>BLOQUE 5 · FORMAS DE COMENZAR</span>
+        <span>SECCIÓN 4 · FORMAS DE COMENZAR</span>
       </div>
       <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Pregunta que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿Qué podríamos hacer juntos?»</span>
+        <span class="block-visitor-q-label">Pregunta que responde esta sección:</span>
+        <span class="block-visitor-q-text">"¿Qué podríamos hacer juntos?"</span>
       </div>
     </div>
 
-    <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
+    <!-- CONSOLA DE FARO COMPACTA -->
+    <div class="faro-console faro-console-compact">
       <div class="faro-avatar-box">
         <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
         <div class="faro-avatar-dot"></div>
@@ -4010,23 +3901,33 @@
       <div class="faro-console-body">
         <div class="faro-console-header">
           <span class="faro-console-name">FARO // Arquitectura de Oferta</span>
-          <span class="faro-console-tag">ETAPA 5 · TRES PUNTOS DE ENTRADA</span>
+          <span class="faro-console-tag">ETAPA 4 · TRES PUNTOS DE ENTRADA</span>
         </div>
-        <p class="faro-console-speech" id="faro-speech-b06">
-          «Cada organización tiene un nivel de madurez y urgencia diferente. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?»
+        <p class="faro-console-speech" id="faro-speech-b06" style="margin-bottom:0;">
+          "Cada organización tiene un nivel de madurez y urgencia diferente. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?"
         </p>
-        <div class="faro-direct-question">
-          <span class="faro-q-icon">💬</span>
-          <span id="faro-q-b06">¿Cuál de estos tres puntos de partida se adapta mejor a tu momento actual?</span>
-        </div>
       </div>
     </div>
 
-    <div style="margin:20px 0;">
-      <h2 style="font-size:22px; color:#fff; margin-bottom:10px;">Una ruta de aprendizaje que puede crecer contigo</h2>
-      <p style="color:var(--text-muted); font-size:15px; line-height:1.6;">
+    <!-- TÍTULO Y SUBTÍTULO DE LA SECCIÓN -->
+    <div style="margin:20px 0 16px 0;">
+      <h2 style="font-size:22px; color:#fff; margin-bottom:8px;">Una ruta de aprendizaje que puede crecer contigo</h2>
+      <p style="color:var(--text-muted); font-size:15px; line-height:1.6; margin:0;">
         Estas son opciones iniciales, no un catálogo cerrado ni un diagnóstico prefabricado. Conversemos para entender tu contexto y diseñar una propuesta a medida.
       </p>
+    </div>
+
+    <!-- NOTA PREVIA A LAS OPCIONES CON BORDE DINÁMICO, FONDO PARA Y PREGUNTA SITUACIONAL -->
+    <div class="curiosity-door-box" style="margin: 16px 0 20px 0;">
+      <div class="curiosity-box-inner" style="padding: 14px 18px;">
+        <p style="margin: 0 0 10px 0; color: #ffffff; font-size: 13.5px; line-height: 1.5; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);">
+          <em>IMPORTANTE:</em> Desarrollar habilidades de toma de decisiones que se sostengan en el tiempo requiere de un proceso de entrenamiento constante. Una sola sesión o momento de conversación y entrenamiento no puede generar cambios profundos y sostenibles, sin embargo sí puede activar conversaciones y elementos de atención.
+        </p>
+        <div class="faro-direct-question" style="padding: 8px 12px; font-size: 13px; background: rgba(0, 216, 255, 0.08); border-color: rgba(0, 216, 255, 0.32);">
+          <span class="faro-q-icon" style="font-size: 16px;">💬</span>
+          <span id="faro-q-b06">¿Cuál de estos tres puntos de partida se adapta mejor a tu momento actual?</span>
+        </div>
+      </div>
     </div>
 
     <!-- TRES TIERS EN TARJETAS DE TERMINAL (CANÓNICOS) -->
@@ -4036,28 +3937,28 @@
         <div>
           <div class="tier-chip">OPCIÓN 1 · ABRIR LA CONVERSACIÓN</div>
           <h3>Keynote o sesión interactiva</h3>
-          <div class="tier-duration-badge">⏱ Sesión participativa · Presencial / Virtual</div>
+          <div class="tier-duration-badge">⏱ Sesión de entre 1 y 2 horas · Presencial / Virtual</div>
           <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
             Abrir la conversación. Una experiencia participativa para entender qué ocurre antes de una decisión de ciberseguridad en la era de la IA.
           </p>
         </div>
-        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="goToPage('b08')">
-          Consultar sesión ➔
+        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="openModal('modal-scope-opt1')">
+          Alcance de esta opción ➔
         </button>
       </div>
 
       <!-- TIER 2 -->
       <div class="tier-display-card" style="border-color:var(--cyan); box-shadow:0 0 20px rgba(0,216,255,0.15);">
         <div>
-          <div class="tier-chip" style="color:var(--cyan);">OPCIÓN 2 · PRACTICAR DECISIONES</div>
+          <div class="tier-chip" style="color:var(--cyan);">OPCIÓN 2 · ENTRENAR DECISIONES</div>
           <h3>Experiencia inmersiva</h3>
-          <div class="tier-duration-badge">⏱ 4 u 8 horas · Práctica guiada</div>
+          <div class="tier-duration-badge">⏱ 4 a 8 horas · Práctica guiada</div>
           <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
-            Practicar. Situaciones simuladas, Protocolo PARA y conversación reflexiva para observar alternativas y criterios de acción en equipo.
+            Entrenar. Situaciones simuladas, Protocolo PARA y conversación reflexiva para observar alternativas y criterios de acción en equipo.
           </p>
         </div>
-        <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="goToPage('b08')">
-          Agendar experiencia inmersiva ➔
+        <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="openModal('modal-scope-opt2')">
+          Alcance de esta opción ➔
         </button>
       </div>
 
@@ -4066,23 +3967,33 @@
         <div>
           <div class="tier-chip">OPCIÓN 3 · PROFUNDIZAR A MEDIDA</div>
           <h3>Programa extendido</h3>
-          <div class="tier-duration-badge">⏱ 16 horas o más · Ruta formativa</div>
+          <div class="tier-duration-badge">⏱ 16+ horas · Ruta formativa</div>
           <p style="font-size:13.5px; color:var(--text-muted); line-height:1.5;">
             Profundizar. Una ruta formativa de mayor alcance, diseñada a medida según las decisiones y capacidades que la organización quiera trabajar.
           </p>
         </div>
-        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="goToPage('b08')">
-          Diseñar ruta a medida ➔
+        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="openModal('modal-scope-opt3')">
+          Alcance de esta opción ➔
         </button>
       </div>
     </div>
 
+    <!-- NOTA DE VALOR AGREGADO (PROCESO VIVO Y APROXIMADAMENTE 25 PERSONAS) -->
+    <div class="warning-risk-box" style="margin-top: 14px; margin-bottom: 18px; padding: 14px 18px; background: rgba(18, 9, 3, 0.75); border: 1px solid rgba(255, 140, 0, 0.35);">
+      <div class="warning-risk-header" style="font-size: 10.5px; margin-bottom: 6px;">
+        <span>💡 APRENDIZAJE VIVO · CONDICIÓN FORMATIVA</span>
+      </div>
+      <p class="warning-risk-text" style="font-size: 13.5px; line-height: 1.5; margin-bottom: 10px;">
+        El valor distintivo de FARO reside en concebir el aprendizaje como un proceso vivo: las decisiones e interacciones reales de cada sesión orientan la ruta formativa en tiempo real. Por ello, los grupos se limitan a un máximo aproximado de 25 participantes, privilegiando la deliberación crítica sobre cualquier dinámica puramente magistral.
+      </p>
+      <div style="border-top: 1px solid rgba(255, 181, 71, 0.2); padding-top: 8px; font-size: 12.5px; color: var(--amber); line-height: 1.45;">
+        <strong>NOTA:</strong> FARO es un proceso de formación y aprendizaje que requiere de guía y facilitación, no es –actualmente– un producto que se entregue por licenciamiento o modelos similares de SaaS.
+      </div>
+    </div>
+
     <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin:20px 0;">
-      <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="openModal('modal-p05')">
-        🔍 Comparar opciones y 5 preguntas para empezar (P05)
-      </button>
       <button type="button" class="btn-detroit btn-detroit-accent btn-detroit-sm" onclick="goToPage('b07')">
-        ★ Ver qué sustenta el enfoque (Bonus Track) ➔
+        ★ Qué soporta a FARO (Bonus track) ➔
       </button>
     </div>
 
@@ -4094,7 +4005,7 @@
       </div>
       <div class="page-nav-right">
         <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b08')">
-          Conversemos sobre tu organización (B08) ➔
+          Conversemos sobre tu organización ➔
         </button>
       </div>
     </div>
@@ -4104,130 +4015,235 @@
        PÁGINA 6 (B07 - BONUS TRACK): FUNDAMENTOS Y LÍMITES
        ======================================================================== -->
   <section class="brief-page" id="page-b07">
-    <!-- CABECERA DEL BLOQUE -->
+    <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag" style="color:var(--amber);">
         <span class="block-id-dot" style="background:var(--amber); box-shadow:0 0 8px var(--amber);"></span>
-        <span>BLOQUE 6 (BONUS TRACK) · LOS FUNDAMENTOS DETRÁS DE FARO</span>
+        <span>BONUS TRACK · LOS FUNDAMENTOS DETRÁS DE FARO</span>
       </div>
       <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Pregunta que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿En qué se apoya esta propuesta?»</span>
+        <span class="block-visitor-q-label">Pregunta que responde esta sección:</span>
+        <span class="block-visitor-q-text">"¿En qué se apoya esta propuesta?"</span>
       </div>
     </div>
 
     <div class="bonus-track-header">
       <div class="bonus-track-icon">★</div>
       <div>
-        <h4 style="color:var(--amber); margin-bottom:2px;">BONUS TRACK · FUNDAMENTOS Y LÍMITES EPISTÉMICOS</h4>
+        <h4 style="color:var(--amber); margin-bottom:2px;">BONUS TRACK · EQUIPO, PERSPECTIVAS Y FUNDAMENTOS</h4>
         <p style="font-size:13px; color:var(--text-muted); margin:0;">
-          Transparencia metodológica: ciencia del comportamiento, debida diligencia y lo que FARO no promete.
+          Metodología basada en evidencia: ciencias del comportamiento, gamificación formativa y ciberseguridad centrada en las personas.
         </p>
       </div>
     </div>
 
-    <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
+    <!-- CONSOLA DE FARO COMPACTA -->
+    <div class="faro-console faro-console-compact">
       <div class="faro-avatar-box">
         <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
         <div class="faro-avatar-dot" style="background:var(--amber); box-shadow:0 0 8px var(--amber);"></div>
       </div>
       <div class="faro-console-body">
         <div class="faro-console-header">
-          <span class="faro-console-name">FARO // Límites del Enfoque</span>
+          <span class="faro-console-name">FARO // Perspectiva y Enfoque</span>
           <span class="faro-console-tag" style="color:var(--amber);">RIGOR Y HONESTIDAD CIENTÍFICA</span>
         </div>
-        <p class="faro-console-speech" id="faro-speech-b07">
-          «FARO es una propuesta formativa rigurosa, no una píldora mágica. No prometemos 'cero incidentes' ni pretendemos sustituir los controles técnicos de tu infraestructura. Nuestro foco es la toma de decisiones humana bajo presión.»
+        <p class="faro-console-speech" id="faro-speech-b07" style="margin-bottom:0;">
+          "FARO es una propuesta formativa rigurosa, no una promesa simplista de infalibilidad. No ofrecemos 'cero incidentes' ni pretendemos reemplazar los controles técnicos de tu organización. Nuestro foco es entrenar la toma de decisiones humanas a través de las ciencias del comportamiento y la neurociencia cognitiva, articulando dinámicas de aprendizaje basadas en el juego y respaldadas por la investigación continua en ciberseguridad e Inteligencia Artificial."
         </p>
-        <div class="faro-direct-question">
-          <span class="faro-q-icon">💬</span>
-          <span id="faro-q-b07">¿Qué tipo de rigor y evidencia de aprendizaje necesita tu organización antes de adoptar un programa?</span>
+      </div>
+    </div>
+
+    <!-- 1. LOS TRES PILARES INTERDISCIPLINARIOS (TARJETAS VOLTEABLES EN 3D) -->
+    <div style="margin:28px 0 12px 0;">
+      <h2 style="font-size:22px; color:#fff; margin-bottom:8px;">Los tres pilares detrás de FARO</h2>
+      <p style="color:var(--text-muted); font-size:15px; line-height:1.6; margin:0;">
+        Detrás de la construcción de FARO como propuesta metodológica de aprendizaje basada en la evidencia hay una perspectiva y un equipo interdisciplinario que se posiciona en tres pilares esenciales (toca cada tarjeta para voltearla):
+      </p>
+    </div>
+
+    <div class="faro-pillars-grid">
+      <!-- PILAR 1: CIENCIAS DEL COMPORTAMIENTO -->
+      <div class="pillar-card-wrapper pillar-theme-purple" onclick="flipPillarCard(this, 'purple')">
+        <div class="pillar-card-inner">
+          <!-- CARA FRONTAL -->
+          <div class="pillar-card-face pillar-card-front">
+            <div class="cyber-texture-bg"></div>
+            <div class="pillar-card-front-icon">🧠</div>
+            <div class="pillar-card-front-title">Ciencias del comportamiento</div>
+            <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+          </div>
+          <!-- CARA TRASERA -->
+          <div class="pillar-card-face pillar-card-back">
+            <div class="pillar-card-back-badge">PILAR 01 · COGNICIÓN Y DECISIÓN</div>
+            <h4>Ciencias del comportamiento</h4>
+            <p>
+              Explica cómo decidimos realmente: dónde falla la atención y cómo entrenar la deliberación bajo presión. Respaldado por investigación en neurociencia cognitiva y factores humanos para diseñar habilidades transferibles con evidencia.
+            </p>
+            <span class="flip-hint-badge" style="align-self:center; margin-top:8px;">VOLTEAR ↩</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 2: GAMIFICACIÓN -->
+      <div class="pillar-card-wrapper pillar-theme-cyan" onclick="flipPillarCard(this, 'cyan')">
+        <div class="pillar-card-inner">
+          <!-- CARA FRONTAL -->
+          <div class="pillar-card-face pillar-card-front">
+            <div class="cyber-texture-bg"></div>
+            <div class="pillar-card-front-icon">🎮</div>
+            <div class="pillar-card-front-title">Gamificación vivencial</div>
+            <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+          </div>
+          <!-- CARA TRASERA -->
+          <div class="pillar-card-face pillar-card-back">
+            <div class="pillar-card-back-badge">PILAR 02 · DINÁMICAS FORMATIVAS</div>
+            <h4>Gamificación vivencial</h4>
+            <p>
+              Motor de la experiencia práctica: retroalimentación inmediata, vivencia emocional y consecuencias observables en el entorno. Crea un espacio seguro donde el error es el motor del aprendizaje y nunca un motivo de juicio o culpa.
+            </p>
+            <span class="flip-hint-badge" style="align-self:center; margin-top:8px;">VOLTEAR ↩</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PILAR 3: CIBERSEGURIDAD -->
+      <div class="pillar-card-wrapper pillar-theme-green" onclick="flipPillarCard(this, 'green')">
+        <div class="pillar-card-inner">
+          <!-- CARA FRONTAL -->
+          <div class="pillar-card-face pillar-card-front">
+            <div class="cyber-texture-bg"></div>
+            <div class="pillar-card-front-icon">🛡️</div>
+            <div class="pillar-card-front-title">Ciberseguridad y factor humano</div>
+            <span class="flip-hint-badge">VOLTEAR TARJETA 🔄</span>
+          </div>
+          <!-- CARA TRASERA -->
+          <div class="pillar-card-face pillar-card-back">
+            <div class="pillar-card-back-badge">PILAR 03 · PARADIGMA ACTUAL</div>
+            <h4>Ciberseguridad y factor humano</h4>
+            <p>
+              Conexión directa con las amenazas asistidas por IA. Trasciende la seguridad puramente tecnológica para instalar criterio y juicio crítico en cualquier rol: habilidades esenciales tanto para la organización como para la vida digital cotidiana.
+            </p>
+            <span class="flip-hint-badge" style="align-self:center; margin-top:8px;">VOLTEAR ↩</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div style="margin:20px 0;">
-      <h2 style="font-size:22px; color:#fff; margin-bottom:10px;">Los fundamentos detrás de FARO</h2>
-      <p style="color:var(--text-muted); font-size:15px; line-height:1.6;">
+    <!-- 2. EL EQUIPO INTERDISCIPLINARIO -->
+    <div style="margin:36px 0 12px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <span style="font-family:var(--font-mono); font-size:11px; color:var(--cyan); letter-spacing:1.2px; font-weight:700;">EQUIPO DE DISEÑO &amp; FACILITACIÓN</span>
+      </div>
+      <h2 style="font-size:22px; color:#fff; margin-bottom:8px;">Las perspectivas detrás de la propuesta</h2>
+      <p style="color:var(--text-muted); font-size:15px; line-height:1.6; margin:0;">
+        Conoce a los creadores de FARO, uniendo investigación comportamental, diseño lúdico y liderazgo en seguridad estratégica:
+      </p>
+    </div>
+
+    <div class="faro-team-grid">
+      <!-- CLAUDIA GÓMEZ -->
+      <div class="faro-team-card">
+        <div class="faro-team-avatar-wrapper">
+          <img src="assets/images/claudia_avatar.jpg" alt="Claudia Gómez" class="faro-team-avatar-img">
+        </div>
+        <div class="faro-team-name">Claudia Gómez</div>
+        <p class="faro-team-role">
+          Referente regional en innovación en la formación y desarrollo de habilidades para la ciberseguridad.
+        </p>
+      </div>
+
+      <!-- JAVIER VELÁSQUEZ -->
+      <div class="faro-team-card">
+        <div class="faro-team-avatar-wrapper">
+          <img src="assets/images/javier_avatar.jpg" alt="Javier Velásquez" class="faro-team-avatar-img">
+        </div>
+        <div class="faro-team-name">Javier Velásquez</div>
+        <p class="faro-team-role">
+          Referente regional de gamificación y diseño de juegos como herramienta de motivación y aprendizaje humanos.
+        </p>
+      </div>
+
+      <!-- DAVID CASTAÑEDA -->
+      <div class="faro-team-card">
+        <div class="faro-team-avatar-wrapper">
+          <img src="assets/images/dave_avatar.jpg" alt="David Castañeda" class="faro-team-avatar-img">
+        </div>
+        <div class="faro-team-name">David Castañeda</div>
+        <p class="faro-team-role">
+          Especialista en ciencias del comportamiento y neurociencia cognitiva enfocadas en el desarrollo de habilidades.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3. BASES DE INVESTIGACIÓN Y HONESTIDAD EPISTÉMICA (DESPLEGABLES ESTILO SECCIÓN 2) -->
+    <div style="margin:36px 0 16px 0;">
+      <h3 style="font-size:19px; color:#fff; margin-bottom:10px;">Bases de investigación y honestidad sobre la evidencia</h3>
+      <p style="color:var(--text-muted); font-size:14.5px; line-height:1.6; margin:0 0 14px 0;">
         La propuesta dialoga con investigación sobre ingeniería social, factores humanos, decisiones bajo presión, aprendizaje y colaboración humano–IA. Estas bases ayudan a comprender el problema y orientan el diseño de la experiencia.
       </p>
-      <div style="background:rgba(255,181,71,0.06); border-left:3px solid var(--amber); padding:12px 18px; border-radius:6px; font-size:14.5px; color:var(--text-main); margin:14px 0;">
+      <div style="background:rgba(255,181,71,0.06); border-left:3px solid var(--amber); padding:12px 18px; border-radius:6px; font-size:14px; color:var(--text-main); margin-bottom:20px;">
         FARO es una propuesta nueva. Todavía no contamos con evidencia suficiente para afirmar que reduzca incidentes, produzca transferencia duradera o tenga efectividad longitudinal. Queremos construir y evaluar esa evidencia con honestidad.
       </div>
-    </div>
 
-    <!-- RECUADRO PÚBLICO DE ATENCIÓN (§5 DEL BLUEPRINT) -->
-    <div style="background:var(--surface-card); border:1px dashed var(--border-cyan); border-radius:14px; padding:28px; margin:24px 0;">
-      <h4 style="color:var(--amber); margin-bottom:12px; font-size:16px;">
-        📌 Recuadro Público de Atención: 6 verdades sobre el juicio humano frente a la IA
-      </h4>
-      <div class="accordion-box">
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>1. La inteligencia artificial no vuelve indistinguible todo engaño</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            Un dominio extraño u otra señal externa sigue siendo relevante y debe revisarse. La IA no elimina el valor de los controles técnicos.
+      <!-- TABLA COMPARATIVA DESPLEGABLE: LO QUE PODEMOS AFIRMAR VS LO QUE NO -->
+      <div class="comparison-hud-container" style="margin: 20px 0;">
+        <div class="comparison-hud-grid">
+          <!-- PANEL IZQUIERDO: LO QUE PODEMOS AFIRMAR -->
+          <div class="comp-panel comp-panel-affirm is-collapsed" id="comp-panel-b07-affirm">
+            <div class="comp-panel-header" onclick="toggleCompPanel('comp-panel-b07-affirm')">
+              <div class="comp-panel-header-left">
+                <span class="comp-icon" style="color:var(--green); margin-top:0;">✓</span>
+                <span class="comp-panel-title">Lo que podemos afirmar</span>
+              </div>
+              <span class="comp-toggle-arrow">▼</span>
+            </div>
+            <div class="comp-panel-body-wrapper">
+              <div class="comp-panel-body-inner">
+                <div class="comp-panel-body">
+                  <p style="font-size:13.5px; color:#ffffff; line-height:1.6; margin:0;">
+                    Un proceso formativo basado en evidencia sobre el desarrollo de habilidades para mejorar la toma de decisiones seguras en ciberseguridad, bajo un paradigma actual de lo que implica la ciberseguridad y el desarrollo del factor humano.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL DERECHO: LO QUE NO PODEMOS AFIRMAR -->
+          <div class="comp-panel comp-panel-limits is-collapsed" id="comp-panel-b07-limits">
+            <div class="comp-panel-header" onclick="toggleCompPanel('comp-panel-b07-limits')">
+              <div class="comp-panel-header-left">
+                <span class="comp-icon" style="color:var(--amber); margin-top:0;">✕</span>
+                <span class="comp-panel-title">Lo que no podemos afirmar</span>
+              </div>
+              <span class="comp-toggle-arrow">▼</span>
+            </div>
+            <div class="comp-panel-body-wrapper">
+              <div class="comp-panel-body-inner">
+                <div class="comp-panel-body">
+                  <ul class="comp-list">
+                    <li class="comp-item">
+                      <span class="comp-icon" style="color:var(--amber);">✕</span>
+                      <span>No prometemos reducción garantizada de incidentes ni inmunidad ante el engaño.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon" style="color:var(--amber);">✕</span>
+                      <span>No presentamos las Puertas de atención como un test validado ni como rasgos fijos de personalidad.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon" style="color:var(--amber);">✕</span>
+                      <span>No decimos que el awareness previo sea inútil: es insuficiente cuando se trata como intervención completa.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon" style="color:var(--amber);">✕</span>
+                      <span>El framework, FARO y su taxonomía integrada continúan en proceso de validación.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>2. La urgencia, la confianza y la curiosidad son condiciones humanas, no fallas personales</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            El engaño no triunfa porque la gente sea ignorante o negligente, sino porque explota su disposición positiva a colaborar y resolver problemas con rapidez.
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>3. El Protocolo PARA orienta decisiones, pero no garantiza infalibilidad</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            PARA ayuda a orientar una decisión deliberada; no es una garantía matemática de seguridad ni una prueba de habilidad clínica.
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>4. La IA puede apoyar la reflexión y la verificación</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            Utilizar herramientas de IA aliada como sparring o apoyo de verificación fortalece el análisis, pero la agencia sigue en manos humanas.
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>5. La formación y los cambios organizacionales se complementan</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            Una experiencia formativa no sustituye los controles de seguridad, las responsabilidades de liderazgo, una auditoría ni la gobernanza de IA.
-          </div>
-        </div>
-
-        <div class="acc-item">
-          <button class="acc-btn" onclick="toggleAcc(this)">
-            <span>6. La agencia humana sigue siendo irremplazable</span>
-            <span>+</span>
-          </button>
-          <div class="acc-content">
-            Ningún software ni sistema automatizado puede sustituir la capacidad de una persona para pausar y verificar por un canal independiente antes de actuar.
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:16px;">
-        <button type="button" class="btn-detroit btn-detroit-sm btn-detroit-outline" onclick="openModal('modal-p06')">
-          🔍 Abrir profundización P06: Fundamentos de investigación y límites del enfoque
-        </button>
       </div>
     </div>
 
@@ -4239,30 +4255,30 @@
       </div>
       <div class="page-nav-right">
         <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b08')">
-          Ir a Iniciar Conversación (B08) ➔
+          Ir a Iniciar Conversación ➔
         </button>
       </div>
     </div>
   </section>
 
   <!-- ========================================================================
-       PÁGINA 7 (B08): INICIAR LA CONVERSACIÓN
+       PÁGINA 5 (B08): INICIAR LA CONVERSACIÓN
        ======================================================================== -->
   <section class="brief-page" id="page-b08">
-    <!-- CABECERA DEL BLOQUE -->
+    <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag">
         <span class="block-id-dot"></span>
-        <span>BLOQUE 7 · INICIAR LA CONVERSACIÓN</span>
+        <span>SECCIÓN 5 · INICIAR LA CONVERSACIÓN</span>
       </div>
       <div class="block-visitor-q-box">
-        <span class="block-visitor-q-label">Pregunta que responde este bloque:</span>
-        <span class="block-visitor-q-text">«¿Qué hago ahora?»</span>
+        <span class="block-visitor-q-label">Pregunta que responde esta sección:</span>
+        <span class="block-visitor-q-text">"¿Qué hago ahora?"</span>
       </div>
     </div>
 
-    <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
+    <!-- CONSOLA DE FARO COMPACTA -->
+    <div class="faro-console faro-console-compact">
       <div class="faro-avatar-box">
         <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
         <div class="faro-avatar-dot"></div>
@@ -4272,28 +4288,14 @@
           <span class="faro-console-name">FARO // Cierre de Recorrido</span>
           <span class="faro-console-tag">TERMINAL DE ENLACE DIRECTO</span>
         </div>
-        <p class="faro-console-speech" id="faro-speech-b08">
-          «Has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización.»
+        <p class="faro-console-speech" id="faro-speech-b08" style="margin-bottom:0;">
+          "Has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización."
         </p>
-        <div class="faro-direct-question">
-          <span class="faro-q-icon">💬</span>
-          <span id="faro-q-b08">¿Empezamos por WhatsApp o prefieres escribirle un correo directo a Claudia Gómez?</span>
-        </div>
       </div>
-    </div>
-
-    <!-- 1. CONTENEDOR INTERMEDIO NARANJA (ESTILO JUEGO DETROIT) -->
-    <div class="orange-cyber-box">
-      <div class="orange-box-header">
-        <span class="orange-mono-tag">⚡ ENFOQUE FORMATIVO FARO // SÍNTESIS CANÓNICA</span>
-      </div>
-      <p class="orange-box-text">
-        FARO propone aprender y desarrollar capacidades mediante juego, simulación y práctica para decidir con mayor criterio ante situaciones de ciberseguridad, exista o no un ataque. La IA puede facilitar ataques más plausibles y también servir de apoyo para pensar y verificar, manteniendo la decisión bajo responsabilidad humana. Se entrena la pausa, la atención a lo que ocurre en nosotros y en el entorno, el análisis de alternativas, la verificación y la respuesta. También se examinan las condiciones de la organización y la tecnología que hacen más fácil o más difícil decidir bien.
-      </p>
     </div>
 
     <div class="contact-terminal-box">
-      <span class="mono-tag" style="color:var(--cyan);">B08 · CONTACTO DIRECTO</span>
+      <span class="mono-tag" style="color:var(--cyan);">CONTACTO DIRECTO</span>
       <h2 style="font-size:clamp(22px, 3.5vw, 32px); color:#fff; margin:10px 0 16px 0;">
         Empecemos por la decisión que más importa en tu organización
       </h2>
@@ -4301,17 +4303,16 @@
         No necesitas escoger un formato ahora. Cuéntanos qué decisiones quieres fortalecer y qué las hace difíciles. Exploraremos si FARO tiene sentido para tu contexto y por dónde podríamos comenzar.
       </p>
 
-      <!-- 2. PRESENTACIÓN DE CLAUDIA (CON FOTO CUADRADA DEL JUEGO Y PRESENTACIÓN DE FARO) -->
+      <!-- 2. PRESENTACIÓN DE CLAUDIA EN PRIMERA PERSONA -->
       <div class="claudia-presentation-card">
         <div class="claudia-avatar-wrapper">
-          <img src="assets/images/claudia_avatar.jpg" alt="Claudia Gómez" class="claudia-avatar-img">
+          <img src="assets/images/claudia_avatar.jpg" alt="Claudia" class="claudia-avatar-img">
           <div class="claudia-status-dot"></div>
         </div>
         <div class="claudia-presentation-info">
           <div class="claudia-presentation-tag">COORDINACIÓN DIRECTA // 4SOLUCIONES</div>
-          <div class="claudia-presentation-name">Claudia Gómez</div>
-          <p class="claudia-presentation-speech">
-            «Ella es Claudia y podrá guiarte por este mundo. Escríbele y conversemos sobre el siguiente paso.»
+          <p class="claudia-presentation-speech" style="font-size:14.5px; margin:4px 0 0 0; line-height:1.5;">
+            "Hola, soy Claudia y podré guiarte por este mundo. Escríbeme y conversemos sobre el siguiente paso."
           </p>
         </div>
       </div>
@@ -4332,6 +4333,18 @@
       <!-- 3. MENOS DE 48 HORAS -->
       <div style="font-size:12.5px; color:var(--text-dim); margin-top:22px; font-family:var(--font-mono);">
         Atención personalizada · Respuesta en menos de 48 horas · Colombia y Latinoamérica
+      </div>
+    </div>
+
+    <!-- ENFOQUE FORMATIVO FARO CON FONDO DE TARJETAS PARA Y BORDE DINÁMICO (DEBAJO DEL CONTENEDOR PRINCIPAL) -->
+    <div class="curiosity-door-box" style="margin: 28px auto 0 auto; max-width: 760px; text-align: left;">
+      <div class="curiosity-box-inner" style="padding: 20px 24px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--cyan); letter-spacing:1px; margin-bottom:8px; font-weight:700;">
+          ⚡ ENFOQUE FORMATIVO FARO // SÍNTESIS CANÓNICA
+        </div>
+        <p style="margin: 0; color: #ffffff; font-size: 13.5px; line-height: 1.6; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);">
+          FARO propone aprender y desarrollar capacidades mediante juego, simulación y práctica para decidir con mayor criterio ante situaciones de ciberseguridad, exista o no un ataque. La IA puede facilitar ataques más plausibles y también servir de apoyo para pensar y verificar, manteniendo la decisión bajo responsabilidad humana. Se entrena la pausa, la atención a lo que ocurre en nosotros y en el entorno, el análisis de alternativas, la verificación y la respuesta. También se examinan las condiciones de la organización y la tecnología que hacen más fácil o más difícil decidir bien.
+        </p>
       </div>
     </div>
 
@@ -4420,79 +4433,127 @@
   <div class="modal-dialog">
     <button class="modal-close-btn" onclick="closeModal('modal-p01')">✕</button>
     <span class="mono-tag" style="color:var(--cyan);">PROFUNDIZACIÓN P01</span>
-    <h2 style="color:#fff; margin-top:6px;">¿Por qué FARO? Metáfora y propósito</h2>
-    <h3>1. Orientar la mirada antes de actuar</h3>
-    <p>Un faro ayuda a orientar la mirada cuando no todo es claro. Aquí la metáfora nos invita a observar qué capta nuestra atención, qué dejamos fuera y qué podemos comprobar antes de actuar. «Clic» nombra un momento reconocible: también puede tratarse de aceptar una instrucción por teléfono, conceder un permiso o dejar pasar una alerta.</p>
-    <h3>2. Las 9 Puertas de Atención (Attention Doors)</h3>
-    <p style="margin-bottom:8px;">
-      Las puertas describen nueve tipos de prioridad que el cerebro puede dar a un estímulo, dotándolo de relevancia subjetiva y llevándolo a disminuir la probabilidad de deliberación. Haz clic en cualquiera de ellas para conocer cómo opera:
-    </p>
+    <h2 style="color:#fff; margin-top:6px; margin-bottom:2px;">¿Por qué FARO? Metáfora y propósito</h2>
 
-    <!-- ESTRUCTURA CIBERNÉTICA DE 2 COLUMNAS (PUERTAS A LA IZQUIERDA, HAZ CYBER, DETALLE A LA DERECHA) -->
-    <div class="doors-cyber-container" id="doors-cyber-container">
-      <!-- COLUMNA IZQUIERDA: 9 PUERTAS EN 1 SOLA COLUMNA -->
-      <div class="doors-vertical-col" id="doors-buttons-grid">
-        <button type="button" class="door-pill-btn door-state-active active" data-door="identidad" data-color="#00D8FF" data-rgb="0, 216, 255" style="--door-color: #00D8FF; --door-rgb: 0, 216, 255;" onclick="selectDoorDetail('identidad', this)">
-          <span class="door-btn-label">1. Identidad</span>
-          <span class="door-btn-indicator">▶</span>
+    <!-- BARRA DE NAVEGACIÓN TIPO CARRUSEL -->
+    <div class="p01-carousel-nav">
+      <div class="p01-carousel-tabs">
+        <button type="button" class="p01-tab-btn active" id="p01-tab-1" onclick="setP01Slide(1)">
+          1. Metáfora y propósito
         </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="curiosidad" data-color="#FFB547" data-rgb="255, 181, 71" style="--door-color: #FFB547; --door-rgb: 255, 181, 71;" onclick="selectDoorDetail('curiosidad', this)">
-          <span class="door-btn-label">2. Curiosidad</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="responsabilidad" data-color="#A29BFE" data-rgb="162, 155, 254" style="--door-color: #A29BFE; --door-rgb: 162, 155, 254;" onclick="selectDoorDetail('responsabilidad', this)">
-          <span class="door-btn-label">3. Responsabilidad</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="justicia" data-color="#49F5C1" data-rgb="73, 245, 193" style="--door-color: #49F5C1; --door-rgb: 73, 245, 193;" onclick="selectDoorDetail('justicia', this)">
-          <span class="door-btn-label">4. Justicia</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="coherencia" data-color="#FF4D7A" data-rgb="255, 77, 122" style="--door-color: #FF4D7A; --door-rgb: 255, 77, 122;" onclick="selectDoorDetail('coherencia', this)">
-          <span class="door-btn-label">5. Coherencia</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="pertenencia" data-color="#00D8FF" data-rgb="0, 216, 255" style="--door-color: #00D8FF; --door-rgb: 0, 216, 255;" onclick="selectDoorDetail('pertenencia', this)">
-          <span class="door-btn-label">6. Pertenencia</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="proteccion" data-color="#A29BFE" data-rgb="162, 155, 254" style="--door-color: #A29BFE; --door-rgb: 162, 155, 254;" onclick="selectDoorDetail('proteccion', this)">
-          <span class="door-btn-label">7. Protección</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="perdida" data-color="#FFB547" data-rgb="255, 181, 71" style="--door-color: #FFB547; --door-rgb: 255, 181, 71;" onclick="selectDoorDetail('perdida', this)">
-          <span class="door-btn-label">8. Pérdida</span>
-          <span class="door-btn-indicator"></span>
-        </button>
-        <button type="button" class="door-pill-btn door-state-unvisited" data-door="conveniencia" data-color="#49F5C1" data-rgb="73, 245, 193" style="--door-color: #49F5C1; --door-rgb: 73, 245, 193;" onclick="selectDoorDetail('conveniencia', this)">
-          <span class="door-btn-label">9. Conveniencia/Rutina</span>
-          <span class="door-btn-indicator"></span>
+        <button type="button" class="p01-tab-btn" id="p01-tab-2" onclick="setP01Slide(2)">
+          2. Las 9 Puertas de Atención
         </button>
       </div>
+      <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-dim);" id="p01-slide-counter">
+        Página 1 de 2
+      </span>
+    </div>
 
-      <!-- HAZ LÁSER CIBERNÉTICO QUE CONECTA LA PUERTA CON EL DETALLE -->
-      <div class="cyber-beam-laser" id="cyber-beam-laser"></div>
+    <!-- PÁGINA 1: ORIENTAR LA MIRADA ANTES DE ACTUAR -->
+    <div class="p01-carousel-slide active" id="p01-slide-1">
+      <div class="p01-slide1-card">
+        <h3 style="margin-top:0; color:var(--cyan); font-size:16px;">1. Orientar la mirada antes de actuar</h3>
+        <p class="p01-slide1-lead">
+          Un faro ayuda a orientar la mirada cuando no todo es claro. Aquí la metáfora nos invita a observar qué capta nuestra atención, qué dejamos fuera y qué podemos comprobar antes de actuar.
+        </p>
+        <div class="p01-slide1-highlight">
+          <strong style="color:#fff;">"Clic"</strong> nombra un momento reconocible: también puede tratarse de aceptar una instrucción por teléfono, conceder un permiso o dejar pasar una alerta.
+        </div>
+      </div>
 
-      <!-- COLUMNA DERECHA: CAJA DINÁMICA DE DESCRIPCIÓN CANÓNICA -->
-      <div class="door-detail-box" id="door-detail-box" style="--door-accent-color: #00D8FF; --door-accent-glow: rgba(0, 216, 255, 0.45);">
-        <div class="door-detail-scanline"></div>
-        <div class="door-detail-status-pill" id="door-detail-status-pill">CANON FARO // DEC-002</div>
-        <div class="door-detail-title" id="door-detail-title"><span class="door-detail-title-icon">🚪</span> 1. Identidad</div>
-        <div class="door-detail-desc" id="door-detail-desc">
-          <strong>Prioridad funcional:</strong> Quién creo ser, los roles que ocupo, mis valores y cómo deseo ser reconocido.
-        </div>
-        <div class="door-detail-foco-wrapper">
-          <div class="door-detail-foco-label">⚡ Foco Operativo:</div>
-          <p class="door-detail-foco" id="door-detail-foco">
-            Se activa cuando una solicitud interpela la competencia profesional, la reputación, el estatus o el compromiso con el propio rol dentro de la organización.
-          </p>
-        </div>
+      <div class="p01-slide-footer">
+        <span style="font-size:12.5px; color:var(--text-muted);">
+          Explora los mecanismos cognitivos que operan en las decisiones cotidianas:
+        </span>
+        <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="setP01Slide(2)">
+          Ver las 9 Puertas de Atención ➔
+        </button>
       </div>
     </div>
 
-    <!-- NOTA SOBRE LAS PUERTAS -->
-    <div style="background:rgba(7, 19, 31, 0.7); border:1px dashed var(--border-cyan); border-radius:8px; padding:12px 16px; margin-top:16px; font-size:12.5px; color:var(--text-muted); line-height:1.5;">
-      <strong style="color:var(--cyan);">Nota:</strong> Las puertas no son emociones, sesgos, defectos personales ni etiquetas de tipos de ataque. Son mecanismos de atención que también operan en situaciones legítimas y cotidianas.
+    <!-- PÁGINA 2: LAS 9 PUERTAS DE ATENCIÓN (ATTENTION DOORS) -->
+    <div class="p01-carousel-slide" id="p01-slide-2">
+      <h3 style="margin-top:2px;">2. Las 9 Puertas de Atención (Attention Doors)</h3>
+      <p style="margin-bottom:8px;">
+        Las puertas describen nueve tipos de prioridad que el cerebro puede dar a un estímulo, dotándolo de relevancia subjetiva y llevándolo a disminuir la probabilidad de deliberación. Haz clic en cualquiera de ellas para conocer cómo opera:
+      </p>
+
+      <!-- ESTRUCTURA CIBERNÉTICA DE 2 COLUMNAS (PUERTAS A LA IZQUIERDA, HAZ CYBER, DETALLE A LA DERECHA) -->
+      <div class="doors-cyber-container" id="doors-cyber-container">
+        <!-- COLUMNA IZQUIERDA: 9 PUERTAS EN 1 SOLA COLUMNA -->
+        <div class="doors-vertical-col" id="doors-buttons-grid">
+          <button type="button" class="door-pill-btn door-state-active active" data-door="identidad" data-color="#00D8FF" data-rgb="0, 216, 255" style="--door-color: #00D8FF; --door-rgb: 0, 216, 255;" onclick="selectDoorDetail('identidad', this)">
+            <span class="door-btn-label">1. Identidad</span>
+            <span class="door-btn-indicator">▶</span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="curiosidad" data-color="#FFB547" data-rgb="255, 181, 71" style="--door-color: #FFB547; --door-rgb: 255, 181, 71;" onclick="selectDoorDetail('curiosidad', this)">
+            <span class="door-btn-label">2. Curiosidad</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="responsabilidad" data-color="#A29BFE" data-rgb="162, 155, 254" style="--door-color: #A29BFE; --door-rgb: 162, 155, 254;" onclick="selectDoorDetail('responsabilidad', this)">
+            <span class="door-btn-label">3. Responsabilidad</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="justicia" data-color="#49F5C1" data-rgb="73, 245, 193" style="--door-color: #49F5C1; --door-rgb: 73, 245, 193;" onclick="selectDoorDetail('justicia', this)">
+            <span class="door-btn-label">4. Justicia</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="coherencia" data-color="#FF4D7A" data-rgb="255, 77, 122" style="--door-color: #FF4D7A; --door-rgb: 255, 77, 122;" onclick="selectDoorDetail('coherencia', this)">
+            <span class="door-btn-label">5. Coherencia</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="pertenencia" data-color="#00D8FF" data-rgb="0, 216, 255" style="--door-color: #00D8FF; --door-rgb: 0, 216, 255;" onclick="selectDoorDetail('pertenencia', this)">
+            <span class="door-btn-label">6. Pertenencia</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="proteccion" data-color="#A29BFE" data-rgb="162, 155, 254" style="--door-color: #A29BFE; --door-rgb: 162, 155, 254;" onclick="selectDoorDetail('proteccion', this)">
+            <span class="door-btn-label">7. Protección</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="perdida" data-color="#FFB547" data-rgb="255, 181, 71" style="--door-color: #FFB547; --door-rgb: 255, 181, 71;" onclick="selectDoorDetail('perdida', this)">
+            <span class="door-btn-label">8. Pérdida</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+          <button type="button" class="door-pill-btn door-state-unvisited" data-door="conveniencia" data-color="#49F5C1" data-rgb="73, 245, 193" style="--door-color: #49F5C1; --door-rgb: 73, 245, 193;" onclick="selectDoorDetail('conveniencia', this)">
+            <span class="door-btn-label">9. Conveniencia/Rutina</span>
+            <span class="door-btn-indicator"></span>
+          </button>
+        </div>
+
+        <!-- HAZ LÁSER CIBERNÉTICO QUE CONECTA LA PUERTA CON EL DETALLE -->
+        <div class="cyber-beam-laser" id="cyber-beam-laser"></div>
+
+        <!-- COLUMNA DERECHA: CAJA DINÁMICA DE DESCRIPCIÓN CANÓNICA -->
+        <div class="door-detail-box" id="door-detail-box" style="--door-accent-color: #00D8FF; --door-accent-glow: rgba(0, 216, 255, 0.45);">
+          <div class="door-detail-scanline"></div>
+          <div class="door-detail-status-pill" id="door-detail-status-pill">CANON FARO // DEC-002</div>
+          <div class="door-detail-title" id="door-detail-title"><span class="door-detail-title-icon">🚪</span> 1. Identidad</div>
+          <div class="door-detail-desc" id="door-detail-desc">
+            <strong>Prioridad funcional:</strong> Quién creo ser, los roles que ocupo, mis valores y cómo deseo ser reconocido.
+          </div>
+          <div class="door-detail-foco-wrapper">
+            <div class="door-detail-foco-label">⚡ Foco Operativo:</div>
+            <p class="door-detail-foco" id="door-detail-foco">
+              Se activa cuando una solicitud interpela la competencia profesional, la reputación, el estatus o el compromiso con el propio rol dentro de la organización.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTA SOBRE LAS PUERTAS -->
+      <div style="background:rgba(7, 19, 31, 0.7); border:1px dashed var(--border-cyan); border-radius:8px; padding:12px 16px; margin-top:14px; font-size:12.5px; color:var(--text-muted); line-height:1.5;">
+        <strong style="color:var(--cyan);">Nota:</strong> Las puertas no son emociones, sesgos, defectos personales ni etiquetas de tipos de ataque. Son mecanismos de atención que también operan en situaciones legítimas y cotidianas.
+      </div>
+
+      <div class="p01-slide-footer">
+        <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="setP01Slide(1)">
+          ← Volver a Metáfora y propósito
+        </button>
+        <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="closeModal('modal-p01')">
+          Cerrar ventana ✕
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -4504,7 +4565,7 @@
     <span class="mono-tag" style="color:var(--cyan);">PROFUNDIZACIÓN P02</span>
     <h2 style="color:#fff; margin-top:6px;">Más allá del correo e IA y plausibilidad</h2>
     <h3>1. Más allá del correo</h3>
-    <p>Una solicitud puede llegar por chat, voz, teléfono o una conversación habitual. La organización influye con sus procesos, tiempos, permisos y canales de verificación. Conviene preguntar tanto «¿qué señales podemos comprobar?» como «¿qué hace fácil o difícil hacerlo aquí?». Las fuentes específicas quedan sujetas a revisión documental en la Biblioteca FARO.</p>
+    <p>Una solicitud puede llegar por chat, voz, teléfono o una conversación habitual. La organización influye con sus procesos, tiempos, permisos y canales de verificación. Conviene preguntar tanto "¿qué señales podemos comprobar?" como "¿qué hace fácil o difícil hacerlo aquí?".</p>
     <h3>2. IA y plausibilidad</h3>
     <p>La IA puede reducir tiempo y esfuerzo para redactar, adaptar y escalar solicitudes plausibles. Esto no implica que todo engaño sea indetectable ni que la IA esté detrás de cada caso.</p>
   </div>
@@ -5252,20 +5313,6 @@
         : `¿En cuál de estos cuatro momentos sientes que las personas suelen precipitarse más en tu entorno de trabajo?`;
     }
 
-    // B05 - CUATRO RESPONSABILIDADES
-    const b05Speech = document.getElementById('faro-speech-b05');
-    if (b05Speech) {
-      b05Speech.innerHTML = name 
-        ? `«La seguridad de la información ya no puede resolverse solo dentro del departamento de TI, <strong>${name}</strong>. Una sola decisión compromete la operación, la cultura interna, el cumplimiento legal y la tecnología.»`
-        : `«La seguridad de la información ya no puede resolverse solo dentro del departamento de TI. Una sola decisión compromete la operación, la cultura interna, el cumplimiento legal y la tecnología.»`;
-    }
-    const b05Q = document.getElementById('faro-q-b05');
-    if (b05Q) {
-      b05Q.textContent = name 
-        ? `${name}, ¿desde qué responsabilidad lideras o acompañas las decisiones de seguridad en tu organización?`
-        : `¿Desde qué responsabilidad lideras o acompañas las decisiones de seguridad en tu organización?`;
-    }
-
     // B06 - FORMAS DE COMENZAR
     const b06Speech = document.getElementById('faro-speech-b06');
     if (b06Speech) {
@@ -5284,8 +5331,8 @@
     const b07Speech = document.getElementById('faro-speech-b07');
     if (b07Speech) {
       b07Speech.innerHTML = name 
-        ? `«<strong>${name}</strong>, FARO es una propuesta formativa rigurosa, no una píldora mágica. No prometemos 'cero incidentes' ni pretendemos sustituir los controles técnicos de tu infraestructura. Nuestro foco es la toma de decisiones humana bajo presión.»`
-        : `«FARO es una propuesta formativa rigurosa, no una píldora mágica. No prometemos 'cero incidentes' ni pretendemos sustituir los controles técnicos de tu infraestructura. Nuestro foco es la toma de decisiones humana bajo presión.»`;
+        ? `"<strong>${name}</strong>, FARO es una propuesta formativa rigurosa, no una promesa simplista de infalibilidad. No ofrecemos 'cero incidentes' ni pretendemos reemplazar los controles técnicos de tu organización. Nuestro foco es entrenar la toma de decisiones humanas a través de las ciencias del comportamiento y la neurociencia cognitiva, articulando dinámicas de aprendizaje basadas en el juego y respaldadas por la investigación continua en ciberseguridad e Inteligencia Artificial."`
+        : `"FARO es una propuesta formativa rigurosa, no una promesa simplista de infalibilidad. No ofrecemos 'cero incidentes' ni pretendemos reemplazar los controles técnicos de tu organización. Nuestro foco es entrenar la toma de decisiones humanas a través de las ciencias del comportamiento y la neurociencia cognitiva, articulando dinámicas de aprendizaje basadas en el juego y respaldadas por la investigación continua en ciberseguridad e Inteligencia Artificial."`;
     }
     const b07Q = document.getElementById('faro-q-b07');
     if (b07Q) {
