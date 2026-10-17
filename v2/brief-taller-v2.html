@@ -438,14 +438,14 @@
 
   /* CONSOLA DE DIÁLOGO DE FARO (GUÍA DIRECTO EN CADA PÁGINA) */
   .faro-console {
-    background: rgba(5, 14, 23, 0.92);
-    border: 1px solid var(--border-cyan);
+    background: linear-gradient(135deg, rgba(16, 48, 72, 0.96), rgba(12, 38, 58, 0.98));
+    border: 1px solid rgba(0, 216, 255, 0.38);
     border-left: 4px solid var(--cyan);
     border-radius: 14px;
     padding: 22px 24px;
     margin-bottom: 30px;
     display: flex; gap: 20px; align-items: flex-start;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     position: relative; overflow: hidden;
   }
   .faro-avatar-box {
@@ -491,8 +491,9 @@
   .faro-console.faro-console-compact {
     padding: 16px 20px;
     margin: 16px 0 24px 0;
-    background: rgba(11, 31, 42, 0.58);
-    border: 1px solid rgba(39, 74, 92, 0.65);
+    background: linear-gradient(135deg, rgba(16, 48, 72, 0.88), rgba(12, 38, 58, 0.92));
+    border: 1px solid rgba(0, 216, 255, 0.35);
+    border-left: 4px solid var(--cyan);
     border-radius: 12px;
   }
   .faro-console-compact .faro-avatar-box {
@@ -1011,6 +1012,7 @@
   }
   .comp-panel-body-inner {
     overflow: hidden;
+    min-height: 0;
   }
   .comp-panel-body {
     padding: 16px 20px 20px 20px;
@@ -2974,6 +2976,155 @@
     .faro-console { flex-direction: column; }
     .block-header-strip { flex-direction: column; align-items: flex-start; }
   }
+
+  /* ==========================================================================
+     ESTILOS AJUSTES SESIÓN LOCAL (TYPEWRITER, MODAL BIENVENIDA, FARO COLLAPSED)
+     ========================================================================== */
+  .typewriter-cursor {
+    display: inline-block;
+    color: var(--cyan);
+    font-weight: 700;
+    margin-left: 2px;
+    animation: typewriterBlink 0.7s infinite;
+  }
+  @keyframes typewriterBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* FARO CONSOLA RECOGIDA AL ENTRAR A PREGUNTAS */
+  .faro-console.collapsed {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* BOTÓN CONVERSEMOS SALIENTE CON BORDE DINÁMICO */
+  .btn-cyber-cta-conversemos {
+    max-width: 380px !important;
+    box-shadow: 0 0 25px rgba(0, 216, 255, 0.35), 0 8px 24px rgba(0,0,0,0.7) !important;
+  }
+  .btn-cyber-cta-conversemos .btn-cyber-travel-content {
+    padding: 12px 22px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+  }
+
+  /* MODAL DE BIENVENIDA VISITANTE */
+  #modal-welcome-visitor {
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 6, 12, 0.88);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  #modal-welcome-visitor.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .welcome-modal-card {
+    position: relative;
+    width: 90%;
+    max-width: 460px;
+    background: linear-gradient(135deg, rgba(11, 31, 42, 0.95), rgba(7, 19, 31, 0.98));
+    border: 1px solid var(--border-cyan);
+    border-radius: 18px;
+    padding: 32px 28px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.85), 0 0 30px rgba(0, 216, 255, 0.25);
+    transform: scale(0.92);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  #modal-welcome-visitor.active .welcome-modal-card {
+    transform: scale(1);
+  }
+  .welcome-modal-faro-avatar {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 16px auto;
+  }
+  .welcome-faro-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.4);
+  }
+  .welcome-faro-pulse {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1.5px solid var(--cyan);
+    animation: faroRingPulse 2s infinite ease-out;
+  }
+  .welcome-modal-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(0, 216, 255, 0.12);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .welcome-modal-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 10px 0;
+  }
+  .welcome-name-glow {
+    color: var(--cyan);
+    text-shadow: 0 0 12px rgba(0, 216, 255, 0.5);
+  }
+  .welcome-modal-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 24px 0;
+  }
+
+
+  /* BOTÓN CONVERSEMOS EN LA ESQUINA DERECHA DEL HUD CON BORDE DINÁMICO */
+  .btn-cyber-hud-conversemos {
+    width: auto !important;
+    max-width: fit-content !important;
+    padding: 2px !important;
+    border-radius: 9px !important;
+    box-shadow: 0 0 16px rgba(0, 216, 255, 0.45), 0 4px 10px rgba(0, 0, 0, 0.7) !important;
+    flex-shrink: 0 !important;
+  }
+  .btn-cyber-hud-conversemos .btn-cyber-travel-content {
+    padding: 6px 14px !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    border-radius: 7px !important;
+    letter-spacing: 0.5px !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    background: #040e1a !important;
+  }
+  .btn-cyber-hud-conversemos:hover .btn-cyber-travel-content {
+    background: #081d33 !important;
+  }
+
 </style>
 </head>
 <body>
@@ -3054,8 +3205,11 @@
 
     <!-- ACCIÓN DIRECTA -->
     <div class="hud-actions">
-      <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="goToPage('b08')">
-        Conversemos
+      <button type="button" class="btn-cyber-border-travel btn-cyber-hud-conversemos" onclick="goToPage('b08')" title="Ir a Conversemos sobre tu organización">
+        <span class="btn-cyber-travel-content">
+          <span>💬 Conversemos</span>
+          <span class="actors-btn-arrow" style="font-size:11px; margin-left:4px; color:var(--cyan); transition:transform 0.2s;">➔</span>
+        </span>
       </button>
     </div>
   </div>
@@ -3094,7 +3248,7 @@
   <!-- ========================================================================
        PÁGINA 0: ONBOARDING & CALIBRACIÓN SITUACIONAL (OMITIBLE EN TODO MOMENTO)
        ======================================================================== -->
-  <section class="brief-page" id="page-p0">
+  <section class="brief-page active" id="page-p0">
     <!-- CABECERA DE LA SECCIÓN -->
     <div class="block-header-strip">
       <div class="block-id-tag">
@@ -3108,7 +3262,7 @@
     </div>
 
     <!-- CONSOLA DE FARO -->
-    <div class="faro-console">
+    <div class="faro-console" id="faro-console-p0">
       <div class="faro-avatar-box">
         <img src="assets/images/faro_avatar.jpg" alt="FARO" class="faro-avatar-img">
         <div class="faro-avatar-dot"></div>
@@ -3118,9 +3272,7 @@
           <span class="faro-console-name">FARO // Guía de Decisión</span>
           <span class="faro-console-tag">PROTOCOLO DE BIENVENIDA</span>
         </div>
-        <p class="faro-console-speech" id="faro-speech-p0">
-          «Hola. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido».
-        </p>
+        <p class="faro-console-speech" id="faro-speech-p0" style="min-height:56px;"></p>
         <div class="faro-direct-question">
           <span class="faro-q-icon">💬</span>
           <span id="faro-q-p0">¿Te gustaría responder tres preguntas situacionales breves o prefieres ir directo al recorrido?</span>
@@ -3242,7 +3394,7 @@
       <div class="faro-console-body">
         <div class="faro-console-header">
           <span class="faro-console-name">FARO // Orientación Inicial</span>
-          <span class="faro-console-tag">ETAPA 1 · LA DECISIÓN EN DISPUTA</span>
+          <span class="faro-console-tag">SECCIÓN 1 · LA DECISIÓN EN DISPUTA</span>
         </div>
         <p class="faro-console-speech" id="faro-speech-b01">
           "La tecnología de ataque no busca únicamente vulnerabilidades en el software: busca vulnerabilidades en la atención, la confianza y la urgencia humana. Observa esto con cuidado: antes de un clic, una autorización o una respuesta, hay una decisión."
@@ -3265,9 +3417,7 @@
       </button>
 
       <div class="orange-cyber-box org-expandable-content" id="org-expandable-box" style="display: none; margin-top: 14px;">
-        <div class="orange-box-header">
-          <span class="orange-mono-tag">⚡ ¿QUÉ TIENE QUE VER ESTO CON TU ORGANIZACIÓN?</span>
-        </div>
+
         <div class="org-cards-grid">
           <!-- TARJETA 1 (CIAN / P-THEME) -->
           <div class="para-card-wrapper org-card-wrapper p-theme" onclick="flipParaCard(this, 'org1')">
@@ -3351,30 +3501,27 @@
             <span>⚠️ ADVERTENCIA · RIESGO DE INTERPRETACIÓN</span>
           </div>
           <p class="warning-risk-text">
-            FARO propone entrenamiento y observación; no garantiza decisiones seguras. «Antes de un clic» es una imagen de muchas acciones posibles en la organización, incluida una omisión o una autorización no verificada.
+            FARO propone entrenamiento y observación; no garantiza decisiones seguras. "Antes de un clic" es una imagen de muchas acciones posibles en la organización, incluida una omisión o una autorización no verificada.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- CUADRO DE ADVERTENCIA · RIESGO DE INTERPRETACIÓN CANÓNICO -->
-    <div class="warning-risk-box">
-      <div class="warning-risk-header">
-        <span>⚠️ ADVERTENCIA · RIESGO DE INTERPRETACIÓN</span>
-      </div>
-      <p class="warning-risk-text">
-        El Protocolo PARA ayuda a orientar una decisión; no es una garantía ni una prueba de habilidad. La IA puede apoyar la reflexión y la verificación, pero la agencia sigue en manos humanas. La formación y los cambios organizacionales se complementan; uno no sustituye al otro.
-      </p>
-    </div>
 
-    <!-- CUADRO DE ADVERTENCIA · RIESGO DE INTERPRETACIÓN CANÓNICO -->
-    <div class="warning-risk-box">
-      <div class="warning-risk-header">
-        <span>⚠️ ADVERTENCIA · RIESGO DE INTERPRETACIÓN</span>
+
+        <!-- CONTENEDOR DE CURIOSIDAD / PROFUNDIZACIÓN SECCIÓN 1 (SOLO 6 PILARES CANÓNICOS) -->
+    <div class="curiosity-door-box" style="margin-top: 28px;">
+      <div class="curiosity-box-inner">
+        <div class="curiosity-box-title">
+          <span>🚪</span>
+          <span>Si tu curiosidad es una puerta abierta ahora, acá tienes información adicional. O avanza a la siguiente sección:</span>
+        </div>
+        <div class="curiosity-box-buttons">
+          <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="openCanonIntroModal()">
+            📜 Ver los 6 Pilares Canónicos de FARO ➔
+          </button>
+        </div>
       </div>
-      <p class="warning-risk-text">
-        Estas áreas no son silos independientes. FARO no sustituye los controles de seguridad, las responsabilidades de liderazgo, una auditoría ni la gobernanza de IA de la organización.
-      </p>
     </div>
 
     <div class="page-footer-nav">
@@ -3432,24 +3579,28 @@
               <span class="comp-toggle-arrow">▼</span>
             </div>
             <div class="comp-panel-body-wrapper">
-              <ul class="comp-list">
-                <li class="comp-item">
-                  <span class="comp-icon">✕</span>
-                  <span>Asumir que conocer la política basta para actuar bien bajo presión.</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✕</span>
-                  <span>Depender de que la persona detecte una señal externa (ortografía, remitente, formato).</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✕</span>
-                  <span>Medir asistencia o clics, no criterio ni transferencia real a la decisión.</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✕</span>
-                  <span>Pedir "más atención" cuando alguien falla, sin tocar las condiciones del sistema.</span>
-                </li>
-              </ul>
+              <div class="comp-panel-body-inner">
+                <div class="comp-panel-body">
+                  <ul class="comp-list">
+                    <li class="comp-item">
+                      <span class="comp-icon">✕</span>
+                      <span>Asumir que conocer la política basta para actuar bien bajo presión.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✕</span>
+                      <span>Depender de que la persona detecte una señal externa (ortografía, remitente, formato).</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✕</span>
+                      <span>Medir asistencia o clics, no criterio ni transferencia real a la decisión.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✕</span>
+                      <span>Pedir "más atención" cuando alguien falla, sin tocar las condiciones del sistema.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -3463,24 +3614,28 @@
               <span class="comp-toggle-arrow">▼</span>
             </div>
             <div class="comp-panel-body-wrapper">
-              <ul class="comp-list">
-                <li class="comp-item">
-                  <span class="comp-icon">✓</span>
-                  <span>Observar y aprender sobre las particularidades y tendencias individuales que afectan las decisiones propias.</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✓</span>
-                  <span>Utilizar la IA como una herramienta de acompañamiento en el entrenamiento de las decisiones.</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✓</span>
-                  <span>Practicar el proceso completo de decisión: pausar, evaluar, verificar y actuar de forma deliberada.</span>
-                </li>
-                <li class="comp-item">
-                  <span class="comp-icon">✓</span>
-                  <span>Construir evidencia por canales independientes cuando la señal externa resulta ambigua o insuficiente.</span>
-                </li>
-              </ul>
+              <div class="comp-panel-body-inner">
+                <div class="comp-panel-body">
+                  <ul class="comp-list">
+                    <li class="comp-item">
+                      <span class="comp-icon">✓</span>
+                      <span>Observar y aprender sobre las particularidades y tendencias individuales que afectan las decisiones propias.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✓</span>
+                      <span>Utilizar la IA como una herramienta de acompañamiento en el entrenamiento de las decisiones.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✓</span>
+                      <span>Practicar el proceso completo de decisión: pausar, evaluar, verificar y actuar de forma deliberada.</span>
+                    </li>
+                    <li class="comp-item">
+                      <span class="comp-icon">✓</span>
+                      <span>Construir evidencia por canales independientes cuando la señal externa resulta ambigua o insuficiente.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3496,7 +3651,7 @@
       <div class="faro-console-body">
         <div class="faro-console-header">
           <span class="faro-console-name">FARO // Análisis de Superficie Humana</span>
-          <span class="faro-console-tag">ETAPA 2 · VEROSIMILITUD Y PRESIÓN</span>
+          <span class="faro-console-tag">SECCIÓN 2 · VEROSIMILITUD Y PRESIÓN</span>
         </div>
         <p class="faro-console-speech" id="faro-speech-b02">
           "En un mundo con IA generativa, un mensaje fraudulento puede ser impecable, imitar la voz de tu equipo y sonar completamente legítimo. ¿Qué señal buscas cuando el engaño ya no tiene errores visibles?"
@@ -3724,7 +3879,7 @@
       <div class="faro-console-body">
         <div class="faro-console-header">
           <span class="faro-console-name">FARO // Protocolo de Entrenamiento</span>
-          <span class="faro-console-tag">ETAPA 3 · PROTOCOLO P-A-R-A</span>
+          <span class="faro-console-tag">SECCIÓN 3 · PROTOCOLO P-A-R-A</span>
         </div>
         <p class="faro-console-speech" id="faro-speech-b03">
           "No se trata de desconfiar de todo ni de memorizar listas interminables de trampas. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito."
@@ -3831,24 +3986,10 @@
       </p>
     </div>
 
-    <!-- BIFURCACIÓN EXPLÍCITA CON IGUAL PESO -->
-    <div class="symmetric-fork-box">
-      <div>
-        <h4 style="color:#fff; margin-bottom:4px;">Una misma decisión involucra varias responsabilidades</h4>
-        <p style="font-size:13.5px; color:var(--text-muted); margin:0;">Puedes ver a qué áreas les sirve o ir directo a las formas de comenzar.</p>
-      </div>
-      <div style="display:flex; gap:12px; flex-wrap:wrap;">
-        <button type="button" class="btn-detroit btn-detroit-outline" onclick="goToPage('b05')">
-          4: A quién le sirve (4 responsabilidades) ➔
-        </button>
-        <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b06')">
-          Ver formas de comenzar (3 formatos) ➔
-        </button>
-      </div>
-    </div>
+    
 
     <!-- CONTENEDOR DE CURIOSIDAD / PROFUNDIZACIÓN (CON BORDE LUMINOSO Y FONDO TARJETAS PARA) -->
-    <div class="curiosity-door-box">
+    <div class="curiosity-door-box" style="margin-top: 24px;">
       <div class="curiosity-box-inner">
         <div class="curiosity-box-title">
           <span>🚪</span>
@@ -3858,17 +3999,29 @@
           <button type="button" class="btn-detroit btn-detroit-primary btn-detroit-sm" onclick="openModal('modal-p01')">
             ¿Por qué FARO? Metáfora y propósito ➔
           </button>
-          <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="openCanonIntroModal()">
-            📜 Ver los 6 Pilares Canónicos de FARO
-          </button>
         </div>
       </div>
+    </div>
+
+        <!-- CUADRO DE ADVERTENCIA · RIESGO DE INTERPRETACIÓN CANÓNICO (ESPECÍFICO DEL PROTOCOLO PARA) -->
+    <div class="warning-risk-box" style="margin-top: 24px;">
+      <div class="warning-risk-header">
+        <span>⚠️ ADVERTENCIA · RIESGO DE INTERPRETACIÓN</span>
+      </div>
+      <p class="warning-risk-text">
+        El Protocolo PARA ayuda a orientar una decisión; no es una garantía ni una prueba de habilidad. La IA puede apoyar la reflexión y la verificación, pero la agencia sigue en manos humanas. La formación y los cambios organizacionales se complementan; uno no sustituye al otro.
+      </p>
     </div>
 
     <div class="page-footer-nav">
       <div class="page-nav-left">
         <button type="button" class="btn-detroit btn-detroit-outline btn-detroit-sm" onclick="goToPage('b02')">
-          ← Anterior: Cuando las señales no bastan
+          ← Anterior: Cuando las señales ya no bastan
+        </button>
+      </div>
+      <div class="page-nav-right">
+        <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b06')">
+          4: Formas de comenzar ➔
         </button>
       </div>
     </div>
@@ -3901,7 +4054,7 @@
       <div class="faro-console-body">
         <div class="faro-console-header">
           <span class="faro-console-name">FARO // Arquitectura de Oferta</span>
-          <span class="faro-console-tag">ETAPA 4 · TRES PUNTOS DE ENTRADA</span>
+          <span class="faro-console-tag">SECCIÓN 4 · TRES PUNTOS DE ENTRADA</span>
         </div>
         <p class="faro-console-speech" id="faro-speech-b06" style="margin-bottom:0;">
           "Cada organización tiene un nivel de madurez y urgencia diferente. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?"
@@ -4004,8 +4157,14 @@
         </button>
       </div>
       <div class="page-nav-right">
-        <button type="button" class="btn-detroit btn-detroit-primary" onclick="goToPage('b08')">
-          Conversemos sobre tu organización ➔
+        <button type="button" class="btn-cyber-border-travel btn-cyber-cta-conversemos" onclick="goToPage('b08')">
+          <span class="btn-cyber-travel-content">
+            <span style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:16px;">💬</span>
+              <span>Conversemos sobre tu organización</span>
+            </span>
+            <span class="actors-btn-arrow" style="font-size:16px; color:var(--cyan); margin-left:12px; transition:transform 0.25s ease;">➔</span>
+          </span>
         </button>
       </div>
     </div>
@@ -4078,7 +4237,7 @@
             <div class="pillar-card-back-badge">PILAR 01 · COGNICIÓN Y DECISIÓN</div>
             <h4>Ciencias del comportamiento</h4>
             <p>
-              Explica cómo decidimos realmente: dónde falla la atención y cómo entrenar la deliberación bajo presión. Respaldado por investigación en neurociencia cognitiva y factores humanos para diseñar habilidades transferibles con evidencia.
+              Explica cómo decidimos: dónde falla la atención y cómo entrenar la deliberación bajo presión. Respaldado por investigación en neurociencia cognitiva y factores humanos para diseñar habilidades transferibles con evidencia.
             </p>
             <span class="flip-hint-badge" style="align-self:center; margin-top:8px;">VOLTEAR ↩</span>
           </div>
@@ -4122,7 +4281,7 @@
             <div class="pillar-card-back-badge">PILAR 03 · PARADIGMA ACTUAL</div>
             <h4>Ciberseguridad y factor humano</h4>
             <p>
-              Conexión directa con las amenazas asistidas por IA. Trasciende la seguridad puramente tecnológica para instalar criterio y juicio crítico en cualquier rol: habilidades esenciales tanto para la organización como para la vida digital cotidiana.
+              Parte de una investigación constante sobre los paradigmas actuales en ciberseguridad en la era de la IA y el peso crucial del factor humano que confirman los reportes globales. Desde allí, propone un enfoque centrado en la ciberseguridad de las decisiones humanas asistidas (no cedidas) con IA.
             </p>
             <span class="flip-hint-badge" style="align-self:center; margin-top:8px;">VOLTEAR ↩</span>
           </div>
@@ -4356,6 +4515,29 @@
       </div>
     </div>
   </section>
+
+
+  <!-- ========================================================================
+       MODAL DE BIENVENIDA VISITANTE CON FARO
+       ======================================================================== -->
+  <div id="modal-welcome-visitor" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title">
+    <div class="welcome-modal-card">
+      <div class="welcome-modal-faro-avatar">
+        <img src="assets/images/faro_avatar.jpg" alt="FARO" class="welcome-faro-img">
+        <div class="welcome-faro-pulse"></div>
+      </div>
+      <div class="welcome-modal-badge">FARO // CALIBRACIÓN CONFIRMADA</div>
+      <h3 class="welcome-modal-title" id="welcome-modal-title">
+        ¡Bienvenido/a, <span id="welcome-modal-name" class="welcome-name-glow">visitante</span>!
+      </h3>
+      <p class="welcome-modal-desc">
+        "He calibrado la experiencia para ti. Vamos a observar qué ocurre en nuestras decisiones antes de hacer clic."
+      </p>
+      <button type="button" class="btn-detroit btn-detroit-primary" id="btn-welcome-modal-continue" onclick="proceedAfterWelcomeModal()" style="min-width: 180px;">
+        Continuar ➔
+      </button>
+    </div>
+  </div>
 
 </main>
 
@@ -4772,30 +4954,63 @@
      SCRIPTS DE CONTROL Y TELEMETRÍA (EXPERIENCIA SEGMENTADA)
      ========================================================================== -->
 <script>
+
+  // ==========================================================================
+  // AUDITORÍA Y CONTROL DE PERSISTENCIA (RECARGA NORMAL VS RECARGA FUERTE / NUEVO USUARIO)
+  // ==========================================================================
+  (function checkPersistenceSession() {
+    const isHardReloadCookie = document.cookie.includes('faro_hard_reload=1');
+    const urlParams = new URLSearchParams(window.location.search);
+    const isResetRequested = urlParams.has('reset') || isHardReloadCookie;
+
+    // Si es recarga forzada (Ctrl+F5) o se solicitó reinicio:
+    if (isResetRequested) {
+      sessionStorage.clear();
+      document.cookie = 'faro_hard_reload=; Path=/; Max-Age=0; SameSite=Lax';
+      if (window.location.hash && window.location.hash !== '#p0') {
+        history.replaceState(null, '', window.location.pathname);
+      }
+    }
+
+    // Marcar sesión activa
+    if (!sessionStorage.getItem('faro_session_active')) {
+      sessionStorage.setItem('faro_session_active', 'true');
+    }
+
+    // Listener para capturar Ctrl+F5 o Ctrl+Shift+R en caliente
+    window.addEventListener('keydown', (e) => {
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+      if ((isCtrlOrCmd || e.shiftKey) && (e.key === 'F5' || (e.shiftKey && (e.key === 'r' || e.key === 'R')))) {
+        sessionStorage.clear();
+        document.cookie = 'faro_hard_reload=1; Path=/; SameSite=Lax';
+      }
+    }, true);
+  })();
+
   // BANCO DE PREGUNTAS POR ETAPAS (CANON + VARIANTES) CON RETROALIMENTACIÓN ESPECÍFICA POR OPCIÓN
-  const QUESTION_BANK = {
+    const QUESTION_BANK = {
     stage1: [
       {
         id: "q1_canon",
-        title: "Alguien muy cercano te escribe: «Necesitamos hablar… urgente». ¿Qué se te cruza primero por la cabeza?",
+        title: "Alguien muy cercano te escribe: \"Necesitamos hablar… urgente\". ¿Qué se te cruza primero por la cabeza?",
         options: [
           {
-            text: "«¿Le habrá pasado algo?»",
+            text: "\"¿Le habrá pasado algo?\"",
             feedback: "Se activa de inmediato la empatía y la preocupación por el otro. Cuando el vínculo nos importa, el deseo de proteger o acompañar suele desplazar cualquier duda sobre el canal o el remitente. El impulso natural es responder rápido para cuidar."
           },
           {
-            text: "«¿Hice algo que le molestó?»",
+            text: "\"¿Hice algo que le molestó?\"",
             feedback: "La atención se orienta hacia la responsabilidad y la incertidumbre en la relación. El mensaje activa una necesidad de aclarar o reparar de inmediato, lo que acelera el ritmo de la respuesta sin detenerse a comprobar qué ocurre."
           },
           {
-            text: "«Tal vez necesita pedirme ayuda».",
+            text: "\"Tal vez necesita pedirme ayuda.\"",
             feedback: "Se enciende una disposición inmediata de servicio y colaboración. Dar por hecho que la otra persona recurre a nosotros genera apertura y predisposición favorable, reduciendo las barreras iniciales de verificación."
           }
         ]
       },
       {
         id: "q1_var",
-        title: "Recibes una notificación imprevista de alguien de confianza: «Oye, necesito un favor delicado, ¿estás disponible?». ¿Cuál es tu primera inclinación?",
+        title: "Recibes una notificación imprevista de alguien de confianza: \"Oye, necesito un favor delicado, ¿estás disponible?\". ¿Cuál es tu primera inclinación?",
         options: [
           {
             text: "Responder de inmediato para saber en qué puedo colaborar.",
@@ -4815,7 +5030,7 @@
     stage2: [
       {
         id: "q2_canon",
-        title: "Piensa en alguien cercano de tu trabajo. Si recibiera ese mismo mensaje («Necesitamos hablar… urgente»), ¿qué imaginas que haría primero?",
+        title: "Piensa en alguien cercano de tu trabajo. Si recibiera ese mismo mensaje (\"Necesitamos hablar… urgente\"), ¿qué imaginas que haría primero?",
         options: [
           {
             text: "Respondería de inmediato para saber qué pasa.",
@@ -4833,7 +5048,7 @@
       },
       {
         id: "q2_var",
-        title: "Un directivo o cliente clave pide por chat una gestión urgente fuera del procedimiento porque «se frena la operación». ¿Qué suele pesar más en esa situación?",
+        title: "Un directivo o cliente clave pide por chat una gestión urgente fuera del procedimiento porque \"se frena la operación\". ¿Qué suele pesar más en esa situación?",
         options: [
           {
             text: "Resolver rápido para no frenar al equipo ni generar retrasos.",
@@ -4853,7 +5068,7 @@
     stage3: [
       {
         id: "q3_canon",
-        title: "Es viernes al final de la tarde. Una colega recibe un correo de alguien conocido: «Necesitamos hablar… urgente. Algo no me cuadra en el informe de este trimestre. Únete a esta llamada». El remitente parece correcto y el enlace parece abrir Teams. ¿Qué harías primero en su lugar?",
+        title: "Es viernes al final de la tarde. Una colega recibe un correo de alguien conocido: \"Necesitamos hablar… urgente. Algo no me cuadra en el informe de este trimestre. Únete a esta llamada\". El remitente parece correcto y el enlace parece abrir Teams. ¿Qué harías primero en su lugar?",
         options: [
           {
             text: "Entrar a la llamada; el asunto parece delicado y todo luce legítimo.",
@@ -4871,7 +5086,7 @@
       },
       {
         id: "q3_var",
-        title: "Llega una notificación con prisa: «Tu sesión corporativa caducará en 15 minutos; confirma tu acceso aquí para evitar el bloqueo». ¿Qué describe mejor la reacción en ese momento?",
+        title: "Llega una notificación con prisa: \"Tu sesión corporativa caducará en 15 minutos; confirma tu acceso aquí para evitar el bloqueo\". ¿Qué describe mejor la reacción en ese momento?",
         options: [
           {
             text: "El impulso de abrir el enlace para no interrumpir el flujo de trabajo.",
@@ -5004,11 +5219,11 @@
     }
 
     const hash = window.location.hash.replace('#', '');
-    if (hash && document.getElementById('page-' + hash)) {
-      goToPage(hash, false);
-    } else {
-      goToPage('p0', false);
-    }
+    const savedPage = sessionStorage.getItem('faro_current_page');
+    const targetPage = hash && document.getElementById('page-' + hash) 
+      ? hash 
+      : (savedPage && document.getElementById('page-' + savedPage) ? savedPage : 'p0');
+    goToPage(targetPage, false);
   });
 
   window.addEventListener('hashchange', () => {
@@ -5070,7 +5285,7 @@
     });
   }
 
-  // PRELOADER / SPLASH
+  // PRELOADER / SPLASH: SIEMPRE APARECE AL RECARGAR FUERTE O ENTRAR
   function initPreloader() {
     const splash = document.getElementById('splash-screen');
     const bar = document.getElementById('splash-progress-bar');
@@ -5078,10 +5293,8 @@
     const lbl = document.getElementById('splash-status-label');
     const btn = document.getElementById('btn-enter-brief');
 
-    if (sessionStorage.getItem('faro_splash_seen')) {
-      splash.classList.add('hidden');
-      return;
-    }
+    if (!splash) return;
+    splash.classList.remove('hidden');
 
     let progress = 0;
     const stages = [
@@ -5092,33 +5305,145 @@
     ];
 
     const timer = setInterval(() => {
-      progress += 4;
+      progress += 5;
       if (progress > 100) progress = 100;
-      bar.style.width = progress + '%';
-      pct.textContent = progress + '%';
+      if (bar) bar.style.width = progress + '%';
+      if (pct) pct.textContent = progress + '%';
 
       for (let s of stages) {
         if (progress <= s.p) {
-          lbl.textContent = s.t;
+          if (lbl) lbl.textContent = s.t;
           break;
         }
       }
 
       if (progress >= 100) {
         clearInterval(timer);
-        lbl.textContent = '✔ SISTEMA LISTO PARA INTERACCIÓN';
+        if (lbl) lbl.textContent = '✔ SISTEMA LISTO PARA INTERACCIÓN';
         if (btn) {
           btn.disabled = false;
           btn.style.opacity = '1';
           btn.style.cursor = 'pointer';
-          btn.innerHTML = 'ACCEDIENDO A LA SECCIÓN 0 ➔';
+          btn.innerHTML = 'ACCEDIENDO A LA CALIBRACIÓN ➔';
         }
-        // Transición fluida automática a la Sección 0 sin obligar a hacer clic
         setTimeout(() => {
           enterBriefExperience();
-        }, 400);
+        }, 320);
       }
-    }, 35);
+    }, 28);
+  }
+
+  function enterBriefExperience() {
+    const splash = document.getElementById('splash-screen');
+    if (splash) splash.classList.add('hidden');
+    const hash = window.location.hash.replace('#', '');
+    const savedPage = sessionStorage.getItem('faro_current_page');
+    const targetPage = hash && document.getElementById('page-' + hash) 
+      ? hash 
+      : (savedPage && document.getElementById('page-' + savedPage) ? savedPage : 'p0');
+    goToPage(targetPage, false);
+    // Disparar animación de máquina de escribir en FARO P0
+    setTimeout(() => {
+      startTypewriterP0();
+    }, 250);
+  }
+
+  // TYPEWRITER EFFECT PARA LA CONSOLA DE FARO EN SECCIÓN 0
+  let faroTypewriterTimer = null;
+  let faroTypewriterDone = false;
+
+  function startTypewriterP0(force = false) {
+    const p0Speech = document.getElementById('faro-speech-p0');
+    if (!p0Speech) return;
+    if (faroTypewriterDone && !force) return;
+
+    if (faroTypewriterTimer) {
+      clearInterval(faroTypewriterTimer);
+      faroTypewriterTimer = null;
+    }
+
+    const rawName = STATE.visitorName && STATE.visitorName !== 'Visitante' ? STATE.visitorName : '';
+    const fullText = rawName
+      ? `"Hola, ${rawName}. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido."`
+      : '"Hola. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido."';
+
+    p0Speech.innerHTML = '<span class="typewriter-cursor">▌</span>';
+    p0Speech.style.cursor = 'pointer';
+    p0Speech.title = 'Haz clic para mostrar el texto completo de inmediato';
+
+    // Clic para saltar animación
+    p0Speech.onclick = () => {
+      if (faroTypewriterTimer) {
+        clearInterval(faroTypewriterTimer);
+        faroTypewriterTimer = null;
+      }
+      p0Speech.innerHTML = fullText;
+      faroTypewriterDone = true;
+    };
+
+    let charIdx = 0;
+    faroTypewriterTimer = setInterval(() => {
+      if (charIdx < fullText.length) {
+        p0Speech.innerHTML = fullText.slice(0, charIdx + 1) + '<span class="typewriter-cursor">▌</span>';
+        charIdx++;
+      } else {
+        clearInterval(faroTypewriterTimer);
+        faroTypewriterTimer = null;
+        p0Speech.innerHTML = fullText;
+        faroTypewriterDone = true;
+      }
+    }, 20);
+  }
+
+  // MODAL DE BIENVENIDA VISITANTE Y TRANSICIONES DE CALIBRACIÓN
+  let pendingWelcomeAction = null;
+  let welcomeModalTriggered = false;
+
+  function promptWelcomeModal(actionType) {
+    const nameInput = document.getElementById('visitor-name');
+    if (nameInput && nameInput.value.trim()) {
+      applyVisitorName(nameInput.value.trim());
+    }
+
+    const currentName = STATE.visitorName && STATE.visitorName !== 'Visitante' ? STATE.visitorName : (nameInput && nameInput.value.trim() ? nameInput.value.trim() : '');
+
+    if (!welcomeModalTriggered && currentName) {
+      pendingWelcomeAction = actionType;
+      welcomeModalTriggered = true;
+      const modal = document.getElementById('modal-welcome-visitor');
+      const nameEl = document.getElementById('welcome-modal-name');
+      if (nameEl) nameEl.textContent = currentName;
+      if (modal) {
+        modal.classList.add('active');
+        const contBtn = document.getElementById('btn-welcome-modal-continue');
+        if (contBtn) contBtn.focus();
+      }
+    } else {
+      executeCalibrationStep(actionType);
+    }
+  }
+
+  function proceedAfterWelcomeModal() {
+    const modal = document.getElementById('modal-welcome-visitor');
+    if (modal) modal.classList.remove('active');
+    const act = pendingWelcomeAction || 'questions';
+    pendingWelcomeAction = null;
+    executeCalibrationStep(act);
+  }
+
+  function executeCalibrationStep(actionType) {
+    if (actionType === 'questions') {
+      // Recoger contenedor de FARO para eliminar ruido
+      const faroConsole = document.getElementById('faro-console-p0');
+      if (faroConsole) {
+        faroConsole.classList.add('collapsed');
+      }
+      document.getElementById('ob-box-name').classList.remove('active');
+      document.getElementById('ob-box-q1').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      openCanonIntroModal();
+    }
   }
 
   function enterBriefExperience() {
@@ -5145,6 +5470,12 @@
     document.querySelectorAll('.brief-page').forEach(p => p.classList.remove('active'));
     target.classList.add('active');
     STATE.currentPage = pageId;
+    sessionStorage.setItem('faro_current_page', pageId);
+    sessionStorage.setItem('faro_session_active', 'true');
+
+    if (pageId === 'p0' && !faroTypewriterDone) {
+      setTimeout(() => startTypewriterP0(), 150);
+    }
 
     // RECORRIDO MÍNIMO: 20% INMEDIATO AL ENTRAR A CUALQUIERA DE LAS 5 SECCIONES PRINCIPALES
     if (CORE_SECTIONS.includes(pageId)) {
@@ -5235,10 +5566,30 @@
   function restoreStateUI() {
     if (STATE.visitorName) {
       applyVisitorName(STATE.visitorName);
+    } else {
+      applyVisitorName('');
     }
     if (STATE.selectedConcern) {
       const btn = document.querySelector(`[data-id="${STATE.selectedConcern}"]`);
       if (btn) btn.classList.add('active');
+    }
+    // Restaurar respuestas situacionales en Q1, Q2, Q3 si existen
+    if (STATE.answeredQuestions) {
+      Object.keys(STATE.answeredQuestions).forEach(qKey => {
+        const optText = STATE.answeredQuestions[qKey];
+        const qNum = qKey.replace('q', '');
+        const box = document.getElementById(`ob-box-q${qNum}`);
+        if (box) {
+          const cards = box.querySelectorAll('.q-opt-card');
+          cards.forEach(card => {
+            if (card.textContent.includes(optText)) {
+              card.classList.add('selected');
+              const nextBtn = document.getElementById(`btn-next-q${qNum}`);
+              if (nextBtn) nextBtn.style.display = 'inline-block';
+            }
+          });
+        }
+      });
     }
   }
 
@@ -5259,10 +5610,10 @@
 
     // P0 - ONBOARDING
     const p0Speech = document.getElementById('faro-speech-p0');
-    if (p0Speech) {
+    if (p0Speech && faroTypewriterDone) {
       p0Speech.innerHTML = name 
-        ? `«Hola, <strong>${name}</strong>. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido».`
-        : `«Hola. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido».`;
+        ? `"Hola, <strong>${name}</strong>. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido."`
+        : `"Hola. Soy FARO. Te invito a observar qué ocurre antes de una decisión y cómo podemos entrenarla. Puedes responder tres preguntas breves o ir directo al recorrido."`;
     }
     const p0Q = document.getElementById('faro-q-p0');
     if (p0Q) {
@@ -5289,8 +5640,8 @@
     const b02Speech = document.getElementById('faro-speech-b02');
     if (b02Speech) {
       b02Speech.innerHTML = name 
-        ? `«En un mundo con IA generativa, <strong>${name}</strong>, un mensaje fraudulento puede ser impecable, imitar la voz de tu equipo y sonar completamente legítimo. ¿Qué señal buscas cuando el engaño ya no tiene errores visibles?»`
-        : `«En un mundo con IA generativa, un mensaje fraudulento puede ser impecable, imitar la voz de tu equipo y sonar completamente legítimo. ¿Qué señal buscas cuando el engaño ya no tiene errores visibles?»`;
+        ? `"En un mundo con IA generativa, <strong>${name}</strong>, un mensaje fraudulento puede ser impecable, imitar la voz de tu equipo y sonar completamente legítimo. ¿Qué señal buscas cuando el engaño ya no tiene errores visibles?"`
+        : `"En un mundo con IA generativa, un mensaje fraudulento puede ser impecable, imitar la voz de tu equipo y sonar completamente legítimo. ¿Qué señal buscas cuando el engaño ya no tiene errores visibles?"`;
     }
     const b02Q = document.getElementById('faro-q-b02');
     if (b02Q) {
@@ -5303,8 +5654,8 @@
     const b03Speech = document.getElementById('faro-speech-b03');
     if (b03Speech) {
       b03Speech.innerHTML = name 
-        ? `«No se trata de desconfiar de todo ni de memorizar listas interminables de trampas, <strong>${name}</strong>. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito.»`
-        : `«No se trata de desconfiar de todo ni de memorizar listas interminables de trampas. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito.»`;
+        ? `"No se trata de desconfiar de todo ni de memorizar listas interminables de trampas, <strong>${name}</strong>. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito."`
+        : `"No se trata de desconfiar de todo ni de memorizar listas interminables de trampas. Se trata de tener un método de deliberación antes de actuar: el <strong>Protocolo PARA</strong>. Toca cada tarjeta para voltearla y descubrir su propósito."`;
     }
     const b03Q = document.getElementById('faro-q-b03');
     if (b03Q) {
@@ -5317,8 +5668,8 @@
     const b06Speech = document.getElementById('faro-speech-b06');
     if (b06Speech) {
       b06Speech.innerHTML = name 
-        ? `«Cada organización tiene un nivel de madurez y urgencia diferente, <strong>${name}</strong>. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?»`
-        : `«Cada organización tiene un nivel de madurez y urgencia diferente. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?»`;
+        ? `"Cada organización tiene un nivel de madurez y urgencia diferente, <strong>${name}</strong>. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?"`
+        : `"Cada organización tiene un nivel de madurez y urgencia diferente. ¿Tu prioridad hoy es encender la conversación directiva, vivir una experiencia formativa inmersiva o transformar hábitos continuos?"`;
     }
     const b06Q = document.getElementById('faro-q-b06');
     if (b06Q) {
@@ -5345,8 +5696,8 @@
     const b08Speech = document.getElementById('faro-speech-b08');
     if (b08Speech) {
       b08Speech.innerHTML = name 
-        ? `«<strong>${name}</strong>, has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización.»`
-        : `«Has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización.»`;
+        ? `"<strong>${name}</strong>, has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización."`
+        : `"Has recorrido la arquitectura central de FARO. La mejor forma de avanzar no es un formulario estandarizado, sino una conversación directa sobre las decisiones críticas de tu organización."`;
     }
     const b08Q = document.getElementById('faro-q-b08');
     if (b08Q) {
@@ -5370,12 +5721,7 @@
 
   // ONBOARDING & PREGUNTAS SITUACIONALES
   function startCalibrationQuestions() {
-    const input = document.getElementById('visitor-name');
-    if (input.value.trim()) {
-      applyVisitorName(input.value.trim());
-    }
-    document.getElementById('ob-box-name').classList.remove('active');
-    document.getElementById('ob-box-q1').classList.add('active');
+    promptWelcomeModal('questions');
   }
 
   // ==========================================================================
@@ -5385,7 +5731,7 @@
     {
       step: 1,
       title: "1. El foco no está en el atacante",
-      text: "Estas son situaciones de la vida cotidiana que pueden o no esconder una amenaza. Si hay o no un atacante detrás, no es el punto central ni donde reside el problema actual. Sí, suena contraintuitivo, pero tiene una explicación profunda: la seguridad no empieza cuando el ataque se consuma, sino en lo que ocurre mucho antes."
+      text: "La vida cotidiana está llena de situaciones que pueden o no esconder una amenaza: un mensaje de tu pareja diciendo \"tenemos que hablar\", o de tu jefe pidiendo algo de última hora. Si hay o no un atacante detrás, no es el punto central ni donde reside el problema actual. Sí, suena contraintuitivo, pero tiene una explicación profunda: la seguridad no empieza cuando el ataque se consuma, sino en lo que ocurre mucho antes."
     },
     {
       step: 2,
@@ -5410,7 +5756,8 @@
     {
       step: 6,
       title: "6. Decidir y aliarse con la IA",
-      text: "Y esto se potencia y pesa muchísimo más en la era de la Inteligencia Artificial: primero, porque los mensajes son masivos, perfeccionados e hiperpersonalizados, lo que multiplica el volumen y la facilidad para activar nuestras puertas; y segundo, porque la IA no es herramienta de unos pocos: todos la tenemos al alcance para acompañarnos en este proceso, tanto en la identificación como en el entrenamiento deliberativo.\n\nEsto es FARO: una mirada para Facilitar Autonomía en la Respuesta Operativa que desarrolla el criterio para decisiones de ciberseguridad en la era de la IA.\n\n¡Bienvenidas y bienvenidos!"
+      text: "Y esto se potencia y pesa muchísimo más en la era de la Inteligencia Artificial: primero, porque los mensajes son masivos, perfeccionados e hiperpersonalizados, lo que multiplica el volumen y la facilidad para activar nuestras puertas; y segundo, porque la IA no es herramienta de unos pocos: todos la tenemos al alcance para acompañarnos en este proceso, tanto en la identificación como en el entrenamiento deliberativo.\n\nEsto es FARO: una mirada para Facilitar Autonomía en la Respuesta Operativa que desarrolla el criterio para decisiones de ciberseguridad en la era de la IA.\n\n¡Bienvenidas y bienvenidos!",
+      html: `Y esto se potencia y pesa muchísimo más en la era de la Inteligencia Artificial: primero, porque los mensajes son masivos, perfeccionados e hiperpersonalizados, lo que multiplica el volumen y la facilidad para activar nuestras puertas; y segundo, porque la IA no es herramienta de unos pocos: todos la tenemos al alcance para acompañarnos en este proceso, tanto en la identificación como en el entrenamiento deliberativo.<br><br>Esto es <strong style="color:var(--cyan); font-weight:800; letter-spacing:1px; text-shadow:0 0 12px rgba(0,216,255,0.6);">FARO</strong>: una mirada para <strong style="color:var(--cyan); font-weight:800; text-shadow:0 0 8px rgba(0, 216, 255, 0.5);">F</strong>acilitar <strong style="color:var(--purple); font-weight:800; text-shadow:0 0 8px rgba(162, 155, 254, 0.5);">A</strong>utonomía en la <strong style="color:var(--green); font-weight:800; text-shadow:0 0 8px rgba(73, 245, 193, 0.5);">R</strong>espuesta <strong style="color:var(--amber); font-weight:800; text-shadow:0 0 8px rgba(255, 181, 71, 0.5);">O</strong>perativa que desarrolla el criterio para decisiones de ciberseguridad en la era de la IA.<br><br><strong>¡Bienvenidas y bienvenidos!</strong>`
     }
   ];
 
@@ -5459,6 +5806,11 @@
         clearInterval(typewriterTimer);
         typewriterTimer = null;
         isTyping = false;
+        if (data.html) {
+          textEl.innerHTML = data.html;
+        } else {
+          textEl.innerHTML = escapeHtml(data.text).replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+        }
       }
     }, 12);
 
@@ -5488,7 +5840,10 @@
       typewriterTimer = null;
       isTyping = false;
       const textEl = document.getElementById('canon-typewriter-text');
-      if (textEl) textEl.textContent = CANON_STEPS[currentCanonStep].text;
+      if (textEl) {
+        const data = CANON_STEPS[currentCanonStep];
+        textEl.innerHTML = data.html || escapeHtml(data.text).replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+      }
     }
   }
 
@@ -5537,10 +5892,14 @@
 
   function skipToCore() {
     const input = document.getElementById('visitor-name');
-    if (input && input.value.trim()) {
-      applyVisitorName(input.value.trim());
+    if (input && input.value.trim() && !welcomeModalTriggered) {
+      promptWelcomeModal('skip');
+    } else {
+      if (input && input.value.trim()) {
+        applyVisitorName(input.value.trim());
+      }
+      openCanonIntroModal();
     }
-    openCanonIntroModal();
   }
 
   function finishCalibration() {
@@ -5563,6 +5922,10 @@
 
     const nextBtn = document.getElementById(`btn-next-q${qNum}`);
     if (nextBtn) nextBtn.style.display = 'inline-block';
+
+    // Persistir respuesta
+    STATE.answeredQuestions[`q${qNum}`] = btn.querySelector('span:last-child') ? btn.querySelector('span:last-child').textContent.trim() : '';
+    sessionStorage.setItem('faro_q_answers', JSON.stringify(STATE.answeredQuestions));
 
     registerBonusPoint(`q${qNum}_answered`);
   }
@@ -5592,7 +5955,7 @@
     document.getElementById('b02-concern-feedback').classList.add('revealed');
 
     // Actualizar B05 con frase neutra canónica
-    const ctxText = `Frente a «${title.toLowerCase()}», cada área observa una parte de la decisión.`;
+    const ctxText = `Frente a "${title.toLowerCase()}", cada área observa una parte de la decisión.`;
     ['ciso', 'chro', 'grc', 'cio'].forEach(r => {
       const el = document.getElementById(`ctx-${r}`);
       if (el) el.textContent = ctxText;
@@ -5642,7 +6005,7 @@
     const isCollapsed = panel.classList.contains('is-collapsed');
     if (isCollapsed) {
       panel.classList.remove('is-collapsed');
-      if (panelId === 'comp-panel-error') {
+      if (panelId === 'comp-panel-err' || panelId === 'comp-panel-error') {
         registerBonusPoint('b02_tab_error_opened');
       } else if (panelId === 'comp-panel-faro') {
         registerBonusPoint('b02_tab_faro_opened');
